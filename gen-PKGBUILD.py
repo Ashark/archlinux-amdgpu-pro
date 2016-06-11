@@ -11,9 +11,10 @@ pkgver_build=294842
 pkgbase=amdgpu-pro-installer
 pkgname={PACKAGES}
 pkgver=${{pkgver_base}}.${{pkgver_build}}
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="http://www.amd.com"
+license=('custom:AMD')
 
 url_ref="http://support.amd.com/en-us/kb-articles/Pages/AMDGPU-PRO-Beta-Driver-for-Vulkan-Release-Notes.aspx"
 DLAGENTS="https::/usr/bin/curl --referer ${{url_ref}} -o %o %u"
@@ -175,4 +176,3 @@ with gzip.open("src/amdgpu-pro-driver/Packages.gz", "r") as f:
 
 	for info in package_list:
 		print(convertPackage(info, names))
-
