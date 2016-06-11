@@ -11,7 +11,7 @@ pkgver_build=294842
 pkgbase=amdgpu-pro-installer
 pkgname={PACKAGES}
 pkgver=${{pkgver_base}}.${{pkgver_build}}
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="http://www.amd.com"
 
@@ -175,4 +175,3 @@ with gzip.open("src/amdgpu-pro-driver/Packages.gz", "r") as f:
 
 	for info in package_list:
 		print(convertPackage(info, names))
-
