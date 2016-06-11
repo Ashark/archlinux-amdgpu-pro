@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+files=`git diff --cached --name-status`
+re="gen-PKGBUILD.py"
+if [[ $files =~ $re ]]
+then
+  echo "Re-generating PKGBUILD..."
+  python gen-PKGBUILD.py > PKGBUILD
+  git add PKGBUILD
+  echo "Re-generating .SRCINFO..."
+  makepkg --printsrcinfo > .SRCINFO
+  git add .SRCINFO
+fi
