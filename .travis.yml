@@ -1,0 +1,20 @@
+sudo: required
+
+arch:
+  packages:
+    - python
+    - python-chardet
+    - python-pip
+    - wget
+
+  script:
+    - sudo pip install python-debian
+    - ./build.sh
+    - 'if [ -n "$(git status --porcelain)" ]; then echo Error: changes found after generate; git status; exit 1; fi'
+    - makepkg --printsrcinfo > .SRCINFO
+    - 'if [ -n "$(git status --porcelain)" ]; then echo Error: changes found after printsrcinfo; git status; exit 1; fi'
+    - makepkg -s
+    - 'if [ -n "$(git status --porcelain)" ]; then echo Error: changes found after build; git status; exit 1; fi'
+
+script:
+  - "curl -s https://raw.githubusercontent.com/mikkeloscar/arch-travis/master/arch-travis.sh | bash"
