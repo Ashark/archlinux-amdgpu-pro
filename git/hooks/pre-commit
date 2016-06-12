@@ -5,7 +5,7 @@ re="gen-PKGBUILD.py"
 if [[ $files =~ $re ]]
 then
   echo "Re-generating PKGBUILD..."
-  python gen-PKGBUILD.py > PKGBUILD
+  ./build.sh
   git add PKGBUILD
   echo "Re-generating .SRCINFO..."
   makepkg --printsrcinfo > .SRCINFO

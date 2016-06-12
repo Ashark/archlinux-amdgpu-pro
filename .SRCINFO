@@ -1,6 +1,6 @@
 pkgbase = amdgpu-pro-installer
 	pkgver = 16.20.3.294842
-	pkgrel = 1
+	pkgrel = 2
 	url = http://www.amd.com
 	arch = x86_64
 	source = https://www2.ati.com/drivers/beta/amdgpu-pro_16.20.3-294842.tar.xz

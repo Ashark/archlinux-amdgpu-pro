@@ -5,6 +5,7 @@ arch:
     - python
     - python-chardet
     - python-pip
+    - wget
 
   script:
     - sudo pip install python-debian
