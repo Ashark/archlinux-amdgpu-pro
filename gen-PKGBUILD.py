@@ -6,15 +6,15 @@ import tarfile
 import subprocess
 import hashlib
 
-pkgver_base = "16.20.3"
-pkgver_build = "294842"
-pkgrel = 2
+pkgver_base = "16.30.3"
+pkgver_build = "306809"
+pkgrel = 1
 
 pkgver = "{0}.{1}".format(pkgver_base, pkgver_build)
 url_ref="http://support.amd.com/en-us/kb-articles/Pages/AMDGPU-PRO-Beta-Driver-for-Vulkan-Release-Notes.aspx"
 dlagents="https::/usr/bin/wget --referer {0} -N %u".format(url_ref)
 
-source_url = "https://www2.ati.com/drivers/beta/amdgpu-pro_{0}-{1}.tar.xz".format(pkgver_base, pkgver_build)
+source_url = "https://www2.ati.com/drivers/linux/amdgpu-pro_{0}-{1}.tar.xz".format(pkgver_base, pkgver_build)
 
 subprocess.run(["/usr/bin/wget", "--referer", url_ref, "-N", source_url])
 source_file = "amdgpu-pro_{0}-{1}.tar.xz".format(pkgver_base, pkgver_build)
