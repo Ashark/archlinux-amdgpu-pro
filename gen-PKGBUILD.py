@@ -8,7 +8,7 @@ import hashlib
 
 pkgver_base = "16.30.3"
 pkgver_build = "306809"
-pkgrel = 1
+pkgrel = 3
 
 pkgver = "{0}.{1}".format(pkgver_base, pkgver_build)
 url_ref="http://support.amd.com/en-us/kb-articles/Pages/AMDGPU-PRO-Beta-Driver-for-Vulkan-Release-Notes.aspx"
@@ -62,6 +62,14 @@ package_footer = """}
 """
 
 special_ops = {
+	"amdgpu-pro-graphics": """
+	provides=('libgl')
+	conflicts=('libgl')
+""",
+	"amdgpu-pro-lib32": """
+	provides=('lib32-libgl')
+	conflicts=('lib32-libgl')
+""",
 	"amdgpu-pro-core": """
 	mv ${pkgdir}/lib ${pkgdir}/usr/
 	mkdir -p ${pkgdir}/etc/ld.so.conf.d/
@@ -124,7 +132,7 @@ def convertVersionSpecifier(name, spec, names):
 	if name == "linux-firmware":
 		return ""
 	if name in names:
-		return ""
+		return "=" + pkgver + "-" + str(pkgrel)
 	if not spec:
 		return ""
 
