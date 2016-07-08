@@ -34,11 +34,6 @@ pkgname = amdgpu-pro-core
 	depends = linux-firmware
 	depends = libdrm-amdgpu-pro-amdgpu1=16.30.3.306809-3
 
-pkgname = amdgpu-pro-dkms
-	pkgdesc = amdgpu-pro driver in DKMS format.
-	arch = any
-	depends = dkms>=1.95
-
 pkgname = amdgpu-pro-graphics
 	pkgdesc = This package install amdgpu-pro graphics components.
 	arch = x86_64

@@ -13,7 +13,7 @@ arch:
     - 'if [ -n "$(git status --porcelain)" ]; then echo Error: changes found after generate; git status; exit 1; fi'
     - makepkg --printsrcinfo > .SRCINFO
     - 'if [ -n "$(git status --porcelain)" ]; then echo Error: changes found after printsrcinfo; git status; exit 1; fi'
-    - makepkg -s
+    - ALL_PACKAGES=true makepkg -s
     - 'if [ -n "$(git status --porcelain)" ]; then echo Error: changes found after build; git status; exit 1; fi'
 
 script:
