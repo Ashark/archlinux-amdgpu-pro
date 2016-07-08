@@ -39,6 +39,7 @@ pkgrel={pkgrel}
 arch=('x86_64')
 url='http://www.amd.com'
 license=('custom:AMD')
+makedepends=('wget')
 
 DLAGENTS='{dlagents}'
 
