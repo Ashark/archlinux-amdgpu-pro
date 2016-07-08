@@ -3,6 +3,7 @@ pkgbase = amdgpu-pro-installer
 	pkgrel = 3
 	url = http://www.amd.com
 	arch = x86_64
+	license = custom:AMD
 	source = https://www2.ati.com/drivers/linux/amdgpu-pro_16.30.3-306809.tar.xz
 	sha256sums = 40fc78dc10823096882bd5840a0c49221bbd977e1eda1a9b79b620d06298c389
 

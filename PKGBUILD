@@ -8,6 +8,7 @@ pkgver=16.30.3.306809
 pkgrel=3
 arch=('x86_64')
 url='http://www.amd.com'
+license=('custom:AMD')
 
 DLAGENTS='https::/usr/bin/wget --referer http://support.amd.com/en-us/kb-articles/Pages/AMDGPU-PRO-Beta-Driver-for-Vulkan-Release-Notes.aspx -N %u'
 

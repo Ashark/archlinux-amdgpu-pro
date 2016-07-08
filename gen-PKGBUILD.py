@@ -38,6 +38,7 @@ pkgver={pkgver}
 pkgrel={pkgrel}
 arch=('x86_64')
 url='http://www.amd.com'
+license=('custom:AMD')
 
 DLAGENTS='{dlagents}'
 
