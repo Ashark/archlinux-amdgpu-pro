@@ -83,6 +83,9 @@ special_ops = {
 	ln -s /usr/lib/amdgpu-pro/modprobe.conf ${pkgdir}/etc/modprobe.d/amdgpu-pro.conf
 	install=amdgpu-pro-core.install
 """,
+	"amdgpu-pro-firmware": """
+	mv ${pkgdir}/lib ${pkgdir}/usr/
+""",
 	"xserver-xorg-video-amdgpu-pro": "\tln -sfn 1.18 ${pkgdir}/usr/lib/x86_64-linux-gnu/amdgpu-pro/xorg",
 }
 
