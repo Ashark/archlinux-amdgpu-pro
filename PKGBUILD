@@ -103,6 +103,9 @@ package_amdgpu-pro-firmware () {
 	cd "${srcdir}"/amdgpu-pro-firmware_16.30.3-306809_amd64
 	ar x "${srcdir}"/amdgpu-pro-driver/./amdgpu-pro-firmware_16.30.3-306809_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	mv ${pkgdir}/lib ${pkgdir}/usr/
+
 }
 
 
