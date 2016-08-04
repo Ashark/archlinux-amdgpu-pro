@@ -30,6 +30,12 @@ package_amdgpu-pro () {
 	cd "${srcdir}"/amdgpu-pro_16.30.3-306809_amd64
 	ar x "${srcdir}"/amdgpu-pro-driver/./amdgpu-pro_16.30.3-306809_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib
+		mv "${pkgdir}"/usr/lib/x86_64-linux-gnu/* "${pkgdir}"/usr/lib
+		rmdir "${pkgdir}"/usr/lib/x86_64-linux-gnu
+	fi
 }
 
 
@@ -43,6 +49,12 @@ package_amdgpu-pro-clinfo () {
 	cd "${srcdir}"/amdgpu-pro-clinfo_16.30.3-306809_amd64
 	ar x "${srcdir}"/amdgpu-pro-driver/./amdgpu-pro-clinfo_16.30.3-306809_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib
+		mv "${pkgdir}"/usr/lib/x86_64-linux-gnu/* "${pkgdir}"/usr/lib
+		rmdir "${pkgdir}"/usr/lib/x86_64-linux-gnu
+	fi
 }
 
 
@@ -56,6 +68,12 @@ package_amdgpu-pro-computing () {
 	cd "${srcdir}"/amdgpu-pro-computing_16.30.3-306809_amd64
 	ar x "${srcdir}"/amdgpu-pro-driver/./amdgpu-pro-computing_16.30.3-306809_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib
+		mv "${pkgdir}"/usr/lib/x86_64-linux-gnu/* "${pkgdir}"/usr/lib
+		rmdir "${pkgdir}"/usr/lib/x86_64-linux-gnu
+	fi
 }
 
 
@@ -70,7 +88,15 @@ package_amdgpu-pro-core () {
 	ar x "${srcdir}"/amdgpu-pro-driver/./amdgpu-pro-core_16.30.3-306809_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
+	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib
+		mv "${pkgdir}"/usr/lib/x86_64-linux-gnu/* "${pkgdir}"/usr/lib
+		rmdir "${pkgdir}"/usr/lib/x86_64-linux-gnu
+	fi
+
 	mv ${pkgdir}/lib ${pkgdir}/usr/
+	sed -i 's/\/usr\/lib\/x86_64-linux-gnu\//\/usr\/lib\//' ${pkgdir}/usr/lib/amdgpu-pro/ld.conf
+	sed -i 's/\/usr\/lib\/i386-linux-gnu\//\/usr\/lib32\//' ${pkgdir}/usr/lib/amdgpu-pro/ld.conf
 	mkdir -p ${pkgdir}/etc/ld.so.conf.d/
 	ln -s /usr/lib/amdgpu-pro/ld.conf ${pkgdir}/etc/ld.so.conf.d/10-amdgpu-pro.conf
 	mkdir -p ${pkgdir}/etc/modprobe.d/
@@ -90,6 +116,12 @@ package_amdgpu-pro-dkms () {
 	cd "${srcdir}"/amdgpu-pro-dkms_16.30.3-306809_all
 	ar x "${srcdir}"/amdgpu-pro-driver/./amdgpu-pro-dkms_16.30.3-306809_all.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib
+		mv "${pkgdir}"/usr/lib/x86_64-linux-gnu/* "${pkgdir}"/usr/lib
+		rmdir "${pkgdir}"/usr/lib/x86_64-linux-gnu
+	fi
 }
 
 
@@ -103,6 +135,12 @@ package_amdgpu-pro-firmware () {
 	cd "${srcdir}"/amdgpu-pro-firmware_16.30.3-306809_amd64
 	ar x "${srcdir}"/amdgpu-pro-driver/./amdgpu-pro-firmware_16.30.3-306809_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib
+		mv "${pkgdir}"/usr/lib/x86_64-linux-gnu/* "${pkgdir}"/usr/lib
+		rmdir "${pkgdir}"/usr/lib/x86_64-linux-gnu
+	fi
 
 	mv ${pkgdir}/lib ${pkgdir}/usr/
 
@@ -119,6 +157,12 @@ package_amdgpu-pro-graphics () {
 	cd "${srcdir}"/amdgpu-pro-graphics_16.30.3-306809_amd64
 	ar x "${srcdir}"/amdgpu-pro-driver/./amdgpu-pro-graphics_16.30.3-306809_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib
+		mv "${pkgdir}"/usr/lib/x86_64-linux-gnu/* "${pkgdir}"/usr/lib
+		rmdir "${pkgdir}"/usr/lib/x86_64-linux-gnu
+	fi
 
 	provides=('libgl')
 	conflicts=('libgl')
@@ -137,6 +181,12 @@ package_lib32-amdgpu-pro-lib32 () {
 	ar x "${srcdir}"/amdgpu-pro-driver/./amdgpu-pro-lib32_16.30.3-306809_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
+	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib32
+		mv "${pkgdir}"/usr/lib/i386-linux-gnu/* "${pkgdir}"/usr/lib32
+		rmdir "${pkgdir}"/usr/lib/i386-linux-gnu
+	fi
+
 	provides=('lib32-libgl')
 	conflicts=('lib32-libgl')
 
@@ -154,6 +204,16 @@ package_lib32-amdgpu-pro-libopencl-dev () {
 	cd "${srcdir}"/amdgpu-pro-libopencl-dev_16.30.3-306809_i386
 	ar x "${srcdir}"/amdgpu-pro-driver/./amdgpu-pro-libopencl-dev_16.30.3-306809_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib32
+		mv "${pkgdir}"/usr/lib/i386-linux-gnu/* "${pkgdir}"/usr/lib32
+		rmdir "${pkgdir}"/usr/lib/i386-linux-gnu
+	fi
+
+	provides=(lib32-libcl)
+	conflicts=(lib32-libcl)
+
 	rm -Rf ${pkgdir}/usr/share/doc ${pkgdir}/usr/include
 }
 
@@ -168,6 +228,16 @@ package_amdgpu-pro-libopencl-dev () {
 	cd "${srcdir}"/amdgpu-pro-libopencl-dev_16.30.3-306809_amd64
 	ar x "${srcdir}"/amdgpu-pro-driver/./amdgpu-pro-libopencl-dev_16.30.3-306809_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib
+		mv "${pkgdir}"/usr/lib/x86_64-linux-gnu/* "${pkgdir}"/usr/lib
+		rmdir "${pkgdir}"/usr/lib/x86_64-linux-gnu
+	fi
+
+	provides=(libcl)
+	conflicts=(libcl)
+
 }
 
 
@@ -181,6 +251,12 @@ package_lib32-amdgpu-pro-libopencl1 () {
 	cd "${srcdir}"/amdgpu-pro-libopencl1_16.30.3-306809_i386
 	ar x "${srcdir}"/amdgpu-pro-driver/./amdgpu-pro-libopencl1_16.30.3-306809_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib32
+		mv "${pkgdir}"/usr/lib/i386-linux-gnu/* "${pkgdir}"/usr/lib32
+		rmdir "${pkgdir}"/usr/lib/i386-linux-gnu
+	fi
 	rm -Rf ${pkgdir}/usr/share/doc ${pkgdir}/usr/include
 }
 
@@ -195,6 +271,12 @@ package_amdgpu-pro-libopencl1 () {
 	cd "${srcdir}"/amdgpu-pro-libopencl1_16.30.3-306809_amd64
 	ar x "${srcdir}"/amdgpu-pro-driver/./amdgpu-pro-libopencl1_16.30.3-306809_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib
+		mv "${pkgdir}"/usr/lib/x86_64-linux-gnu/* "${pkgdir}"/usr/lib
+		rmdir "${pkgdir}"/usr/lib/x86_64-linux-gnu
+	fi
 }
 
 
@@ -208,6 +290,12 @@ package_lib32-amdgpu-pro-opencl-icd () {
 	cd "${srcdir}"/amdgpu-pro-opencl-icd_16.30.3-306809_i386
 	ar x "${srcdir}"/amdgpu-pro-driver/./amdgpu-pro-opencl-icd_16.30.3-306809_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib32
+		mv "${pkgdir}"/usr/lib/i386-linux-gnu/* "${pkgdir}"/usr/lib32
+		rmdir "${pkgdir}"/usr/lib/i386-linux-gnu
+	fi
 	rm -Rf ${pkgdir}/usr/share/doc ${pkgdir}/usr/include
 }
 
@@ -222,6 +310,12 @@ package_amdgpu-pro-opencl-icd () {
 	cd "${srcdir}"/amdgpu-pro-opencl-icd_16.30.3-306809_amd64
 	ar x "${srcdir}"/amdgpu-pro-driver/./amdgpu-pro-opencl-icd_16.30.3-306809_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib
+		mv "${pkgdir}"/usr/lib/x86_64-linux-gnu/* "${pkgdir}"/usr/lib
+		rmdir "${pkgdir}"/usr/lib/x86_64-linux-gnu
+	fi
 }
 
 
@@ -235,6 +329,15 @@ package_amdgpu-pro-vulkan-driver () {
 	cd "${srcdir}"/amdgpu-pro-vulkan-driver_16.30.3-306809_amd64
 	ar x "${srcdir}"/amdgpu-pro-driver/./amdgpu-pro-vulkan-driver_16.30.3-306809_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib
+		mv "${pkgdir}"/usr/lib/x86_64-linux-gnu/* "${pkgdir}"/usr/lib
+		rmdir "${pkgdir}"/usr/lib/x86_64-linux-gnu
+	fi
+
+	sed -i 's/\/usr\/lib\/x86_64-linux-gnu\//\/usr\/lib\//' ${pkgdir}/etc/vulkan/icd.d/amd_icd64.json
+
 }
 
 
@@ -248,6 +351,15 @@ package_lib32-amdgpu-pro-vulkan-driver () {
 	cd "${srcdir}"/amdgpu-pro-vulkan-driver_16.30.3-306809_i386
 	ar x "${srcdir}"/amdgpu-pro-driver/./amdgpu-pro-vulkan-driver_16.30.3-306809_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib32
+		mv "${pkgdir}"/usr/lib/i386-linux-gnu/* "${pkgdir}"/usr/lib32
+		rmdir "${pkgdir}"/usr/lib/i386-linux-gnu
+	fi
+
+	sed -i 's/\/usr\/lib\/i386-linux-gnu\//\/usr\/lib32\//' ${pkgdir}/etc/vulkan/icd.d/amd_icd32.json
+
 	rm -Rf ${pkgdir}/usr/share/doc ${pkgdir}/usr/include
 }
 
@@ -262,6 +374,12 @@ package_libdrm-amdgpu-pro-amdgpu1 () {
 	cd "${srcdir}"/libdrm-amdgpu-pro-amdgpu1_16.30.3-306809_amd64
 	ar x "${srcdir}"/amdgpu-pro-driver/./libdrm-amdgpu-pro-amdgpu1_16.30.3-306809_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib
+		mv "${pkgdir}"/usr/lib/x86_64-linux-gnu/* "${pkgdir}"/usr/lib
+		rmdir "${pkgdir}"/usr/lib/x86_64-linux-gnu
+	fi
 }
 
 
@@ -275,6 +393,12 @@ package_lib32-libdrm-amdgpu-pro-amdgpu1 () {
 	cd "${srcdir}"/libdrm-amdgpu-pro-amdgpu1_16.30.3-306809_i386
 	ar x "${srcdir}"/amdgpu-pro-driver/./libdrm-amdgpu-pro-amdgpu1_16.30.3-306809_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib32
+		mv "${pkgdir}"/usr/lib/i386-linux-gnu/* "${pkgdir}"/usr/lib32
+		rmdir "${pkgdir}"/usr/lib/i386-linux-gnu
+	fi
 	rm -Rf ${pkgdir}/usr/share/doc ${pkgdir}/usr/include
 }
 
@@ -289,6 +413,12 @@ package_libdrm-amdgpu-pro-dev () {
 	cd "${srcdir}"/libdrm-amdgpu-pro-dev_16.30.3-306809_amd64
 	ar x "${srcdir}"/amdgpu-pro-driver/./libdrm-amdgpu-pro-dev_16.30.3-306809_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib
+		mv "${pkgdir}"/usr/lib/x86_64-linux-gnu/* "${pkgdir}"/usr/lib
+		rmdir "${pkgdir}"/usr/lib/x86_64-linux-gnu
+	fi
 }
 
 
@@ -302,6 +432,12 @@ package_lib32-libdrm-amdgpu-pro-dev () {
 	cd "${srcdir}"/libdrm-amdgpu-pro-dev_16.30.3-306809_i386
 	ar x "${srcdir}"/amdgpu-pro-driver/./libdrm-amdgpu-pro-dev_16.30.3-306809_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib32
+		mv "${pkgdir}"/usr/lib/i386-linux-gnu/* "${pkgdir}"/usr/lib32
+		rmdir "${pkgdir}"/usr/lib/i386-linux-gnu
+	fi
 	rm -Rf ${pkgdir}/usr/share/doc ${pkgdir}/usr/include
 }
 
@@ -316,6 +452,12 @@ package_libdrm-amdgpu-pro-tools () {
 	cd "${srcdir}"/libdrm-amdgpu-pro-tools_16.30.3-306809_amd64
 	ar x "${srcdir}"/amdgpu-pro-driver/./libdrm-amdgpu-pro-tools_16.30.3-306809_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib
+		mv "${pkgdir}"/usr/lib/x86_64-linux-gnu/* "${pkgdir}"/usr/lib
+		rmdir "${pkgdir}"/usr/lib/x86_64-linux-gnu
+	fi
 }
 
 
@@ -329,6 +471,12 @@ package_libdrm2-amdgpu-pro () {
 	cd "${srcdir}"/libdrm2-amdgpu-pro_16.30.3-306809_amd64
 	ar x "${srcdir}"/amdgpu-pro-driver/./libdrm2-amdgpu-pro_16.30.3-306809_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib
+		mv "${pkgdir}"/usr/lib/x86_64-linux-gnu/* "${pkgdir}"/usr/lib
+		rmdir "${pkgdir}"/usr/lib/x86_64-linux-gnu
+	fi
 }
 
 
@@ -342,6 +490,12 @@ package_lib32-libdrm2-amdgpu-pro () {
 	cd "${srcdir}"/libdrm2-amdgpu-pro_16.30.3-306809_i386
 	ar x "${srcdir}"/amdgpu-pro-driver/./libdrm2-amdgpu-pro_16.30.3-306809_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib32
+		mv "${pkgdir}"/usr/lib/i386-linux-gnu/* "${pkgdir}"/usr/lib32
+		rmdir "${pkgdir}"/usr/lib/i386-linux-gnu
+	fi
 	rm -Rf ${pkgdir}/usr/share/doc ${pkgdir}/usr/include
 }
 
@@ -356,6 +510,16 @@ package_libegl1-amdgpu-pro () {
 	cd "${srcdir}"/libegl1-amdgpu-pro_16.30.3-306809_amd64
 	ar x "${srcdir}"/amdgpu-pro-driver/./libegl1-amdgpu-pro_16.30.3-306809_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib
+		mv "${pkgdir}"/usr/lib/x86_64-linux-gnu/* "${pkgdir}"/usr/lib
+		rmdir "${pkgdir}"/usr/lib/x86_64-linux-gnu
+	fi
+
+	mv ${pkgdir}/usr/lib/amdgpu-pro/libEGL* ${pkgdir}/usr/lib
+	rm -r ${pkgdir}/usr/lib/amdgpu-pro
+
 }
 
 
@@ -369,6 +533,16 @@ package_lib32-libegl1-amdgpu-pro () {
 	cd "${srcdir}"/libegl1-amdgpu-pro_16.30.3-306809_i386
 	ar x "${srcdir}"/amdgpu-pro-driver/./libegl1-amdgpu-pro_16.30.3-306809_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib32
+		mv "${pkgdir}"/usr/lib/i386-linux-gnu/* "${pkgdir}"/usr/lib32
+		rmdir "${pkgdir}"/usr/lib/i386-linux-gnu
+	fi
+
+	mv ${pkgdir}/usr/lib32/amdgpu-pro/libEGL* ${pkgdir}/usr/lib32
+	rm -r ${pkgdir}/usr/lib32/amdgpu-pro
+
 	rm -Rf ${pkgdir}/usr/share/doc ${pkgdir}/usr/include
 }
 
@@ -383,6 +557,16 @@ package_libegl1-amdgpu-pro-dev () {
 	cd "${srcdir}"/libegl1-amdgpu-pro-dev_16.30.3-306809_amd64
 	ar x "${srcdir}"/amdgpu-pro-driver/./libegl1-amdgpu-pro-dev_16.30.3-306809_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib
+		mv "${pkgdir}"/usr/lib/x86_64-linux-gnu/* "${pkgdir}"/usr/lib
+		rmdir "${pkgdir}"/usr/lib/x86_64-linux-gnu
+	fi
+
+	mv ${pkgdir}/usr/lib/amdgpu-pro/libEGL* ${pkgdir}/usr/lib
+	rm -r ${pkgdir}/usr/lib/amdgpu-pro
+
 }
 
 
@@ -396,6 +580,16 @@ package_lib32-libegl1-amdgpu-pro-dev () {
 	cd "${srcdir}"/libegl1-amdgpu-pro-dev_16.30.3-306809_i386
 	ar x "${srcdir}"/amdgpu-pro-driver/./libegl1-amdgpu-pro-dev_16.30.3-306809_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib32
+		mv "${pkgdir}"/usr/lib/i386-linux-gnu/* "${pkgdir}"/usr/lib32
+		rmdir "${pkgdir}"/usr/lib/i386-linux-gnu
+	fi
+
+	mv ${pkgdir}/usr/lib32/amdgpu-pro/libEGL* ${pkgdir}/usr/lib32
+	rm -r ${pkgdir}/usr/lib32/amdgpu-pro
+
 	rm -Rf ${pkgdir}/usr/share/doc ${pkgdir}/usr/include
 }
 
@@ -410,6 +604,12 @@ package_lib32-libgbm-amdgpu-pro-dev () {
 	cd "${srcdir}"/libgbm-amdgpu-pro-dev_16.30.3-306809_i386
 	ar x "${srcdir}"/amdgpu-pro-driver/./libgbm-amdgpu-pro-dev_16.30.3-306809_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib32
+		mv "${pkgdir}"/usr/lib/i386-linux-gnu/* "${pkgdir}"/usr/lib32
+		rmdir "${pkgdir}"/usr/lib/i386-linux-gnu
+	fi
 	rm -Rf ${pkgdir}/usr/share/doc ${pkgdir}/usr/include
 }
 
@@ -424,6 +624,12 @@ package_libgbm-amdgpu-pro-dev () {
 	cd "${srcdir}"/libgbm-amdgpu-pro-dev_16.30.3-306809_amd64
 	ar x "${srcdir}"/amdgpu-pro-driver/./libgbm-amdgpu-pro-dev_16.30.3-306809_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib
+		mv "${pkgdir}"/usr/lib/x86_64-linux-gnu/* "${pkgdir}"/usr/lib
+		rmdir "${pkgdir}"/usr/lib/x86_64-linux-gnu
+	fi
 }
 
 
@@ -437,6 +643,12 @@ package_libgbm1-amdgpu-pro () {
 	cd "${srcdir}"/libgbm1-amdgpu-pro_16.30.3-306809_amd64
 	ar x "${srcdir}"/amdgpu-pro-driver/./libgbm1-amdgpu-pro_16.30.3-306809_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib
+		mv "${pkgdir}"/usr/lib/x86_64-linux-gnu/* "${pkgdir}"/usr/lib
+		rmdir "${pkgdir}"/usr/lib/x86_64-linux-gnu
+	fi
 }
 
 
@@ -450,6 +662,12 @@ package_lib32-libgbm1-amdgpu-pro () {
 	cd "${srcdir}"/libgbm1-amdgpu-pro_16.30.3-306809_i386
 	ar x "${srcdir}"/amdgpu-pro-driver/./libgbm1-amdgpu-pro_16.30.3-306809_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib32
+		mv "${pkgdir}"/usr/lib/i386-linux-gnu/* "${pkgdir}"/usr/lib32
+		rmdir "${pkgdir}"/usr/lib/i386-linux-gnu
+	fi
 	rm -Rf ${pkgdir}/usr/share/doc ${pkgdir}/usr/include
 }
 
@@ -464,6 +682,16 @@ package_lib32-libgl1-amdgpu-pro-dev () {
 	cd "${srcdir}"/libgl1-amdgpu-pro-dev_16.30.3-306809_i386
 	ar x "${srcdir}"/amdgpu-pro-driver/./libgl1-amdgpu-pro-dev_16.30.3-306809_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib32
+		mv "${pkgdir}"/usr/lib/i386-linux-gnu/* "${pkgdir}"/usr/lib32
+		rmdir "${pkgdir}"/usr/lib/i386-linux-gnu
+	fi
+
+	mv ${pkgdir}/usr/lib32/amdgpu-pro/libGL* ${pkgdir}/usr/lib32
+	rm -r ${pkgdir}/usr/lib32/amdgpu-pro
+
 	rm -Rf ${pkgdir}/usr/share/doc ${pkgdir}/usr/include
 }
 
@@ -478,6 +706,16 @@ package_libgl1-amdgpu-pro-dev () {
 	cd "${srcdir}"/libgl1-amdgpu-pro-dev_16.30.3-306809_amd64
 	ar x "${srcdir}"/amdgpu-pro-driver/./libgl1-amdgpu-pro-dev_16.30.3-306809_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib
+		mv "${pkgdir}"/usr/lib/x86_64-linux-gnu/* "${pkgdir}"/usr/lib
+		rmdir "${pkgdir}"/usr/lib/x86_64-linux-gnu
+	fi
+
+	mv ${pkgdir}/usr/lib/amdgpu-pro/libGL* ${pkgdir}/usr/lib
+	rm -r ${pkgdir}/usr/lib/amdgpu-pro
+
 }
 
 
@@ -491,6 +729,12 @@ package_lib32-libgl1-amdgpu-pro-dri () {
 	cd "${srcdir}"/libgl1-amdgpu-pro-dri_16.30.3-306809_i386
 	ar x "${srcdir}"/amdgpu-pro-driver/./libgl1-amdgpu-pro-dri_16.30.3-306809_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib32
+		mv "${pkgdir}"/usr/lib/i386-linux-gnu/* "${pkgdir}"/usr/lib32
+		rmdir "${pkgdir}"/usr/lib/i386-linux-gnu
+	fi
 	rm -Rf ${pkgdir}/usr/share/doc ${pkgdir}/usr/include
 }
 
@@ -505,6 +749,12 @@ package_libgl1-amdgpu-pro-dri () {
 	cd "${srcdir}"/libgl1-amdgpu-pro-dri_16.30.3-306809_amd64
 	ar x "${srcdir}"/amdgpu-pro-driver/./libgl1-amdgpu-pro-dri_16.30.3-306809_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib
+		mv "${pkgdir}"/usr/lib/x86_64-linux-gnu/* "${pkgdir}"/usr/lib
+		rmdir "${pkgdir}"/usr/lib/x86_64-linux-gnu
+	fi
 }
 
 
@@ -518,6 +768,16 @@ package_lib32-libgl1-amdgpu-pro-glx () {
 	cd "${srcdir}"/libgl1-amdgpu-pro-glx_16.30.3-306809_i386
 	ar x "${srcdir}"/amdgpu-pro-driver/./libgl1-amdgpu-pro-glx_16.30.3-306809_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib32
+		mv "${pkgdir}"/usr/lib/i386-linux-gnu/* "${pkgdir}"/usr/lib32
+		rmdir "${pkgdir}"/usr/lib/i386-linux-gnu
+	fi
+
+	mv ${pkgdir}/usr/lib32/amdgpu-pro/libGL* ${pkgdir}/usr/lib32
+	rm -r ${pkgdir}/usr/lib32/amdgpu-pro
+
 	rm -Rf ${pkgdir}/usr/share/doc ${pkgdir}/usr/include
 }
 
@@ -532,6 +792,16 @@ package_libgl1-amdgpu-pro-glx () {
 	cd "${srcdir}"/libgl1-amdgpu-pro-glx_16.30.3-306809_amd64
 	ar x "${srcdir}"/amdgpu-pro-driver/./libgl1-amdgpu-pro-glx_16.30.3-306809_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib
+		mv "${pkgdir}"/usr/lib/x86_64-linux-gnu/* "${pkgdir}"/usr/lib
+		rmdir "${pkgdir}"/usr/lib/x86_64-linux-gnu
+	fi
+
+	mv ${pkgdir}/usr/lib/amdgpu-pro/libGL* ${pkgdir}/usr/lib
+	rm -r ${pkgdir}/usr/lib/amdgpu-pro
+
 }
 
 
@@ -545,6 +815,12 @@ package_libgles2-amdgpu-pro () {
 	cd "${srcdir}"/libgles2-amdgpu-pro_16.30.3-306809_amd64
 	ar x "${srcdir}"/amdgpu-pro-driver/./libgles2-amdgpu-pro_16.30.3-306809_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib
+		mv "${pkgdir}"/usr/lib/x86_64-linux-gnu/* "${pkgdir}"/usr/lib
+		rmdir "${pkgdir}"/usr/lib/x86_64-linux-gnu
+	fi
 }
 
 
@@ -558,6 +834,12 @@ package_lib32-libgles2-amdgpu-pro () {
 	cd "${srcdir}"/libgles2-amdgpu-pro_16.30.3-306809_i386
 	ar x "${srcdir}"/amdgpu-pro-driver/./libgles2-amdgpu-pro_16.30.3-306809_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib32
+		mv "${pkgdir}"/usr/lib/i386-linux-gnu/* "${pkgdir}"/usr/lib32
+		rmdir "${pkgdir}"/usr/lib/i386-linux-gnu
+	fi
 	rm -Rf ${pkgdir}/usr/share/doc ${pkgdir}/usr/include
 }
 
@@ -572,6 +854,16 @@ package_lib32-libgles2-amdgpu-pro-dev () {
 	cd "${srcdir}"/libgles2-amdgpu-pro-dev_16.30.3-306809_i386
 	ar x "${srcdir}"/amdgpu-pro-driver/./libgles2-amdgpu-pro-dev_16.30.3-306809_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib32
+		mv "${pkgdir}"/usr/lib/i386-linux-gnu/* "${pkgdir}"/usr/lib32
+		rmdir "${pkgdir}"/usr/lib/i386-linux-gnu
+	fi
+
+	mv ${pkgdir}/usr/lib32/amdgpu-pro/libGLES* ${pkgdir}/usr/lib32
+	rm -r ${pkgdir}/usr/lib32/amdgpu-pro
+
 	rm -Rf ${pkgdir}/usr/share/doc ${pkgdir}/usr/include
 }
 
@@ -586,6 +878,16 @@ package_libgles2-amdgpu-pro-dev () {
 	cd "${srcdir}"/libgles2-amdgpu-pro-dev_16.30.3-306809_amd64
 	ar x "${srcdir}"/amdgpu-pro-driver/./libgles2-amdgpu-pro-dev_16.30.3-306809_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib
+		mv "${pkgdir}"/usr/lib/x86_64-linux-gnu/* "${pkgdir}"/usr/lib
+		rmdir "${pkgdir}"/usr/lib/x86_64-linux-gnu
+	fi
+
+	mv ${pkgdir}/usr/lib/amdgpu-pro/libGLES* ${pkgdir}/usr/lib
+	rm -r ${pkgdir}/usr/lib/amdgpu-pro
+
 }
 
 
@@ -599,6 +901,12 @@ package_libvdpau-amdgpu-pro () {
 	cd "${srcdir}"/libvdpau-amdgpu-pro_16.30.3-306809_amd64
 	ar x "${srcdir}"/amdgpu-pro-driver/./libvdpau-amdgpu-pro_16.30.3-306809_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib
+		mv "${pkgdir}"/usr/lib/x86_64-linux-gnu/* "${pkgdir}"/usr/lib
+		rmdir "${pkgdir}"/usr/lib/x86_64-linux-gnu
+	fi
 }
 
 
@@ -612,6 +920,12 @@ package_lib32-libvdpau-amdgpu-pro () {
 	cd "${srcdir}"/libvdpau-amdgpu-pro_16.30.3-306809_i386
 	ar x "${srcdir}"/amdgpu-pro-driver/./libvdpau-amdgpu-pro_16.30.3-306809_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
+
+	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib32
+		mv "${pkgdir}"/usr/lib/i386-linux-gnu/* "${pkgdir}"/usr/lib32
+		rmdir "${pkgdir}"/usr/lib/i386-linux-gnu
+	fi
 	rm -Rf ${pkgdir}/usr/share/doc ${pkgdir}/usr/include
 }
 
@@ -626,6 +940,18 @@ package_xserver-xorg-video-amdgpu-pro () {
 	cd "${srcdir}"/xserver-xorg-video-amdgpu-pro_16.30.3-306809_amd64
 	ar x "${srcdir}"/amdgpu-pro-driver/./xserver-xorg-video-amdgpu-pro_16.30.3-306809_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
-	ln -sfn 1.18 ${pkgdir}/usr/lib/x86_64-linux-gnu/amdgpu-pro/xorg
+
+	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
+		mkdir -p "${pkgdir}"/usr/lib
+		mv "${pkgdir}"/usr/lib/x86_64-linux-gnu/* "${pkgdir}"/usr/lib
+		rmdir "${pkgdir}"/usr/lib/x86_64-linux-gnu
+	fi
+
+	mkdir -p ${pkgdir}/usr/lib/x86_64-linux-gnu
+	# This is needed because libglx.so has a hardcoded DRI_DRIVER_PATH
+	ln -s /usr/lib/dri ${pkgdir}/usr/lib/x86_64-linux-gnu/dri
+	mv ${pkgdir}/usr/lib/amdgpu-pro/1.18/ ${pkgdir}/usr/lib/xorg
+	rm -r ${pkgdir}/usr/lib/amdgpu-pro
+
 }
 

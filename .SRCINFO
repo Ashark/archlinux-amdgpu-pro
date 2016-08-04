@@ -65,11 +65,15 @@ pkgname = lib32-amdgpu-pro-libopencl-dev
 	pkgdesc = AMD OpenCL ICD Loader library
 	arch = x86_64
 	depends = lib32-amdgpu-pro-libopencl1=16.30.3.306809-4
+	provides = lib32-libcl
+	conflicts = lib32-libcl
 
 pkgname = amdgpu-pro-libopencl-dev
 	pkgdesc = AMD OpenCL ICD Loader library
 	arch = x86_64
 	depends = amdgpu-pro-libopencl1=16.30.3.306809-4
+	provides = libcl
+	conflicts = libcl
 
 pkgname = lib32-amdgpu-pro-libopencl1
 	pkgdesc = AMD OpenCL ICD Loader library
