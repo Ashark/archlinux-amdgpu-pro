@@ -8,7 +8,7 @@ import hashlib
 
 pkgver_base = "16.30.3"
 pkgver_build = "306809"
-pkgrel = 4
+pkgrel = 5
 
 pkgver = "{0}.{1}".format(pkgver_base, pkgver_build)
 url_ref="http://support.amd.com/en-us/kb-articles/Pages/AMDGPU-PRO-Beta-Driver-for-Vulkan-Release-Notes.aspx"
