@@ -5,6 +5,7 @@ import lzma
 import tarfile
 import subprocess
 import hashlib
+import glob
 
 pkgver_base = "16.30.3"
 pkgver_build = "315407"
@@ -19,14 +20,24 @@ source_url = "https://www2.ati.com/drivers/linux/amdgpu-pro_{0}-{1}.tar.xz".form
 subprocess.run(["/usr/bin/wget", "--referer", url_ref, "-N", source_url])
 source_file = "amdgpu-pro_{0}-{1}.tar.xz".format(pkgver_base, pkgver_build)
 
-block = 64 * 1024
-hash = hashlib.sha256()
-with open(source_file, 'rb') as f:
-	buf = f.read(block)
-	while len(buf) > 0:
-		hash.update(buf)
-		buf = f.read(block)
-source_digest = hash.hexdigest()
+def hashFile(file):
+    block = 64 * 1024
+    hash = hashlib.sha256()
+    with open(file, 'rb') as f:
+	    buf = f.read(block)
+	    while len(buf) > 0:
+		    hash.update(buf)
+		    buf = f.read(block)
+    return hash.hexdigest()
+
+sources = [ source_url ]
+sha5sums = [ hashFile(source_file) ]
+
+patches = sorted(glob.glob("*.patch"))
+
+for patch in patches:
+    sources.append(patch)
+    sha5sums.append(hashFile(patch))
 
 header_tpl = """# Author: Janusz Lewandowski <lew21@xtreeme.org>
 # Maintainer: David McFarland <corngood@gmail.com>
@@ -46,8 +57,8 @@ makedepends=('wget')
 
 DLAGENTS='{dlagents}'
 
-source=('{source_url}')
-sha256sums=('{source_digest}')
+source=({source})
+sha256sums=({sha5sums})
 """
 
 package_header_tpl = """
@@ -101,13 +112,17 @@ special_ops = {
 	ln -s /usr/lib/amdgpu-pro/modprobe.conf ${pkgdir}/etc/modprobe.d/amdgpu-pro.conf
 	install=amdgpu-pro-core.install
 """,
+	"amdgpu-pro-dkms":
+	    "\t(cd ${{pkgdir}}/usr/src/amdgpu-pro-{0}-{1};\n".format(pkgver_base, pkgver_build) +
+	    "\t\tsed -i 's/\/extra/\/extramodules/' dkms.conf\n" +
+	    ";\n".join(["\t\tpatch -p1 -i \"${{srcdir}}/{0}\"".format(patch) for patch in patches]) +
+	    ")\n",
 	"amdgpu-pro-firmware": """
 	mv ${pkgdir}/lib ${pkgdir}/usr/
 	mv ${pkgdir}/usr/lib/firmware ${pkgdir}/usr/lib/firmware.tmp
 	mkdir -p ${pkgdir}/usr/lib/firmware
 	mv ${pkgdir}/usr/lib/firmware.tmp ${pkgdir}/usr/lib/firmware/updates
 """,
-
 	"xserver-xorg-video-amdgpu-pro": """
 	mkdir -p ${pkgdir}/usr/lib/x86_64-linux-gnu
 	# This is needed because libglx.so has a hardcoded DRI_DRIVER_PATH
@@ -216,8 +231,6 @@ arch_map = {
 }
 
 optional_packages = frozenset([
-	"amdgpu-pro-firmware",
-	"amdgpu-pro-dkms"
 ])
 
 disabled_packages = frozenset([
@@ -320,7 +333,7 @@ def writePackages(f):
 	print(header_tpl.format(package_names="(" + " ".join(package_names) + ")",
 				optional_names="(" + " ".join(optional_names) + ")",
 				pkgver=pkgver, pkgrel=pkgrel,
-				dlagents=dlagents, source_url=source_url, source_digest=source_digest))
+				dlagents=dlagents, source="\n\t".join(sources), sha5sums="\n\t".join(sha5sums)))
 
 	f.seek(0)
 

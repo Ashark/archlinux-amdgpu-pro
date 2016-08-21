@@ -6,7 +6,23 @@ pkgbase = amdgpu-pro-installer
 	license = custom:AMD
 	makedepends = wget
 	source = https://www2.ati.com/drivers/linux/amdgpu-pro_16.30.3-315407.tar.xz
+	source = 0001-add-OS-detection-for-arch.patch
+	source = 0002-update-kcl_ttm_bo_reserve-for-linux-4.7.patch
+	source = 0003-add-kcl_drm_gem_object_lookup.patch
+	source = 0004-paging-changes-for-linux-4.6.patch
+	source = 0005-LRU-stuff-isn-t-available-until-4.7.x.patch
+	source = 0006-Change-name-of-vblank_disable_allowed-to-vblank_disa.patch
+	source = 0007-Remove-connector-parameter-from-__drm_atomic_helper_.patch
+	source = 0008-fix-apparent-typo-in-bandwidth_calcs-causing-array-e.patch
 	sha256sums = 97d6fb64617cf2cefe780e5fb83b29d8ee4e3e7886b71fe3d92b0113847b2354
+	sha256sums = ae5fed04cd626aadff6d4c7c59657f52a8dd6be3df4a9686702e74aa8c72d1de
+	sha256sums = df36d1d9f470094432b765016b558624fa9b28355c82a722f7bd4facdf912ce2
+	sha256sums = 4afabc203dc52a8ad15f1d4dc62887d1a11472f11c1aa9f9adb8affc183f297b
+	sha256sums = 0a0657826270a963be76f9e3a882432df4f6ac0628dd0966289cc5c064cadeb6
+	sha256sums = fe0075575bae0a7f76daa0686ab23464b867ef8ed0b4d39cec4bd566ec39f99c
+	sha256sums = a0e94234555f5254df096a93e050edbc341603d0b1d527f7b0c3179e111b7be1
+	sha256sums = 2e291935e35ecdc9f7c87d288db9d73a27f4f5cc3b08f95b8b39fef3934c6735
+	sha256sums = 50c56c4e2ed55d66e5d5e5689b2f146de63dbb3edc2bafabf5ca98e8ae58e028
 
 pkgname = amdgpu-pro
 	pkgdesc = This package install all amdgpu-pro components.
@@ -33,6 +49,16 @@ pkgname = amdgpu-pro-core
 	arch = x86_64
 	depends = linux-firmware
 	depends = libdrm-amdgpu-pro-amdgpu1=16.30.3.315407-1
+
+pkgname = amdgpu-pro-dkms
+	pkgdesc = amdgpu-pro driver in DKMS format.
+	arch = any
+	depends = dkms>=1.95
+
+pkgname = amdgpu-pro-firmware
+	pkgdesc = Firmware for amdgpu-pro cards.
+	arch = x86_64
+	depends = 
 
 pkgname = amdgpu-pro-graphics
 	pkgdesc = This package install amdgpu-pro graphics components.
