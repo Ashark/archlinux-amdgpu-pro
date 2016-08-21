@@ -143,6 +143,9 @@ package_amdgpu-pro-firmware () {
 	fi
 
 	mv ${pkgdir}/lib ${pkgdir}/usr/
+	mv ${pkgdir}/usr/lib/firmware ${pkgdir}/usr/lib/firmware.tmp
+	mkdir -p ${pkgdir}/usr/lib/firmware
+	mv ${pkgdir}/usr/lib/firmware.tmp ${pkgdir}/usr/lib/firmware/updates
 
 }
 
