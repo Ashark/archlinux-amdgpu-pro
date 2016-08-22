@@ -8,7 +8,7 @@ if [ "$ALL_PACKAGES" = "true" ]; then
 	pkgname+=()
 fi
 pkgver=16.30.3.315407
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url='http://www.amd.com'
 license=('custom:AMD')
@@ -42,7 +42,7 @@ sha256sums=(97d6fb64617cf2cefe780e5fb83b29d8ee4e3e7886b71fe3d92b0113847b2354
 
 package_amdgpu-pro () {
 	pkgdesc="This package install all amdgpu-pro components."
-	depends=('amdgpu-pro-graphics=16.30.3.315407-1' 'amdgpu-pro-computing=16.30.3.315407-1')
+	depends=('amdgpu-pro-graphics=16.30.3.315407-2' 'amdgpu-pro-computing=16.30.3.315407-2')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/amdgpu-pro_16.30.3-315407_amd64
@@ -61,7 +61,7 @@ package_amdgpu-pro () {
 
 package_amdgpu-pro-clinfo () {
 	pkgdesc="AMD OpenCL info utility"
-	depends=('amdgpu-pro-libopencl1=16.30.3.315407-1')
+	depends=('amdgpu-pro-libopencl1=16.30.3.315407-2')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/amdgpu-pro-clinfo_16.30.3-315407_amd64
@@ -80,7 +80,7 @@ package_amdgpu-pro-clinfo () {
 
 package_amdgpu-pro-computing () {
 	pkgdesc="This package install amdgpu-pro OpenCL components."
-	depends=('amdgpu-pro-core=16.30.3.315407-1' 'amdgpu-pro-clinfo=16.30.3.315407-1' 'amdgpu-pro-opencl-icd=16.30.3.315407-1' 'amdgpu-pro-libopencl-dev=16.30.3.315407-1')
+	depends=('amdgpu-pro-core=16.30.3.315407-2' 'amdgpu-pro-clinfo=16.30.3.315407-2' 'amdgpu-pro-opencl-icd=16.30.3.315407-2' 'amdgpu-pro-libopencl-dev=16.30.3.315407-2')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/amdgpu-pro-computing_16.30.3-315407_amd64
@@ -99,7 +99,7 @@ package_amdgpu-pro-computing () {
 
 package_amdgpu-pro-core () {
 	pkgdesc="This package switchs the GPU stack to amdgpu-pro with basic components."
-	depends=('linux-firmware' 'libdrm-amdgpu-pro-amdgpu1=16.30.3.315407-1')
+	depends=('linux-firmware' 'libdrm-amdgpu-pro-amdgpu1=16.30.3.315407-2')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/amdgpu-pro-core_16.30.3-315407_amd64
@@ -185,7 +185,7 @@ package_amdgpu-pro-firmware () {
 
 package_amdgpu-pro-graphics () {
 	pkgdesc="This package install amdgpu-pro graphics components."
-	depends=('amdgpu-pro-core=16.30.3.315407-1' 'libgles2-amdgpu-pro=16.30.3.315407-1' 'libgl1-amdgpu-pro-dev=16.30.3.315407-1' 'libgl1-amdgpu-pro-dri=16.30.3.315407-1' 'xserver-xorg-video-amdgpu-pro=16.30.3.315407-1' 'amdgpu-pro-vulkan-driver=16.30.3.315407-1' 'libvdpau-amdgpu-pro=16.30.3.315407-1')
+	depends=('amdgpu-pro-core=16.30.3.315407-2' 'libgles2-amdgpu-pro=16.30.3.315407-2' 'libgl1-amdgpu-pro-dev=16.30.3.315407-2' 'libgl1-amdgpu-pro-dri=16.30.3.315407-2' 'xserver-xorg-video-amdgpu-pro=16.30.3.315407-2' 'amdgpu-pro-vulkan-driver=16.30.3.315407-2' 'libvdpau-amdgpu-pro=16.30.3.315407-2')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/amdgpu-pro-graphics_16.30.3-315407_amd64
@@ -208,7 +208,7 @@ package_amdgpu-pro-graphics () {
 
 package_lib32-amdgpu-pro-lib32 () {
 	pkgdesc="This package contains x86 libs for x86_64 machine usage."
-	depends=('lib32-libgles2-amdgpu-pro=16.30.3.315407-1' 'lib32-libgl1-amdgpu-pro-dev=16.30.3.315407-1' 'lib32-libgl1-amdgpu-pro-dri=16.30.3.315407-1' 'lib32-libgbm1-amdgpu-pro=16.30.3.315407-1' 'lib32-amdgpu-pro-opencl-icd=16.30.3.315407-1' 'lib32-amdgpu-pro-libopencl-dev=16.30.3.315407-1' 'lib32-amdgpu-pro-vulkan-driver=16.30.3.315407-1' 'lib32-libvdpau-amdgpu-pro=16.30.3.315407-1')
+	depends=('lib32-libgles2-amdgpu-pro=16.30.3.315407-2' 'lib32-libgl1-amdgpu-pro-dev=16.30.3.315407-2' 'lib32-libgl1-amdgpu-pro-dri=16.30.3.315407-2' 'lib32-libgbm1-amdgpu-pro=16.30.3.315407-2' 'lib32-amdgpu-pro-opencl-icd=16.30.3.315407-2' 'lib32-amdgpu-pro-libopencl-dev=16.30.3.315407-2' 'lib32-amdgpu-pro-vulkan-driver=16.30.3.315407-2' 'lib32-libvdpau-amdgpu-pro=16.30.3.315407-2')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/amdgpu-pro-lib32_16.30.3-315407_i386
@@ -232,7 +232,7 @@ package_lib32-amdgpu-pro-lib32 () {
 
 package_lib32-amdgpu-pro-libopencl-dev () {
 	pkgdesc="AMD OpenCL ICD Loader library"
-	depends=('lib32-amdgpu-pro-libopencl1=16.30.3.315407-1')
+	depends=('lib32-amdgpu-pro-libopencl1=16.30.3.315407-2')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/amdgpu-pro-libopencl-dev_16.30.3-315407_i386
@@ -256,7 +256,7 @@ package_lib32-amdgpu-pro-libopencl-dev () {
 
 package_amdgpu-pro-libopencl-dev () {
 	pkgdesc="AMD OpenCL ICD Loader library"
-	depends=('amdgpu-pro-libopencl1=16.30.3.315407-1')
+	depends=('amdgpu-pro-libopencl1=16.30.3.315407-2')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/amdgpu-pro-libopencl-dev_16.30.3-315407_amd64
@@ -357,7 +357,7 @@ package_lib32-amdgpu-pro-opencl-icd () {
 
 package_amdgpu-pro-vulkan-driver () {
 	pkgdesc="AMDGPU Pro Vulkan driver"
-	depends=('libdrm-amdgpu-pro-amdgpu1=16.30.3.315407-1')
+	depends=('libdrm-amdgpu-pro-amdgpu1=16.30.3.315407-2')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/amdgpu-pro-vulkan-driver_16.30.3-315407_amd64
@@ -379,7 +379,7 @@ package_amdgpu-pro-vulkan-driver () {
 
 package_lib32-amdgpu-pro-vulkan-driver () {
 	pkgdesc="AMDGPU Pro Vulkan driver"
-	depends=('lib32-libdrm-amdgpu-pro-amdgpu1=16.30.3.315407-1')
+	depends=('lib32-libdrm-amdgpu-pro-amdgpu1=16.30.3.315407-2')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/amdgpu-pro-vulkan-driver_16.30.3-315407_i386
@@ -402,7 +402,7 @@ package_lib32-amdgpu-pro-vulkan-driver () {
 
 package_libdrm-amdgpu-pro-amdgpu1 () {
 	pkgdesc="Userspace interface to amdgpu-specific kernel DRM services -- runtime"
-	depends=('libdrm2-amdgpu-pro=16.30.3.315407-1')
+	depends=('libdrm2-amdgpu-pro=16.30.3.315407-2')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/libdrm-amdgpu-pro-amdgpu1_16.30.3-315407_amd64
@@ -421,7 +421,7 @@ package_libdrm-amdgpu-pro-amdgpu1 () {
 
 package_lib32-libdrm-amdgpu-pro-amdgpu1 () {
 	pkgdesc="Userspace interface to amdgpu-specific kernel DRM services -- runtime"
-	depends=('lib32-libdrm2-amdgpu-pro=16.30.3.315407-1')
+	depends=('lib32-libdrm2-amdgpu-pro=16.30.3.315407-2')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/libdrm-amdgpu-pro-amdgpu1_16.30.3-315407_i386
@@ -441,7 +441,7 @@ package_lib32-libdrm-amdgpu-pro-amdgpu1 () {
 
 package_lib32-libdrm-amdgpu-pro-dev () {
 	pkgdesc="Userspace interface to kernel DRM services -- development files"
-	depends=('lib32-libdrm2-amdgpu-pro=16.30.3.315407-1' 'lib32-libdrm-amdgpu-pro-amdgpu1=16.30.3.315407-1')
+	depends=('lib32-libdrm2-amdgpu-pro=16.30.3.315407-2' 'lib32-libdrm-amdgpu-pro-amdgpu1=16.30.3.315407-2')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/libdrm-amdgpu-pro-dev_16.30.3-315407_i386
@@ -461,7 +461,7 @@ package_lib32-libdrm-amdgpu-pro-dev () {
 
 package_libdrm-amdgpu-pro-dev () {
 	pkgdesc="Userspace interface to kernel DRM services -- development files"
-	depends=('libdrm2-amdgpu-pro=16.30.3.315407-1' 'libdrm-amdgpu-pro-amdgpu1=16.30.3.315407-1')
+	depends=('libdrm2-amdgpu-pro=16.30.3.315407-2' 'libdrm-amdgpu-pro-amdgpu1=16.30.3.315407-2')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/libdrm-amdgpu-pro-dev_16.30.3-315407_amd64
@@ -480,7 +480,7 @@ package_libdrm-amdgpu-pro-dev () {
 
 package_libdrm-amdgpu-pro-tools () {
 	pkgdesc="testing tools for libdrm-amdgpu-pro"
-	depends=('libdrm-amdgpu-pro-amdgpu1=16.30.3.315407-1' 'libdrm2-amdgpu-pro=16.30.3.315407-1')
+	depends=('libdrm-amdgpu-pro-amdgpu1=16.30.3.315407-2' 'libdrm2-amdgpu-pro=16.30.3.315407-2')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/libdrm-amdgpu-pro-tools_16.30.3-315407_amd64
@@ -585,7 +585,7 @@ package_lib32-libegl1-amdgpu-pro () {
 
 package_lib32-libegl1-amdgpu-pro-dev () {
 	pkgdesc="implementation of the EGL API -- development files"
-	depends=('lib32-libegl1-amdgpu-pro=16.30.3.315407-1')
+	depends=('lib32-libegl1-amdgpu-pro=16.30.3.315407-2')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/libegl1-amdgpu-pro-dev_16.30.3-315407_i386
@@ -609,7 +609,7 @@ package_lib32-libegl1-amdgpu-pro-dev () {
 
 package_libegl1-amdgpu-pro-dev () {
 	pkgdesc="implementation of the EGL API -- development files"
-	depends=('libegl1-amdgpu-pro=16.30.3.315407-1')
+	depends=('libegl1-amdgpu-pro=16.30.3.315407-2')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/libegl1-amdgpu-pro-dev_16.30.3-315407_amd64
@@ -632,7 +632,7 @@ package_libegl1-amdgpu-pro-dev () {
 
 package_libgbm-amdgpu-pro-dev () {
 	pkgdesc="generic buffer management API -- development files"
-	depends=('libgbm1-amdgpu-pro=16.30.3.315407-1')
+	depends=('libgbm1-amdgpu-pro=16.30.3.315407-2')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/libgbm-amdgpu-pro-dev_16.30.3-315407_amd64
@@ -651,7 +651,7 @@ package_libgbm-amdgpu-pro-dev () {
 
 package_lib32-libgbm-amdgpu-pro-dev () {
 	pkgdesc="generic buffer management API -- development files"
-	depends=('lib32-libgbm1-amdgpu-pro=16.30.3.315407-1')
+	depends=('lib32-libgbm1-amdgpu-pro=16.30.3.315407-2')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/libgbm-amdgpu-pro-dev_16.30.3-315407_i386
@@ -671,7 +671,7 @@ package_lib32-libgbm-amdgpu-pro-dev () {
 
 package_libgbm1-amdgpu-pro () {
 	pkgdesc="generic buffer management API -- runtime"
-	depends=('libdrm-amdgpu-pro-amdgpu1=16.30.3.315407-1' 'libdrm2-amdgpu-pro=16.30.3.315407-1')
+	depends=('libdrm-amdgpu-pro-amdgpu1=16.30.3.315407-2' 'libdrm2-amdgpu-pro=16.30.3.315407-2')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/libgbm1-amdgpu-pro_16.30.3-315407_amd64
@@ -690,7 +690,7 @@ package_libgbm1-amdgpu-pro () {
 
 package_lib32-libgbm1-amdgpu-pro () {
 	pkgdesc="generic buffer management API -- runtime"
-	depends=('lib32-libdrm-amdgpu-pro-amdgpu1=16.30.3.315407-1' 'lib32-libdrm2-amdgpu-pro=16.30.3.315407-1')
+	depends=('lib32-libdrm-amdgpu-pro-amdgpu1=16.30.3.315407-2' 'lib32-libdrm2-amdgpu-pro=16.30.3.315407-2')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/libgbm1-amdgpu-pro_16.30.3-315407_i386
@@ -710,7 +710,7 @@ package_lib32-libgbm1-amdgpu-pro () {
 
 package_lib32-libgl1-amdgpu-pro-dev () {
 	pkgdesc="implementation of the OpenGL API -- GLX development files"
-	depends=('lib32-libgl1-amdgpu-pro-glx=16.30.3.315407-1')
+	depends=('lib32-libgl1-amdgpu-pro-glx=16.30.3.315407-2')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/libgl1-amdgpu-pro-dev_16.30.3-315407_i386
@@ -734,7 +734,7 @@ package_lib32-libgl1-amdgpu-pro-dev () {
 
 package_libgl1-amdgpu-pro-dev () {
 	pkgdesc="implementation of the OpenGL API -- GLX development files"
-	depends=('libgl1-amdgpu-pro-glx=16.30.3.315407-1')
+	depends=('libgl1-amdgpu-pro-glx=16.30.3.315407-2')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/libgl1-amdgpu-pro-dev_16.30.3-315407_amd64
@@ -796,7 +796,7 @@ package_libgl1-amdgpu-pro-dri () {
 
 package_libgl1-amdgpu-pro-glx () {
 	pkgdesc="implementation of the OpenGL API -- GLX runtime"
-	depends=('libdrm2-amdgpu-pro=16.30.3.315407-1' 'libx11>=1.4.99.1' 'libxcb>=1.8' 'libxcb' 'libxcb>=1.9.2' 'libxdamage>=1.1' 'libxext' 'libxfixes' 'libxshmfence' 'libxxf86vm')
+	depends=('libdrm2-amdgpu-pro=16.30.3.315407-2' 'libx11>=1.4.99.1' 'libxcb>=1.8' 'libxcb' 'libxcb>=1.9.2' 'libxdamage>=1.1' 'libxext' 'libxfixes' 'libxshmfence' 'libxxf86vm')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/libgl1-amdgpu-pro-glx_16.30.3-315407_amd64
@@ -819,7 +819,7 @@ package_libgl1-amdgpu-pro-glx () {
 
 package_lib32-libgl1-amdgpu-pro-glx () {
 	pkgdesc="implementation of the OpenGL API -- GLX runtime"
-	depends=('lib32-libdrm2-amdgpu-pro=16.30.3.315407-1' 'lib32-libx11>=1.4.99.1' 'lib32-libxcb>=1.8' 'lib32-libxcb' 'lib32-libxcb>=1.9.2' 'lib32-libxdamage>=1.1' 'lib32-libxext' 'lib32-libxfixes' 'lib32-libxshmfence' 'lib32-libxxf86vm')
+	depends=('lib32-libdrm2-amdgpu-pro=16.30.3.315407-2' 'lib32-libx11>=1.4.99.1' 'lib32-libxcb>=1.8' 'lib32-libxcb' 'lib32-libxcb>=1.9.2' 'lib32-libxdamage>=1.1' 'lib32-libxext' 'lib32-libxfixes' 'lib32-libxshmfence' 'lib32-libxxf86vm')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/libgl1-amdgpu-pro-glx_16.30.3-315407_i386
@@ -843,7 +843,7 @@ package_lib32-libgl1-amdgpu-pro-glx () {
 
 package_libgles2-amdgpu-pro () {
 	pkgdesc="implementation of the OpenGL|ES 2.x API -- runtime"
-	depends=('libegl1-amdgpu-pro=16.30.3.315407-1')
+	depends=('libegl1-amdgpu-pro=16.30.3.315407-2')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/libgles2-amdgpu-pro_16.30.3-315407_amd64
@@ -862,7 +862,7 @@ package_libgles2-amdgpu-pro () {
 
 package_lib32-libgles2-amdgpu-pro () {
 	pkgdesc="implementation of the OpenGL|ES 2.x API -- runtime"
-	depends=('lib32-libegl1-amdgpu-pro=16.30.3.315407-1')
+	depends=('lib32-libegl1-amdgpu-pro=16.30.3.315407-2')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/libgles2-amdgpu-pro_16.30.3-315407_i386
@@ -882,7 +882,7 @@ package_lib32-libgles2-amdgpu-pro () {
 
 package_libgles2-amdgpu-pro-dev () {
 	pkgdesc="implementation of the OpenGL|ES 2.x API -- development files"
-	depends=('libgles2-amdgpu-pro=16.30.3.315407-1')
+	depends=('libgles2-amdgpu-pro=16.30.3.315407-2')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/libgles2-amdgpu-pro-dev_16.30.3-315407_amd64
@@ -905,7 +905,7 @@ package_libgles2-amdgpu-pro-dev () {
 
 package_lib32-libgles2-amdgpu-pro-dev () {
 	pkgdesc="implementation of the OpenGL|ES 2.x API -- development files"
-	depends=('lib32-libgles2-amdgpu-pro=16.30.3.315407-1')
+	depends=('lib32-libgles2-amdgpu-pro=16.30.3.315407-2')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/libgles2-amdgpu-pro-dev_16.30.3-315407_i386
@@ -929,7 +929,7 @@ package_lib32-libgles2-amdgpu-pro-dev () {
 
 package_lib32-libvdpau-amdgpu-pro () {
 	pkgdesc="AMDGPU Pro VDPAU driver"
-	depends=('lib32-libdrm-amdgpu-pro-amdgpu1=16.30.3.315407-1' 'lib32-libdrm>=2.4.31' 'lib32-libdrm2-amdgpu-pro=16.30.3.315407-1' 'lib32-openssl>=1.0.0' 'lib32-libx11' 'lib32-libxcb>=1.8' 'lib32-libxcb' 'lib32-zlib>=1.2.0')
+	depends=('lib32-libdrm-amdgpu-pro-amdgpu1=16.30.3.315407-2' 'lib32-libdrm>=2.4.31' 'lib32-libdrm2-amdgpu-pro=16.30.3.315407-2' 'lib32-openssl>=1.0.0' 'lib32-libx11' 'lib32-libxcb>=1.8' 'lib32-libxcb' 'lib32-zlib>=1.2.0')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/libvdpau-amdgpu-pro_16.30.3-315407_i386
@@ -949,7 +949,7 @@ package_lib32-libvdpau-amdgpu-pro () {
 
 package_libvdpau-amdgpu-pro () {
 	pkgdesc="AMDGPU Pro VDPAU driver"
-	depends=('libdrm-amdgpu-pro-amdgpu1=16.30.3.315407-1' 'libdrm>=2.4.31' 'libdrm2-amdgpu-pro=16.30.3.315407-1' 'openssl>=1.0.0' 'libx11' 'libxcb>=1.8' 'libxcb')
+	depends=('libdrm-amdgpu-pro-amdgpu1=16.30.3.315407-2' 'libdrm>=2.4.31' 'libdrm2-amdgpu-pro=16.30.3.315407-2' 'openssl>=1.0.0' 'libx11' 'libxcb>=1.8' 'libxcb')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/libvdpau-amdgpu-pro_16.30.3-315407_amd64
@@ -968,7 +968,7 @@ package_libvdpau-amdgpu-pro () {
 
 package_xserver-xorg-video-amdgpu-pro () {
 	pkgdesc="X.Org X server -- AMD/ATI Amdgpu-Pro display driver"
-	depends=('libdrm-amdgpu-pro-amdgpu1=16.30.3.315407-1' 'libdrm2-amdgpu-pro=16.30.3.315407-1' 'libepoxy>=1.0' 'libgbm1-amdgpu-pro=16.30.3.315407-1' 'libgl1-amdgpu-pro-glx=16.30.3.315407-1' 'libsystemd>=183' 'libx11' 'libxcb' 'libxdamage>=1.1' 'libxext' 'libxfixes' 'libxxf86vm' 'xorg-server')
+	depends=('libdrm-amdgpu-pro-amdgpu1=16.30.3.315407-2' 'libdrm2-amdgpu-pro=16.30.3.315407-2' 'libepoxy>=1.0' 'libgbm1-amdgpu-pro=16.30.3.315407-2' 'libgl1-amdgpu-pro-glx=16.30.3.315407-2' 'libsystemd>=183' 'libx11' 'libxcb' 'libxdamage>=1.1' 'libxext' 'libxfixes' 'libxxf86vm' 'xorg-server')
 	arch=('x86_64')
 
 	rm -Rf "${srcdir}"/xserver-xorg-video-amdgpu-pro_16.30.3-315407_amd64
