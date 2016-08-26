@@ -25,7 +25,8 @@ source=(https://www2.ati.com/drivers/linux/amdgpu-pro_16.30.3-315407.tar.xz
 	0006-Change-name-of-vblank_disable_allowed-to-vblank_disa.patch
 	0007-Remove-connector-parameter-from-__drm_atomic_helper_.patch
 	0008-fix-apparent-typo-in-bandwidth_calcs-causing-array-e.patch
-	0009-disable-dal-by-default.patch)
+	0009-disable-dal-by-default.patch
+	0010-remove-dependency-on-System.map.patch)
 sha256sums=(97d6fb64617cf2cefe780e5fb83b29d8ee4e3e7886b71fe3d92b0113847b2354
 	ae5fed04cd626aadff6d4c7c59657f52a8dd6be3df4a9686702e74aa8c72d1de
 	df36d1d9f470094432b765016b558624fa9b28355c82a722f7bd4facdf912ce2
@@ -35,7 +36,8 @@ sha256sums=(97d6fb64617cf2cefe780e5fb83b29d8ee4e3e7886b71fe3d92b0113847b2354
 	a0e94234555f5254df096a93e050edbc341603d0b1d527f7b0c3179e111b7be1
 	2e291935e35ecdc9f7c87d288db9d73a27f4f5cc3b08f95b8b39fef3934c6735
 	50c56c4e2ed55d66e5d5e5689b2f146de63dbb3edc2bafabf5ca98e8ae58e028
-	7e5640468e9ede54a8b3cc8fd67d6c3ae3738aec959a655c9aeaac9570a646f9)
+	7e5640468e9ede54a8b3cc8fd67d6c3ae3738aec959a655c9aeaac9570a646f9
+	2f6c74a5a909f27a5a18eae5acf2ca90c99c4f2e4aa8ceb766dbf8a0cb431817)
 
 
 package_amdgpu-pro () {
@@ -150,7 +152,8 @@ package_amdgpu-pro-dkms () {
 		patch -p1 -i "${srcdir}/0006-Change-name-of-vblank_disable_allowed-to-vblank_disa.patch";
 		patch -p1 -i "${srcdir}/0007-Remove-connector-parameter-from-__drm_atomic_helper_.patch";
 		patch -p1 -i "${srcdir}/0008-fix-apparent-typo-in-bandwidth_calcs-causing-array-e.patch";
-		patch -p1 -i "${srcdir}/0009-disable-dal-by-default.patch")
+		patch -p1 -i "${srcdir}/0009-disable-dal-by-default.patch";
+		patch -p1 -i "${srcdir}/0010-remove-dependency-on-System.map.patch")
 
 }
 
