@@ -983,6 +983,7 @@ package_xserver-xorg-video-amdgpu-pro () {
 		rmdir "${pkgdir}"/usr/lib/x86_64-linux-gnu
 	fi
 
+	conflicts=('xf86-video-amdgpu')
 	mkdir -p ${pkgdir}/usr/lib/x86_64-linux-gnu
 	# This is needed because libglx.so has a hardcoded DRI_DRIVER_PATH
 	ln -s /usr/lib/dri ${pkgdir}/usr/lib/x86_64-linux-gnu/dri

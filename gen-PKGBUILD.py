@@ -124,6 +124,7 @@ special_ops = {
 	mv ${pkgdir}/usr/lib/firmware.tmp ${pkgdir}/usr/lib/firmware/updates
 """,
 	"xserver-xorg-video-amdgpu-pro": """
+	conflicts=('xf86-video-amdgpu')
 	mkdir -p ${pkgdir}/usr/lib/x86_64-linux-gnu
 	# This is needed because libglx.so has a hardcoded DRI_DRIVER_PATH
 	ln -s /usr/lib/dri ${pkgdir}/usr/lib/x86_64-linux-gnu/dri

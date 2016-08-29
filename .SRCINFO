@@ -324,4 +324,5 @@ pkgname = xserver-xorg-video-amdgpu-pro
 	depends = libxfixes
 	depends = libxxf86vm
 	depends = xorg-server
+	conflicts = xf86-video-amdgpu
 
