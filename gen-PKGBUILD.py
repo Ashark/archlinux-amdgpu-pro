@@ -188,7 +188,6 @@ license=('custom:AMD')
 makedepends=('wget')
 
 DLAGENTS='{dlagents}'
-PKGEXT='.pkg.tar'
 
 source=({source})
 sha256sums=({sha5sums})
