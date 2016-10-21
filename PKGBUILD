@@ -73,7 +73,7 @@ package_amdgpu-pro () {
 	pkgdesc="The AMDGPU Pro driver package"
 	install=amdgpu-pro-core.install
 	arch=('x86_64')
-	depends=('libxdamage>=1.1' 'libxshmfence' 'xf86-video-amdgpu-pro=16.30.3-315407' 'libx11' 'libxcb>=1.9.2' 'libxfixes' 'libxext' 'linux-firmware' 'libx11>=1.4.99.1' 'libxcb' 'libxcb>=1.8' 'libxxf86vm')
+	depends=('libxfixes' 'libxcb>=1.8' 'libxshmfence' 'libxxf86vm' 'libxcb' 'libxcb>=1.9.2' 'libxdamage>=1.1' 'xf86-video-amdgpu-pro=16.30.3.315407-2' 'libx11>=1.4.99.1' 'libx11' 'libxext' 'linux-firmware')
 
 	extract_deb "${srcdir}"/amdgpu-pro-driver/./amdgpu-pro_16.30.3-315407_amd64.deb
 	extract_deb "${srcdir}"/amdgpu-pro-driver/./amdgpu-pro-core_16.30.3-315407_amd64.deb
@@ -182,7 +182,7 @@ package_amdgpu-pro-opencl () {
 	arch=('x86_64')
 	provides=('libcl')
 	conflicts=('libcl')
-	depends=('amdgpu-pro=16.30.3-315407')
+	depends=('amdgpu-pro=16.30.3.315407-2')
 
 	extract_deb "${srcdir}"/amdgpu-pro-driver/./amdgpu-pro-clinfo_16.30.3-315407_amd64.deb
 	extract_deb "${srcdir}"/amdgpu-pro-driver/./amdgpu-pro-computing_16.30.3-315407_amd64.deb
@@ -198,7 +198,7 @@ package_amdgpu-pro-opencl () {
 package_amdgpu-pro-vdpau () {
 	pkgdesc="The AMDGPU Pro VDPAU driver"
 	arch=('x86_64')
-	depends=('amdgpu-pro-libdrm' 'libx11' 'libdrm>=2.4.31' 'openssl>=1.0.0' 'libxcb' 'libxcb>=1.8')
+	depends=('amdgpu-pro-libdrm=16.30.3.315407-2' 'openssl>=1.0.0' 'libxcb>=1.8' 'libxcb' 'libdrm>=2.4.31' 'libx11')
 
 	extract_deb "${srcdir}"/amdgpu-pro-driver/./libvdpau-amdgpu-pro_16.30.3-315407_amd64.deb
 	move_libdir "${pkgdir}/usr/lib/x86_64-linux-gnu"
@@ -210,7 +210,7 @@ package_amdgpu-pro-vdpau () {
 package_amdgpu-pro-vulkan () {
 	pkgdesc="The AMDGPU Pro Vulkan driver"
 	arch=('x86_64')
-	depends=('amdgpu-pro-libdrm')
+	depends=('amdgpu-pro-libdrm=16.30.3.315407-2')
 
 	extract_deb "${srcdir}"/amdgpu-pro-driver/./amdgpu-pro-vulkan-driver_16.30.3-315407_amd64.deb
 	move_libdir "${pkgdir}/usr/lib/x86_64-linux-gnu"
@@ -224,7 +224,7 @@ package_amdgpu-pro-vulkan () {
 package_lib32-amdgpu-pro () {
 	pkgdesc="This package contains x86 libs for x86_64 machine usage. (32bit libraries)"
 	arch=('x86_64')
-	depends=('amdgpu-pro' 'lib32-libxcb' 'lib32-libxcb>=1.8' 'lib32-libxshmfence' 'lib32-libxdamage>=1.1' 'amdgpu-pro-libdrm' 'amdgpu-pro-vdpau=16.30.3-315407' 'amdgpu-pro=16.30.3-315407' 'lib32-libxcb>=1.9.2' 'amdgpu-pro-opencl=16.30.3-315407' 'lib32-libx11' 'lib32-libx11>=1.4.99.1' 'lib32-libxxf86vm' 'amdgpu-pro-vulkan=16.30.3-315407' 'lib32-libxext' 'lib32-libxfixes')
+	depends=('lib32-libx11' 'lib32-libxfixes' 'amdgpu-pro-libdrm=16.30.3.315407-2' 'amdgpu-pro-opencl=16.30.3.315407-2' 'lib32-libxcb>=1.9.2' 'lib32-libxxf86vm' 'amdgpu-pro-vdpau=16.30.3.315407-2' 'lib32-libxdamage>=1.1' 'lib32-libx11>=1.4.99.1' 'lib32-libxext' 'lib32-libxcb' 'lib32-libxshmfence' 'amdgpu-pro=16.30.3.315407-2' 'amdgpu-pro-vulkan=16.30.3.315407-2' 'lib32-libxcb>=1.8')
 
 	extract_deb "${srcdir}"/amdgpu-pro-driver/./amdgpu-pro-lib32_16.30.3-315407_i386.deb
 	extract_deb "${srcdir}"/amdgpu-pro-driver/./libegl1-amdgpu-pro_16.30.3-315407_i386.deb
@@ -248,7 +248,7 @@ package_lib32-amdgpu-pro () {
 package_lib32-amdgpu-pro-libdrm () {
 	pkgdesc="The AMDGPU Pro userspace interface to kernel DRM services (32bit libraries)"
 	arch=('x86_64')
-	depends=('amdgpu-pro-libdrm' 'amdgpu-pro-libdrm=16.30.3-315407')
+	depends=('amdgpu-pro-libdrm=16.30.3.315407-2')
 
 	extract_deb "${srcdir}"/amdgpu-pro-driver/./libdrm-amdgpu-pro-amdgpu1_16.30.3-315407_i386.deb
 	extract_deb "${srcdir}"/amdgpu-pro-driver/./libdrm-amdgpu-pro-dev_16.30.3-315407_i386.deb
@@ -295,7 +295,7 @@ package_lib32-amdgpu-pro-opencl () {
 	arch=('x86_64')
 	provides=('lib32-libcl')
 	conflicts=('lib32-libcl')
-	depends=('amdgpu-pro-opencl=16.30.3-315407')
+	depends=('amdgpu-pro-opencl=16.30.3.315407-2')
 
 	extract_deb "${srcdir}"/amdgpu-pro-driver/./amdgpu-pro-libopencl-dev_16.30.3-315407_i386.deb
 	extract_deb "${srcdir}"/amdgpu-pro-driver/./amdgpu-pro-libopencl1_16.30.3-315407_i386.deb
@@ -313,7 +313,7 @@ package_lib32-amdgpu-pro-opencl () {
 package_lib32-amdgpu-pro-vdpau () {
 	pkgdesc="The AMDGPU Pro VDPAU driver (32bit libraries)"
 	arch=('x86_64')
-	depends=('lib32-libxcb' 'lib32-libxcb>=1.8' 'amdgpu-pro-libdrm' 'lib32-openssl>=1.0.0' 'lib32-zlib>=1.2.0' 'lib32-libx11' 'lib32-libdrm>=2.4.31')
+	depends=('lib32-libx11' 'amdgpu-pro-libdrm=16.30.3.315407-2' 'lib32-libdrm>=2.4.31' 'lib32-openssl>=1.0.0' 'lib32-libxcb' 'lib32-zlib>=1.2.0' 'lib32-libxcb>=1.8')
 
 	extract_deb "${srcdir}"/amdgpu-pro-driver/./libvdpau-amdgpu-pro_16.30.3-315407_i386.deb
 	move_libdir "${pkgdir}/usr/lib/i386-linux-gnu" "usr/lib32"
@@ -329,7 +329,7 @@ package_lib32-amdgpu-pro-vdpau () {
 package_lib32-amdgpu-pro-vulkan () {
 	pkgdesc="The AMDGPU Pro Vulkan driver (32bit libraries)"
 	arch=('x86_64')
-	depends=('amdgpu-pro-libdrm')
+	depends=('amdgpu-pro-libdrm=16.30.3.315407-2')
 
 	extract_deb "${srcdir}"/amdgpu-pro-driver/./amdgpu-pro-vulkan-driver_16.30.3-315407_i386.deb
 	move_libdir "${pkgdir}/usr/lib/i386-linux-gnu" "usr/lib32"
@@ -350,7 +350,7 @@ package_xf86-video-amdgpu-pro () {
 	provides=('xf86-video-amdgpu')
 	conflicts=('xf86-video-amdgpu' 'xorg-server<1.18.0' 'X-ABI-VIDEODRV_VERSION<20' 'X-ABI-VIDEODRV_VERSION>=21')
 	groups=('xorg-driversxorg')
-	depends=('amdgpu-pro' 'xorg-server' 'libxdamage>=1.1' 'amdgpu-pro-libdrm' 'libx11' 'libxfixes' 'libxext' 'libxcb' 'libepoxy>=1.0' 'libxxf86vm' 'libsystemd>=183')
+	depends=('libxfixes' 'libepoxy>=1.0' 'amdgpu-pro-libdrm=16.30.3.315407-2' 'xorg-server' 'libxxf86vm' 'libxcb' 'libsystemd>=183' 'amdgpu-pro=16.30.3.315407-2' 'libxdamage>=1.1' 'libx11' 'libxext')
 
 	extract_deb "${srcdir}"/amdgpu-pro-driver/./xserver-xorg-video-amdgpu-pro_16.30.3-315407_amd64.deb
 	move_libdir "${pkgdir}/usr/lib/x86_64-linux-gnu"

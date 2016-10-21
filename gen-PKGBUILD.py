@@ -538,6 +538,7 @@ def convertPackage(info, names):
 
 
 def writePackages(f):
+	global deb_package_names
 	package_list=[]
 
 	for info in deb822.Packages.iter_paragraphs(f):
