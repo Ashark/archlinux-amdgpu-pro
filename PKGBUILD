@@ -7,7 +7,7 @@ pkgname=(lib32-amdgpu-pro amdgpu-pro amdgpu-pro-dkms amdgpu-pro-lib32 lib32-clin
 if [ "$ALL_PACKAGES" = "true" ]; then
 	pkgname+=()
 fi
-pkgver=16.40.348864
+pkgver=16.50.362463
 pkgrel=1
 arch=('x86_64')
 url='http://www.amd.com'
@@ -16,51 +16,44 @@ makedepends=('wget')
 
 DLAGENTS='https::/usr/bin/wget --referer https://support.amd.com/en-us/kb-articles/Pages/AMD-Radeon-GPU-PRO-Linux-Beta-Driver%E2%80%93Release-Notes.aspx -N %u'
 
-source=(https://www2.ati.com/drivers/linux/ubuntu/amdgpu-pro-16.40-348864.tar.xz
-	0001-Find-correct-System.map.patch
-	0002-Fix-kernel-module-install-location.patch
-	0003-Add-Gentoo-as-build-option.patch
-	0004-Remove-extra-parameter-from-ttm_bo_reserve-for-4.7.0.patch
-	0005-Remove-first-param-from-drm_gem_object_lookup.patch
-	0006-Remove-vblank_disable_allowed-assignment.patch
-	0007-Fix-__drm_atomic_helper_connector_destroy_state-call.patch
-	0008-Change-seq_printf-format-for-64-bit-context.patch
-	0009-Fix-vblank-calls.patch
-	0010-Fix-crtc_gamma-functions-for-4.8.0.patch
-	0011-Fix-drm_atomic_helper_swap_state-for-4.8.0.patch
-	0012-Add-extra-flag-to-ttm_bo_move_ttm-for-4.8.0-rc2.patch
-	0013-Remove-dependency-on-System.map.patch
-	0014-disable-dal-by-default.patch
-	0015-remove-acp_resume.patch
-	0016-silence-indentation-build-error.patch)
-sha256sums=(59d6b1d975164ff45f6e6be5af6bcc061bf9ef6378ac5757bdb4e67840a706b0
-	f052bcf4b974bf6169ae1a20a57e90621becbefbca76f7b239b2e649725e6a56
-	ced9e98f7e32fc6b43e38bbb70ebd5e054b2ff3454ccadc527ccf3b19f12d7bb
-	0bb77f348512ef2ffa990fd74773d5d283e67c139601347bbd287960a65c0717
-	c0422a8ddb6827811710486dd43dca00e8393a1f90786659d4c01d721cff1747
-	991115e84b16e4547e35d229faf6b0503b0ad70f8cc59edd7ade026f18fe55bc
-	ce924e6159b2a94f48c80954f84e8b6d07245ac58732e7e22ff56264b86c6b73
-	7c87b5149d307acf75ec72b00018d9b9f4358bfa441fcf890f544e411256391b
-	fa125954b927a6c9eb9c41d30c39f4cfd1f076aa9658cc21fc448a6719f4080f
-	74545ec5df05cce5dd5168eb6b57f185ccc1b032b62c24f5f3994a8e8b5ba4b3
-	1fe0fe0d457cc403eba513101c000eed054bfe36dd5f5773bb0c9a8b02207f7f
-	1a7b834fbe7627ab46afc97fb1272d60607aa57ea43f4a9131ad123fc479679d
-	31afb42a7fa7d8090ba8c3b76c3201de54fb357305b7c114fef95707db01f5fe
-	cd7d745254e80b25fdd101e4c8f6864a5d4942ba0e88b36e797de6b40e8148d2
-	a4a41b3a49ccc227c5182ecb1554cdaefc7c35bd23fffd2b21e86674a49f888e
-	a7a4b0dc3368bc767557e4631d1fcafb11ac53face5039ca4b349da41016ef35
-	f2b3bec8f6c1ec53639e0d71e9285b5ef8c1633989c8e585dd23da5572003f79)
-
+source=(https://www2.ati.com/drivers/linux/ubuntu/amdgpu-pro-16.50-362463.tar.xz
+	0001-Fix-kernel-module-install-location.patch
+	0002-Add-Gentoo-as-build-option.patch
+	0003-Remove-extra-parameter-from-ttm_bo_reserve-for-4.7.0.patch
+	0004-Change-seq_printf-format-for-64-bit-context.patch
+	0005-Fix-vblank-calls.patch
+	0006-Fix-crtc_gamma-functions-for-4.8.0.patch
+	0007-Fix-drm_atomic_helper_swap_state-for-4.8.0.patch
+	0008-Add-extra-flag-to-ttm_bo_move_ttm-for-4.8.0-rc2.patch
+	0009-Remove-dependency-on-System.map.patch
+	0010-disable-dal-by-default.patch
+	0011-kcl-fixes-for-16.50-linux-4.8.patch
+	0012-use-kernel-fence_array-in-4.8.patch
+)
+sha256sums=(a959013fd641a07107af65d9dd54a019ddcc4a14f467d5d620fabc3497aa88f2
+	6ee0d8f36ecf1c0d65aecc28403528fcacfcef1ca95b39f8db0bde131416f1cb
+	82bb5e6e76ea47b132c9a6910510fe613243b61e122d49ae9df47fcbc2ef655d
+	0a64aea68b467d639e91264510134d4c6bede1093a49d467028302ac2d87fb8b
+	21c78811107d8ee59f3566d21ed4a7ccfd622f4e07350fca7ed662392ab07190
+	2ee61d8790b95d98f8ded616effb6fb5f4c4e80d2a59957773d0b69c7227e2f5
+	ccdab6ab16443ed0031f6175034de7dff0ba636e81a465f8a052f25ee3649cf9
+	b49a94f539c538ad4aadb594bd8f2ad8f5629d913540b99b57272cd385f0b920
+	8cf33d20555435f29c3a3f019d767726ac9add23642a0f1a5c7af759f4699ed1
+	b3baba639ece85b07a7870e8f71ed35c15de006d0cd46610a67ce8569c1a9b46
+	4c12f81c3c2a5b6ecd17ec911a78d11fcfc81424619fb207f92d68551c073f14
+	787868375f2f5b38befba10d7a6fe38fa6d0f99f5e5a4e0f2b372eb6df04714e
+	1cc1ca0f72b9a424d606908667409211599496e9a36ae98e077650656ee3ea91
+)
 
 package_lib32-amdgpu-pro () {
 	pkgdesc="Meta package to install amdgpu Pro components."
-	depends=('lib32-amdgpu-pro-dkms=16.40.348864-1' 'lib32-libdrm-amdgpu-pro-utils=16.40.348864-1' 'lib32-libgbm1-amdgpu-pro=16.40.348864-1' 'lib32-libgl1-amdgpu-pro-appprofiles=16.40.348864-1' 'lib32-libgl1-amdgpu-pro-glx=16.40.348864-1' 'lib32-libgl1-amdgpu-pro-ext=16.40.348864-1' 'lib32-libgl1-amdgpu-pro-dri=16.40.348864-1' 'lib32-libgles2-amdgpu-pro=16.40.348864-1' 'lib32-vulkan-amdgpu-pro=16.40.348864-1' 'lib32-libvdpau-amdgpu-pro=16.40.348864-1' 'lib32-libopencl1-amdgpu-pro=16.40.348864-1' 'lib32-clinfo-amdgpu-pro=16.40.348864-1' 'lib32-opencl-amdgpu-pro-icd=16.40.348864-1' 'lib32-xserver-xorg-video-glamoregl-amdgpu-pro=16.40.348864-1' 'lib32-xserver-xorg-video-amdgpu-pro=16.40.348864-1')
+	depends=('lib32-amdgpu-pro-dkms=16.50.362463-1' 'lib32-libdrm-amdgpu-pro-utils=16.50.362463-1' 'lib32-libgbm1-amdgpu-pro=16.50.362463-1' 'lib32-libgl1-amdgpu-pro-appprofiles=16.50.362463-1' 'lib32-libgl1-amdgpu-pro-glx=16.50.362463-1' 'lib32-libgl1-amdgpu-pro-ext=16.50.362463-1' 'lib32-libgl1-amdgpu-pro-dri=16.50.362463-1' 'lib32-libgles2-amdgpu-pro=16.50.362463-1' 'lib32-vulkan-amdgpu-pro=16.50.362463-1' 'lib32-libvdpau-amdgpu-pro=16.50.362463-1' 'lib32-libopencl1-amdgpu-pro=16.50.362463-1' 'lib32-clinfo-amdgpu-pro=16.50.362463-1' 'lib32-opencl-amdgpu-pro-icd=16.50.362463-1' 'lib32-xserver-xorg-video-glamoregl-amdgpu-pro=16.50.362463-1' 'lib32-xserver-xorg-video-amdgpu-pro=16.50.362463-1')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/amdgpu-pro_16.40-348864_i386
-	mkdir "${srcdir}"/amdgpu-pro_16.40-348864_i386
-	cd "${srcdir}"/amdgpu-pro_16.40-348864_i386
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./amdgpu-pro_16.40-348864_i386.deb
+	rm -Rf "${srcdir}"/amdgpu-pro_16.50-362463_i386
+	mkdir "${srcdir}"/amdgpu-pro_16.50-362463_i386
+	cd "${srcdir}"/amdgpu-pro_16.50-362463_i386
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./amdgpu-pro_16.50-362463_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
@@ -74,13 +67,13 @@ package_lib32-amdgpu-pro () {
 
 package_amdgpu-pro () {
 	pkgdesc="Meta package to install amdgpu Pro components."
-	depends=('amdgpu-pro-dkms=16.40.348864-1' 'libdrm-amdgpu-pro-utils=16.40.348864-1' 'libgbm1-amdgpu-pro=16.40.348864-1' 'libgl1-amdgpu-pro-appprofiles=16.40.348864-1' 'libgl1-amdgpu-pro-glx=16.40.348864-1' 'libgl1-amdgpu-pro-ext=16.40.348864-1' 'libgl1-amdgpu-pro-dri=16.40.348864-1' 'libgles2-amdgpu-pro=16.40.348864-1' 'vulkan-amdgpu-pro=16.40.348864-1' 'libvdpau-amdgpu-pro=16.40.348864-1' 'libopencl1-amdgpu-pro=16.40.348864-1' 'clinfo-amdgpu-pro=16.40.348864-1' 'opencl-amdgpu-pro-icd=16.40.348864-1' 'xserver-xorg-video-glamoregl-amdgpu-pro=16.40.348864-1' 'xserver-xorg-video-amdgpu-pro=16.40.348864-1')
+	depends=('amdgpu-pro-dkms=16.50.362463-1' 'libdrm-amdgpu-pro-utils=16.50.362463-1' 'libgbm1-amdgpu-pro=16.50.362463-1' 'libgl1-amdgpu-pro-appprofiles=16.50.362463-1' 'libgl1-amdgpu-pro-glx=16.50.362463-1' 'libgl1-amdgpu-pro-ext=16.50.362463-1' 'libgl1-amdgpu-pro-dri=16.50.362463-1' 'libgles2-amdgpu-pro=16.50.362463-1' 'vulkan-amdgpu-pro=16.50.362463-1' 'libvdpau-amdgpu-pro=16.50.362463-1' 'libopencl1-amdgpu-pro=16.50.362463-1' 'clinfo-amdgpu-pro=16.50.362463-1' 'opencl-amdgpu-pro-icd=16.50.362463-1' 'xserver-xorg-video-glamoregl-amdgpu-pro=16.50.362463-1' 'xserver-xorg-video-amdgpu-pro=16.50.362463-1')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/amdgpu-pro_16.40-348864_amd64
-	mkdir "${srcdir}"/amdgpu-pro_16.40-348864_amd64
-	cd "${srcdir}"/amdgpu-pro_16.40-348864_amd64
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./amdgpu-pro_16.40-348864_amd64.deb
+	rm -Rf "${srcdir}"/amdgpu-pro_16.50-362463_amd64
+	mkdir "${srcdir}"/amdgpu-pro_16.50-362463_amd64
+	cd "${srcdir}"/amdgpu-pro_16.50-362463_amd64
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./amdgpu-pro_16.50-362463_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
@@ -96,10 +89,10 @@ package_amdgpu-pro-dkms () {
 	depends=('dkms>=1.95')
 	arch=('any')
 
-	rm -Rf "${srcdir}"/amdgpu-pro-dkms_16.40-348864_all
-	mkdir "${srcdir}"/amdgpu-pro-dkms_16.40-348864_all
-	cd "${srcdir}"/amdgpu-pro-dkms_16.40-348864_all
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./amdgpu-pro-dkms_16.40-348864_all.deb
+	rm -Rf "${srcdir}"/amdgpu-pro-dkms_16.50-362463_all
+	mkdir "${srcdir}"/amdgpu-pro-dkms_16.50-362463_all
+	cd "${srcdir}"/amdgpu-pro-dkms_16.50-362463_all
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./amdgpu-pro-dkms_16.50-362463_all.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
@@ -107,39 +100,31 @@ package_amdgpu-pro-dkms () {
 		mv "${pkgdir}"/usr/lib/x86_64-linux-gnu/* "${pkgdir}"/usr/lib
 		rmdir "${pkgdir}"/usr/lib/x86_64-linux-gnu
 	fi
-	(cd ${pkgdir}/usr/src/amdgpu-pro-16.40-348864;
-		echo applying 0001-Find-correct-System.map.patch
-		patch -p1 -i "${srcdir}/0001-Find-correct-System.map.patch";
-		echo applying 0002-Fix-kernel-module-install-location.patch
-		patch -p1 -i "${srcdir}/0002-Fix-kernel-module-install-location.patch";
-		echo applying 0003-Add-Gentoo-as-build-option.patch
-		patch -p1 -i "${srcdir}/0003-Add-Gentoo-as-build-option.patch";
-		echo applying 0004-Remove-extra-parameter-from-ttm_bo_reserve-for-4.7.0.patch
-		patch -p1 -i "${srcdir}/0004-Remove-extra-parameter-from-ttm_bo_reserve-for-4.7.0.patch";
-		echo applying 0005-Remove-first-param-from-drm_gem_object_lookup.patch
-		patch -p1 -i "${srcdir}/0005-Remove-first-param-from-drm_gem_object_lookup.patch";
-		echo applying 0006-Remove-vblank_disable_allowed-assignment.patch
-		patch -p1 -i "${srcdir}/0006-Remove-vblank_disable_allowed-assignment.patch";
-		echo applying 0007-Fix-__drm_atomic_helper_connector_destroy_state-call.patch
-		patch -p1 -i "${srcdir}/0007-Fix-__drm_atomic_helper_connector_destroy_state-call.patch";
-		echo applying 0008-Change-seq_printf-format-for-64-bit-context.patch
-		patch -p1 -i "${srcdir}/0008-Change-seq_printf-format-for-64-bit-context.patch";
-		echo applying 0009-Fix-vblank-calls.patch
-		patch -p1 -i "${srcdir}/0009-Fix-vblank-calls.patch";
-		echo applying 0010-Fix-crtc_gamma-functions-for-4.8.0.patch
-		patch -p1 -i "${srcdir}/0010-Fix-crtc_gamma-functions-for-4.8.0.patch";
-		echo applying 0011-Fix-drm_atomic_helper_swap_state-for-4.8.0.patch
-		patch -p1 -i "${srcdir}/0011-Fix-drm_atomic_helper_swap_state-for-4.8.0.patch";
-		echo applying 0012-Add-extra-flag-to-ttm_bo_move_ttm-for-4.8.0-rc2.patch
-		patch -p1 -i "${srcdir}/0012-Add-extra-flag-to-ttm_bo_move_ttm-for-4.8.0-rc2.patch";
-		echo applying 0013-Remove-dependency-on-System.map.patch
-		patch -p1 -i "${srcdir}/0013-Remove-dependency-on-System.map.patch";
-		echo applying 0014-disable-dal-by-default.patch
-		patch -p1 -i "${srcdir}/0014-disable-dal-by-default.patch";
-		echo applying 0015-remove-acp_resume.patch
-		patch -p1 -i "${srcdir}/0015-remove-acp_resume.patch";
-		echo applying 0016-silence-indentation-build-error.patch
-		patch -p1 -i "${srcdir}/0016-silence-indentation-build-error.patch")
+	(cd ${pkgdir}/usr/src/amdgpu-pro-16.50-362463;
+		echo applying 0001-Fix-kernel-module-install-location.patch 
+		patch -p1 -i "${srcdir}/0001-Fix-kernel-module-install-location.patch";
+		echo applying 0002-Add-Gentoo-as-build-option.patch
+		patch -p1 -i "${srcdir}/0002-Add-Gentoo-as-build-option.patch";
+		echo applying 0003-Remove-extra-parameter-from-ttm_bo_reserve-for-4.7.0.patch
+		patch -p1 -i "${srcdir}/0003-Remove-extra-parameter-from-ttm_bo_reserve-for-4.7.0.patch";
+		echo applying 0004-Change-seq_printf-format-for-64-bit-context.patch
+		patch -p1 -i "${srcdir}/0004-Change-seq_printf-format-for-64-bit-context.patch";
+		echo applying 0005-Fix-vblank-calls.patch
+		patch -p1 -i "${srcdir}/0005-Fix-vblank-calls.patch";
+		echo applying 0006-Fix-crtc_gamma-functions-for-4.8.0.patch
+		patch -p1 -i "${srcdir}/0006-Fix-crtc_gamma-functions-for-4.8.0.patch";
+		echo applying 0007-Fix-drm_atomic_helper_swap_state-for-4.8.0.patch
+		patch -p1 -i "${srcdir}/0007-Fix-drm_atomic_helper_swap_state-for-4.8.0.patch";
+		echo applying 0008-Add-extra-flag-to-ttm_bo_move_ttm-for-4.8.0-rc2.patch
+		patch -p1 -i "${srcdir}/0008-Add-extra-flag-to-ttm_bo_move_ttm-for-4.8.0-rc2.patch";
+		echo applying 0009-Remove-dependency-on-System.map.patch
+		patch -p1 -i "${srcdir}/0009-Remove-dependency-on-System.map.patch";
+		echo applying 0010-disable-dal-by-default.patch
+		patch -p1 -i "${srcdir}/0010-disable-dal-by-default.patch";
+		echo applying 0011-kcl-fixes-for-16.50-linux-4.8.patch 
+		patch -p1 -i "${srcdir}/0011-kcl-fixes-for-16.50-linux-4.8.patch";
+		echo applying 0012-use-kernel-fence_array-in-4.8.patch
+		patch -p1 -i "${srcdir}/0012-use-kernel-fence_array-in-4.8.patch")
 
 }
 
@@ -149,10 +134,10 @@ package_amdgpu-pro-lib32 () {
 	depends=('libdrm-amdgpu-pro-amdgpu1:i386' 'libgbm1-amdgpu-pro:i386' 'libgl1-amdgpu-pro-glx:i386' 'libgl1-amdgpu-pro-dri:i386' 'libgles2-amdgpu-pro:i386' 'vulkan-amdgpu-pro:i386' 'libvdpau-amdgpu-pro:i386' 'libopencl1-amdgpu-pro:i386' 'opencl-amdgpu-pro-icd:i386')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/amdgpu-pro-lib32_16.40-348864_amd64
-	mkdir "${srcdir}"/amdgpu-pro-lib32_16.40-348864_amd64
-	cd "${srcdir}"/amdgpu-pro-lib32_16.40-348864_amd64
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./amdgpu-pro-lib32_16.40-348864_amd64.deb
+	rm -Rf "${srcdir}"/amdgpu-pro-lib32_16.50-362463_amd64
+	mkdir "${srcdir}"/amdgpu-pro-lib32_16.50-362463_amd64
+	cd "${srcdir}"/amdgpu-pro-lib32_16.50-362463_amd64
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./amdgpu-pro-lib32_16.50-362463_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
@@ -165,13 +150,13 @@ package_amdgpu-pro-lib32 () {
 
 package_lib32-clinfo-amdgpu-pro () {
 	pkgdesc="AMD OpenCL info utility"
-	depends=('lib32-libopencl1-amdgpu-pro=16.40.348864-1')
+	depends=('lib32-libopencl1-amdgpu-pro=16.50.362463-1')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/clinfo-amdgpu-pro_16.40-348864_i386
-	mkdir "${srcdir}"/clinfo-amdgpu-pro_16.40-348864_i386
-	cd "${srcdir}"/clinfo-amdgpu-pro_16.40-348864_i386
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./clinfo-amdgpu-pro_16.40-348864_i386.deb
+	rm -Rf "${srcdir}"/clinfo-amdgpu-pro_16.50-362463_i386
+	mkdir "${srcdir}"/clinfo-amdgpu-pro_16.50-362463_i386
+	cd "${srcdir}"/clinfo-amdgpu-pro_16.50-362463_i386
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./clinfo-amdgpu-pro_16.50-362463_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
@@ -185,13 +170,13 @@ package_lib32-clinfo-amdgpu-pro () {
 
 package_clinfo-amdgpu-pro () {
 	pkgdesc="AMD OpenCL info utility"
-	depends=('libopencl1-amdgpu-pro=16.40.348864-1')
+	depends=('libopencl1-amdgpu-pro=16.50.362463-1')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/clinfo-amdgpu-pro_16.40-348864_amd64
-	mkdir "${srcdir}"/clinfo-amdgpu-pro_16.40-348864_amd64
-	cd "${srcdir}"/clinfo-amdgpu-pro_16.40-348864_amd64
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./clinfo-amdgpu-pro_16.40-348864_amd64.deb
+	rm -Rf "${srcdir}"/clinfo-amdgpu-pro_16.50-362463_amd64
+	mkdir "${srcdir}"/clinfo-amdgpu-pro_16.50-362463_amd64
+	cd "${srcdir}"/clinfo-amdgpu-pro_16.50-362463_amd64
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./clinfo-amdgpu-pro_16.50-362463_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
@@ -207,10 +192,10 @@ package_lib32-gst-omx-amdgpu-pro () {
 	depends=('lib32-libglib2.0-0>=2.37.3' 'lib32-libgstreamer-plugins-base1.0-0>=1.6.0' 'lib32-libgstreamer1.0-0>=1.0.0' 'lib32-libomxil-bellagio0')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/gst-omx-amdgpu-pro_1.0.0.1-348864_i386
-	mkdir "${srcdir}"/gst-omx-amdgpu-pro_1.0.0.1-348864_i386
-	cd "${srcdir}"/gst-omx-amdgpu-pro_1.0.0.1-348864_i386
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./gst-omx-amdgpu-pro_1.0.0.1-348864_i386.deb
+	rm -Rf "${srcdir}"/gst-omx-amdgpu-pro_1.0.0.1-362463_i386
+	mkdir "${srcdir}"/gst-omx-amdgpu-pro_1.0.0.1-362463_i386
+	cd "${srcdir}"/gst-omx-amdgpu-pro_1.0.0.1-362463_i386
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./gst-omx-amdgpu-pro_1.0.0.1-362463_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
@@ -227,10 +212,10 @@ package_gst-omx-amdgpu-pro () {
 	depends=('libglib2.0-0>=2.37.3' 'libgstreamer-plugins-base1.0-0>=1.6.0' 'libgstreamer1.0-0>=1.0.0' 'libomxil-bellagio0')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/gst-omx-amdgpu-pro_1.0.0.1-348864_amd64
-	mkdir "${srcdir}"/gst-omx-amdgpu-pro_1.0.0.1-348864_amd64
-	cd "${srcdir}"/gst-omx-amdgpu-pro_1.0.0.1-348864_amd64
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./gst-omx-amdgpu-pro_1.0.0.1-348864_amd64.deb
+	rm -Rf "${srcdir}"/gst-omx-amdgpu-pro_1.0.0.1-362463_amd64
+	mkdir "${srcdir}"/gst-omx-amdgpu-pro_1.0.0.1-362463_amd64
+	cd "${srcdir}"/gst-omx-amdgpu-pro_1.0.0.1-362463_amd64
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./gst-omx-amdgpu-pro_1.0.0.1-362463_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
@@ -243,13 +228,13 @@ package_gst-omx-amdgpu-pro () {
 
 package_lib32-libdrm-amdgpu-pro-amdgpu1 () {
 	pkgdesc="Userspace interface to amdgpu-specific kernel DRM services -- runtime"
-	depends=('lib32-libdrm2-amdgpu-pro=16.40.348864-1')
+	depends=('lib32-libdrm2-amdgpu-pro=16.50.362463-1')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/libdrm-amdgpu-pro-amdgpu1_1:2.4.66-348864_i386
-	mkdir "${srcdir}"/libdrm-amdgpu-pro-amdgpu1_1:2.4.66-348864_i386
-	cd "${srcdir}"/libdrm-amdgpu-pro-amdgpu1_1:2.4.66-348864_i386
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libdrm-amdgpu-pro-amdgpu1_2.4.66-348864_i386.deb
+	rm -Rf "${srcdir}"/libdrm-amdgpu-pro-amdgpu1_1:2.4.70-362463_i386
+	mkdir "${srcdir}"/libdrm-amdgpu-pro-amdgpu1_1:2.4.70-362463_i386
+	cd "${srcdir}"/libdrm-amdgpu-pro-amdgpu1_1:2.4.70-362463_i386
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libdrm-amdgpu-pro-amdgpu1_2.4.70-362463_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
@@ -263,13 +248,13 @@ package_lib32-libdrm-amdgpu-pro-amdgpu1 () {
 
 package_libdrm-amdgpu-pro-amdgpu1 () {
 	pkgdesc="Userspace interface to amdgpu-specific kernel DRM services -- runtime"
-	depends=('libdrm2-amdgpu-pro=16.40.348864-1')
+	depends=('libdrm2-amdgpu-pro=16.50.362463-1')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/libdrm-amdgpu-pro-amdgpu1_1:2.4.66-348864_amd64
-	mkdir "${srcdir}"/libdrm-amdgpu-pro-amdgpu1_1:2.4.66-348864_amd64
-	cd "${srcdir}"/libdrm-amdgpu-pro-amdgpu1_1:2.4.66-348864_amd64
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libdrm-amdgpu-pro-amdgpu1_2.4.66-348864_amd64.deb
+	rm -Rf "${srcdir}"/libdrm-amdgpu-pro-amdgpu1_1:2.4.70-362463_amd64
+	mkdir "${srcdir}"/libdrm-amdgpu-pro-amdgpu1_1:2.4.70-362463_amd64
+	cd "${srcdir}"/libdrm-amdgpu-pro-amdgpu1_1:2.4.70-362463_amd64
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libdrm-amdgpu-pro-amdgpu1_2.4.70-362463_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
@@ -282,13 +267,13 @@ package_libdrm-amdgpu-pro-amdgpu1 () {
 
 package_libdrm-amdgpu-pro-dev () {
 	pkgdesc="Userspace interface to kernel DRM services -- development files"
-	depends=('libdrm2-amdgpu-pro=16.40.348864-1' 'libdrm-amdgpu-pro-amdgpu1=16.40.348864-1')
+	depends=('libdrm2-amdgpu-pro=16.50.362463-1' 'libdrm-amdgpu-pro-amdgpu1=16.50.362463-1')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/libdrm-amdgpu-pro-dev_1:2.4.66-348864_amd64
-	mkdir "${srcdir}"/libdrm-amdgpu-pro-dev_1:2.4.66-348864_amd64
-	cd "${srcdir}"/libdrm-amdgpu-pro-dev_1:2.4.66-348864_amd64
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libdrm-amdgpu-pro-dev_2.4.66-348864_amd64.deb
+	rm -Rf "${srcdir}"/libdrm-amdgpu-pro-dev_1:2.4.70-362463_amd64
+	mkdir "${srcdir}"/libdrm-amdgpu-pro-dev_1:2.4.70-362463_amd64
+	cd "${srcdir}"/libdrm-amdgpu-pro-dev_1:2.4.70-362463_amd64
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libdrm-amdgpu-pro-dev_2.4.70-362463_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
@@ -301,13 +286,13 @@ package_libdrm-amdgpu-pro-dev () {
 
 package_lib32-libdrm-amdgpu-pro-dev () {
 	pkgdesc="Userspace interface to kernel DRM services -- development files"
-	depends=('lib32-libdrm2-amdgpu-pro=16.40.348864-1' 'lib32-libdrm-amdgpu-pro-amdgpu1=16.40.348864-1')
+	depends=('lib32-libdrm2-amdgpu-pro=16.50.362463-1' 'lib32-libdrm-amdgpu-pro-amdgpu1=16.50.362463-1')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/libdrm-amdgpu-pro-dev_1:2.4.66-348864_i386
-	mkdir "${srcdir}"/libdrm-amdgpu-pro-dev_1:2.4.66-348864_i386
-	cd "${srcdir}"/libdrm-amdgpu-pro-dev_1:2.4.66-348864_i386
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libdrm-amdgpu-pro-dev_2.4.66-348864_i386.deb
+	rm -Rf "${srcdir}"/libdrm-amdgpu-pro-dev_1:2.4.70-362463_i386
+	mkdir "${srcdir}"/libdrm-amdgpu-pro-dev_1:2.4.70-362463_i386
+	cd "${srcdir}"/libdrm-amdgpu-pro-dev_1:2.4.70-362463_i386
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libdrm-amdgpu-pro-dev_2.4.70-362463_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
@@ -321,13 +306,13 @@ package_lib32-libdrm-amdgpu-pro-dev () {
 
 package_libdrm-amdgpu-pro-radeon1 () {
 	pkgdesc="Userspace interface to radeon-specific kernel DRM services -- runtime"
-	depends=('libdrm2-amdgpu-pro=16.40.348864-1')
+	depends=('libdrm2-amdgpu-pro=16.50.362463-1')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/libdrm-amdgpu-pro-radeon1_1:2.4.66-348864_amd64
-	mkdir "${srcdir}"/libdrm-amdgpu-pro-radeon1_1:2.4.66-348864_amd64
-	cd "${srcdir}"/libdrm-amdgpu-pro-radeon1_1:2.4.66-348864_amd64
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libdrm-amdgpu-pro-radeon1_2.4.66-348864_amd64.deb
+	rm -Rf "${srcdir}"/libdrm-amdgpu-pro-radeon1_1:2.4.70-362463_amd64
+	mkdir "${srcdir}"/libdrm-amdgpu-pro-radeon1_1:2.4.70-362463_amd64
+	cd "${srcdir}"/libdrm-amdgpu-pro-radeon1_1:2.4.70-362463_amd64
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libdrm-amdgpu-pro-radeon1_2.4.70-362463_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
@@ -340,13 +325,13 @@ package_libdrm-amdgpu-pro-radeon1 () {
 
 package_lib32-libdrm-amdgpu-pro-radeon1 () {
 	pkgdesc="Userspace interface to radeon-specific kernel DRM services -- runtime"
-	depends=('lib32-libdrm2-amdgpu-pro=16.40.348864-1')
+	depends=('lib32-libdrm2-amdgpu-pro=16.50.362463-1')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/libdrm-amdgpu-pro-radeon1_1:2.4.66-348864_i386
-	mkdir "${srcdir}"/libdrm-amdgpu-pro-radeon1_1:2.4.66-348864_i386
-	cd "${srcdir}"/libdrm-amdgpu-pro-radeon1_1:2.4.66-348864_i386
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libdrm-amdgpu-pro-radeon1_2.4.66-348864_i386.deb
+	rm -Rf "${srcdir}"/libdrm-amdgpu-pro-radeon1_1:2.4.70-362463_i386
+	mkdir "${srcdir}"/libdrm-amdgpu-pro-radeon1_1:2.4.70-362463_i386
+	cd "${srcdir}"/libdrm-amdgpu-pro-radeon1_1:2.4.70-362463_i386
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libdrm-amdgpu-pro-radeon1_2.4.70-362463_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
@@ -360,13 +345,13 @@ package_lib32-libdrm-amdgpu-pro-radeon1 () {
 
 package_libdrm-amdgpu-pro-utils () {
 	pkgdesc="Utility programs for the kernel DRM interface."
-	depends=('libdrm2-amdgpu-pro=16.40.348864-1' 'libdrm-amdgpu-pro-amdgpu1=16.40.348864-1' 'cunit')
+	depends=('libdrm2-amdgpu-pro=16.50.362463-1' 'libdrm-amdgpu-pro-amdgpu1=16.50.362463-1' 'cunit')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/libdrm-amdgpu-pro-utils_1:2.4.66-348864_amd64
-	mkdir "${srcdir}"/libdrm-amdgpu-pro-utils_1:2.4.66-348864_amd64
-	cd "${srcdir}"/libdrm-amdgpu-pro-utils_1:2.4.66-348864_amd64
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libdrm-amdgpu-pro-utils_2.4.66-348864_amd64.deb
+	rm -Rf "${srcdir}"/libdrm-amdgpu-pro-utils_1:2.4.70-362463_amd64
+	mkdir "${srcdir}"/libdrm-amdgpu-pro-utils_1:2.4.70-362463_amd64
+	cd "${srcdir}"/libdrm-amdgpu-pro-utils_1:2.4.70-362463_amd64
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libdrm-amdgpu-pro-utils_2.4.70-362463_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
@@ -379,13 +364,13 @@ package_libdrm-amdgpu-pro-utils () {
 
 package_lib32-libdrm-amdgpu-pro-utils () {
 	pkgdesc="Utility programs for the kernel DRM interface."
-	depends=('lib32-libdrm2-amdgpu-pro=16.40.348864-1' 'lib32-libdrm-amdgpu-pro-amdgpu1=16.40.348864-1' 'lib32-cunit')
+	depends=('lib32-libdrm2-amdgpu-pro=16.50.362463-1' 'lib32-libdrm-amdgpu-pro-amdgpu1=16.50.362463-1' 'lib32-cunit')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/libdrm-amdgpu-pro-utils_1:2.4.66-348864_i386
-	mkdir "${srcdir}"/libdrm-amdgpu-pro-utils_1:2.4.66-348864_i386
-	cd "${srcdir}"/libdrm-amdgpu-pro-utils_1:2.4.66-348864_i386
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libdrm-amdgpu-pro-utils_2.4.66-348864_i386.deb
+	rm -Rf "${srcdir}"/libdrm-amdgpu-pro-utils_1:2.4.70-362463_i386
+	mkdir "${srcdir}"/libdrm-amdgpu-pro-utils_1:2.4.70-362463_i386
+	cd "${srcdir}"/libdrm-amdgpu-pro-utils_1:2.4.70-362463_i386
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libdrm-amdgpu-pro-utils_2.4.70-362463_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
@@ -402,10 +387,10 @@ package_libdrm2-amdgpu-pro () {
 	depends=()
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/libdrm2-amdgpu-pro_1:2.4.66-348864_amd64
-	mkdir "${srcdir}"/libdrm2-amdgpu-pro_1:2.4.66-348864_amd64
-	cd "${srcdir}"/libdrm2-amdgpu-pro_1:2.4.66-348864_amd64
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libdrm2-amdgpu-pro_2.4.66-348864_amd64.deb
+	rm -Rf "${srcdir}"/libdrm2-amdgpu-pro_1:2.4.70-362463_amd64
+	mkdir "${srcdir}"/libdrm2-amdgpu-pro_1:2.4.70-362463_amd64
+	cd "${srcdir}"/libdrm2-amdgpu-pro_1:2.4.70-362463_amd64
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libdrm2-amdgpu-pro_2.4.70-362463_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
@@ -424,10 +409,10 @@ package_lib32-libdrm2-amdgpu-pro () {
 	depends=()
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/libdrm2-amdgpu-pro_1:2.4.66-348864_i386
-	mkdir "${srcdir}"/libdrm2-amdgpu-pro_1:2.4.66-348864_i386
-	cd "${srcdir}"/libdrm2-amdgpu-pro_1:2.4.66-348864_i386
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libdrm2-amdgpu-pro_2.4.66-348864_i386.deb
+	rm -Rf "${srcdir}"/libdrm2-amdgpu-pro_1:2.4.70-362463_i386
+	mkdir "${srcdir}"/libdrm2-amdgpu-pro_1:2.4.70-362463_i386
+	cd "${srcdir}"/libdrm2-amdgpu-pro_1:2.4.70-362463_i386
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libdrm2-amdgpu-pro_2.4.70-362463_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
@@ -444,10 +429,10 @@ package_libegl1-amdgpu-pro () {
 	depends=()
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/libegl1-amdgpu-pro_16.40-348864_amd64
-	mkdir "${srcdir}"/libegl1-amdgpu-pro_16.40-348864_amd64
-	cd "${srcdir}"/libegl1-amdgpu-pro_16.40-348864_amd64
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libegl1-amdgpu-pro_16.40-348864_amd64.deb
+	rm -Rf "${srcdir}"/libegl1-amdgpu-pro_16.50-362463_amd64
+	mkdir "${srcdir}"/libegl1-amdgpu-pro_16.50-362463_amd64
+	cd "${srcdir}"/libegl1-amdgpu-pro_16.50-362463_amd64
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libegl1-amdgpu-pro_16.50-362463_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
@@ -463,10 +448,10 @@ package_lib32-libegl1-amdgpu-pro () {
 	depends=()
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/libegl1-amdgpu-pro_16.40-348864_i386
-	mkdir "${srcdir}"/libegl1-amdgpu-pro_16.40-348864_i386
-	cd "${srcdir}"/libegl1-amdgpu-pro_16.40-348864_i386
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libegl1-amdgpu-pro_16.40-348864_i386.deb
+	rm -Rf "${srcdir}"/libegl1-amdgpu-pro_16.50-362463_i386
+	mkdir "${srcdir}"/libegl1-amdgpu-pro_16.50-362463_i386
+	cd "${srcdir}"/libegl1-amdgpu-pro_16.50-362463_i386
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libegl1-amdgpu-pro_16.50-362463_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
@@ -480,13 +465,13 @@ package_lib32-libegl1-amdgpu-pro () {
 
 package_lib32-libgbm1-amdgpu-pro () {
 	pkgdesc="Generic buffer management API -- runtime"
-	depends=('lib32-libdrm-amdgpu-pro-amdgpu1=16.40.348864-1' 'lib32-libgbm1-amdgpu-pro-base=16.40.348864-1' 'lib32-libdrm2-amdgpu-pro=16.40.348864-1')
+	depends=('lib32-libdrm-amdgpu-pro-amdgpu1=16.50.362463-1' 'lib32-libgbm1-amdgpu-pro-base=16.50.362463-1' 'lib32-libdrm2-amdgpu-pro=16.50.362463-1')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/libgbm1-amdgpu-pro_16.40-348864_i386
-	mkdir "${srcdir}"/libgbm1-amdgpu-pro_16.40-348864_i386
-	cd "${srcdir}"/libgbm1-amdgpu-pro_16.40-348864_i386
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libgbm1-amdgpu-pro_16.40-348864_i386.deb
+	rm -Rf "${srcdir}"/libgbm1-amdgpu-pro_16.50-362463_i386
+	mkdir "${srcdir}"/libgbm1-amdgpu-pro_16.50-362463_i386
+	cd "${srcdir}"/libgbm1-amdgpu-pro_16.50-362463_i386
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libgbm1-amdgpu-pro_16.50-362463_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
@@ -500,13 +485,13 @@ package_lib32-libgbm1-amdgpu-pro () {
 
 package_libgbm1-amdgpu-pro () {
 	pkgdesc="Generic buffer management API -- runtime"
-	depends=('libdrm-amdgpu-pro-amdgpu1=16.40.348864-1' 'libgbm1-amdgpu-pro-base=16.40.348864-1' 'libdrm2-amdgpu-pro=16.40.348864-1')
+	depends=('libdrm-amdgpu-pro-amdgpu1=16.50.362463-1' 'libgbm1-amdgpu-pro-base=16.50.362463-1' 'libdrm2-amdgpu-pro=16.50.362463-1')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/libgbm1-amdgpu-pro_16.40-348864_amd64
-	mkdir "${srcdir}"/libgbm1-amdgpu-pro_16.40-348864_amd64
-	cd "${srcdir}"/libgbm1-amdgpu-pro_16.40-348864_amd64
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libgbm1-amdgpu-pro_16.40-348864_amd64.deb
+	rm -Rf "${srcdir}"/libgbm1-amdgpu-pro_16.50-362463_amd64
+	mkdir "${srcdir}"/libgbm1-amdgpu-pro_16.50-362463_amd64
+	cd "${srcdir}"/libgbm1-amdgpu-pro_16.50-362463_amd64
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libgbm1-amdgpu-pro_16.50-362463_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
@@ -522,10 +507,10 @@ package_libgbm1-amdgpu-pro-base () {
 	depends=()
 	arch=('any')
 
-	rm -Rf "${srcdir}"/libgbm1-amdgpu-pro-base_16.40-348864_all
-	mkdir "${srcdir}"/libgbm1-amdgpu-pro-base_16.40-348864_all
-	cd "${srcdir}"/libgbm1-amdgpu-pro-base_16.40-348864_all
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libgbm1-amdgpu-pro-base_16.40-348864_all.deb
+	rm -Rf "${srcdir}"/libgbm1-amdgpu-pro-base_16.50-362463_all
+	mkdir "${srcdir}"/libgbm1-amdgpu-pro-base_16.50-362463_all
+	cd "${srcdir}"/libgbm1-amdgpu-pro-base_16.50-362463_all
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libgbm1-amdgpu-pro-base_16.50-362463_all.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
@@ -538,13 +523,13 @@ package_libgbm1-amdgpu-pro-base () {
 
 package_libgbm1-amdgpu-pro-dev () {
 	pkgdesc="Generic buffer management API -- development files"
-	depends=('libgbm1-amdgpu-pro=16.40.348864-1')
+	depends=('libgbm1-amdgpu-pro=16.50.362463-1')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/libgbm1-amdgpu-pro-dev_16.40-348864_amd64
-	mkdir "${srcdir}"/libgbm1-amdgpu-pro-dev_16.40-348864_amd64
-	cd "${srcdir}"/libgbm1-amdgpu-pro-dev_16.40-348864_amd64
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libgbm1-amdgpu-pro-dev_16.40-348864_amd64.deb
+	rm -Rf "${srcdir}"/libgbm1-amdgpu-pro-dev_16.50-362463_amd64
+	mkdir "${srcdir}"/libgbm1-amdgpu-pro-dev_16.50-362463_amd64
+	cd "${srcdir}"/libgbm1-amdgpu-pro-dev_16.50-362463_amd64
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libgbm1-amdgpu-pro-dev_16.50-362463_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
@@ -557,13 +542,13 @@ package_libgbm1-amdgpu-pro-dev () {
 
 package_lib32-libgbm1-amdgpu-pro-dev () {
 	pkgdesc="Generic buffer management API -- development files"
-	depends=('lib32-libgbm1-amdgpu-pro=16.40.348864-1')
+	depends=('lib32-libgbm1-amdgpu-pro=16.50.362463-1')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/libgbm1-amdgpu-pro-dev_16.40-348864_i386
-	mkdir "${srcdir}"/libgbm1-amdgpu-pro-dev_16.40-348864_i386
-	cd "${srcdir}"/libgbm1-amdgpu-pro-dev_16.40-348864_i386
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libgbm1-amdgpu-pro-dev_16.40-348864_i386.deb
+	rm -Rf "${srcdir}"/libgbm1-amdgpu-pro-dev_16.50-362463_i386
+	mkdir "${srcdir}"/libgbm1-amdgpu-pro-dev_16.50-362463_i386
+	cd "${srcdir}"/libgbm1-amdgpu-pro-dev_16.50-362463_i386
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libgbm1-amdgpu-pro-dev_16.50-362463_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
@@ -580,10 +565,10 @@ package_libgl1-amdgpu-pro-appprofiles () {
 	depends=()
 	arch=('any')
 
-	rm -Rf "${srcdir}"/libgl1-amdgpu-pro-appprofiles_16.40-348864_all
-	mkdir "${srcdir}"/libgl1-amdgpu-pro-appprofiles_16.40-348864_all
-	cd "${srcdir}"/libgl1-amdgpu-pro-appprofiles_16.40-348864_all
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libgl1-amdgpu-pro-appprofiles_16.40-348864_all.deb
+	rm -Rf "${srcdir}"/libgl1-amdgpu-pro-appprofiles_16.50-362463_all
+	mkdir "${srcdir}"/libgl1-amdgpu-pro-appprofiles_16.50-362463_all
+	cd "${srcdir}"/libgl1-amdgpu-pro-appprofiles_16.50-362463_all
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libgl1-amdgpu-pro-appprofiles_16.50-362463_all.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
@@ -599,10 +584,10 @@ package_libgl1-amdgpu-pro-dri () {
 	depends=('libx11' 'libxext')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/libgl1-amdgpu-pro-dri_16.40-348864_amd64
-	mkdir "${srcdir}"/libgl1-amdgpu-pro-dri_16.40-348864_amd64
-	cd "${srcdir}"/libgl1-amdgpu-pro-dri_16.40-348864_amd64
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libgl1-amdgpu-pro-dri_16.40-348864_amd64.deb
+	rm -Rf "${srcdir}"/libgl1-amdgpu-pro-dri_16.50-362463_amd64
+	mkdir "${srcdir}"/libgl1-amdgpu-pro-dri_16.50-362463_amd64
+	cd "${srcdir}"/libgl1-amdgpu-pro-dri_16.50-362463_amd64
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libgl1-amdgpu-pro-dri_16.50-362463_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
@@ -618,10 +603,10 @@ package_lib32-libgl1-amdgpu-pro-dri () {
 	depends=('lib32-libx11' 'lib32-libxext')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/libgl1-amdgpu-pro-dri_16.40-348864_i386
-	mkdir "${srcdir}"/libgl1-amdgpu-pro-dri_16.40-348864_i386
-	cd "${srcdir}"/libgl1-amdgpu-pro-dri_16.40-348864_i386
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libgl1-amdgpu-pro-dri_16.40-348864_i386.deb
+	rm -Rf "${srcdir}"/libgl1-amdgpu-pro-dri_16.50-362463_i386
+	mkdir "${srcdir}"/libgl1-amdgpu-pro-dri_16.50-362463_i386
+	cd "${srcdir}"/libgl1-amdgpu-pro-dri_16.50-362463_i386
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libgl1-amdgpu-pro-dri_16.50-362463_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
@@ -635,13 +620,13 @@ package_lib32-libgl1-amdgpu-pro-dri () {
 
 package_libgl1-amdgpu-pro-ext () {
 	pkgdesc="xorg GLX exetnsion"
-	depends=('libdrm2-amdgpu-pro=16.40.348864-1' 'libgl1-amdgpu-pro-glx=16.40.348864-1' 'libx11' 'libxcb' 'libxdamage>=1.1' 'libxext' 'libxfixes' 'libxxf86vm')
+	depends=('libdrm2-amdgpu-pro=16.50.362463-1' 'libgl1-amdgpu-pro-glx=16.50.362463-1' 'libx11' 'libxcb' 'libxdamage>=1.1' 'libxext' 'libxfixes' 'libxxf86vm')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/libgl1-amdgpu-pro-ext_16.40-348864_amd64
-	mkdir "${srcdir}"/libgl1-amdgpu-pro-ext_16.40-348864_amd64
-	cd "${srcdir}"/libgl1-amdgpu-pro-ext_16.40-348864_amd64
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libgl1-amdgpu-pro-ext_16.40-348864_amd64.deb
+	rm -Rf "${srcdir}"/libgl1-amdgpu-pro-ext_16.50-362463_amd64
+	mkdir "${srcdir}"/libgl1-amdgpu-pro-ext_16.50-362463_amd64
+	cd "${srcdir}"/libgl1-amdgpu-pro-ext_16.50-362463_amd64
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libgl1-amdgpu-pro-ext_16.50-362463_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
@@ -654,13 +639,13 @@ package_libgl1-amdgpu-pro-ext () {
 
 package_lib32-libgl1-amdgpu-pro-ext () {
 	pkgdesc="xorg GLX exetnsion"
-	depends=('lib32-libdrm2-amdgpu-pro=16.40.348864-1' 'lib32-libgl1-amdgpu-pro-glx=16.40.348864-1' 'lib32-libx11' 'lib32-libxcb' 'lib32-libxdamage>=1.1' 'lib32-libxext' 'lib32-libxfixes' 'lib32-libxxf86vm')
+	depends=('lib32-libdrm2-amdgpu-pro=16.50.362463-1' 'lib32-libgl1-amdgpu-pro-glx=16.50.362463-1' 'lib32-libx11' 'lib32-libxcb' 'lib32-libxdamage>=1.1' 'lib32-libxext' 'lib32-libxfixes' 'lib32-libxxf86vm')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/libgl1-amdgpu-pro-ext_16.40-348864_i386
-	mkdir "${srcdir}"/libgl1-amdgpu-pro-ext_16.40-348864_i386
-	cd "${srcdir}"/libgl1-amdgpu-pro-ext_16.40-348864_i386
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libgl1-amdgpu-pro-ext_16.40-348864_i386.deb
+	rm -Rf "${srcdir}"/libgl1-amdgpu-pro-ext_16.50-362463_i386
+	mkdir "${srcdir}"/libgl1-amdgpu-pro-ext_16.50-362463_i386
+	cd "${srcdir}"/libgl1-amdgpu-pro-ext_16.50-362463_i386
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libgl1-amdgpu-pro-ext_16.50-362463_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
@@ -674,13 +659,13 @@ package_lib32-libgl1-amdgpu-pro-ext () {
 
 package_lib32-libgl1-amdgpu-pro-glx () {
 	pkgdesc="implementation of the OpenGL API -- GLX runtime"
-	depends=('lib32-libdrm2-amdgpu-pro=16.40.348864-1' 'lib32-libx11>=1.4.99.1' 'lib32-libxcb>=1.8' 'lib32-libxcb' 'lib32-libxcb>=1.9.2' 'lib32-libxdamage>=1.1' 'lib32-libxext' 'lib32-libxfixes' 'lib32-libxshmfence' 'lib32-libxxf86vm')
+	depends=('lib32-libdrm2-amdgpu-pro=16.50.362463-1' 'lib32-libx11>=1.4.99.1' 'lib32-libxcb>=1.8' 'lib32-libxcb' 'lib32-libxcb>=1.9.2' 'lib32-libxdamage>=1.1' 'lib32-libxext' 'lib32-libxfixes' 'lib32-libxshmfence' 'lib32-libxxf86vm')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/libgl1-amdgpu-pro-glx_16.40-348864_i386
-	mkdir "${srcdir}"/libgl1-amdgpu-pro-glx_16.40-348864_i386
-	cd "${srcdir}"/libgl1-amdgpu-pro-glx_16.40-348864_i386
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libgl1-amdgpu-pro-glx_16.40-348864_i386.deb
+	rm -Rf "${srcdir}"/libgl1-amdgpu-pro-glx_16.50-362463_i386
+	mkdir "${srcdir}"/libgl1-amdgpu-pro-glx_16.50-362463_i386
+	cd "${srcdir}"/libgl1-amdgpu-pro-glx_16.50-362463_i386
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libgl1-amdgpu-pro-glx_16.50-362463_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
@@ -698,13 +683,13 @@ package_lib32-libgl1-amdgpu-pro-glx () {
 
 package_libgl1-amdgpu-pro-glx () {
 	pkgdesc="implementation of the OpenGL API -- GLX runtime"
-	depends=('libdrm2-amdgpu-pro=16.40.348864-1' 'libx11>=1.4.99.1' 'libxcb>=1.8' 'libxcb' 'libxcb>=1.9.2' 'libxdamage>=1.1' 'libxext' 'libxfixes' 'libxshmfence' 'libxxf86vm')
+	depends=('libdrm2-amdgpu-pro=16.50.362463-1' 'libx11>=1.4.99.1' 'libxcb>=1.8' 'libxcb' 'libxcb>=1.9.2' 'libxdamage>=1.1' 'libxext' 'libxfixes' 'libxshmfence' 'libxxf86vm')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/libgl1-amdgpu-pro-glx_16.40-348864_amd64
-	mkdir "${srcdir}"/libgl1-amdgpu-pro-glx_16.40-348864_amd64
-	cd "${srcdir}"/libgl1-amdgpu-pro-glx_16.40-348864_amd64
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libgl1-amdgpu-pro-glx_16.40-348864_amd64.deb
+	rm -Rf "${srcdir}"/libgl1-amdgpu-pro-glx_16.50-362463_amd64
+	mkdir "${srcdir}"/libgl1-amdgpu-pro-glx_16.50-362463_amd64
+	cd "${srcdir}"/libgl1-amdgpu-pro-glx_16.50-362463_amd64
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libgl1-amdgpu-pro-glx_16.50-362463_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
@@ -721,13 +706,13 @@ package_libgl1-amdgpu-pro-glx () {
 
 package_lib32-libglamor-amdgpu-pro-dev () {
 	pkgdesc="shared graphics acceleration library based on OpenGL -- development files"
-	depends=('lib32-xserver-xorg-video-glamoregl-amdgpu-pro=16.40.348864-1')
+	depends=('lib32-xserver-xorg-video-glamoregl-amdgpu-pro=16.50.362463-1')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/libglamor-amdgpu-pro-dev_1.18.3-348864_i386
-	mkdir "${srcdir}"/libglamor-amdgpu-pro-dev_1.18.3-348864_i386
-	cd "${srcdir}"/libglamor-amdgpu-pro-dev_1.18.3-348864_i386
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libglamor-amdgpu-pro-dev_1.18.3-348864_i386.deb
+	rm -Rf "${srcdir}"/libglamor-amdgpu-pro-dev_1.18.3-362463_i386
+	mkdir "${srcdir}"/libglamor-amdgpu-pro-dev_1.18.3-362463_i386
+	cd "${srcdir}"/libglamor-amdgpu-pro-dev_1.18.3-362463_i386
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libglamor-amdgpu-pro-dev_1.18.3-362463_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
@@ -741,13 +726,13 @@ package_lib32-libglamor-amdgpu-pro-dev () {
 
 package_libglamor-amdgpu-pro-dev () {
 	pkgdesc="shared graphics acceleration library based on OpenGL -- development files"
-	depends=('xserver-xorg-video-glamoregl-amdgpu-pro=16.40.348864-1')
+	depends=('xserver-xorg-video-glamoregl-amdgpu-pro=16.50.362463-1')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/libglamor-amdgpu-pro-dev_1.18.3-348864_amd64
-	mkdir "${srcdir}"/libglamor-amdgpu-pro-dev_1.18.3-348864_amd64
-	cd "${srcdir}"/libglamor-amdgpu-pro-dev_1.18.3-348864_amd64
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libglamor-amdgpu-pro-dev_1.18.3-348864_amd64.deb
+	rm -Rf "${srcdir}"/libglamor-amdgpu-pro-dev_1.18.3-362463_amd64
+	mkdir "${srcdir}"/libglamor-amdgpu-pro-dev_1.18.3-362463_amd64
+	cd "${srcdir}"/libglamor-amdgpu-pro-dev_1.18.3-362463_amd64
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libglamor-amdgpu-pro-dev_1.18.3-362463_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
@@ -760,13 +745,13 @@ package_libglamor-amdgpu-pro-dev () {
 
 package_lib32-libgles2-amdgpu-pro () {
 	pkgdesc="implementation of the OpenGL|ES 2.x API -- runtime"
-	depends=('lib32-libegl1-amdgpu-pro=16.40.348864-1')
+	depends=('lib32-libegl1-amdgpu-pro=16.50.362463-1')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/libgles2-amdgpu-pro_16.40-348864_i386
-	mkdir "${srcdir}"/libgles2-amdgpu-pro_16.40-348864_i386
-	cd "${srcdir}"/libgles2-amdgpu-pro_16.40-348864_i386
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libgles2-amdgpu-pro_16.40-348864_i386.deb
+	rm -Rf "${srcdir}"/libgles2-amdgpu-pro_16.50-362463_i386
+	mkdir "${srcdir}"/libgles2-amdgpu-pro_16.50-362463_i386
+	cd "${srcdir}"/libgles2-amdgpu-pro_16.50-362463_i386
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libgles2-amdgpu-pro_16.50-362463_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
@@ -780,13 +765,13 @@ package_lib32-libgles2-amdgpu-pro () {
 
 package_libgles2-amdgpu-pro () {
 	pkgdesc="implementation of the OpenGL|ES 2.x API -- runtime"
-	depends=('libegl1-amdgpu-pro=16.40.348864-1')
+	depends=('libegl1-amdgpu-pro=16.50.362463-1')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/libgles2-amdgpu-pro_16.40-348864_amd64
-	mkdir "${srcdir}"/libgles2-amdgpu-pro_16.40-348864_amd64
-	cd "${srcdir}"/libgles2-amdgpu-pro_16.40-348864_amd64
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libgles2-amdgpu-pro_16.40-348864_amd64.deb
+	rm -Rf "${srcdir}"/libgles2-amdgpu-pro_16.50-362463_amd64
+	mkdir "${srcdir}"/libgles2-amdgpu-pro_16.50-362463_amd64
+	cd "${srcdir}"/libgles2-amdgpu-pro_16.50-362463_amd64
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libgles2-amdgpu-pro_16.50-362463_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
@@ -802,10 +787,10 @@ package_libopencl1-amdgpu-pro () {
 	depends=()
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/libopencl1-amdgpu-pro_16.40-348864_amd64
-	mkdir "${srcdir}"/libopencl1-amdgpu-pro_16.40-348864_amd64
-	cd "${srcdir}"/libopencl1-amdgpu-pro_16.40-348864_amd64
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libopencl1-amdgpu-pro_16.40-348864_amd64.deb
+	rm -Rf "${srcdir}"/libopencl1-amdgpu-pro_16.50-362463_amd64
+	mkdir "${srcdir}"/libopencl1-amdgpu-pro_16.50-362463_amd64
+	cd "${srcdir}"/libopencl1-amdgpu-pro_16.50-362463_amd64
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libopencl1-amdgpu-pro_16.50-362463_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
@@ -825,10 +810,10 @@ package_lib32-libopencl1-amdgpu-pro () {
 	depends=()
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/libopencl1-amdgpu-pro_16.40-348864_i386
-	mkdir "${srcdir}"/libopencl1-amdgpu-pro_16.40-348864_i386
-	cd "${srcdir}"/libopencl1-amdgpu-pro_16.40-348864_i386
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libopencl1-amdgpu-pro_16.40-348864_i386.deb
+	rm -Rf "${srcdir}"/libopencl1-amdgpu-pro_16.50-362463_i386
+	mkdir "${srcdir}"/libopencl1-amdgpu-pro_16.50-362463_i386
+	cd "${srcdir}"/libopencl1-amdgpu-pro_16.50-362463_i386
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libopencl1-amdgpu-pro_16.50-362463_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
@@ -846,13 +831,13 @@ package_lib32-libopencl1-amdgpu-pro () {
 
 package_lib32-libvdpau-amdgpu-pro () {
 	pkgdesc="AMDGPU Pro VDPAU driver"
-	depends=('lib32-libdrm-amdgpu-pro-amdgpu1=16.40.348864-1' 'lib32-libdrm2-amdgpu-pro=16.40.348864-1' 'lib32-openssl>=1.0.0' 'lib32-libtinfo>=6' 'lib32-libxcb>=1.8' 'lib32-libxcb' 'lib32-zlib>=1.2.0' 'lib32-libvdpau>=1.1')
+	depends=('lib32-libdrm-amdgpu-pro-amdgpu1=16.50.362463-1' 'lib32-libdrm2-amdgpu-pro=16.50.362463-1' 'lib32-openssl>=1.0.0' 'lib32-libtinfo>=6' 'lib32-libxcb>=1.8' 'lib32-libxcb' 'lib32-zlib>=1.2.0' 'lib32-libvdpau>=1.1')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/libvdpau-amdgpu-pro_1:11.2.2-348864_i386
-	mkdir "${srcdir}"/libvdpau-amdgpu-pro_1:11.2.2-348864_i386
-	cd "${srcdir}"/libvdpau-amdgpu-pro_1:11.2.2-348864_i386
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libvdpau-amdgpu-pro_11.2.2-348864_i386.deb
+	rm -Rf "${srcdir}"/libvdpau-amdgpu-pro_1:12.0.3-362463_i386
+	mkdir "${srcdir}"/libvdpau-amdgpu-pro_1:12.0.3-362463_i386
+	cd "${srcdir}"/libvdpau-amdgpu-pro_1:12.0.3-362463_i386
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libvdpau-amdgpu-pro_12.0.3-362463_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
@@ -866,13 +851,13 @@ package_lib32-libvdpau-amdgpu-pro () {
 
 package_libvdpau-amdgpu-pro () {
 	pkgdesc="AMDGPU Pro VDPAU driver"
-	depends=('libdrm-amdgpu-pro-amdgpu1=16.40.348864-1' 'libdrm2-amdgpu-pro=16.40.348864-1' 'openssl>=1.0.0' 'libtinfo>=6' 'libxcb>=1.8' 'libxcb' 'zlib>=1.2.0' 'libvdpau>=1.1')
+	depends=('libdrm-amdgpu-pro-amdgpu1=16.50.362463-1' 'libdrm2-amdgpu-pro=16.50.362463-1' 'openssl>=1.0.0' 'libtinfo>=6' 'libxcb>=1.8' 'libxcb' 'zlib>=1.2.0' 'libvdpau>=1.1')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/libvdpau-amdgpu-pro_1:11.2.2-348864_amd64
-	mkdir "${srcdir}"/libvdpau-amdgpu-pro_1:11.2.2-348864_amd64
-	cd "${srcdir}"/libvdpau-amdgpu-pro_1:11.2.2-348864_amd64
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./libvdpau-amdgpu-pro_11.2.2-348864_amd64.deb
+	rm -Rf "${srcdir}"/libvdpau-amdgpu-pro_1:12.0.3-362463_amd64
+	mkdir "${srcdir}"/libvdpau-amdgpu-pro_1:12.0.3-362463_amd64
+	cd "${srcdir}"/libvdpau-amdgpu-pro_1:12.0.3-362463_amd64
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./libvdpau-amdgpu-pro_12.0.3-362463_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
@@ -885,13 +870,13 @@ package_libvdpau-amdgpu-pro () {
 
 package_lib32-mesa-amdgpu-pro-omx-drivers () {
 	pkgdesc="Mesa OpenMAX video drivers"
-	depends=('lib32-libdrm-amdgpu-pro-amdgpu1=16.40.348864-1' 'lib32-libdrm2-amdgpu-pro=16.40.348864-1' 'lib32-libomxil-bellagio0' 'lib32-openssl>=1.0.0' 'lib32-libtinfo>=6' 'lib32-libx11' 'lib32-libxcb>=1.8' 'lib32-libxcb' 'lib32-zlib>=1.2.0')
+	depends=('lib32-libdrm-amdgpu-pro-amdgpu1=16.50.362463-1' 'lib32-libdrm2-amdgpu-pro=16.50.362463-1' 'lib32-libomxil-bellagio0' 'lib32-openssl>=1.0.0' 'lib32-libtinfo>=6' 'lib32-libx11' 'lib32-libxcb>=1.8' 'lib32-libxcb' 'lib32-zlib>=1.2.0')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/mesa-amdgpu-pro-omx-drivers_1:11.2.2-348864_i386
-	mkdir "${srcdir}"/mesa-amdgpu-pro-omx-drivers_1:11.2.2-348864_i386
-	cd "${srcdir}"/mesa-amdgpu-pro-omx-drivers_1:11.2.2-348864_i386
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./mesa-amdgpu-pro-omx-drivers_11.2.2-348864_i386.deb
+	rm -Rf "${srcdir}"/mesa-amdgpu-pro-omx-drivers_1:12.0.3-362463_i386
+	mkdir "${srcdir}"/mesa-amdgpu-pro-omx-drivers_1:12.0.3-362463_i386
+	cd "${srcdir}"/mesa-amdgpu-pro-omx-drivers_1:12.0.3-362463_i386
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./mesa-amdgpu-pro-omx-drivers_12.0.3-362463_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
@@ -905,13 +890,13 @@ package_lib32-mesa-amdgpu-pro-omx-drivers () {
 
 package_mesa-amdgpu-pro-omx-drivers () {
 	pkgdesc="Mesa OpenMAX video drivers"
-	depends=('libdrm-amdgpu-pro-amdgpu1=16.40.348864-1' 'libdrm2-amdgpu-pro=16.40.348864-1' 'libomxil-bellagio0' 'openssl>=1.0.0' 'libtinfo>=6' 'libx11' 'libxcb>=1.8' 'libxcb' 'zlib>=1.2.0')
+	depends=('libdrm-amdgpu-pro-amdgpu1=16.50.362463-1' 'libdrm2-amdgpu-pro=16.50.362463-1' 'libomxil-bellagio0' 'openssl>=1.0.0' 'libtinfo>=6' 'libx11' 'libxcb>=1.8' 'libxcb' 'zlib>=1.2.0')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/mesa-amdgpu-pro-omx-drivers_1:11.2.2-348864_amd64
-	mkdir "${srcdir}"/mesa-amdgpu-pro-omx-drivers_1:11.2.2-348864_amd64
-	cd "${srcdir}"/mesa-amdgpu-pro-omx-drivers_1:11.2.2-348864_amd64
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./mesa-amdgpu-pro-omx-drivers_11.2.2-348864_amd64.deb
+	rm -Rf "${srcdir}"/mesa-amdgpu-pro-omx-drivers_1:12.0.3-362463_amd64
+	mkdir "${srcdir}"/mesa-amdgpu-pro-omx-drivers_1:12.0.3-362463_amd64
+	cd "${srcdir}"/mesa-amdgpu-pro-omx-drivers_1:12.0.3-362463_amd64
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./mesa-amdgpu-pro-omx-drivers_12.0.3-362463_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
@@ -927,10 +912,10 @@ package_lib32-opencl-amdgpu-pro-icd () {
 	depends=()
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/opencl-amdgpu-pro-icd_16.40-348864_i386
-	mkdir "${srcdir}"/opencl-amdgpu-pro-icd_16.40-348864_i386
-	cd "${srcdir}"/opencl-amdgpu-pro-icd_16.40-348864_i386
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./opencl-amdgpu-pro-icd_16.40-348864_i386.deb
+	rm -Rf "${srcdir}"/opencl-amdgpu-pro-icd_16.50-362463_i386
+	mkdir "${srcdir}"/opencl-amdgpu-pro-icd_16.50-362463_i386
+	cd "${srcdir}"/opencl-amdgpu-pro-icd_16.50-362463_i386
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./opencl-amdgpu-pro-icd_16.50-362463_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
@@ -947,10 +932,10 @@ package_opencl-amdgpu-pro-icd () {
 	depends=()
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/opencl-amdgpu-pro-icd_16.40-348864_amd64
-	mkdir "${srcdir}"/opencl-amdgpu-pro-icd_16.40-348864_amd64
-	cd "${srcdir}"/opencl-amdgpu-pro-icd_16.40-348864_amd64
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./opencl-amdgpu-pro-icd_16.40-348864_amd64.deb
+	rm -Rf "${srcdir}"/opencl-amdgpu-pro-icd_16.50-362463_amd64
+	mkdir "${srcdir}"/opencl-amdgpu-pro-icd_16.50-362463_amd64
+	cd "${srcdir}"/opencl-amdgpu-pro-icd_16.50-362463_amd64
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./opencl-amdgpu-pro-icd_16.50-362463_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
@@ -963,13 +948,13 @@ package_opencl-amdgpu-pro-icd () {
 
 package_vulkan-amdgpu-pro () {
 	pkgdesc="AMDGPU Pro Vulkan driver"
-	depends=('libdrm-amdgpu-pro-amdgpu1=16.40.348864-1')
+	depends=('libdrm-amdgpu-pro-amdgpu1=16.50.362463-1')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/vulkan-amdgpu-pro_16.40-348864_amd64
-	mkdir "${srcdir}"/vulkan-amdgpu-pro_16.40-348864_amd64
-	cd "${srcdir}"/vulkan-amdgpu-pro_16.40-348864_amd64
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./vulkan-amdgpu-pro_16.40-348864_amd64.deb
+	rm -Rf "${srcdir}"/vulkan-amdgpu-pro_16.50-362463_amd64
+	mkdir "${srcdir}"/vulkan-amdgpu-pro_16.50-362463_amd64
+	cd "${srcdir}"/vulkan-amdgpu-pro_16.50-362463_amd64
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./vulkan-amdgpu-pro_16.50-362463_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
@@ -982,13 +967,13 @@ package_vulkan-amdgpu-pro () {
 
 package_lib32-vulkan-amdgpu-pro () {
 	pkgdesc="AMDGPU Pro Vulkan driver"
-	depends=('lib32-libdrm-amdgpu-pro-amdgpu1=16.40.348864-1')
+	depends=('lib32-libdrm-amdgpu-pro-amdgpu1=16.50.362463-1')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/vulkan-amdgpu-pro_16.40-348864_i386
-	mkdir "${srcdir}"/vulkan-amdgpu-pro_16.40-348864_i386
-	cd "${srcdir}"/vulkan-amdgpu-pro_16.40-348864_i386
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./vulkan-amdgpu-pro_16.40-348864_i386.deb
+	rm -Rf "${srcdir}"/vulkan-amdgpu-pro_16.50-362463_i386
+	mkdir "${srcdir}"/vulkan-amdgpu-pro_16.50-362463_i386
+	cd "${srcdir}"/vulkan-amdgpu-pro_16.50-362463_i386
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./vulkan-amdgpu-pro_16.50-362463_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
@@ -1002,13 +987,13 @@ package_lib32-vulkan-amdgpu-pro () {
 
 package_lib32-xserver-xorg-video-amdgpu-pro () {
 	pkgdesc="X.Org X server -- AMD/ATI Radeon display driver"
-	depends=('lib32-libdrm-amdgpu-pro-amdgpu1=16.40.348864-1' 'lib32-libgbm1-amdgpu-pro=16.40.348864-1' 'lib32-libsystemd>=183')
+	depends=('lib32-libdrm-amdgpu-pro-amdgpu1=16.50.362463-1' 'lib32-libgbm1-amdgpu-pro=16.50.362463-1' 'lib32-libsystemd>=183')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/xserver-xorg-video-amdgpu-pro_1:1.1.99-348864_i386
-	mkdir "${srcdir}"/xserver-xorg-video-amdgpu-pro_1:1.1.99-348864_i386
-	cd "${srcdir}"/xserver-xorg-video-amdgpu-pro_1:1.1.99-348864_i386
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./xserver-xorg-video-amdgpu-pro_1.1.99-348864_i386.deb
+	rm -Rf "${srcdir}"/xserver-xorg-video-amdgpu-pro_1:1.1.99-362463_i386
+	mkdir "${srcdir}"/xserver-xorg-video-amdgpu-pro_1:1.1.99-362463_i386
+	cd "${srcdir}"/xserver-xorg-video-amdgpu-pro_1:1.1.99-362463_i386
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./xserver-xorg-video-amdgpu-pro_1.1.99-362463_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
@@ -1022,13 +1007,13 @@ package_lib32-xserver-xorg-video-amdgpu-pro () {
 
 package_xserver-xorg-video-amdgpu-pro () {
 	pkgdesc="X.Org X server -- AMD/ATI Radeon display driver"
-	depends=('libdrm-amdgpu-pro-amdgpu1=16.40.348864-1' 'libgbm1-amdgpu-pro=16.40.348864-1' 'libsystemd>=183')
+	depends=('libdrm-amdgpu-pro-amdgpu1=16.50.362463-1' 'libgbm1-amdgpu-pro=16.50.362463-1' 'libsystemd>=183')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/xserver-xorg-video-amdgpu-pro_1:1.1.99-348864_amd64
-	mkdir "${srcdir}"/xserver-xorg-video-amdgpu-pro_1:1.1.99-348864_amd64
-	cd "${srcdir}"/xserver-xorg-video-amdgpu-pro_1:1.1.99-348864_amd64
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./xserver-xorg-video-amdgpu-pro_1.1.99-348864_amd64.deb
+	rm -Rf "${srcdir}"/xserver-xorg-video-amdgpu-pro_1:1.1.99-362463_amd64
+	mkdir "${srcdir}"/xserver-xorg-video-amdgpu-pro_1:1.1.99-362463_amd64
+	cd "${srcdir}"/xserver-xorg-video-amdgpu-pro_1:1.1.99-362463_amd64
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./xserver-xorg-video-amdgpu-pro_1.1.99-362463_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
@@ -1047,13 +1032,13 @@ package_xserver-xorg-video-amdgpu-pro () {
 
 package_lib32-xserver-xorg-video-glamoregl-amdgpu-pro () {
 	pkgdesc="X.Org X server -- graphics acceleration module based on OpenGL"
-	depends=('lib32-libdrm2-amdgpu-pro=16.40.348864-1' 'lib32-libepoxy>=1.0' 'lib32-libgbm1-amdgpu-pro=16.40.348864-1')
+	depends=('lib32-libdrm2-amdgpu-pro=16.50.362463-1' 'lib32-libepoxy>=1.0' 'lib32-libgbm1-amdgpu-pro=16.50.362463-1')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/xserver-xorg-video-glamoregl-amdgpu-pro_1.18.3-348864_i386
-	mkdir "${srcdir}"/xserver-xorg-video-glamoregl-amdgpu-pro_1.18.3-348864_i386
-	cd "${srcdir}"/xserver-xorg-video-glamoregl-amdgpu-pro_1.18.3-348864_i386
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./xserver-xorg-video-glamoregl-amdgpu-pro_1.18.3-348864_i386.deb
+	rm -Rf "${srcdir}"/xserver-xorg-video-glamoregl-amdgpu-pro_1.18.3-362463_i386
+	mkdir "${srcdir}"/xserver-xorg-video-glamoregl-amdgpu-pro_1.18.3-362463_i386
+	cd "${srcdir}"/xserver-xorg-video-glamoregl-amdgpu-pro_1.18.3-362463_i386
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./xserver-xorg-video-glamoregl-amdgpu-pro_1.18.3-362463_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
@@ -1067,13 +1052,13 @@ package_lib32-xserver-xorg-video-glamoregl-amdgpu-pro () {
 
 package_xserver-xorg-video-glamoregl-amdgpu-pro () {
 	pkgdesc="X.Org X server -- graphics acceleration module based on OpenGL"
-	depends=('libdrm2-amdgpu-pro=16.40.348864-1' 'libepoxy>=1.0' 'libgbm1-amdgpu-pro=16.40.348864-1')
+	depends=('libdrm2-amdgpu-pro=16.50.362463-1' 'libepoxy>=1.0' 'libgbm1-amdgpu-pro=16.50.362463-1')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/xserver-xorg-video-glamoregl-amdgpu-pro_1.18.3-348864_amd64
-	mkdir "${srcdir}"/xserver-xorg-video-glamoregl-amdgpu-pro_1.18.3-348864_amd64
-	cd "${srcdir}"/xserver-xorg-video-glamoregl-amdgpu-pro_1.18.3-348864_amd64
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./xserver-xorg-video-glamoregl-amdgpu-pro_1.18.3-348864_amd64.deb
+	rm -Rf "${srcdir}"/xserver-xorg-video-glamoregl-amdgpu-pro_1.18.3-362463_amd64
+	mkdir "${srcdir}"/xserver-xorg-video-glamoregl-amdgpu-pro_1.18.3-362463_amd64
+	cd "${srcdir}"/xserver-xorg-video-glamoregl-amdgpu-pro_1.18.3-362463_amd64
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./xserver-xorg-video-glamoregl-amdgpu-pro_1.18.3-362463_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
@@ -1089,10 +1074,10 @@ package_lib32-xserver-xorg-video-modesetting-amdgpu-pro () {
 	depends=('lib32-libsystemd>=183')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/xserver-xorg-video-modesetting-amdgpu-pro_1.18.3-348864_i386
-	mkdir "${srcdir}"/xserver-xorg-video-modesetting-amdgpu-pro_1.18.3-348864_i386
-	cd "${srcdir}"/xserver-xorg-video-modesetting-amdgpu-pro_1.18.3-348864_i386
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./xserver-xorg-video-modesetting-amdgpu-pro_1.18.3-348864_i386.deb
+	rm -Rf "${srcdir}"/xserver-xorg-video-modesetting-amdgpu-pro_1.18.3-362463_i386
+	mkdir "${srcdir}"/xserver-xorg-video-modesetting-amdgpu-pro_1.18.3-362463_i386
+	cd "${srcdir}"/xserver-xorg-video-modesetting-amdgpu-pro_1.18.3-362463_i386
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./xserver-xorg-video-modesetting-amdgpu-pro_1.18.3-362463_i386.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/i386-linux-gnu" ]; then
@@ -1109,10 +1094,10 @@ package_xserver-xorg-video-modesetting-amdgpu-pro () {
 	depends=('libsystemd>=183')
 	arch=('x86_64')
 
-	rm -Rf "${srcdir}"/xserver-xorg-video-modesetting-amdgpu-pro_1.18.3-348864_amd64
-	mkdir "${srcdir}"/xserver-xorg-video-modesetting-amdgpu-pro_1.18.3-348864_amd64
-	cd "${srcdir}"/xserver-xorg-video-modesetting-amdgpu-pro_1.18.3-348864_amd64
-	ar x "${srcdir}"/amdgpu-pro-16.40-348864/./xserver-xorg-video-modesetting-amdgpu-pro_1.18.3-348864_amd64.deb
+	rm -Rf "${srcdir}"/xserver-xorg-video-modesetting-amdgpu-pro_1.18.3-362463_amd64
+	mkdir "${srcdir}"/xserver-xorg-video-modesetting-amdgpu-pro_1.18.3-362463_amd64
+	cd "${srcdir}"/xserver-xorg-video-modesetting-amdgpu-pro_1.18.3-362463_amd64
+	ar x "${srcdir}"/amdgpu-pro-16.50-362463/./xserver-xorg-video-modesetting-amdgpu-pro_1.18.3-362463_amd64.deb
 	tar -C "${pkgdir}" -xf data.tar.xz
 
 	if [ -d "${pkgdir}/usr/lib/x86_64-linux-gnu" ]; then
