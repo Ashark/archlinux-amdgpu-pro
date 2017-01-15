@@ -7,18 +7,20 @@ import subprocess
 import hashlib
 import glob
 
-pkgver_base = "16.30.3"
-pkgver_build = "315407"
-pkgrel = 2
+pkgver_base = "16.40"
+pkgver_build = "348864"
+pkgrel = 1
 
 pkgver = "{0}.{1}".format(pkgver_base, pkgver_build)
-url_ref="http://support.amd.com/en-us/kb-articles/Pages/AMDGPU-PRO-Beta-Driver-for-Vulkan-Release-Notes.aspx"
+
+url_ref="https://support.amd.com/en-us/kb-articles/Pages/AMD-Radeon-GPU-PRO-Linux-Beta-Driver%E2%80%93Release-Notes.aspx"
 dlagents="https::/usr/bin/wget --referer {0} -N %u".format(url_ref)
 
-source_url = "https://www2.ati.com/drivers/linux/amdgpu-pro_{0}-{1}.tar.xz".format(pkgver_base, pkgver_build)
+source_name = "amdgpu-pro-{0}-{1}".format(pkgver_base, pkgver_build)
+source_url = "https://www2.ati.com/drivers/linux/ubuntu/{0}.tar.xz".format(source_name)
 
 subprocess.run(["/usr/bin/wget", "--referer", url_ref, "-N", source_url])
-source_file = "amdgpu-pro_{0}-{1}.tar.xz".format(pkgver_base, pkgver_build)
+source_file = "{0}.tar.xz".format(source_name)
 
 def hashFile(file):
     block = 64 * 1024
@@ -70,7 +72,7 @@ package_{NAME} () {{
 	rm -Rf "${{srcdir}}"/{Package}_{Version}_{Architecture}
 	mkdir "${{srcdir}}"/{Package}_{Version}_{Architecture}
 	cd "${{srcdir}}"/{Package}_{Version}_{Architecture}
-	ar x "${{srcdir}}"/amdgpu-pro-driver/{Filename}
+	ar x "${{srcdir}}"/""" + source_name + """/{Filename}
 	tar -C "${{pkgdir}}" -xf data.tar.xz
 """
 
@@ -94,99 +96,38 @@ package_footer = """}
 """
 
 special_ops = {
-	"amdgpu-pro-graphics": """
+	"libgl1-amdgpu-pro-glx": """
 	provides=('libgl')
 	conflicts=('libgl')
 """,
-	"lib32-amdgpu-pro-lib32": """
+	"lib32-libgl1-amdgpu-pro-glx": """
 	provides=('lib32-libgl')
 	conflicts=('lib32-libgl')
 """,
-	"amdgpu-pro-core": """
-	mv ${pkgdir}/lib ${pkgdir}/usr/
-	sed -i 's/\/usr\/lib\/x86_64-linux-gnu\//\/usr\/lib\//' ${pkgdir}/usr/lib/amdgpu-pro/ld.conf
-	sed -i 's/\/usr\/lib\/i386-linux-gnu\//\/usr\/lib32\//' ${pkgdir}/usr/lib/amdgpu-pro/ld.conf
-	mkdir -p ${pkgdir}/etc/ld.so.conf.d/
-	ln -s /usr/lib/amdgpu-pro/ld.conf ${pkgdir}/etc/ld.so.conf.d/10-amdgpu-pro.conf
-	mkdir -p ${pkgdir}/etc/modprobe.d/
-	ln -s /usr/lib/amdgpu-pro/modprobe.conf ${pkgdir}/etc/modprobe.d/amdgpu-pro.conf
-	install=amdgpu-pro-core.install
-""",
+
 	"amdgpu-pro-dkms":
 	    "\t(cd ${{pkgdir}}/usr/src/amdgpu-pro-{0}-{1};\n".format(pkgver_base, pkgver_build) +
-	    "\t\tsed -i 's/\/extra/\/extramodules/' dkms.conf\n" +
-	    ";\n".join(["\t\tpatch -p1 -i \"${{srcdir}}/{0}\"".format(patch) for patch in patches]) +
+	    ";\n".join(["\t\techo applying {0}\n\t\tpatch -p1 -i \"${{srcdir}}/{0}\"".format(patch) for patch in patches]) +
 	    ")\n",
-	"amdgpu-pro-firmware": """
-	mv ${pkgdir}/lib ${pkgdir}/usr/
-	mv ${pkgdir}/usr/lib/firmware ${pkgdir}/usr/lib/firmware.tmp
-	mkdir -p ${pkgdir}/usr/lib/firmware
-	mv ${pkgdir}/usr/lib/firmware.tmp ${pkgdir}/usr/lib/firmware/updates
-""",
+
 	"xserver-xorg-video-amdgpu-pro": """
 	conflicts=('xf86-video-amdgpu')
-	mkdir -p ${pkgdir}/usr/lib/x86_64-linux-gnu
 	# This is needed because libglx.so has a hardcoded DRI_DRIVER_PATH
+	mkdir -p ${pkgdir}/usr/lib/x86_64-linux-gnu
 	ln -s /usr/lib/dri ${pkgdir}/usr/lib/x86_64-linux-gnu/dri
-	mv ${pkgdir}/usr/lib/amdgpu-pro/1.18/ ${pkgdir}/usr/lib/xorg
-	rm -r ${pkgdir}/usr/lib/amdgpu-pro
-""",
-	"libegl1-amdgpu-pro-dev": """
-	mv ${pkgdir}/usr/lib/amdgpu-pro/libEGL* ${pkgdir}/usr/lib
-	rm -r ${pkgdir}/usr/lib/amdgpu-pro
-""",
-	"libegl1-amdgpu-pro": """
-	mv ${pkgdir}/usr/lib/amdgpu-pro/libEGL* ${pkgdir}/usr/lib
-	rm -r ${pkgdir}/usr/lib/amdgpu-pro
-""",
-	"libgl1-amdgpu-pro-dev": """
-	mv ${pkgdir}/usr/lib/amdgpu-pro/libGL* ${pkgdir}/usr/lib
-	rm -r ${pkgdir}/usr/lib/amdgpu-pro
-""",
-	"libgl1-amdgpu-pro-glx": """
-	mv ${pkgdir}/usr/lib/amdgpu-pro/libGL* ${pkgdir}/usr/lib
-	rm -r ${pkgdir}/usr/lib/amdgpu-pro
-""",
-	"libgles2-amdgpu-pro-dev": """
-	mv ${pkgdir}/usr/lib/amdgpu-pro/libGLES* ${pkgdir}/usr/lib
-	rm -r ${pkgdir}/usr/lib/amdgpu-pro
 """,
 
-	"lib32-libegl1-amdgpu-pro-dev": """
-	mv ${pkgdir}/usr/lib32/amdgpu-pro/libEGL* ${pkgdir}/usr/lib32
-	rm -r ${pkgdir}/usr/lib32/amdgpu-pro
-""",
-	"lib32-libegl1-amdgpu-pro": """
-	mv ${pkgdir}/usr/lib32/amdgpu-pro/libEGL* ${pkgdir}/usr/lib32
-	rm -r ${pkgdir}/usr/lib32/amdgpu-pro
-""",
-	"lib32-libgl1-amdgpu-pro-dev": """
-	mv ${pkgdir}/usr/lib32/amdgpu-pro/libGL* ${pkgdir}/usr/lib32
-	rm -r ${pkgdir}/usr/lib32/amdgpu-pro
-""",
-	"lib32-libgl1-amdgpu-pro-glx": """
-	mv ${pkgdir}/usr/lib32/amdgpu-pro/libGL* ${pkgdir}/usr/lib32
-	rm -r ${pkgdir}/usr/lib32/amdgpu-pro
-""",
-	"lib32-libgles2-amdgpu-pro-dev": """
-	mv ${pkgdir}/usr/lib32/amdgpu-pro/libGLES* ${pkgdir}/usr/lib32
-	rm -r ${pkgdir}/usr/lib32/amdgpu-pro
-""",
-
-	"amdgpu-pro-vulkan-driver": """
-	sed -i 's/\/usr\/lib\/x86_64-linux-gnu\//\/usr\/lib\//' ${pkgdir}/etc/vulkan/icd.d/amd_icd64.json
-""",
-	"lib32-amdgpu-pro-vulkan-driver": """
-	sed -i 's/\/usr\/lib\/i386-linux-gnu\//\/usr\/lib32\//' ${pkgdir}/etc/vulkan/icd.d/amd_icd32.json
-""",
-
-	"amdgpu-pro-libopencl-dev": """
+	"libopencl1-amdgpu-pro": """
 	provides=(libcl)
 	conflicts=(libcl)
 """,
-	"lib32-amdgpu-pro-libopencl-dev": """
+	"lib32-libopencl1-amdgpu-pro": """
 	provides=(lib32-libcl)
 	conflicts=(lib32-libcl)
+""",
+
+	"libdrm2-amdgpu-pro": """
+	mv ${pkgdir}/lib ${pkgdir}/usr/
 """,
 }
 
@@ -217,6 +158,8 @@ replace_deps = {
 	"amdgpu-pro-firmware": "linux-firmware",
 	"libssl1.0.0": "openssl",
 	"zlib1g": "zlib",
+	"libtinfo5": "libtinfo",
+	"libvdpau1": "libvdpau",
 }
 
 replace_version = {
@@ -343,6 +286,5 @@ def writePackages(f):
 
 with lzma.open(source_file, "r") as tar:
 	with tarfile.open(fileobj=tar) as tf:
-		with tf.extractfile("amdgpu-pro-driver/Packages.gz") as gz:
-			with gzip.open(gz, "r") as packages:
-				writePackages(packages)
+		with tf.extractfile("{0}/Packages".format(source_name)) as packages:
+			writePackages(packages)
