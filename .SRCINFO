@@ -24,29 +24,29 @@ pkgname = amdgpu-pro
 	pkgdesc = The AMDGPU Pro driver package
 	install = amdgpu-pro-core.install
 	arch = x86_64
-	depends = lib32-amdgpu-pro-libdrm=16.60.379184-0
-	depends = libxxf86vm
-	depends = lib32-amdgpu-pro-opencl=16.60.379184-0
-	depends = libxdamage>=1.1
-	depends = zlib>=1.2.0
 	depends = glib2>=2.37.3
+	depends = gst-plugins-base>=1.6.0
+	depends = gstreamer>=1.0.0
+	depends = lib32-amdgpu-pro-libdrm=16.60.379184-0
+	depends = lib32-amdgpu-pro-opencl=16.60.379184-0
+	depends = lib32-amdgpu-pro-vdpau=16.60.379184-0
+	depends = lib32-amdgpu-pro-vulkan=16.60.379184-0
+	depends = lib32-amdgpu-pro=16.60.379184-0
 	depends = libomxil-bellagio
+	depends = libx11
 	depends = libx11>=1.4.99.1
 	depends = libxcb
-	depends = xf86-video-amdgpu-pro=16.60.379184-0
-	depends = ncurses>=6
 	depends = libxcb>=1.8
 	depends = libxcb>=1.9.2
-	depends = gst-plugins-base>=1.6.0
-	depends = libxfixes
-	depends = gstreamer>=1.0.0
-	depends = libxshmfence
+	depends = libxdamage>=1.1
 	depends = libxext
-	depends = lib32-amdgpu-pro=16.60.379184-0
-	depends = lib32-amdgpu-pro-vulkan=16.60.379184-0
+	depends = libxfixes
+	depends = libxshmfence
+	depends = libxxf86vm
+	depends = ncurses>=6
 	depends = openssl>=1.0.0
-	depends = libx11
-	depends = lib32-amdgpu-pro-vdpau=16.60.379184-0
+	depends = xf86-video-amdgpu-pro=16.60.379184-0
+	depends = zlib>=1.2.0
 
 pkgname = amdgpu-pro-dkms
 	pkgdesc = amdgpu-pro driver in DKMS format.
@@ -75,10 +75,10 @@ pkgname = amdgpu-pro-vdpau
 	pkgdesc = The AMDGPU Pro VDPAU driver
 	arch = x86_64
 	depends = amdgpu-pro-libdrm=16.60.379184-0
-	depends = libxcb
-	depends = ncurses>=6
-	depends = libxcb>=1.8
 	depends = libvdpau>=1.1
+	depends = libxcb
+	depends = libxcb>=1.8
+	depends = ncurses>=6
 	depends = openssl>=1.0.0
 	depends = zlib>=1.2.0
 
@@ -90,30 +90,30 @@ pkgname = amdgpu-pro-vulkan
 pkgname = lib32-amdgpu-pro
 	pkgdesc = Meta package to install amdgpu Pro components. (32bit libraries)
 	arch = x86_64
-	depends = lib32-libxdamage>=1.1
-	depends = lib32-gstreamer>=1.0.0
-	depends = lib32-libx11>=1.4.99.1
-	depends = lib32-libxext
-	depends = amdgpu-pro=16.60.379184-0
-	depends = lib32-libxcb
 	depends = amdgpu-pro-dkms=16.60.379184-0
-	depends = lib32-libxfixes
-	depends = xf86-video-amdgpu-pro=16.60.379184-0
-	depends = lib32-openssl>=1.0.0
-	depends = lib32-libxshmfence
-	depends = lib32-libomxil-bellagio
-	depends = amdgpu-pro-vdpau=16.60.379184-0
 	depends = amdgpu-pro-libdrm=16.60.379184-0
+	depends = amdgpu-pro-opencl=16.60.379184-0
+	depends = amdgpu-pro-vdpau=16.60.379184-0
+	depends = amdgpu-pro-vulkan=16.60.379184-0
+	depends = amdgpu-pro=16.60.379184-0
+	depends = lib32-glib2>=2.37.3
+	depends = lib32-gst-plugins-base>=1.6.0
+	depends = lib32-gstreamer>=1.0.0
+	depends = lib32-libomxil-bellagio
+	depends = lib32-libx11
+	depends = lib32-libx11>=1.4.99.1
+	depends = lib32-libxcb
 	depends = lib32-libxcb>=1.8
 	depends = lib32-libxcb>=1.9.2
-	depends = lib32-libx11
-	depends = amdgpu-pro-vulkan=16.60.379184-0
-	depends = lib32-gst-plugins-base>=1.6.0
-	depends = lib32-ncurses>=6
-	depends = lib32-glib2>=2.37.3
-	depends = amdgpu-pro-opencl=16.60.379184-0
+	depends = lib32-libxdamage>=1.1
+	depends = lib32-libxext
+	depends = lib32-libxfixes
+	depends = lib32-libxshmfence
 	depends = lib32-libxxf86vm
+	depends = lib32-ncurses>=6
+	depends = lib32-openssl>=1.0.0
 	depends = lib32-zlib>=1.2.0
+	depends = xf86-video-amdgpu-pro=16.60.379184-0
 
 pkgname = lib32-amdgpu-pro-libdrm
 	pkgdesc = The AMDGPU Pro userspace interface to kernel DRM services (32bit libraries)
@@ -137,12 +137,12 @@ pkgname = lib32-amdgpu-pro-opencl
 pkgname = lib32-amdgpu-pro-vdpau
 	pkgdesc = The AMDGPU Pro VDPAU driver (32bit libraries)
 	arch = x86_64
-	depends = lib32-libvdpau>=1.1
 	depends = amdgpu-pro-libdrm=16.60.379184-0
-	depends = lib32-libxcb>=1.8
-	depends = lib32-openssl>=1.0.0
-	depends = lib32-ncurses>=6
+	depends = lib32-libvdpau>=1.1
 	depends = lib32-libxcb
+	depends = lib32-libxcb>=1.8
+	depends = lib32-ncurses>=6
+	depends = lib32-openssl>=1.0.0
 	depends = lib32-zlib>=1.2.0
 
 pkgname = lib32-amdgpu-pro-vulkan
@@ -154,10 +154,10 @@ pkgname = xf86-video-amdgpu-pro
 	pkgdesc = The AMDGPU Pro X.org video driver
 	arch = x86_64
 	groups = xorg-driversxorg
-	depends = libsystemd>=183
 	depends = amdgpu-pro-libdrm=16.60.379184-0
-	depends = libepoxy>=1.0
 	depends = amdgpu-pro=16.60.379184-0
+	depends = libepoxy>=1.0
+	depends = libsystemd>=183
 	provides = xf86-video-amdgpu
 	conflicts = xf86-video-amdgpu
 	conflicts = xorg-server<1.18.0

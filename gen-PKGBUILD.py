@@ -309,7 +309,7 @@ class Package:
 			if hasattr(self, 'depends') and self.depends:
 				deps += self.depends
 
-			self.depends = list(set( deps )) # remove duplicates and append to already existing dependencies
+			self.depends = list(sorted(set( deps ))) # remove duplicates and append to already existing dependencies
 
 			if not hasattr(self, 'desc'):
 				desc = info["Description"].split("\n")
