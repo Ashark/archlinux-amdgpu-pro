@@ -29,15 +29,14 @@ def gen_arch_packages():
 				"mv \"${pkgdir}\"/usr/lib/x86_64-linux-gnu/dri ${pkgdir}/usr/lib/",
 				"# This is needed because libglx.so has a hardcoded DRI_DRIVER_PATH",
 				"ln -s /usr/lib/dri ${pkgdir}/usr/lib/x86_64-linux-gnu/dri",
+				'mkdir -p "${pkgdir}/etc/ld.so.conf.d/"',
+				'echo "/opt/amdgpu-pro/lib/x86_64-linux-gnu/" > "${pkgdir}"/etc/ld.so.conf.d/amdgpu-pro.conf',
 
 				"#mkdir -p ${pkgdir}/etc/ld.so.conf.d/",
 				"#ln -s /usr/lib/amdgpu-pro/ld.conf ${pkgdir}/etc/ld.so.conf.d/10-amdgpu-pro.conf",
 				"#mkdir -p ${pkgdir}/etc/modprobe.d/",
 				"#ln -s /usr/lib/amdgpu-pro/modprobe.conf ${pkgdir}/etc/modprobe.d/amdgpu-pro.conf",
 				'#mkdir -p "${pkgdir}"/usr/lib/amdgpu-pro',
-				'#mv "${pkgdir}"/usr/lib/libGLESv2.so* "${pkgdir}"/usr/lib/amdgpu-pro/',
-				'#mv "${pkgdir}"/usr/lib/libGL.so* "${pkgdir}"/usr/lib/amdgpu-pro/',
-				'#mv "${pkgdir}"/usr/lib/libEGL.so* "${pkgdir}"/usr/lib/amdgpu-pro/',
 			]
 		),
 
@@ -59,15 +58,15 @@ def gen_arch_packages():
 			provides  = ['libgl'],
 			depends   = ['amdgpu-pro'],
 			extra_commands = [
-				'mkdir -p "${pkgdir}"/usr/lib',
-				'cd "${pkgdir}"/usr/lib',
-				'ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/libGL.so.1.2   libGL.so.1.2',
-				'ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/libEGL.so.1    libEGL.so.1',
-				'ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/libGLESv2.so.2 libGLESv2.so.2',
-				'ln -s libGL.so.1.2   libGL.so.1',
-				'ln -s libGL.so.1.2   libGL.so',
-				'ln -s libEGL.so.1    libEGL.so',
-				'ln -s libGLESv2.so   libGLESv2.so',
+				'#mkdir -p "${pkgdir}"/usr/lib',
+				'#cd "${pkgdir}"/usr/lib',
+				'#ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/libGL.so.1.2   libGL.so.1.2',
+				'#ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/libEGL.so.1    libEGL.so.1',
+				'#ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/libGLESv2.so.2 libGLESv2.so.2',
+				'#ln -s libGL.so.1.2   libGL.so.1',
+				'#ln -s libGL.so.1.2   libGL.so',
+				'#ln -s libEGL.so.1    libEGL.so',
+				'#ln -s libGLESv2.so   libGLESv2.so',
 			]
 		),
 
@@ -77,14 +76,13 @@ def gen_arch_packages():
 			provides  = ['opencl-driver']
 		),
 		'amdgpu-pro-libdrm': Package(
-			desc = "The AMDGPU Pro userspace interface to kernel DRM services"
+			desc = "The AMDGPU Pro userspace interface to kernel DRM services",
+			conflicts = ['libdrm'],
+			provides = ['libdrm'],
 		),
 
 		'amdgpu-pro-vulkan': Package(
-			desc = "The AMDGPU Pro Vulkan driver",
-			extra_commands = [
-				"#sed -i 's@/usr/lib/x86_64-linux-gnu/@/usr/lib/@' ${pkgdir}/etc/vulkan/icd.d/amd_icd64.json"
-			]
+			desc = "The AMDGPU Pro Vulkan driver"
 		),
 
 		'amdgpu-pro-vdpau': Package(
@@ -95,10 +93,8 @@ def gen_arch_packages():
 			desk = "The AMDGPU Pro driver package (32bit libraries)",
 			extra_commands = [
 				'rm -rf "${pkgdir}"/etc',
-				'#mkdir -p "${pkgdir}"/usr/lib32/amdgpu-pro',
-				'#mv "${pkgdir}"/usr/lib32/libGLESv2.so* "${pkgdir}"/usr/lib32/amdgpu-pro/',
-				'#mv "${pkgdir}"/usr/lib32/libGL.so* "${pkgdir}"/usr/lib32/amdgpu-pro/',
-				'#mv "${pkgdir}"/usr/lib32/libEGL.so* "${pkgdir}"/usr/lib32/amdgpu-pro/',
+				'mkdir -p "${pkgdir}/etc/ld.so.conf.d/"',
+				'echo "/opt/amdgpu-pro/lib/i386-linux-gnu/" > "${pkgdir}"/etc/ld.so.conf.d/lib32-amdgpu-pro.conf'
 			]
 		),
 
@@ -116,7 +112,9 @@ def gen_arch_packages():
 		),
 
 		'lib32-amdgpu-pro-libdrm': Package(
-			desc = "The AMDGPU Pro userspace interface to kernel DRM services (32bit libraries)"
+			desc = "The AMDGPU Pro userspace interface to kernel DRM services (32bit libraries)",
+			conflicts = ['lib32-libdrm'],
+			provides = ['lib32-libdrm'],
 		),
 
 		'lib32-amdgpu-pro-libgl': Package(
@@ -125,15 +123,15 @@ def gen_arch_packages():
 			provides  = ['lib32-libgl'],
 			depends   = ['lib32-amdgpu-pro'],
 			extra_commands = [
-				'mkdir -p "${pkgdir}"/usr/lib32',
-				'cd "${pkgdir}"/usr/lib32',
-				'ln -s /opt/amdgpu-pro/lib/i386-linux-gnu/libGL.so.1.2   libGL.so.1.2',
-				'ln -s /opt/amdgpu-pro/lib/i386-linux-gnu/libEGL.so.1    libEGL.so.1',
-				'ln -s /opt/amdgpu-pro/lib/i386-linux-gnu/libGLESv2.so.2 libGLESv2.so.2',
-				'ln -s libGL.so.1.2   libGL.so.1',
-				'ln -s libGL.so.1.2   libGL.so',
-				'ln -s libEGL.so.1    libEGL.so',
-				'ln -s libGLESv2.so   libGLESv2.so',
+				'#mkdir -p "${pkgdir}"/usr/lib32',
+				'#cd "${pkgdir}"/usr/lib32',
+				'#ln -s /opt/amdgpu-pro/lib/i386-linux-gnu/libGL.so.1.2   libGL.so.1.2',
+				'#ln -s /opt/amdgpu-pro/lib/i386-linux-gnu/libEGL.so.1    libEGL.so.1',
+				'#ln -s /opt/amdgpu-pro/lib/i386-linux-gnu/libGLESv2.so.2 libGLESv2.so.2',
+				'#ln -s libGL.so.1.2   libGL.so.1',
+				'#ln -s libGL.so.1.2   libGL.so',
+				'#ln -s libEGL.so.1    libEGL.so',
+				'#ln -s libGLESv2.so   libGLESv2.so',
 			]
 		),
 

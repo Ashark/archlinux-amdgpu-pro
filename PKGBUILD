@@ -19,14 +19,16 @@ source=(https://www2.ati.com/drivers/linux/ubuntu/amdgpu-pro-16.60-379184.tar.xz
 	0003-fix_drm_connector.patch
 	0004-Change-seq_printf-format-for-64-bit-context.patch
 	0005-fix_drm_vma_node_verify_access.patch
-	0006-fix_dm_plane_helper_funcs.patch)
+	0006-fix_dm_plane_helper_funcs.patch
+	0007-disable-dal-by-default.patch)
 sha256sums=(d88b5a747ac765a75eb738aaf5641428c3b1c9c02bc6fde452c423de7dd620bd
 	400df0077464003fad74bb77a8f6e5ba24bffc7c2e32e6b3f0dab08a17eb3486
 	5708b6641bd62fe768e1cb36f88d0895c4fdf90d1d3110033bafdabc47fe1e31
 	b6a98ed84733bab544461991f642dc1a73ee065b32f7c1b3a235d5e2bc814943
 	21c78811107d8ee59f3566d21ed4a7ccfd622f4e07350fca7ed662392ab07190
 	f743cd2205645cf10640d4d2f781b6b158b3d9f0ed15666b3f9bc7fc082be4a8
-	b10bb6b2382f995ee90f9cc807b69cb336d0edb65096b66df315f0c60132e04d)
+	b10bb6b2382f995ee90f9cc807b69cb336d0edb65096b66df315f0c60132e04d
+	e28d79fcb808d7c275938a4d9871da3138fdd38eb7c1c69495bf9a9d36dc271a)
 
 PKGEXT=".pkg.tar"
 
@@ -90,14 +92,13 @@ package_amdgpu-pro () {
 	mv "${pkgdir}"/usr/lib/x86_64-linux-gnu/dri ${pkgdir}/usr/lib/
 	# This is needed because libglx.so has a hardcoded DRI_DRIVER_PATH
 	ln -s /usr/lib/dri ${pkgdir}/usr/lib/x86_64-linux-gnu/dri
+	mkdir -p "${pkgdir}/etc/ld.so.conf.d/"
+	echo "/opt/amdgpu-pro/lib/x86_64-linux-gnu/" > "${pkgdir}"/etc/ld.so.conf.d/amdgpu-pro.conf
 	#mkdir -p ${pkgdir}/etc/ld.so.conf.d/
 	#ln -s /usr/lib/amdgpu-pro/ld.conf ${pkgdir}/etc/ld.so.conf.d/10-amdgpu-pro.conf
 	#mkdir -p ${pkgdir}/etc/modprobe.d/
 	#ln -s /usr/lib/amdgpu-pro/modprobe.conf ${pkgdir}/etc/modprobe.d/amdgpu-pro.conf
 	#mkdir -p "${pkgdir}"/usr/lib/amdgpu-pro
-	#mv "${pkgdir}"/usr/lib/libGLESv2.so* "${pkgdir}"/usr/lib/amdgpu-pro/
-	#mv "${pkgdir}"/usr/lib/libGL.so* "${pkgdir}"/usr/lib/amdgpu-pro/
-	#mv "${pkgdir}"/usr/lib/libEGL.so* "${pkgdir}"/usr/lib/amdgpu-pro/
 }
 
 
@@ -126,7 +127,9 @@ package_amdgpu-pro-dkms () {
 		msg2 '0005-fix_drm_vma_node_verify_access.patch'
 		patch -p1 -i "${srcdir}/0005-fix_drm_vma_node_verify_access.patch";
 		msg2 '0006-fix_dm_plane_helper_funcs.patch'
-		patch -p1 -i "${srcdir}/0006-fix_dm_plane_helper_funcs.patch"
+		patch -p1 -i "${srcdir}/0006-fix_dm_plane_helper_funcs.patch";
+		msg2 '0007-disable-dal-by-default.patch'
+		patch -p1 -i "${srcdir}/0007-disable-dal-by-default.patch"
 	)
 }
 
@@ -134,6 +137,8 @@ package_amdgpu-pro-dkms () {
 package_amdgpu-pro-libdrm () {
 	pkgdesc="The AMDGPU Pro userspace interface to kernel DRM services"
 	arch=('x86_64')
+	provides=('libdrm')
+	conflicts=('libdrm')
 	depends=('bcunit')
 
 	extract_deb "${srcdir}"/amdgpu-pro-16.60-379184/./libdrm-amdgpu-pro-amdgpu1_2.4.70-379184_amd64.deb
@@ -160,15 +165,15 @@ package_amdgpu-pro-libgl () {
 	move_libdir "${pkgdir}/lib"
 
 	# extra_commands:
-	mkdir -p "${pkgdir}"/usr/lib
-	cd "${pkgdir}"/usr/lib
-	ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/libGL.so.1.2   libGL.so.1.2
-	ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/libEGL.so.1    libEGL.so.1
-	ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/libGLESv2.so.2 libGLESv2.so.2
-	ln -s libGL.so.1.2   libGL.so.1
-	ln -s libGL.so.1.2   libGL.so
-	ln -s libEGL.so.1    libEGL.so
-	ln -s libGLESv2.so   libGLESv2.so
+	#mkdir -p "${pkgdir}"/usr/lib
+	#cd "${pkgdir}"/usr/lib
+	#ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/libGL.so.1.2   libGL.so.1.2
+	#ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/libEGL.so.1    libEGL.so.1
+	#ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/libGLESv2.so.2 libGLESv2.so.2
+	#ln -s libGL.so.1.2   libGL.so.1
+	#ln -s libGL.so.1.2   libGL.so
+	#ln -s libEGL.so.1    libEGL.so
+	#ln -s libGLESv2.so   libGLESv2.so
 }
 
 
@@ -211,8 +216,6 @@ package_amdgpu-pro-vulkan () {
 	#move_libdir "${pkgdir}/opt/amdgpu-pro/lib/x86_64-linux-gnu"
 	move_libdir "${pkgdir}/lib"
 
-	# extra_commands:
-	#sed -i 's@/usr/lib/x86_64-linux-gnu/@/usr/lib/@' ${pkgdir}/etc/vulkan/icd.d/amd_icd64.json
 }
 
 
@@ -238,10 +241,8 @@ package_lib32-amdgpu-pro () {
 
 	# extra_commands:
 	rm -rf "${pkgdir}"/etc
-	#mkdir -p "${pkgdir}"/usr/lib32/amdgpu-pro
-	#mv "${pkgdir}"/usr/lib32/libGLESv2.so* "${pkgdir}"/usr/lib32/amdgpu-pro/
-	#mv "${pkgdir}"/usr/lib32/libGL.so* "${pkgdir}"/usr/lib32/amdgpu-pro/
-	#mv "${pkgdir}"/usr/lib32/libEGL.so* "${pkgdir}"/usr/lib32/amdgpu-pro/
+	mkdir -p "${pkgdir}/etc/ld.so.conf.d/"
+	echo "/opt/amdgpu-pro/lib/i386-linux-gnu/" > "${pkgdir}"/etc/ld.so.conf.d/lib32-amdgpu-pro.conf
 
 	# lib32 cleanup
 	rm -rf "${pkgdir}"/usr/{bin,lib,include,share} "${pkgdir}/var" "${pkgdir}"/opt/amdgpu-pro/{bin,include,share}
@@ -253,6 +254,8 @@ package_lib32-amdgpu-pro () {
 package_lib32-amdgpu-pro-libdrm () {
 	pkgdesc="The AMDGPU Pro userspace interface to kernel DRM services (32bit libraries)"
 	arch=('x86_64')
+	provides=('lib32-libdrm')
+	conflicts=('lib32-libdrm')
 	depends=('amdgpu-pro-libdrm=16.60.379184-0')
 
 	extract_deb "${srcdir}"/amdgpu-pro-16.60-379184/./libdrm-amdgpu-pro-amdgpu1_2.4.70-379184_i386.deb
@@ -283,15 +286,15 @@ package_lib32-amdgpu-pro-libgl () {
 	move_libdir "${pkgdir}/lib" "usr/lib32"
 
 	# extra_commands:
-	mkdir -p "${pkgdir}"/usr/lib32
-	cd "${pkgdir}"/usr/lib32
-	ln -s /opt/amdgpu-pro/lib/i386-linux-gnu/libGL.so.1.2   libGL.so.1.2
-	ln -s /opt/amdgpu-pro/lib/i386-linux-gnu/libEGL.so.1    libEGL.so.1
-	ln -s /opt/amdgpu-pro/lib/i386-linux-gnu/libGLESv2.so.2 libGLESv2.so.2
-	ln -s libGL.so.1.2   libGL.so.1
-	ln -s libGL.so.1.2   libGL.so
-	ln -s libEGL.so.1    libEGL.so
-	ln -s libGLESv2.so   libGLESv2.so
+	#mkdir -p "${pkgdir}"/usr/lib32
+	#cd "${pkgdir}"/usr/lib32
+	#ln -s /opt/amdgpu-pro/lib/i386-linux-gnu/libGL.so.1.2   libGL.so.1.2
+	#ln -s /opt/amdgpu-pro/lib/i386-linux-gnu/libEGL.so.1    libEGL.so.1
+	#ln -s /opt/amdgpu-pro/lib/i386-linux-gnu/libGLESv2.so.2 libGLESv2.so.2
+	#ln -s libGL.so.1.2   libGL.so.1
+	#ln -s libGL.so.1.2   libGL.so
+	#ln -s libEGL.so.1    libEGL.so
+	#ln -s libGLESv2.so   libGLESv2.so
 
 	# lib32 cleanup
 	rm -rf "${pkgdir}"/usr/{bin,lib,include,share} "${pkgdir}/var" "${pkgdir}"/opt/amdgpu-pro/{bin,include,share}
