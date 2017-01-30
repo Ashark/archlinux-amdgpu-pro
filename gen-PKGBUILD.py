@@ -66,7 +66,7 @@ def gen_arch_packages():
 				'#ln -s libGL.so.1.2   libGL.so.1',
 				'#ln -s libGL.so.1.2   libGL.so',
 				'#ln -s libEGL.so.1    libEGL.so',
-				'#ln -s libGLESv2.so   libGLESv2.so',
+				'#ln -s libGLESv2.so.2 libGLESv2.so',
 			]
 		),
 
@@ -86,7 +86,12 @@ def gen_arch_packages():
 		),
 
 		'amdgpu-pro-vdpau': Package(
-			desc = "The AMDGPU Pro VDPAU driver"
+			desc = "The AMDGPU Pro VDPAU driver",
+			extra_commands = [
+				'ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 /usr/lib/libvdpau_amdgpu.so.1.0.0',
+				'ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 /usr/lib/libvdpau_amdgpu.so.1',
+				'ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 /usr/lib/libvdpau_amdgpu.so',
+			]
 		),
 
 		'lib32-amdgpu-pro': Package(
@@ -131,12 +136,17 @@ def gen_arch_packages():
 				'#ln -s libGL.so.1.2   libGL.so.1',
 				'#ln -s libGL.so.1.2   libGL.so',
 				'#ln -s libEGL.so.1    libEGL.so',
-				'#ln -s libGLESv2.so   libGLESv2.so',
+				'#ln -s libGLESv2.so.1 libGLESv2.so',
 			]
 		),
 
 		'lib32-amdgpu-pro-vdpau': Package(
-			desc = "The AMDGPU Pro VDPAU driver (32bit libraries)"
+			desc = "The AMDGPU Pro VDPAU driver (32bit libraries)",
+			extra_commands = [
+				'ln -s /opt/amdgpu-pro/lib/i386-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 /usr/lib32/libvdpau_amdgpu.so.1.0.0',
+				'ln -s /opt/amdgpu-pro/lib/i368-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 /usr/lib32/libvdpau_amdgpu.so.1',
+				'ln -s /opt/amdgpu-pro/lib/i368-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 /usr/lib32/libvdpau_amdgpu.so',
+			]
 		),
 
 		'xf86-video-amdgpu-pro': Package(
@@ -469,7 +479,7 @@ replace_deps = {
 	"zlib1g":               "zlib",
 
 	"libvdpau1": "libvdpau",
-	"libtinfo5": "ncurses",
+	"libtinfo5": "ncurses5-compat-libs",
 	"libgstreamer1.0-0": "gstreamer",
 	"libgstreamer-plugins-base1.0-0": "gst-plugins-base",
 	"libglib2.0-0": "glib2",

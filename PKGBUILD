@@ -68,7 +68,7 @@ package_amdgpu-pro () {
 	pkgdesc="The AMDGPU Pro driver package"
 	install=amdgpu-pro-core.install
 	arch=('x86_64')
-	depends=('glib2>=2.37.3' 'gst-plugins-base>=1.6.0' 'gstreamer>=1.0.0' 'lib32-amdgpu-pro-libdrm=16.60.379184-0' 'lib32-amdgpu-pro-opencl=16.60.379184-0' 'lib32-amdgpu-pro-vdpau=16.60.379184-0' 'lib32-amdgpu-pro-vulkan=16.60.379184-0' 'lib32-amdgpu-pro=16.60.379184-0' 'libomxil-bellagio' 'libx11' 'libx11>=1.4.99.1' 'libxcb' 'libxcb>=1.8' 'libxcb>=1.9.2' 'libxdamage>=1.1' 'libxext' 'libxfixes' 'libxshmfence' 'libxxf86vm' 'ncurses>=6' 'openssl>=1.0.0' 'xf86-video-amdgpu-pro=16.60.379184-0' 'zlib>=1.2.0')
+	depends=('glib2>=2.37.3' 'gst-plugins-base>=1.6.0' 'gstreamer>=1.0.0' 'lib32-amdgpu-pro-libdrm=16.60.379184-0' 'lib32-amdgpu-pro-opencl=16.60.379184-0' 'lib32-amdgpu-pro-vdpau=16.60.379184-0' 'lib32-amdgpu-pro-vulkan=16.60.379184-0' 'lib32-amdgpu-pro=16.60.379184-0' 'libomxil-bellagio' 'libx11' 'libx11>=1.4.99.1' 'libxcb' 'libxcb>=1.8' 'libxcb>=1.9.2' 'libxdamage>=1.1' 'libxext' 'libxfixes' 'libxshmfence' 'libxxf86vm' 'ncurses5-compat-libs>=6' 'openssl>=1.0.0' 'xf86-video-amdgpu-pro=16.60.379184-0' 'zlib>=1.2.0')
 
 	extract_deb "${srcdir}"/amdgpu-pro-16.60-379184/./amdgpu-pro_16.60-379184_amd64.deb
 	extract_deb "${srcdir}"/amdgpu-pro-16.60-379184/./amdgpu-pro-lib32_16.60-379184_amd64.deb
@@ -173,7 +173,7 @@ package_amdgpu-pro-libgl () {
 	#ln -s libGL.so.1.2   libGL.so.1
 	#ln -s libGL.so.1.2   libGL.so
 	#ln -s libEGL.so.1    libEGL.so
-	#ln -s libGLESv2.so   libGLESv2.so
+	#ln -s libGLESv2.so.2 libGLESv2.so
 }
 
 
@@ -196,13 +196,17 @@ package_amdgpu-pro-opencl () {
 package_amdgpu-pro-vdpau () {
 	pkgdesc="The AMDGPU Pro VDPAU driver"
 	arch=('x86_64')
-	depends=('amdgpu-pro-libdrm=16.60.379184-0' 'libvdpau>=1.1' 'libxcb' 'libxcb>=1.8' 'ncurses>=6' 'openssl>=1.0.0' 'zlib>=1.2.0')
+	depends=('amdgpu-pro-libdrm=16.60.379184-0' 'libvdpau>=1.1' 'libxcb' 'libxcb>=1.8' 'ncurses5-compat-libs>=6' 'openssl>=1.0.0' 'zlib>=1.2.0')
 
 	extract_deb "${srcdir}"/amdgpu-pro-16.60-379184/./libvdpau-amdgpu-pro_12.0.3-379184_amd64.deb
 	#move_libdir "${pkgdir}/opt/amdgpu-pro" "usr"
 	#move_libdir "${pkgdir}/opt/amdgpu-pro/lib/x86_64-linux-gnu"
 	move_libdir "${pkgdir}/lib"
 
+	# extra_commands:
+	ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 /usr/lib/libvdpau_amdgpu.so.1.0.0
+	ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 /usr/lib/libvdpau_amdgpu.so.1
+	ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 /usr/lib/libvdpau_amdgpu.so
 }
 
 
@@ -222,7 +226,7 @@ package_amdgpu-pro-vulkan () {
 package_lib32-amdgpu-pro () {
 	pkgdesc="Meta package to install amdgpu Pro components. (32bit libraries)"
 	arch=('x86_64')
-	depends=('amdgpu-pro-dkms=16.60.379184-0' 'amdgpu-pro-libdrm=16.60.379184-0' 'amdgpu-pro-opencl=16.60.379184-0' 'amdgpu-pro-vdpau=16.60.379184-0' 'amdgpu-pro-vulkan=16.60.379184-0' 'amdgpu-pro=16.60.379184-0' 'lib32-glib2>=2.37.3' 'lib32-gst-plugins-base>=1.6.0' 'lib32-gstreamer>=1.0.0' 'lib32-libomxil-bellagio' 'lib32-libx11' 'lib32-libx11>=1.4.99.1' 'lib32-libxcb' 'lib32-libxcb>=1.8' 'lib32-libxcb>=1.9.2' 'lib32-libxdamage>=1.1' 'lib32-libxext' 'lib32-libxfixes' 'lib32-libxshmfence' 'lib32-libxxf86vm' 'lib32-ncurses>=6' 'lib32-openssl>=1.0.0' 'lib32-zlib>=1.2.0' 'xf86-video-amdgpu-pro=16.60.379184-0')
+	depends=('amdgpu-pro-dkms=16.60.379184-0' 'amdgpu-pro-libdrm=16.60.379184-0' 'amdgpu-pro-opencl=16.60.379184-0' 'amdgpu-pro-vdpau=16.60.379184-0' 'amdgpu-pro-vulkan=16.60.379184-0' 'amdgpu-pro=16.60.379184-0' 'lib32-glib2>=2.37.3' 'lib32-gst-plugins-base>=1.6.0' 'lib32-gstreamer>=1.0.0' 'lib32-libomxil-bellagio' 'lib32-libx11' 'lib32-libx11>=1.4.99.1' 'lib32-libxcb' 'lib32-libxcb>=1.8' 'lib32-libxcb>=1.9.2' 'lib32-libxdamage>=1.1' 'lib32-libxext' 'lib32-libxfixes' 'lib32-libxshmfence' 'lib32-libxxf86vm' 'lib32-ncurses5-compat-libs>=6' 'lib32-openssl>=1.0.0' 'lib32-zlib>=1.2.0' 'xf86-video-amdgpu-pro=16.60.379184-0')
 
 	extract_deb "${srcdir}"/amdgpu-pro-16.60-379184/./amdgpu-pro_16.60-379184_i386.deb
 	extract_deb "${srcdir}"/amdgpu-pro-16.60-379184/./gst-omx-amdgpu-pro_1.0.0.1-379184_i386.deb
@@ -294,7 +298,7 @@ package_lib32-amdgpu-pro-libgl () {
 	#ln -s libGL.so.1.2   libGL.so.1
 	#ln -s libGL.so.1.2   libGL.so
 	#ln -s libEGL.so.1    libEGL.so
-	#ln -s libGLESv2.so   libGLESv2.so
+	#ln -s libGLESv2.so.1 libGLESv2.so
 
 	# lib32 cleanup
 	rm -rf "${pkgdir}"/usr/{bin,lib,include,share} "${pkgdir}/var" "${pkgdir}"/opt/amdgpu-pro/{bin,include,share}
@@ -327,13 +331,17 @@ package_lib32-amdgpu-pro-opencl () {
 package_lib32-amdgpu-pro-vdpau () {
 	pkgdesc="The AMDGPU Pro VDPAU driver (32bit libraries)"
 	arch=('x86_64')
-	depends=('amdgpu-pro-libdrm=16.60.379184-0' 'lib32-libvdpau>=1.1' 'lib32-libxcb' 'lib32-libxcb>=1.8' 'lib32-ncurses>=6' 'lib32-openssl>=1.0.0' 'lib32-zlib>=1.2.0')
+	depends=('amdgpu-pro-libdrm=16.60.379184-0' 'lib32-libvdpau>=1.1' 'lib32-libxcb' 'lib32-libxcb>=1.8' 'lib32-ncurses5-compat-libs>=6' 'lib32-openssl>=1.0.0' 'lib32-zlib>=1.2.0')
 
 	extract_deb "${srcdir}"/amdgpu-pro-16.60-379184/./libvdpau-amdgpu-pro_12.0.3-379184_i386.deb
 	#move_libdir "${pkgdir}/opt/amdgpu-pro" "usr"
 	#move_libdir "${pkgdir}/opt/amdgpu-pro/lib/i386-linux-gnu" "usr/lib32"
 	move_libdir "${pkgdir}/lib" "usr/lib32"
 
+	# extra_commands:
+	ln -s /opt/amdgpu-pro/lib/i386-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 /usr/lib32/libvdpau_amdgpu.so.1.0.0
+	ln -s /opt/amdgpu-pro/lib/i368-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 /usr/lib32/libvdpau_amdgpu.so.1
+	ln -s /opt/amdgpu-pro/lib/i368-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 /usr/lib32/libvdpau_amdgpu.so
 
 	# lib32 cleanup
 	rm -rf "${pkgdir}"/usr/{bin,lib,include,share} "${pkgdir}/var" "${pkgdir}"/opt/amdgpu-pro/{bin,include,share}

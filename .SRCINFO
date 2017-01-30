@@ -45,7 +45,7 @@ pkgname = amdgpu-pro
 	depends = libxfixes
 	depends = libxshmfence
 	depends = libxxf86vm
-	depends = ncurses>=6
+	depends = ncurses5-compat-libs>=6
 	depends = openssl>=1.0.0
 	depends = xf86-video-amdgpu-pro=16.60.379184-0
 	depends = zlib>=1.2.0
@@ -82,7 +82,7 @@ pkgname = amdgpu-pro-vdpau
 	depends = libvdpau>=1.1
 	depends = libxcb
 	depends = libxcb>=1.8
-	depends = ncurses>=6
+	depends = ncurses5-compat-libs>=6
 	depends = openssl>=1.0.0
 	depends = zlib>=1.2.0
 
@@ -114,7 +114,7 @@ pkgname = lib32-amdgpu-pro
 	depends = lib32-libxfixes
 	depends = lib32-libxshmfence
 	depends = lib32-libxxf86vm
-	depends = lib32-ncurses>=6
+	depends = lib32-ncurses5-compat-libs>=6
 	depends = lib32-openssl>=1.0.0
 	depends = lib32-zlib>=1.2.0
 	depends = xf86-video-amdgpu-pro=16.60.379184-0
@@ -147,7 +147,7 @@ pkgname = lib32-amdgpu-pro-vdpau
 	depends = lib32-libvdpau>=1.1
 	depends = lib32-libxcb
 	depends = lib32-libxcb>=1.8
-	depends = lib32-ncurses>=6
+	depends = lib32-ncurses5-compat-libs>=6
 	depends = lib32-openssl>=1.0.0
 	depends = lib32-zlib>=1.2.0
 
