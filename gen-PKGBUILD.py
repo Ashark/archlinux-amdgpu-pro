@@ -106,8 +106,8 @@ def gen_arch_packages():
 
 		'lib32-amdgpu-pro-opencl': Package(
 			desc = "The AMDGPU Pro OpenCL implementation",
-			conflicts = ['lib32-libcl'],
-			provides  = ['lib32-libcl']
+			#conflicts = ['lib32-libcl'],
+			provides  = ['lib32-opencl-driver']
 		),
 
 		'lib32-amdgpu-pro-vulkan': Package(

@@ -137,8 +137,7 @@ pkgname = lib32-amdgpu-pro-opencl
 	pkgdesc = The AMDGPU Pro OpenCL implementation
 	arch = x86_64
 	depends = 
-	provides = lib32-libcl
-	conflicts = lib32-libcl
+	provides = lib32-opencl-driver
 
 pkgname = lib32-amdgpu-pro-vdpau
 	pkgdesc = The AMDGPU Pro VDPAU driver (32bit libraries)

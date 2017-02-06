@@ -311,8 +311,7 @@ package_lib32-amdgpu-pro-libgl () {
 package_lib32-amdgpu-pro-opencl () {
 	pkgdesc="The AMDGPU Pro OpenCL implementation"
 	arch=('x86_64')
-	provides=('lib32-libcl')
-	conflicts=('lib32-libcl')
+	provides=('lib32-opencl-driver')
 	depends=()
 
 	extract_deb "${srcdir}"/amdgpu-pro-16.60-379184/./libopencl1-amdgpu-pro_16.60-379184_i386.deb
