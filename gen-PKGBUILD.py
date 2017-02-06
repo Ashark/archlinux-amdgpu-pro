@@ -98,6 +98,10 @@ def gen_arch_packages():
 		'lib32-amdgpu-pro': Package(
 			desk = "The AMDGPU Pro driver package (32bit libraries)",
 			extra_commands = [
+				"mv \"${pkgdir}\"/usr/lib/i386-linux-gnu/dri ${pkgdir}/usr/lib32/",
+				"# This is needed because libglx.so has a hardcoded DRI_DRIVER_PATH ??",
+				"ln -s /usr/lib32/dri ${pkgdir}/usr/lib/i386-linux-gnu/dri",
+
 				'rm -rf "${pkgdir}"/etc',
 				'mkdir -p "${pkgdir}/etc/ld.so.conf.d/"',
 				'echo "/opt/amdgpu-pro/lib/i386-linux-gnu/" > "${pkgdir}"/etc/ld.so.conf.d/lib32-amdgpu-pro.conf'
