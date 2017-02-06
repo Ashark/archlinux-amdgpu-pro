@@ -374,7 +374,7 @@ package_xf86-video-amdgpu-pro () {
 	pkgdesc="The AMDGPU Pro X.org video driver"
 	arch=('x86_64')
 	provides=('xf86-video-amdgpu')
-	conflicts=('xf86-video-amdgpu' 'xorg-server<1.18.0' 'X-ABI-VIDEODRV_VERSION<20' 'X-ABI-VIDEODRV_VERSION>=24')
+	conflicts=('xf86-video-amdgpu' 'xorg-server<1.18.0' 'xorg-server>=1.19.0X-ABI-VIDEODRV_VERSION<20' 'X-ABI-VIDEODRV_VERSION>=21')
 	groups=('xorg-driversxorg')
 	depends=('amdgpu-pro-libdrm=16.60.379184-0' 'amdgpu-pro=16.60.379184-0' 'libepoxy>=1.0' 'libsystemd>=183')
 

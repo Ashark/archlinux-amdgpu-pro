@@ -151,7 +151,7 @@ def gen_arch_packages():
 
 		'xf86-video-amdgpu-pro': Package(
 			desc = "The AMDGPU Pro X.org video driver",
-			conflicts = ['xf86-video-amdgpu', 'xorg-server<1.18.0', 'X-ABI-VIDEODRV_VERSION<20', 'X-ABI-VIDEODRV_VERSION>=24'],
+			conflicts = ['xf86-video-amdgpu', 'xorg-server<1.18.0', 'xorg-server>=1.19.0' 'X-ABI-VIDEODRV_VERSION<20', 'X-ABI-VIDEODRV_VERSION>=21'],
 			provides  = ['xf86-video-amdgpu'], # in case anything depends on that
 			groups = ['xorg-drivers' 'xorg'],
 			extra_commands = [
