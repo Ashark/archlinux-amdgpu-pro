@@ -88,6 +88,7 @@ def gen_arch_packages():
 		'amdgpu-pro-vdpau': Package(
 			desc = "The AMDGPU Pro VDPAU driver",
 			extra_commands = [
+				'mkdir -p "${pkgdir}"/usr/lib/',
 				'ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib/libvdpau_amdgpu.so.1.0.0',
 				'ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib/libvdpau_amdgpu.so.1',
 				'ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib/libvdpau_amdgpu.so',
@@ -143,6 +144,7 @@ def gen_arch_packages():
 		'lib32-amdgpu-pro-vdpau': Package(
 			desc = "The AMDGPU Pro VDPAU driver (32bit libraries)",
 			extra_commands = [
+				'mkdir -p "${pkgdir}"/usr/lib32/',
 				'ln -s /opt/amdgpu-pro/lib/i386-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib32/libvdpau_amdgpu.so.1.0.0',
 				'ln -s /opt/amdgpu-pro/lib/i368-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib32/libvdpau_amdgpu.so.1',
 				'ln -s /opt/amdgpu-pro/lib/i368-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib32/libvdpau_amdgpu.so',

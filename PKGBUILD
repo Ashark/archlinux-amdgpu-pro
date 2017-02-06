@@ -26,7 +26,7 @@ sha256sums=(d88b5a747ac765a75eb738aaf5641428c3b1c9c02bc6fde452c423de7dd620bd
 	5708b6641bd62fe768e1cb36f88d0895c4fdf90d1d3110033bafdabc47fe1e31
 	b6a98ed84733bab544461991f642dc1a73ee065b32f7c1b3a235d5e2bc814943
 	21c78811107d8ee59f3566d21ed4a7ccfd622f4e07350fca7ed662392ab07190
-	f743cd2205645cf10640d4d2f781b6b158b3d9f0ed15666b3f9bc7fc082be4a8
+	885330f3749db53a491b7c35c7e0d9d58965a717e62434101c4d72f1a31ef39a
 	b10bb6b2382f995ee90f9cc807b69cb336d0edb65096b66df315f0c60132e04d
 	e28d79fcb808d7c275938a4d9871da3138fdd38eb7c1c69495bf9a9d36dc271a)
 
@@ -204,6 +204,7 @@ package_amdgpu-pro-vdpau () {
 	move_libdir "${pkgdir}/lib"
 
 	# extra_commands:
+	mkdir -p "${pkgdir}"/usr/lib/
 	ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib/libvdpau_amdgpu.so.1.0.0
 	ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib/libvdpau_amdgpu.so.1
 	ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib/libvdpau_amdgpu.so
@@ -339,6 +340,7 @@ package_lib32-amdgpu-pro-vdpau () {
 	move_libdir "${pkgdir}/lib" "usr/lib32"
 
 	# extra_commands:
+	mkdir -p "${pkgdir}"/usr/lib32/
 	ln -s /opt/amdgpu-pro/lib/i386-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib32/libvdpau_amdgpu.so.1.0.0
 	ln -s /opt/amdgpu-pro/lib/i368-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib32/libvdpau_amdgpu.so.1
 	ln -s /opt/amdgpu-pro/lib/i368-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib32/libvdpau_amdgpu.so
