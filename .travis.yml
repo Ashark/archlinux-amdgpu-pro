@@ -17,4 +17,5 @@ arch:
     - 'if [ -n "$(git status --porcelain)" ]; then echo Error: changes found after build; git status; exit 1; fi'
 
 script:
+  - export EDITOR=false
   - "curl -s https://raw.githubusercontent.com/mikkeloscar/arch-travis/master/arch-travis.sh | bash"
