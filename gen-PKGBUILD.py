@@ -82,7 +82,12 @@ def gen_arch_packages():
 		),
 
 		'amdgpu-pro-vulkan': Package(
-			desc = "The AMDGPU Pro Vulkan driver"
+			desc = "The AMDGPU Pro Vulkan driver",
+			extra_commands = [
+				'mkdir -p "${pkgdir}"/usr/share/vulkan/icd.d/',
+				'mv "${pkgdir}"/etc/vulkan/icd.d/amd_icd64.json "${pkgdir}"/usr/share/vulkan/icd.d/',
+				'rm -rf "${pkgdir}"/etc/vulkan/'
+			]
 		),
 
 		'amdgpu-pro-vdpau': Package(
@@ -116,7 +121,9 @@ def gen_arch_packages():
 		'lib32-amdgpu-pro-vulkan': Package(
 			desc = "The AMDGPU Pro Vulkan driver (32bit libraries)",
 			extra_commands = [
-				"#sed -i 's@/usr/lib/i386-linux-gnu/@/usr/lib32/@' ${pkgdir}/etc/vulkan/icd.d/amd_icd32.json"
+				'mkdir -p "${pkgdir}"/usr/share/vulkan/icd.d/',
+				'mv "${pkgdir}"/etc/vulkan/icd.d/amd_icd32.json "${pkgdir}"/usr/share/vulkan/icd.d/',
+				'rm -rf "${pkgdir}"/etc/vulkan/'
 			]
 		),
 

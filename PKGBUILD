@@ -221,6 +221,10 @@ package_amdgpu-pro-vulkan () {
 	#move_libdir "${pkgdir}/opt/amdgpu-pro/lib/x86_64-linux-gnu"
 	move_libdir "${pkgdir}/lib"
 
+	# extra_commands:
+	mkdir -p "${pkgdir}"/usr/share/vulkan/icd.d/
+	mv "${pkgdir}"/etc/vulkan/icd.d/amd_icd64.json "${pkgdir}"/usr/share/vulkan/icd.d/
+	rm -rf "${pkgdir}"/etc/vulkan/
 }
 
 
@@ -364,7 +368,9 @@ package_lib32-amdgpu-pro-vulkan () {
 	move_libdir "${pkgdir}/lib" "usr/lib32"
 
 	# extra_commands:
-	#sed -i 's@/usr/lib/i386-linux-gnu/@/usr/lib32/@' ${pkgdir}/etc/vulkan/icd.d/amd_icd32.json
+	mkdir -p "${pkgdir}"/usr/share/vulkan/icd.d/
+	mv "${pkgdir}"/etc/vulkan/icd.d/amd_icd32.json "${pkgdir}"/usr/share/vulkan/icd.d/
+	rm -rf "${pkgdir}"/etc/vulkan/
 
 	# lib32 cleanup
 	rm -rf "${pkgdir}"/usr/{bin,lib,include,share} "${pkgdir}/var" "${pkgdir}"/opt/amdgpu-pro/{bin,include,share}
