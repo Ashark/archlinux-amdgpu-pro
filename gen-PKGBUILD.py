@@ -9,8 +9,9 @@ import glob
 
 pkgver_base = "16.60"
 pkgver_build = "379184"
-pkgrel = 0
-debug_pkgext = True
+pkgrel = 1
+debug_pkgext = False
+
 
 pkgver = "{0}.{1}".format(pkgver_base, pkgver_build)
 url_ref="https://support.amd.com/en-us/kb-articles/Pages/AMDGPU-PRO-Install.aspx"
@@ -31,12 +32,6 @@ def gen_arch_packages():
 				"ln -s /usr/lib/dri ${pkgdir}/usr/lib/x86_64-linux-gnu/dri",
 				'mkdir -p "${pkgdir}/etc/ld.so.conf.d/"',
 				'echo "/opt/amdgpu-pro/lib/x86_64-linux-gnu/" > "${pkgdir}"/etc/ld.so.conf.d/amdgpu-pro.conf',
-
-				"#mkdir -p ${pkgdir}/etc/ld.so.conf.d/",
-				"#ln -s /usr/lib/amdgpu-pro/ld.conf ${pkgdir}/etc/ld.so.conf.d/10-amdgpu-pro.conf",
-				"#mkdir -p ${pkgdir}/etc/modprobe.d/",
-				"#ln -s /usr/lib/amdgpu-pro/modprobe.conf ${pkgdir}/etc/modprobe.d/amdgpu-pro.conf",
-				'#mkdir -p "${pkgdir}"/usr/lib/amdgpu-pro',
 			]
 		),
 
@@ -57,22 +52,10 @@ def gen_arch_packages():
 			conflicts = ['libgl'],
 			provides  = ['libgl'],
 			depends   = ['amdgpu-pro'],
-			extra_commands = [
-				'#mkdir -p "${pkgdir}"/usr/lib',
-				'#cd "${pkgdir}"/usr/lib',
-				'#ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/libGL.so.1.2   libGL.so.1.2',
-				'#ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/libEGL.so.1    libEGL.so.1',
-				'#ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/libGLESv2.so.2 libGLESv2.so.2',
-				'#ln -s libGL.so.1.2   libGL.so.1',
-				'#ln -s libGL.so.1.2   libGL.so',
-				'#ln -s libEGL.so.1    libEGL.so',
-				'#ln -s libGLESv2.so.2 libGLESv2.so',
-			]
 		),
 
 		'amdgpu-pro-opencl': Package(
 			desc = "The AMDGPU Pro OpenCL implementation",
-			#conflicts = [],
 			provides  = ['opencl-driver']
 		),
 		'amdgpu-pro-libdrm': Package(
@@ -114,7 +97,6 @@ def gen_arch_packages():
 
 		'lib32-amdgpu-pro-opencl': Package(
 			desc = "The AMDGPU Pro OpenCL implementation",
-			#conflicts = ['lib32-libcl'],
 			provides  = ['lib32-opencl-driver']
 		),
 
@@ -138,17 +120,6 @@ def gen_arch_packages():
 			conflicts = ['lib32-libgl'],
 			provides  = ['lib32-libgl'],
 			depends   = ['lib32-amdgpu-pro'],
-			extra_commands = [
-				'#mkdir -p "${pkgdir}"/usr/lib32',
-				'#cd "${pkgdir}"/usr/lib32',
-				'#ln -s /opt/amdgpu-pro/lib/i386-linux-gnu/libGL.so.1.2   libGL.so.1.2',
-				'#ln -s /opt/amdgpu-pro/lib/i386-linux-gnu/libEGL.so.1    libEGL.so.1',
-				'#ln -s /opt/amdgpu-pro/lib/i386-linux-gnu/libGLESv2.so.2 libGLESv2.so.2',
-				'#ln -s libGL.so.1.2   libGL.so.1',
-				'#ln -s libGL.so.1.2   libGL.so',
-				'#ln -s libEGL.so.1    libEGL.so',
-				'#ln -s libGLESv2.so.1 libGLESv2.so',
-			]
 		),
 
 		'lib32-amdgpu-pro-vdpau': Package(
@@ -166,15 +137,142 @@ def gen_arch_packages():
 			conflicts = ['xf86-video-amdgpu', 'xorg-server<1.18.0', 'xorg-server>=1.19.0' 'X-ABI-VIDEODRV_VERSION<20', 'X-ABI-VIDEODRV_VERSION>=21'],
 			provides  = ['xf86-video-amdgpu'], # in case anything depends on that
 			groups = ['xorg-drivers' 'xorg'],
-			extra_commands = [
-				"#mv ${pkgdir}/usr/lib/amdgpu-pro/1.18/ ${pkgdir}/usr/lib/xorg",
-				"#rm -rf ${pkgdir}/usr/lib/amdgpu-pro/1.*",
-			]
 		)
 	}
 	for key in arch_packages:
 		arch_packages[key].name = key
 	return arch_packages
+
+
+# this maps which deb packages should go into specific arch package
+# packages without mapping go into 'amdgpu-pro'
+packages_map_default = 'amdgpu-pro'
+packages_map = {
+	'amdgpu-pro':                       'amdgpu-pro',        # deb is metapackage
+	'libgbm1-amdgpu-pro':               'amdgpu-pro',
+	'libgbm1-amdgpu-pro-base':          'amdgpu-pro',
+	'libgbm1-amdgpu-pro-dev':           'amdgpu-pro',
+
+	'gst-omx-amdgpu-pro':               'amdgpu-pro',
+	'mesa-amdgpu-pro-omx-drivers':      'amdgpu-pro',
+
+	'amdgpu-pro-dkms':                  'amdgpu-pro-dkms',
+
+	'clinfo-amdgpu-pro':                'amdgpu-pro-opencl',
+	'libopencl1-amdgpu-pro':            'amdgpu-pro-opencl',
+	'opencl-amdgpu-pro-icd':            'amdgpu-pro-opencl',
+
+	'vulkan-amdgpu-pro':                'amdgpu-pro-vulkan',
+
+	'libdrm-amdgpu-pro-amdgpu1':        'amdgpu-pro-libdrm',
+	'libdrm-amdgpu-pro-radeon1':        'amdgpu-pro-libdrm',
+	'libdrm-amdgpu-pro-dev':            'amdgpu-pro-libdrm',
+	'libdrm-amdgpu-pro-utils':          'amdgpu-pro-libdrm',
+	'libdrm2-amdgpu-pro':               'amdgpu-pro-libdrm',
+
+	# the following libs will be symlinked by amdgpu-pro-libgl, just like mesa-libgl and nvidia-libgl
+	'libegl1-amdgpu-pro':               'amdgpu-pro',
+	'libgl1-amdgpu-pro-appprofiles':    'amdgpu-pro',
+	## contents of this should probably go into /usr/lib/xorg/modules/dri/ instead of /usr/lib/dri ?
+	'libgl1-amdgpu-pro-dri':            'amdgpu-pro',
+	'libgl1-amdgpu-pro-ext':            'amdgpu-pro',
+	'libgl1-amdgpu-pro-glx':            'amdgpu-pro',
+	'libgles2-amdgpu-pro':              'amdgpu-pro',
+	'libglamor-amdgpu-pro-dev':         'amdgpu-pro',
+
+	'libvdpau-amdgpu-pro':              'amdgpu-pro-vdpau',
+	'xserver-xorg-video-amdgpu-pro':    'xf86-video-amdgpu-pro',
+	'xserver-xorg-video-glamoregl-amdgpu-pro':    'xf86-video-amdgpu-pro',
+	'xserver-xorg-video-modesetting-amdgpu-pro':    'xf86-video-amdgpu-pro',
+
+
+	'lib32-amdgpu-pro':                 'lib32-amdgpu-pro', # deb is a metapackage
+	'lib32-amdgpu-pro-lib32':           'lib32-amdgpu-pro', # deb is a metapackage
+	'lib32-libgbm1-amdgpu-pro':         'lib32-amdgpu-pro',
+	'lib32-libgbm1-amdgpu-pro-dev':     'lib32-amdgpu-pro',
+
+	'lib32-gst-omx-amdgpu-pro':         'lib32-amdgpu-pro',
+	'lib32-mesa-amdgpu-pro-omx-drivers':      'lib32-amdgpu-pro',
+
+	'lib32-opencl-amdgpu-pro-icd':      'lib32-amdgpu-pro-opencl',
+	'lib32-libopencl1-amdgpu-pro':      'lib32-amdgpu-pro-opencl',
+
+	'lib32-vulkan-amdgpu-pro':          'lib32-amdgpu-pro-vulkan',
+
+	'lib32-libdrm-amdgpu-pro-amdgpu1':  'lib32-amdgpu-pro-libdrm',
+	'lib32-libdrm-amdgpu-pro-radeon1':  'lib32-amdgpu-pro-libdrm',
+	'lib32-libdrm-amdgpu-pro-dev':      'lib32-amdgpu-pro-libdrm',
+	'lib32-libdrm2-amdgpu-pro':         'lib32-amdgpu-pro-libdrm',
+
+
+	'lib32-libegl1-amdgpu-pro':         'lib32-amdgpu-pro',
+	'lib32-libgl1-amdgpu-pro-dri':      'lib32-amdgpu-pro',
+	'lib32-libgl1-amdgpu-pro-ext':      'lib32-amdgpu-pro',
+	'lib32-libgl1-amdgpu-pro-glx':      'lib32-amdgpu-pro',
+	'lib32-libgles2-amdgpu-pro':        'lib32-amdgpu-pro',
+	'lib32-libglamor-amdgpu-pro-dev':   'lib32-amdgpu-pro',
+
+	'lib32-libvdpau-amdgpu-pro':        'lib32-amdgpu-pro-vdpau',
+
+	# the following are not needed and should be discarded:
+	'lib32-xserver-xorg-video-amdgpu-pro':              None,
+	'lib32-xserver-xorg-video-glamoregl-amdgpu-pro':    None,
+	'lib32-xserver-xorg-video-modesetting-amdgpu-pro':  None,
+	'lib32-clinfo-amdgpu-pro': None,
+	'lib32-libdrm-amdgpu-pro-utils': None,
+}
+
+
+
+## maps debian dependencies to arch dependencies
+replace_deps = {
+	"libc6":                None,
+	"libgcc1":              None,
+	"libstdc++6":           None,
+	"libx11-6":             "libx11",
+	"libx11-xcb1":          None,
+	"libxcb-dri2-0":        "libxcb",
+	"libxcb-dri3-0":        "libxcb",
+	"libxcb-present0":      "libxcb",
+	"libxcb-sync1":         "libxcb",
+	"libxcb-glx0":          "libxcb",
+	"libxcb1":              "libxcb",
+	"libxext6":             "libxext",
+	"libxshmfence1":        "libxshmfence",
+	"libxdamage1":          "libxdamage",
+	"libxfixes3":           "libxfixes",
+	"libxxf86vm1":          "libxxf86vm",
+	"libudev1":             "libsystemd",
+	"libpciaccess0":        "libpciaccess",
+	"libepoxy0":            "libepoxy",
+	"libelf1":              None, # no lib32- package in Arch, just disabling for now
+	"xserver-xorg-core":    "xorg-server",
+	"libcunit1":            "bcunit",
+	"libdrm-radeon1":       "libdrm",
+	"amdgpu-pro-firmware":  "linux-firmware",
+	"libssl1.0.0":          "openssl",
+	"zlib1g":               "zlib",
+
+	"libvdpau1": "libvdpau",
+	"libtinfo5": "ncurses5-compat-libs",
+	"libgstreamer1.0-0": "gstreamer",
+	"libgstreamer-plugins-base1.0-0": "gst-plugins-base",
+	"libglib2.0-0": "glib2",
+	"libomxil-bellagio0": "libomxil-bellagio",
+}
+
+## override the version requirement extracted from deb
+replace_version = {
+	"linux-firmware": "",
+}
+
+## maps debians archs to arch's archs
+arch_map = {
+	"amd64": "x86_64",
+	"i386": "i686",
+	"all": "any"
+}
+
 
 
 subprocess.run(["/usr/bin/wget", "--referer", url_ref, "-N", source_url])
@@ -381,135 +479,8 @@ class Package:
 arch_packages = gen_arch_packages()
 
 
-# this maps which deb packages should go into specific arch package
-# packages without mapping go into 'amdgpu-pro'
-packages_map_default = 'amdgpu-pro'
-packages_map = {
-	'amdgpu-pro':                       'amdgpu-pro',        # deb is metapackage
-	'libgbm1-amdgpu-pro':               'amdgpu-pro',
-	'libgbm1-amdgpu-pro-base':          'amdgpu-pro',
-	'libgbm1-amdgpu-pro-dev':           'amdgpu-pro',
-
-	'gst-omx-amdgpu-pro':               'amdgpu-pro',
-	'mesa-amdgpu-pro-omx-drivers':      'amdgpu-pro',
-
-	'amdgpu-pro-dkms':                  'amdgpu-pro-dkms',
-
-	'clinfo-amdgpu-pro':                'amdgpu-pro-opencl',
-	'libopencl1-amdgpu-pro':            'amdgpu-pro-opencl',
-	'opencl-amdgpu-pro-icd':            'amdgpu-pro-opencl',
-
-	'vulkan-amdgpu-pro':                'amdgpu-pro-vulkan',
-
-	'libdrm-amdgpu-pro-amdgpu1':        'amdgpu-pro-libdrm',
-	'libdrm-amdgpu-pro-radeon1':        'amdgpu-pro-libdrm',
-	'libdrm-amdgpu-pro-dev':            'amdgpu-pro-libdrm',
-	'libdrm-amdgpu-pro-utils':          'amdgpu-pro-libdrm',
-	'libdrm2-amdgpu-pro':               'amdgpu-pro-libdrm',
-
-	# the following libs will be symlinked by amdgpu-pro-libgl, just like mesa-libgl and nvidia-libgl
-	'libegl1-amdgpu-pro':               'amdgpu-pro',
-	'libgl1-amdgpu-pro-appprofiles':    'amdgpu-pro',
-	## contents of this should probably go into /usr/lib/xorg/modules/dri/ instead of /usr/lib/dri ?
-	'libgl1-amdgpu-pro-dri':            'amdgpu-pro',
-	'libgl1-amdgpu-pro-ext':            'amdgpu-pro',
-	'libgl1-amdgpu-pro-glx':            'amdgpu-pro',
-	'libgles2-amdgpu-pro':              'amdgpu-pro',
-	'libglamor-amdgpu-pro-dev':         'amdgpu-pro',
-
-	'libvdpau-amdgpu-pro':              'amdgpu-pro-vdpau',
-	'xserver-xorg-video-amdgpu-pro':    'xf86-video-amdgpu-pro',
-	'xserver-xorg-video-glamoregl-amdgpu-pro':    'xf86-video-amdgpu-pro',
-	'xserver-xorg-video-modesetting-amdgpu-pro':    'xf86-video-amdgpu-pro',
-
-
-	'lib32-amdgpu-pro':                 'lib32-amdgpu-pro', # deb is a metapackage
-	'lib32-amdgpu-pro-lib32':           'lib32-amdgpu-pro', # deb is a metapackage
-	'lib32-libgbm1-amdgpu-pro':         'lib32-amdgpu-pro',
-	'lib32-libgbm1-amdgpu-pro-dev':     'lib32-amdgpu-pro',
-
-	'lib32-gst-omx-amdgpu-pro':         'lib32-amdgpu-pro',
-	'lib32-mesa-amdgpu-pro-omx-drivers':      'lib32-amdgpu-pro',
-
-	'lib32-opencl-amdgpu-pro-icd':      'lib32-amdgpu-pro-opencl',
-	'lib32-libopencl1-amdgpu-pro':      'lib32-amdgpu-pro-opencl',
-
-	'lib32-vulkan-amdgpu-pro':          'lib32-amdgpu-pro-vulkan',
-
-	'lib32-libdrm-amdgpu-pro-amdgpu1':  'lib32-amdgpu-pro-libdrm',
-	'lib32-libdrm-amdgpu-pro-radeon1':  'lib32-amdgpu-pro-libdrm',
-	'lib32-libdrm-amdgpu-pro-dev':      'lib32-amdgpu-pro-libdrm',
-	'lib32-libdrm2-amdgpu-pro':         'lib32-amdgpu-pro-libdrm',
-
-
-	'lib32-libegl1-amdgpu-pro':         'lib32-amdgpu-pro',
-	'lib32-libgl1-amdgpu-pro-dri':      'lib32-amdgpu-pro',
-	'lib32-libgl1-amdgpu-pro-ext':      'lib32-amdgpu-pro',
-	'lib32-libgl1-amdgpu-pro-glx':      'lib32-amdgpu-pro',
-	'lib32-libgles2-amdgpu-pro':        'lib32-amdgpu-pro',
-	'lib32-libglamor-amdgpu-pro-dev':   'lib32-amdgpu-pro',
-
-	'lib32-libvdpau-amdgpu-pro':        'lib32-amdgpu-pro-vdpau',
-
-	# the following are not needed and should be discarded:
-	'lib32-xserver-xorg-video-amdgpu-pro':              None,
-	'lib32-xserver-xorg-video-glamoregl-amdgpu-pro':    None,
-	'lib32-xserver-xorg-video-modesetting-amdgpu-pro':  None,
-	'lib32-clinfo-amdgpu-pro': None,
-	'lib32-libdrm-amdgpu-pro-utils': None,
-}
-
-
-
-
-replace_deps = {
-	"libc6":                None,
-	"libgcc1":              None,
-	"libstdc++6":           None,
-	"libx11-6":             "libx11",
-	"libx11-xcb1":          None,
-	"libxcb-dri2-0":        "libxcb",
-	"libxcb-dri3-0":        "libxcb",
-	"libxcb-present0":      "libxcb",
-	"libxcb-sync1":         "libxcb",
-	"libxcb-glx0":          "libxcb",
-	"libxcb1":              "libxcb",
-	"libxext6":             "libxext",
-	"libxshmfence1":        "libxshmfence",
-	"libxdamage1":          "libxdamage",
-	"libxfixes3":           "libxfixes",
-	"libxxf86vm1":          "libxxf86vm",
-	"libudev1":             "libsystemd",
-	"libpciaccess0":        "libpciaccess",
-	"libepoxy0":            "libepoxy",
-	"libelf1":              None, # no lib32- package in Arch, just disabling for now
-	"xserver-xorg-core":    "xorg-server",
-	"libcunit1":            "bcunit",
-	"libdrm-radeon1":       "libdrm",
-	"amdgpu-pro-firmware":  "linux-firmware",
-	"libssl1.0.0":          "openssl",
-	"zlib1g":               "zlib",
-
-	"libvdpau1": "libvdpau",
-	"libtinfo5": "ncurses5-compat-libs",
-	"libgstreamer1.0-0": "gstreamer",
-	"libgstreamer-plugins-base1.0-0": "gst-plugins-base",
-	"libglib2.0-0": "glib2",
-	"libomxil-bellagio0": "libomxil-bellagio",
-}
-
-replace_version = {
-	"linux-firmware": "",
-}
-
 # regex for parsing version information of a deb dependency
 dependencyRE = re.compile(r"([^ ]+)(?: \((.+)\))?")
-
-arch_map = {
-	"amd64": "x86_64",
-	"i386": "i686",
-	"all": "any"
-}
 
 deb_archs={}
 
