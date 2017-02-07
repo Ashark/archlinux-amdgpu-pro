@@ -198,6 +198,7 @@ package_amdgpu-pro-vdpau () {
 package_amdgpu-pro-vulkan () {
 	pkgdesc="The AMDGPU Pro Vulkan driver"
 	arch=('x86_64')
+	provides=('vulkan-driver')
 	depends=('amdgpu-pro-libdrm=16.60.379184-1')
 
 	extract_deb "${srcdir}"/amdgpu-pro-16.60-379184/./vulkan-amdgpu-pro_16.60-379184_amd64.deb
@@ -334,6 +335,7 @@ package_lib32-amdgpu-pro-vdpau () {
 package_lib32-amdgpu-pro-vulkan () {
 	pkgdesc="The AMDGPU Pro Vulkan driver (32bit libraries)"
 	arch=('x86_64')
+	provides=('lib32-vulkan-driver')
 	depends=('amdgpu-pro-libdrm=16.60.379184-1')
 
 	extract_deb "${srcdir}"/amdgpu-pro-16.60-379184/./vulkan-amdgpu-pro_16.60-379184_i386.deb

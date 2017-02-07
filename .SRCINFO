@@ -90,6 +90,7 @@ pkgname = amdgpu-pro-vulkan
 	pkgdesc = The AMDGPU Pro Vulkan driver
 	arch = x86_64
 	depends = amdgpu-pro-libdrm=16.60.379184-1
+	provides = vulkan-driver
 
 pkgname = lib32-amdgpu-pro
 	pkgdesc = Meta package to install amdgpu Pro components. (32bit libraries)
@@ -154,6 +155,7 @@ pkgname = lib32-amdgpu-pro-vulkan
 	pkgdesc = The AMDGPU Pro Vulkan driver (32bit libraries)
 	arch = x86_64
 	depends = amdgpu-pro-libdrm=16.60.379184-1
+	provides = lib32-vulkan-driver
 
 pkgname = xf86-video-amdgpu-pro
 	pkgdesc = The AMDGPU Pro X.org video driver
