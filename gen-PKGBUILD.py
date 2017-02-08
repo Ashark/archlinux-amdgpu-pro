@@ -9,7 +9,7 @@ import glob
 
 pkgver_base = "16.60"
 pkgver_build = "379184"
-pkgrel = 1
+pkgrel = 2
 debug_pkgext = False
 
 
@@ -418,10 +418,15 @@ class Package:
 		except:
 			deps = None
 
+		domap = True
+		if self.name == "amdgpu-pro" or self.name == "lib32-amdgpu-pro":
+			domap = False
+
 		if deps:
 			deps = [ dependencyRE.match(dep).groups() for dep in deps ]
 			deps = [(replace_deps[name] if name in replace_deps else name, version) for name, version in deps]
-			deps = ["'" + convertName(fix_32(name), info) + convertVersionSpecifier(fix_32(name), version) + "'" for name, version in deps if name]
+			deps = ["'" + convertName(fix_32(name), info, domap) + convertVersionSpecifier(fix_32(name), version) + "'" for name, version in deps if name]
+			deps = [ dep for dep in deps if not dep.startswith("'=")]
 
 			# remove all dependencies on itself
 			deps = [ dep for dep in deps if dep[1:len(self.name)+1] != self.name ]
@@ -486,13 +491,15 @@ dependencyRE = re.compile(r"([^ ]+)(?: \((.+)\))?")
 
 deb_archs={}
 
-def convertName(name, info):
+def convertName(name, info, domap=True):
 	ret = name
 	if info["Architecture"] == "i386" and (name not in deb_archs or "any" not in deb_archs[name]):
 		ret = "lib32-" + name
 
 	if name in packages_map:
-		return packages_map[name]
+		if domap:
+			return packages_map[name]
+		return ""
 	return ret
 
 def convertVersionSpecifier(name, spec):
