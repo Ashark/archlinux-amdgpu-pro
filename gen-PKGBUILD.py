@@ -277,7 +277,7 @@ arch_map = {
 
 
 
-subprocess.run(["/usr/bin/wget", "--referer", url_ref, "-N", source_url])
+subprocess.run(["wget", "--referer", url_ref, "-N", source_url])
 
 def hashFile(file):
 	block = 64 * 1024
