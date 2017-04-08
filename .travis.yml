@@ -10,11 +10,11 @@ arch:
   script:
     - sudo pip install python-debian
     - ./build.sh
-    - 'if [ -n "$(git status --porcelain)" ]; then echo Error: changes found after generate; git status; exit 1; fi'
+    - 'if [ -n "$(git status --porcelain)" ]; then echo Error: changes found after generate; git diff; exit 1; fi'
     - makepkg --printsrcinfo > .SRCINFO
-    - 'if [ -n "$(git status --porcelain)" ]; then echo Error: changes found after printsrcinfo; git status; exit 1; fi'
+    - 'if [ -n "$(git status --porcelain)" ]; then echo Error: changes found after printsrcinfo; git diff; exit 1; fi'
     - ALL_PACKAGES=true PKGEXT='.pkg.tar' makepkg -s
-    - 'if [ -n "$(git status --porcelain)" ]; then echo Error: changes found after build; git status; exit 1; fi'
+    - 'if [ -n "$(git status --porcelain)" ]; then echo Error: changes found after build; git diff; exit 1; fi'
 
 script:
   - export EDITOR=false
