@@ -7,9 +7,9 @@ import subprocess
 import hashlib
 import glob
 
-pkgver_base = "17.30"
-pkgver_build = "465504"
-pkgrel = 3
+pkgver_base = "17.40"
+pkgver_build = "492261"
+pkgrel = 1
 debug_pkgext = False
 
 
