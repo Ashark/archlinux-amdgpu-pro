@@ -9,7 +9,7 @@ import glob
 
 pkgver_base = "17.30"
 pkgver_build = "465504"
-pkgrel = 2
+pkgrel = 3
 debug_pkgext = False
 
 
@@ -51,7 +51,6 @@ def gen_arch_packages():
 			desc = "The AMDGPU Pro libgl library symlinks",
 			conflicts = ['libgl'],
 			provides  = ['libgl'],
-			depends   = ['amdgpu-pro'],
 		),
 
 		'amdgpu-pro-opencl': Package(
@@ -82,6 +81,14 @@ def gen_arch_packages():
 				'ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib/libvdpau_amdgpu.so.1',
 				'ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib/libvdpau_amdgpu.so',
 			]
+		),
+
+		'amdgpu-pro-mesa-omx': Package(
+			desc = "Mesa OpenMAX video drivers for AMDGPU Pro",
+		),
+
+		'amdgpu-pro-gst-omx': Package(
+			desc = "GStreamer OpenMAX plugins for AMDGPU Pro",
 		),
 
 		'lib32-amdgpu-pro': Package(
@@ -121,7 +128,6 @@ def gen_arch_packages():
 			desc = "The AMDGPU Pro libgl library symlinks (32bit libraries)",
 			conflicts = ['lib32-libgl'],
 			provides  = ['lib32-libgl'],
-			depends   = ['lib32-amdgpu-pro'],
 		),
 
 		'lib32-amdgpu-pro-vdpau': Package(
@@ -129,16 +135,24 @@ def gen_arch_packages():
 			extra_commands = [
 				'mkdir -p "${pkgdir}"/usr/lib32/',
 				'ln -s /opt/amdgpu-pro/lib/i386-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib32/libvdpau_amdgpu.so.1.0.0',
-				'ln -s /opt/amdgpu-pro/lib/i368-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib32/libvdpau_amdgpu.so.1',
-				'ln -s /opt/amdgpu-pro/lib/i368-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib32/libvdpau_amdgpu.so',
+				'ln -s /opt/amdgpu-pro/lib/i386-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib32/libvdpau_amdgpu.so.1',
+				'ln -s /opt/amdgpu-pro/lib/i386-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib32/libvdpau_amdgpu.so',
 			]
+		),
+
+		'lib32-amdgpu-pro-mesa-omx': Package(
+			desc = "Mesa OpenMAX video drivers for AMDGPU Pro (32bit libraries)",
+		),
+
+		'lib32-amdgpu-pro-gst-omx': Package(
+			desc = "GStreamer OpenMAX plugins for AMDGPU Pro (32bit libraries)",
 		),
 
 		'xf86-video-amdgpu-pro': Package(
 			desc = "The AMDGPU Pro X.org video driver",
-			conflicts = ['xf86-video-amdgpu', 'xorg-server<1.18.0', 'xorg-server>=1.19.0' 'X-ABI-VIDEODRV_VERSION<20', 'X-ABI-VIDEODRV_VERSION>=21'],
+			conflicts = ['xf86-video-amdgpu', 'xorg-server<1.19.0', 'X-ABI-VIDEODRV_VERSION<23', 'X-ABI-VIDEODRV_VERSION>=24'],
 			provides  = ['xf86-video-amdgpu'], # in case anything depends on that
-			groups = ['xorg-drivers' 'xorg'],
+			groups = ['xorg-drivers'],
 		)
 	}
 	for key in arch_packages:
@@ -151,18 +165,39 @@ def gen_arch_packages():
 packages_map_default = 'amdgpu-pro'
 packages_map = {
 	'amdgpu-pro':                       'amdgpu-pro',        # deb is metapackage
+	'amdgpu-pro-core':                  'amdgpu-pro',        # deb is metapackage
 	'libgbm1-amdgpu-pro':               'amdgpu-pro',
 	'libgbm1-amdgpu-pro-base':          'amdgpu-pro',
 	'libgbm1-amdgpu-pro-dev':           'amdgpu-pro',
+	'ids-amdgpu-pro':                   'amdgpu-pro',
 
-	'gst-omx-amdgpu-pro':               'amdgpu-pro',
-	'mesa-amdgpu-pro-omx-drivers':      'amdgpu-pro',
+	'libllvm5.0-amdgpu-pro':            'amdgpu-pro',
+	'llvm-amdgpu-pro-5.0-dev':          'amdgpu-pro',
+	'llvm-amdgpu-pro-5.0':              'amdgpu-pro',
+	'llvm-amdgpu-pro-5.0-runtime':      'amdgpu-pro',
+	'llvm-amdgpu-pro-runtime':          'amdgpu-pro',
+	'llvm-amdgpu-pro-dev':              'amdgpu-pro',
+
+	'gst-omx-amdgpu-pro':               'amdgpu-pro-gst-omx',
+	'mesa-amdgpu-pro-omx-drivers':      'amdgpu-pro-mesa-omx',
 
 	'amdgpu-pro-dkms':                  'amdgpu-pro-dkms',
 
 	'clinfo-amdgpu-pro':                'amdgpu-pro-opencl',
 	'libopencl1-amdgpu-pro':            'amdgpu-pro-opencl',
 	'opencl-amdgpu-pro-icd':            'amdgpu-pro-opencl',
+	'rocm-amdgpu-pro':                  'amdgpu-pro-opencl',
+	'rocm-amdgpu-pro-icd':              'amdgpu-pro-opencl',
+	'rocm-amdgpu-pro-opencl':           'amdgpu-pro-opencl',
+	'rocm-amdgpu-pro-opencl-dev':       'amdgpu-pro-opencl',
+	'rocr-amdgpu-pro':                  'amdgpu-pro-opencl',
+	'rocr-amdgpu-pro-dev':              'amdgpu-pro-opencl',
+	'roct-amdgpu-pro':                  'amdgpu-pro-opencl',
+	'roct-amdgpu-pro-dev':              'amdgpu-pro-opencl',
+	'hsa-runtime-tools-amdgpu-pro':     'amdgpu-pro-opencl',
+	'hsa-runtime-tools-amdgpu-pro-dev': 'amdgpu-pro-opencl',
+	'hsa-ext-amdgpu-pro-finalize':      'amdgpu-pro-opencl',
+	'hsa-ext-amdgpu-pro-image':         'amdgpu-pro-opencl',
 
 	'vulkan-amdgpu-pro':                'amdgpu-pro-vulkan',
 
@@ -173,18 +208,18 @@ packages_map = {
 	'libdrm2-amdgpu-pro':               'amdgpu-pro-libdrm',
 
 	# the following libs will be symlinked by amdgpu-pro-libgl, just like mesa-libgl and nvidia-libgl
-	'libegl1-amdgpu-pro':               'amdgpu-pro',
-	'libgl1-amdgpu-pro-appprofiles':    'amdgpu-pro',
+	'libegl1-amdgpu-pro':               'amdgpu-pro-libgl',
+	'libgl1-amdgpu-pro-appprofiles':    'amdgpu-pro-libgl',
 	## contents of this should probably go into /usr/lib/xorg/modules/dri/ instead of /usr/lib/dri ?
 	'libgl1-amdgpu-pro-dri':            'amdgpu-pro',
-	'libgl1-amdgpu-pro-ext':            'amdgpu-pro',
-	'libgl1-amdgpu-pro-glx':            'amdgpu-pro',
-	'libgles2-amdgpu-pro':              'amdgpu-pro',
-	'libglamor-amdgpu-pro-dev':         'amdgpu-pro',
+	'libgl1-amdgpu-pro-ext':            'amdgpu-pro-libgl',
+	'libgl1-amdgpu-pro-glx':            'amdgpu-pro-libgl',
+	'libgles2-amdgpu-pro':              'amdgpu-pro-libgl',
+	'libglamor-amdgpu-pro-dev':         None, # disabled
 
 	'libvdpau-amdgpu-pro':              'amdgpu-pro-vdpau',
 	'xserver-xorg-video-amdgpu-pro':    'xf86-video-amdgpu-pro',
-	'xserver-xorg-video-glamoregl-amdgpu-pro':    'xf86-video-amdgpu-pro',
+	'xserver-xorg-video-glamoregl-amdgpu-pro':    None,
 	'xserver-xorg-video-modesetting-amdgpu-pro':    'xf86-video-amdgpu-pro',
 
 
@@ -193,11 +228,19 @@ packages_map = {
 	'lib32-libgbm1-amdgpu-pro':         'lib32-amdgpu-pro',
 	'lib32-libgbm1-amdgpu-pro-dev':     'lib32-amdgpu-pro',
 
-	'lib32-gst-omx-amdgpu-pro':         'lib32-amdgpu-pro',
-	'lib32-mesa-amdgpu-pro-omx-drivers':      'lib32-amdgpu-pro',
+	'lib32-gst-omx-amdgpu-pro':         'lib32-amdgpu-pro-gst-omx',
+	'lib32-mesa-amdgpu-pro-omx-drivers':'lib32-amdgpu-pro-mesa-omx',
 
 	'lib32-opencl-amdgpu-pro-icd':      'lib32-amdgpu-pro-opencl',
 	'lib32-libopencl1-amdgpu-pro':      'lib32-amdgpu-pro-opencl',
+	'lib32-rocm-amdgpu-pro':            'lib32-amdgpu-pro-opencl',
+	'lib32-rocm-amdgpu-pro-icd':        'lib32-amdgpu-pro-opencl',
+	'lib32-rocm-amdgpu-pro-opencl':     'lib32-amdgpu-pro-opencl',
+	'lib32-rocm-amdgpu-pro-opencl-dev': 'lib32-amdgpu-pro-opencl',
+	'lib32-rocr-amdgpu-pro':            'lib32-amdgpu-pro-opencl',
+	'lib32-rocr-amdgpu-pro-dev':        'lib32-amdgpu-pro-opencl',
+	'lib32-roct-amdgpu-pro':            'lib32-amdgpu-pro-opencl',
+	'lib32-roct-amdgpu-pro-dev':        'lib32-amdgpu-pro-opencl',
 
 	'lib32-vulkan-amdgpu-pro':          'lib32-amdgpu-pro-vulkan',
 
@@ -207,12 +250,12 @@ packages_map = {
 	'lib32-libdrm2-amdgpu-pro':         'lib32-amdgpu-pro-libdrm',
 
 
-	'lib32-libegl1-amdgpu-pro':         'lib32-amdgpu-pro',
+	'lib32-libegl1-amdgpu-pro':         'lib32-amdgpu-pro-libgl',
 	'lib32-libgl1-amdgpu-pro-dri':      'lib32-amdgpu-pro',
-	'lib32-libgl1-amdgpu-pro-ext':      'lib32-amdgpu-pro',
-	'lib32-libgl1-amdgpu-pro-glx':      'lib32-amdgpu-pro',
-	'lib32-libgles2-amdgpu-pro':        'lib32-amdgpu-pro',
-	'lib32-libglamor-amdgpu-pro-dev':   'lib32-amdgpu-pro',
+	'lib32-libgl1-amdgpu-pro-ext':      'lib32-amdgpu-pro-libgl',
+	'lib32-libgl1-amdgpu-pro-glx':      'lib32-amdgpu-pro-libgl',
+	'lib32-libgles2-amdgpu-pro':        'lib32-amdgpu-pro-libgl',
+	'lib32-libglamor-amdgpu-pro-dev':   None,
 
 	'lib32-libvdpau-amdgpu-pro':        'lib32-amdgpu-pro-vdpau',
 
@@ -261,6 +304,11 @@ replace_deps = {
 	"libgstreamer-plugins-base1.0-0": "gst-plugins-base",
 	"libglib2.0-0": "glib2",
 	"libomxil-bellagio0": "libomxil-bellagio",
+
+	#"libjs-jquery": "jquery",
+	#"libjs-underscorea": "underscorejs" # the underscroejs AUR pkg dos not install to /usr/share/javascript !
+	"libjs-jquery":       None,
+	"libjs-underscorea":  None,
 }
 
 ## override the version requirement extracted from deb
@@ -290,13 +338,16 @@ def hashFile(file):
 	return hash.hexdigest()
 
 sources = [ source_url ]
-sha5sums = [ hashFile(source_file) ]
+sha256sums = [ hashFile(source_file) ]
 
 patches = sorted(glob.glob("*.patch"))
 
 for patch in patches:
     sources.append(patch)
-    sha5sums.append(hashFile(patch))
+    sha256sums.append(hashFile(patch))
+
+#sources.append("20-amdgpu.conf")
+#sha256sums.append(hashFile("20-amdgpu.conf"))
 
 header_tpl = """# Author: Janusz Lewandowski <lew21@xtreeme.org>
 # Maintainer: David McFarland <corngood@gmail.com>
@@ -314,7 +365,7 @@ makedepends=('wget')
 DLAGENTS='{dlagents}'
 
 source=({source})
-sha256sums=({sha5sums})
+sha256sums=({sha256sums})
 
 """
 
@@ -361,13 +412,15 @@ package_{NAME} () {{
 package_deb_extract_tpl = """	extract_deb "${{srcdir}}"/amdgpu-pro-%s-%s/{Filename}
 """ %(pkgver_base,pkgver_build)
 
-package_header_i386 = """	#move_libdir "${pkgdir}/opt/amdgpu-pro" "usr"
-	#move_libdir "${pkgdir}/opt/amdgpu-pro/lib/i386-linux-gnu" "usr/lib32"
+#package_header_i386 = """	move_libdir "${pkgdir}/opt/amdgpu-pro" "usr"
+#	move_libdir "${pkgdir}/opt/amdgpu-pro/lib/i386-linux-gnu" "usr/lib32"
+package_header_i386 = """
 	move_libdir "${pkgdir}/lib" "usr/lib32"
 """
 
-package_header_x86_64 = """	#move_libdir "${pkgdir}/opt/amdgpu-pro" "usr"
-	#move_libdir "${pkgdir}/opt/amdgpu-pro/lib/x86_64-linux-gnu"
+#package_header_x86_64 = """	move_libdir "${pkgdir}/opt/amdgpu-pro" "usr"
+#	move_libdir "${pkgdir}/opt/amdgpu-pro/lib/x86_64-linux-gnu"
+package_header_x86_64 = """
 	move_libdir "${pkgdir}/lib"
 """
 
@@ -410,7 +463,7 @@ class Package:
 				self.arch = ['x86_64']
 			else:
 				import sys
-				sys.stderr.write("ERROR: There is a bug in this script, package '%s' is i386 and should start with 'lib32'. Check packages_map!\n" % self.name)
+				sys.stderr.write("ERROR: There is a bug in this script, package '%s' is i386 (came from %s) and should start with 'lib32'. Check packages_map!\n" % (self.name,info["Package"]))
 
 
 		try:
@@ -543,8 +596,11 @@ def writePackages(f):
 	f.seek(0)
 
 	for info in package_list:
-		name = "lib32-" + info["Package"] if info["Architecture"] == "i386" else info["Package"]
+		name = info["Package"]
 		arch_pkg = arch_packages[ packages_map_default ]
+		if info["Architecture"] == "i386":
+			name = "lib32-" + info["Package"]
+			arch_pkg = arch_packages[ "lib32-" + packages_map_default ] # use lib32-<default-pkg> for 32bit packages as default package
 		if name in packages_map:
 			if packages_map[name] in arch_packages:
 				arch_pkg = arch_packages[ packages_map[name] ]
@@ -568,7 +624,7 @@ print(header_tpl.format(
 	pkgrel=pkgrel,
 	dlagents=dlagents,
 	source="\n\t".join(sources),
-	sha5sums="\n\t".join(sha5sums)
+	sha256sums="\n\t".join(sha256sums)
 ))
 
 print(package_functions)
