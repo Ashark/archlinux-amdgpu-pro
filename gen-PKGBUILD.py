@@ -40,7 +40,7 @@ def gen_arch_packages():
 			descr = "The AMDGPU Pro kernel module",
 			extra_commands = [
 				"msg 'Applying patches...'",
-				"(cd ${{pkgdir}}/usr/src/amdgpu-pro-{0}-{1};".format(pkgver_base, pkgver_build),
+				"(cd ${{pkgdir}}/usr/src/amdgpu-{0}-{1};".format(pkgver_base, pkgver_build),
 				"\tsed -i 's/\/extra/\/extramodules/' dkms.conf",
 				";\n".join(["\t\tmsg2 '{0}'\n\t\tpatch -p1 -i \"${{srcdir}}/{0}\"".format(patch) for patch in patches]),
 				")",

@@ -15,11 +15,9 @@ DLAGENTS='https::/usr/bin/wget --referer https://support.amd.com/en-us/kb-articl
 
 source=(https://www2.ati.com/drivers/linux/ubuntu/amdgpu-pro-17.40-492261.tar.xz
 	0001-disable-firmware-copy.patch
-	0002-fix-warnings-for-Werror.patch
 	0003-add-archlinux-as-build-option.patch)
 sha256sums=(b0645157577c9ff175dc02487c4c682ded2624c8c2cfd6aa603960962e1d07b0
-	c9b95504f5f7575c7ca7e138beb4bf474efd2abe82e72e9cad3d4fd1a8fc5c7c
-	4d63683a846b16ca914557e371df90460e45639a2a7ca0df0cf575b945a4661a
+	85359c89d7f1317cf5176bc9c489314aba2db20d962b120a43fc532575466345
 	2bf8eac2afac3bce0d17f840c15009838b578a72412ff66df6e8caa6c00fade7)
 
 
@@ -100,12 +98,10 @@ package_amdgpu-pro-dkms () {
 
 	# extra_commands:
 	msg 'Applying patches...'
-	(cd ${pkgdir}/usr/src/amdgpu-pro-17.40-492261;
+	(cd ${pkgdir}/usr/src/amdgpu-17.40-492261;
 		sed -i 's/\/extra/\/extramodules/' dkms.conf
 			msg2 '0001-disable-firmware-copy.patch'
 		patch -p1 -i "${srcdir}/0001-disable-firmware-copy.patch";
-		msg2 '0002-fix-warnings-for-Werror.patch'
-		patch -p1 -i "${srcdir}/0002-fix-warnings-for-Werror.patch";
 		msg2 '0003-add-archlinux-as-build-option.patch'
 		patch -p1 -i "${srcdir}/0003-add-archlinux-as-build-option.patch"
 	)
