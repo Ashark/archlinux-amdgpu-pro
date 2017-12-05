@@ -69,6 +69,9 @@ def gen_arch_packages():
 			extra_commands = [
 				'mkdir -p "${pkgdir}"/usr/share/vulkan/icd.d/',
 				'mv "${pkgdir}"/etc/vulkan/icd.d/amd_icd64.json "${pkgdir}"/usr/share/vulkan/icd.d/',
+				# https://support.amd.com/en-us/kb-articles/Pages/AMDGPU-PRO-Driver-for-Linux-Release-Notes.aspx
+				# says you need version 1.0.61 of the vulkan sdk, so I'm guessing this is the correct version supported by this driver
+				'sed -i "s@abi_versions\(.*\)0.9.0\(.*\)@api_version\\11.0.61\\2@" "${pkgdir}"/usr/share/vulkan/icd.d/amd_icd64.json',
 				'rm -rf "${pkgdir}"/etc/vulkan/'
 			]
 		),
@@ -114,6 +117,9 @@ def gen_arch_packages():
 			extra_commands = [
 				'mkdir -p "${pkgdir}"/usr/share/vulkan/icd.d/',
 				'mv "${pkgdir}"/etc/vulkan/icd.d/amd_icd32.json "${pkgdir}"/usr/share/vulkan/icd.d/',
+				# https://support.amd.com/en-us/kb-articles/Pages/AMDGPU-PRO-Driver-for-Linux-Release-Notes.aspx
+				# says you need version 1.0.61 of the vulkan sdk, so I'm guessing this is the correct version supported by this driver
+				'sed -i "s@abi_versions\(.*\)0.9.0\(.*\)@api_version\\11.0.61\\2@" "${pkgdir}"/usr/share/vulkan/icd.d/amd_icd32.json',
 				'rm -rf "${pkgdir}"/etc/vulkan/'
 			]
 		),

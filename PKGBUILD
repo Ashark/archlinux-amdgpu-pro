@@ -225,6 +225,7 @@ package_amdgpu-pro-vulkan () {
 	# extra_commands:
 	mkdir -p "${pkgdir}"/usr/share/vulkan/icd.d/
 	mv "${pkgdir}"/etc/vulkan/icd.d/amd_icd64.json "${pkgdir}"/usr/share/vulkan/icd.d/
+	sed -i "s@abi_versions\(.*\)0.9.0\(.*\)@api_version\11.0.61\2@" "${pkgdir}"/usr/share/vulkan/icd.d/amd_icd64.json
 	rm -rf "${pkgdir}"/etc/vulkan/
 }
 
@@ -396,6 +397,7 @@ package_lib32-amdgpu-pro-vulkan () {
 	# extra_commands:
 	mkdir -p "${pkgdir}"/usr/share/vulkan/icd.d/
 	mv "${pkgdir}"/etc/vulkan/icd.d/amd_icd32.json "${pkgdir}"/usr/share/vulkan/icd.d/
+	sed -i "s@abi_versions\(.*\)0.9.0\(.*\)@api_version\11.0.61\2@" "${pkgdir}"/usr/share/vulkan/icd.d/amd_icd32.json
 	rm -rf "${pkgdir}"/etc/vulkan/
 
 	# lib32 cleanup
