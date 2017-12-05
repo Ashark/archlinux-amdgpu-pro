@@ -172,7 +172,7 @@ package_amdgpu-pro-opencl () {
 	pkgdesc="The AMDGPU Pro OpenCL implementation"
 	arch=('x86_64')
 	provides=('opencl-driver')
-	depends=('amdgpu-pro=17.40.492261-1' 'libpci3>=3.3.1-1')
+	depends=('amdgpu-pro=17.40.492261-1' 'pciutils>=3.3.1-1')
 
 	extract_deb "${srcdir}"/amdgpu-pro-17.40-492261/./clinfo-amdgpu-pro_17.40-492261_amd64.deb
 	extract_deb "${srcdir}"/amdgpu-pro-17.40-492261/./hsa-ext-amdgpu-pro-finalize_1.1.6-492261_amd64.deb

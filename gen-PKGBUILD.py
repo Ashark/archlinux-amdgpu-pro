@@ -311,6 +311,7 @@ replace_deps = {
 	"libtinfo-dev": "ncurses",
 	"lib32-libtinfo-dev": "lib32-ncurses",
 	"libedit2": "libedit",
+	"libpci3": "pciutils",
 
 
 	#"libjs-jquery": "jquery",

@@ -82,7 +82,7 @@ pkgname = amdgpu-pro-opencl
 	pkgdesc = The AMDGPU Pro OpenCL implementation
 	arch = x86_64
 	depends = amdgpu-pro=17.40.492261-1
-	depends = libpci3>=3.3.1-1
+	depends = pciutils>=3.3.1-1
 	provides = opencl-driver
 
 pkgname = amdgpu-pro-vdpau
