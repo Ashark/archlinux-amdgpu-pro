@@ -128,6 +128,9 @@ def gen_arch_packages():
 			desc = "The AMDGPU Pro libgl library symlinks (32bit libraries)",
 			conflicts = ['lib32-libgl'],
 			provides  = ['lib32-libgl'],
+			extra_commands = [
+				'rm -rf "${pkgdir}"/etc',
+			]
 		),
 
 		'lib32-amdgpu-pro-vdpau': Package(

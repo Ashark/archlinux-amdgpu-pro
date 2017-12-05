@@ -315,6 +315,8 @@ package_lib32-amdgpu-pro-libgl () {
 
 	move_libdir "${pkgdir}/lib" "usr/lib32"
 
+	# extra_commands:
+	rm -rf "${pkgdir}"/etc
 
 	# lib32 cleanup
 	rm -rf "${pkgdir}"/usr/{bin,lib,include,share} "${pkgdir}/var" "${pkgdir}"/opt/amdgpu-pro/{bin,include,share}
