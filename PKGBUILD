@@ -57,7 +57,7 @@ package_amdgpu-pro () {
 	pkgdesc="The AMDGPU Pro driver package"
 	install=amdgpu-pro-core.install
 	arch=('x86_64')
-	depends=('binfmt-support' 'libedit2>=2.11-20080614' 'libffi-dev>=3.0.9' 'libtinfo-dev' 'libx11' 'libxext' 'libxfixes' 'ncurses5-compat-libs>=6' 'zlib>=1.2.0')
+	depends=('binfmt-support' 'libedit2>=2.11-20080614' 'libffi>=3.0.9' 'libx11' 'libxext' 'libxfixes' 'ncurses' 'ncurses5-compat-libs>=6' 'zlib>=1.2.0')
 
 	extract_deb "${srcdir}"/amdgpu-pro-17.40-492261/./amdgpu-pro_17.40-492261_amd64.deb
 	extract_deb "${srcdir}"/amdgpu-pro-17.40-492261/./amdgpu-pro-core_17.40-492261_all.deb
@@ -232,7 +232,7 @@ package_amdgpu-pro-vulkan () {
 package_lib32-amdgpu-pro () {
 	pkgdesc="Meta package to install amdgpu Pro components. (32bit libraries)"
 	arch=('x86_64')
-	depends=('lib32-binfmt-support' 'lib32-libedit2>=2.11-20080614' 'lib32-libffi-dev>=3.0.9' 'lib32-libtinfo-dev' 'lib32-libx11' 'lib32-libxext' 'lib32-libxfixes' 'lib32-ncurses5-compat-libs>=6' 'lib32-zlib>=1.2.0')
+	depends=('lib32-binfmt-support' 'lib32-libedit2>=2.11-20080614' 'lib32-libffi>=3.0.9' 'lib32-libx11' 'lib32-libxext' 'lib32-libxfixes' 'lib32-ncurses' 'lib32-ncurses5-compat-libs>=6' 'lib32-zlib>=1.2.0')
 
 	extract_deb "${srcdir}"/amdgpu-pro-17.40-492261/./amdgpu-pro_17.40-492261_i386.deb
 	extract_deb "${srcdir}"/amdgpu-pro-17.40-492261/./libgbm1-amdgpu-pro_17.40-492261_i386.deb

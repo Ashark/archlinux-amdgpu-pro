@@ -18,11 +18,11 @@ pkgname = amdgpu-pro
 	arch = x86_64
 	depends = binfmt-support
 	depends = libedit2>=2.11-20080614
-	depends = libffi-dev>=3.0.9
-	depends = libtinfo-dev
+	depends = libffi>=3.0.9
 	depends = libx11
 	depends = libxext
 	depends = libxfixes
+	depends = ncurses
 	depends = ncurses5-compat-libs>=6
 	depends = zlib>=1.2.0
 
@@ -107,11 +107,11 @@ pkgname = lib32-amdgpu-pro
 	arch = x86_64
 	depends = lib32-binfmt-support
 	depends = lib32-libedit2>=2.11-20080614
-	depends = lib32-libffi-dev>=3.0.9
-	depends = lib32-libtinfo-dev
+	depends = lib32-libffi>=3.0.9
 	depends = lib32-libx11
 	depends = lib32-libxext
 	depends = lib32-libxfixes
+	depends = lib32-ncurses
 	depends = lib32-ncurses5-compat-libs>=6
 	depends = lib32-zlib>=1.2.0
 

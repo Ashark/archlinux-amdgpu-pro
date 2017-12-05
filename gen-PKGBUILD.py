@@ -305,6 +305,13 @@ replace_deps = {
 	"libglib2.0-0": "glib2",
 	"libomxil-bellagio0": "libomxil-bellagio",
 
+	# replace *-dev packages with arch linux ones containing the headers
+	"libffi-dev": "libffi",
+	"lib32-libffi-dev": "lib32-libffi",
+	"libtinfo-dev": "ncurses",
+	"lib32-libtinfo-dev": "lib32-ncurses",
+
+
 	#"libjs-jquery": "jquery",
 	#"libjs-underscorea": "underscorejs" # the underscroejs AUR pkg dos not install to /usr/share/javascript !
 	"libjs-jquery":       None,
