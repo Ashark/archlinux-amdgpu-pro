@@ -310,6 +310,7 @@ replace_deps = {
 	"lib32-libffi-dev": "lib32-libffi",
 	"libtinfo-dev": "ncurses",
 	"lib32-libtinfo-dev": "lib32-ncurses",
+	"libedit2": "libedit",
 
 
 	#"libjs-jquery": "jquery",
