@@ -335,6 +335,8 @@ package_lib32-amdgpu-pro-mesa-omx () {
 
 	move_libdir "${pkgdir}/lib" "usr/lib32"
 
+	# extra_commands:
+	rm -f "${pkgdir}"/etc/xdg/gstomx.conf
 
 	# lib32 cleanup
 	rm -rf "${pkgdir}"/usr/{bin,lib,include,share} "${pkgdir}/var" "${pkgdir}"/opt/amdgpu-pro/{bin,include,share}

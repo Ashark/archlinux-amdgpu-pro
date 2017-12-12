@@ -151,6 +151,9 @@ def gen_arch_packages():
 
 		'lib32-amdgpu-pro-mesa-omx': Package(
 			desc = "Mesa OpenMAX video drivers for AMDGPU Pro (32bit libraries)",
+			extra_commands = [
+				'rm -f "${pkgdir}"/etc/xdg/gstomx.conf'
+			]
 		),
 
 		'lib32-amdgpu-pro-gst-omx': Package(
