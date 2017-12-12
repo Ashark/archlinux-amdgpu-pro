@@ -332,6 +332,11 @@ replace_deps = {
 	"libjs-underscorea":  None,
 }
 
+## do not convert the dependencies listed to lib32 variants
+no_lib32_convert = [
+	"binfmt-support"
+]
+
 ## override the version requirement extracted from deb
 replace_version = {
 	"linux-firmware": "",
@@ -568,7 +573,8 @@ deb_archs={}
 def convertName(name, info, domap=True):
 	ret = name
 	if info["Architecture"] == "i386" and (name not in deb_archs or "any" not in deb_archs[name]):
-		ret = "lib32-" + name
+		if not name in no_lib32_convert:
+			ret = "lib32-" + name
 
 	if name in packages_map:
 		if domap:
@@ -597,7 +603,8 @@ def fix_32(dep):
 	match = dep32RE.match(dep)
 	if match:
 		rdep = match.group(1)
-		rdep = 'lib32-%s' % rdep
+		if not rdep in no_lib32_convert:
+			rdep = 'lib32-%s' % rdep
 	return rdep
 
 

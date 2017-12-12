@@ -105,7 +105,7 @@ pkgname = amdgpu-pro-vulkan
 pkgname = lib32-amdgpu-pro
 	pkgdesc = Meta package to install amdgpu Pro components. (32bit libraries)
 	arch = x86_64
-	depends = lib32-binfmt-support
+	depends = binfmt-support
 	depends = lib32-libedit>=2.11-20080614
 	depends = lib32-libffi>=3.0.9
 	depends = lib32-libx11

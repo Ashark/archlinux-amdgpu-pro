@@ -233,7 +233,7 @@ package_amdgpu-pro-vulkan () {
 package_lib32-amdgpu-pro () {
 	pkgdesc="Meta package to install amdgpu Pro components. (32bit libraries)"
 	arch=('x86_64')
-	depends=('lib32-binfmt-support' 'lib32-libedit>=2.11-20080614' 'lib32-libffi>=3.0.9' 'lib32-libx11' 'lib32-libxext' 'lib32-libxfixes' 'lib32-ncurses' 'lib32-ncurses5-compat-libs>=6' 'lib32-zlib>=1.2.0')
+	depends=('binfmt-support' 'lib32-libedit>=2.11-20080614' 'lib32-libffi>=3.0.9' 'lib32-libx11' 'lib32-libxext' 'lib32-libxfixes' 'lib32-ncurses' 'lib32-ncurses5-compat-libs>=6' 'lib32-zlib>=1.2.0')
 
 	extract_deb "${srcdir}"/amdgpu-pro-17.40-492261/./amdgpu-pro_17.40-492261_i386.deb
 	extract_deb "${srcdir}"/amdgpu-pro-17.40-492261/./libgbm1-amdgpu-pro_17.40-492261_i386.deb
