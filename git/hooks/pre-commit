@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 files=`git diff --cached --name-status`
 re="gen-PKGBUILD.py"

@@ -9,7 +9,7 @@ import glob
 
 pkgver_base = "17.40"
 pkgver_build = "492261"
-pkgrel = 1
+pkgrel = 2
 debug_pkgext = False
 
 
@@ -18,7 +18,8 @@ url_ref="https://support.amd.com/en-us/kb-articles/Pages/AMDGPU-PRO-Install.aspx
 dlagents="https::/usr/bin/wget --referer {0} -N %u".format(url_ref)
 
             # https://www2.ati.com/drivers/linux/ubuntu/amdgpu-pro-16.40-348864.tar.xz
-source_url = "https://www2.ati.com/drivers/linux/ubuntu/amdgpu-pro-{0}-{1}.tar.xz".format(pkgver_base, pkgver_build)
+source_url = "https://www2.ati.com/drivers/linux/ubuntu/amdgpu-pro-${major}-${minor}.tar.xz"
+source_url_resolved = "https://www2.ati.com/drivers/linux/ubuntu/amdgpu-pro-{0}-{1}.tar.xz".format(pkgver_base, pkgver_build)
 source_file = "amdgpu-pro-{0}-{1}.tar.xz".format(pkgver_base, pkgver_build)
 
 def gen_arch_packages():
@@ -40,7 +41,7 @@ def gen_arch_packages():
 			descr = "The AMDGPU Pro kernel module",
 			extra_commands = [
 				"msg 'Applying patches...'",
-				"(cd ${{pkgdir}}/usr/src/amdgpu-{0}-{1};".format(pkgver_base, pkgver_build),
+				"(cd ${pkgdir}/usr/src/amdgpu-${major}-${minor};",
 				"\tsed -i 's/\/extra/\/extramodules/' dkms.conf",
 				";\n".join(["\t\tmsg2 '{0}'\n\t\tpatch -p1 -i \"${{srcdir}}/{0}\"".format(patch) for patch in patches]),
 				")",
@@ -351,7 +352,7 @@ arch_map = {
 
 
 
-subprocess.run(["wget", "--referer", url_ref, "-N", source_url])
+subprocess.run(["wget", "--referer", url_ref, "-N", source_url_resolved])
 
 def hashFile(file):
 	block = 64 * 1024
@@ -389,6 +390,9 @@ license=('custom:AMD')
 makedepends=('wget')
 
 DLAGENTS='{dlagents}'
+
+major={pkgver_base}
+minor={pkgver_build}
 
 source=({source})
 sha256sums=({sha256sums})
@@ -435,8 +439,8 @@ package_{NAME} () {{
 	pkgdesc={DESC}
 """
 
-package_deb_extract_tpl = """	extract_deb "${{srcdir}}"/amdgpu-pro-%s-%s/{Filename}
-""" %(pkgver_base,pkgver_build)
+package_deb_extract_tpl = """	extract_deb "${{srcdir}}"/amdgpu-pro-${{major}}-${{minor}}/{Filename}
+"""
 
 #package_header_i386 = """	move_libdir "${pkgdir}/opt/amdgpu-pro" "usr"
 #	move_libdir "${pkgdir}/opt/amdgpu-pro/lib/i386-linux-gnu" "usr/lib32"
@@ -504,8 +508,8 @@ class Package:
 		if deps:
 			deps = [ dependencyRE.match(dep).groups() for dep in deps ]
 			deps = [(replace_deps[name] if name in replace_deps else name, version) for name, version in deps]
-			deps = ["'" + convertName(fix_32(name), info, domap) + convertVersionSpecifier(fix_32(name), version) + "'" for name, version in deps if name]
-			deps = [ dep for dep in deps if not dep.startswith("'=")]
+			deps = ["\"" + convertName(fix_32(name), info, domap) + convertVersionSpecifier(fix_32(name), version) + "\"" for name, version in deps if name]
+			deps = [ dep for dep in deps if not dep.startswith("\"=")]
 
 			# remove all dependencies on itself
 			deps = [ dep for dep in deps if dep[1:len(self.name)+1] != self.name ]
@@ -545,7 +549,8 @@ class Package:
 			ret += "	depends=(%s)\n\n" % " ".join(self.depends)
 
 		for info in self.deb_source_infos:
-			ret += package_deb_extract_tpl.format(**info)
+			tmp_str=package_deb_extract_tpl.format(**info)
+			ret += tmp_str.replace(str(pkgver_base), "${major}").replace(str(pkgver_build), "${minor}")
 
 		if self.name.startswith('lib32-'):
 			ret += package_header_i386
@@ -586,7 +591,7 @@ def convertVersionSpecifier(name, spec):
 	if name in replace_version:
 		return replace_version[name]
 	if name in deb_package_names:
-		return "=" + pkgver + "-" + str(pkgrel)
+		return "=${major}.${minor}-${pkgrel}"
 	if not spec:
 		return ""
 
@@ -651,6 +656,8 @@ print(header_tpl.format(
 	pkgver=pkgver,
 	pkgrel=pkgrel,
 	dlagents=dlagents,
+	pkgver_base=pkgver_base,
+	pkgver_build=pkgver_build,
 	source="\n\t".join(sources),
 	sha256sums="\n\t".join(sha256sums)
 ))
