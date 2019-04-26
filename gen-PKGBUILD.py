@@ -7,20 +7,19 @@ import subprocess
 import hashlib
 import glob
 
-pkgver_base = "17.40"
-pkgver_build = "492261"
-pkgrel = 2
+pkgver_base = "19.10"
+pkgver_build = "785425"
+pkgrel = 1
 debug_pkgext = False
 
 
 pkgver = "{0}.{1}".format(pkgver_base, pkgver_build)
-url_ref="https://support.amd.com/en-us/kb-articles/Pages/AMDGPU-PRO-Install.aspx"
-dlagents="https::/usr/bin/wget --referer {0} -N %u".format(url_ref)
+url_ref = "https://www.amd.com/en/support/kb/release-notes/rn-rad-lin-19-10-unified"
+dlagents = "https::/usr/bin/wget --referer {0} -N %u".format(url_ref)
 
-            # https://www2.ati.com/drivers/linux/ubuntu/amdgpu-pro-16.40-348864.tar.xz
-source_url = "https://www2.ati.com/drivers/linux/ubuntu/amdgpu-pro-${major}-${minor}.tar.xz"
-source_url_resolved = "https://www2.ati.com/drivers/linux/ubuntu/amdgpu-pro-{0}-{1}.tar.xz".format(pkgver_base, pkgver_build)
-source_file = "amdgpu-pro-{0}-{1}.tar.xz".format(pkgver_base, pkgver_build)
+source_url = "https://drivers.amd.com/drivers/linux/amdgpu-pro-${major}-${minor}-ubuntu-18.04.tar.xz"
+source_url_resolved = "https://drivers.amd.com/drivers/linux/amdgpu-pro-{0}-{1}-ubuntu-18.04.tar.xz".format(pkgver_base, pkgver_build)
+source_file = "amdgpu-pro-{0}-{1}-ubuntu-18.04.tar.xz".format(pkgver_base, pkgver_build)
 
 def gen_arch_packages():
 	arch_packages = {
@@ -385,7 +384,7 @@ pkgname={package_names}
 pkgver={pkgver}
 pkgrel={pkgrel}
 arch=('x86_64')
-url='http://www.amd.com'
+url='https://www.amd.com/en/support/kb/release-notes/rn-rad-lin-19-10-unified'
 license=('custom:AMD')
 makedepends=('wget')
 
@@ -667,7 +666,7 @@ print(package_functions)
 
 with lzma.open(source_file, "r") as tar:
 	with tarfile.open(fileobj=tar) as tf:
-		with tf.extractfile("amdgpu-pro-%s-%s/Packages" %(pkgver_base,pkgver_build)) as packages:
+		with tf.extractfile("amdgpu-pro-%s-%s-ubuntu-18.04/Packages" %(pkgver_base,pkgver_build)) as packages:
 			writePackages(packages)
 
 for pkg in arch_package_names:
