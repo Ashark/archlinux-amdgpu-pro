@@ -35,64 +35,64 @@ def gen_arch_packages():
 			]
 		),
 
-		'amdgpu-pro-dkms': Package(
-			arch = ['any'],
-			descr = "The AMDGPU Pro kernel module",
-			extra_commands = [
-				"msg 'Applying patches...'",
-				"(cd ${pkgdir}/usr/src/amdgpu-${major}-${minor};",
-				"\tsed -i 's/\/extra/\/extramodules/' dkms.conf",
-				";\n".join(["\t\tmsg2 '{0}'\n\t\tpatch -p1 -i \"${{srcdir}}/{0}\"".format(patch) for patch in patches]),
-				")",
-				]
-		),
+		#'amdgpu-pro-dkms': Package(
+			#arch = ['any'],
+			#descr = "The AMDGPU Pro kernel module",
+			#extra_commands = [
+				#"msg 'Applying patches...'",
+				#"(cd ${pkgdir}/usr/src/amdgpu-${major}-${minor};",
+				#"\tsed -i 's/\/extra/\/extramodules/' dkms.conf",
+				#";\n".join(["\t\tmsg2 '{0}'\n\t\tpatch -p1 -i \"${{srcdir}}/{0}\"".format(patch) for patch in patches]),
+				#")",
+				#]
+		#),
 
-		'amdgpu-pro-libgl': Package(
-			desc = "The AMDGPU Pro libgl library symlinks",
-			conflicts = ['libgl'],
-			provides  = ['libgl'],
-		),
+		#'amdgpu-pro-libgl': Package(
+			#desc = "The AMDGPU Pro libgl library symlinks",
+			#conflicts = ['libgl'],
+			#provides  = ['libgl'],
+		#),
 
-		'amdgpu-pro-opencl': Package(
-			desc = "The AMDGPU Pro OpenCL implementation",
-			provides  = ['opencl-driver']
-		),
-		'amdgpu-pro-libdrm': Package(
-			desc = "The AMDGPU Pro userspace interface to kernel DRM services",
-			conflicts = ['libdrm'],
-			provides = ['libdrm'],
-		),
+		#'amdgpu-pro-opencl': Package(
+			#desc = "The AMDGPU Pro OpenCL implementation",
+			#provides  = ['opencl-driver']
+		#),
+		#'amdgpu-pro-libdrm': Package(
+			#desc = "The AMDGPU Pro userspace interface to kernel DRM services",
+			#conflicts = ['libdrm'],
+			#provides = ['libdrm'],
+		#),
 
-		'amdgpu-pro-vulkan': Package(
-			desc = "The AMDGPU Pro Vulkan driver",
-			provides = ['vulkan-driver'],
-			extra_commands = [
-				'mkdir -p "${pkgdir}"/usr/share/vulkan/icd.d/',
-				'mv "${pkgdir}"/etc/vulkan/icd.d/amd_icd64.json "${pkgdir}"/usr/share/vulkan/icd.d/',
-				# https://support.amd.com/en-us/kb-articles/Pages/AMDGPU-PRO-Driver-for-Linux-Release-Notes.aspx
-				# says you need version 1.0.61 of the vulkan sdk, so I'm guessing this is the correct version supported by this driver
-				'sed -i "s@abi_versions\(.*\)0.9.0\(.*\)@api_version\\11.0.61\\2@" "${pkgdir}"/usr/share/vulkan/icd.d/amd_icd64.json',
-				'rm -rf "${pkgdir}"/etc/vulkan/'
-			]
-		),
+		#'amdgpu-pro-vulkan': Package(
+			#desc = "The AMDGPU Pro Vulkan driver",
+			#provides = ['vulkan-driver'],
+			#extra_commands = [
+				#'mkdir -p "${pkgdir}"/usr/share/vulkan/icd.d/',
+				#'mv "${pkgdir}"/etc/vulkan/icd.d/amd_icd64.json "${pkgdir}"/usr/share/vulkan/icd.d/',
+				## https://support.amd.com/en-us/kb-articles/Pages/AMDGPU-PRO-Driver-for-Linux-Release-Notes.aspx
+				## says you need version 1.0.61 of the vulkan sdk, so I'm guessing this is the correct version supported by this driver
+				#'sed -i "s@abi_versions\(.*\)0.9.0\(.*\)@api_version\\11.0.61\\2@" "${pkgdir}"/usr/share/vulkan/icd.d/amd_icd64.json',
+				#'rm -rf "${pkgdir}"/etc/vulkan/'
+			#]
+		#),
 
-		'amdgpu-pro-vdpau': Package(
-			desc = "The AMDGPU Pro VDPAU driver",
-			extra_commands = [
-				'mkdir -p "${pkgdir}"/usr/lib/',
-				'ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib/libvdpau_amdgpu.so.1.0.0',
-				'ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib/libvdpau_amdgpu.so.1',
-				'ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib/libvdpau_amdgpu.so',
-			]
-		),
+		#'amdgpu-pro-vdpau': Package(
+			#desc = "The AMDGPU Pro VDPAU driver",
+			#extra_commands = [
+				#'mkdir -p "${pkgdir}"/usr/lib/',
+				#'ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib/libvdpau_amdgpu.so.1.0.0',
+				#'ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib/libvdpau_amdgpu.so.1',
+				#'ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib/libvdpau_amdgpu.so',
+			#]
+		#),
 
-		'amdgpu-pro-mesa-omx': Package(
-			desc = "Mesa OpenMAX video drivers for AMDGPU Pro",
-		),
+		#'amdgpu-pro-mesa-omx': Package(
+			#desc = "Mesa OpenMAX video drivers for AMDGPU Pro",
+		#),
 
-		'amdgpu-pro-gst-omx': Package(
-			desc = "GStreamer OpenMAX plugins for AMDGPU Pro",
-		),
+		#'amdgpu-pro-gst-omx': Package(
+			#desc = "GStreamer OpenMAX plugins for AMDGPU Pro",
+		#),
 
 		'lib32-amdgpu-pro': Package(
 			desk = "The AMDGPU Pro driver package (32bit libraries)",
@@ -106,66 +106,82 @@ def gen_arch_packages():
 			]
 		),
 
-		'lib32-amdgpu-pro-opencl': Package(
-			desc = "The AMDGPU Pro OpenCL implementation",
-			provides  = ['lib32-opencl-driver']
-		),
+		#'lib32-amdgpu-pro-opencl': Package(
+			#desc = "The AMDGPU Pro OpenCL implementation",
+			#provides  = ['lib32-opencl-driver']
+		#),
 
-		'lib32-amdgpu-pro-vulkan': Package(
-			desc = "The AMDGPU Pro Vulkan driver (32bit libraries)",
-			provides = ['lib32-vulkan-driver'],
-			extra_commands = [
-				'mkdir -p "${pkgdir}"/usr/share/vulkan/icd.d/',
-				'mv "${pkgdir}"/etc/vulkan/icd.d/amd_icd32.json "${pkgdir}"/usr/share/vulkan/icd.d/',
-				# https://support.amd.com/en-us/kb-articles/Pages/AMDGPU-PRO-Driver-for-Linux-Release-Notes.aspx
-				# says you need version 1.0.61 of the vulkan sdk, so I'm guessing this is the correct version supported by this driver
-				'sed -i "s@abi_versions\(.*\)0.9.0\(.*\)@api_version\\11.0.61\\2@" "${pkgdir}"/usr/share/vulkan/icd.d/amd_icd32.json',
-				'rm -rf "${pkgdir}"/etc/vulkan/'
-			]
-		),
+		#'lib32-amdgpu-pro-vulkan': Package(
+			#desc = "The AMDGPU Pro Vulkan driver (32bit libraries)",
+			#provides = ['lib32-vulkan-driver'],
+			#extra_commands = [
+				#'mkdir -p "${pkgdir}"/usr/share/vulkan/icd.d/',
+				#'mv "${pkgdir}"/etc/vulkan/icd.d/amd_icd32.json "${pkgdir}"/usr/share/vulkan/icd.d/',
+				## https://support.amd.com/en-us/kb-articles/Pages/AMDGPU-PRO-Driver-for-Linux-Release-Notes.aspx
+				## says you need version 1.0.61 of the vulkan sdk, so I'm guessing this is the correct version supported by this driver
+				#'sed -i "s@abi_versions\(.*\)0.9.0\(.*\)@api_version\\11.0.61\\2@" "${pkgdir}"/usr/share/vulkan/icd.d/amd_icd32.json',
+				#'rm -rf "${pkgdir}"/etc/vulkan/'
+			#]
+		#),
 
-		'lib32-amdgpu-pro-libdrm': Package(
-			desc = "The AMDGPU Pro userspace interface to kernel DRM services (32bit libraries)",
-			conflicts = ['lib32-libdrm'],
-			provides = ['lib32-libdrm'],
-		),
+		#'lib32-amdgpu-pro-libdrm': Package(
+			#desc = "The AMDGPU Pro userspace interface to kernel DRM services (32bit libraries)",
+			#conflicts = ['lib32-libdrm'],
+			#provides = ['lib32-libdrm'],
+		#),
 
-		'lib32-amdgpu-pro-libgl': Package(
-			desc = "The AMDGPU Pro libgl library symlinks (32bit libraries)",
-			conflicts = ['lib32-libgl'],
-			provides  = ['lib32-libgl'],
-			extra_commands = [
-				'rm -rf "${pkgdir}"/etc',
-			]
-		),
+		#'lib32-amdgpu-pro-libgl': Package(
+			#desc = "The AMDGPU Pro libgl library symlinks (32bit libraries)",
+			#conflicts = ['lib32-libgl'],
+			#provides  = ['lib32-libgl'],
+			#extra_commands = [
+				#'rm -rf "${pkgdir}"/etc',
+			#]
+		#),
 
-		'lib32-amdgpu-pro-vdpau': Package(
-			desc = "The AMDGPU Pro VDPAU driver (32bit libraries)",
-			extra_commands = [
-				'mkdir -p "${pkgdir}"/usr/lib32/',
-				'ln -s /opt/amdgpu-pro/lib/i386-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib32/libvdpau_amdgpu.so.1.0.0',
-				'ln -s /opt/amdgpu-pro/lib/i386-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib32/libvdpau_amdgpu.so.1',
-				'ln -s /opt/amdgpu-pro/lib/i386-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib32/libvdpau_amdgpu.so',
-			]
-		),
+		#'lib32-amdgpu-pro-vdpau': Package(
+			#desc = "The AMDGPU Pro VDPAU driver (32bit libraries)",
+			#extra_commands = [
+				#'mkdir -p "${pkgdir}"/usr/lib32/',
+				#'ln -s /opt/amdgpu-pro/lib/i386-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib32/libvdpau_amdgpu.so.1.0.0',
+				#'ln -s /opt/amdgpu-pro/lib/i386-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib32/libvdpau_amdgpu.so.1',
+				#'ln -s /opt/amdgpu-pro/lib/i386-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib32/libvdpau_amdgpu.so',
+			#]
+		#),
 
-		'lib32-amdgpu-pro-mesa-omx': Package(
-			desc = "Mesa OpenMAX video drivers for AMDGPU Pro (32bit libraries)",
-			extra_commands = [
-				'rm -f "${pkgdir}"/etc/xdg/gstomx.conf'
-			]
-		),
+		#'lib32-amdgpu-pro-mesa-omx': Package(
+			#desc = "Mesa OpenMAX video drivers for AMDGPU Pro (32bit libraries)",
+			#extra_commands = [
+				#'rm -f "${pkgdir}"/etc/xdg/gstomx.conf'
+			#]
+		#),
 
-		'lib32-amdgpu-pro-gst-omx': Package(
-			desc = "GStreamer OpenMAX plugins for AMDGPU Pro (32bit libraries)",
-		),
+		#'lib32-amdgpu-pro-gst-omx': Package(
+			#desc = "GStreamer OpenMAX plugins for AMDGPU Pro (32bit libraries)",
+		#),
 
-		'xf86-video-amdgpu-pro': Package(
-			desc = "The AMDGPU Pro X.org video driver",
-			conflicts = ['xf86-video-amdgpu', 'xorg-server<1.19.0', 'X-ABI-VIDEODRV_VERSION<23', 'X-ABI-VIDEODRV_VERSION>=24'],
-			provides  = ['xf86-video-amdgpu'], # in case anything depends on that
-			groups = ['xorg-drivers'],
-		)
+		#'xf86-video-amdgpu-pro': Package(
+			#desc = "The AMDGPU Pro X.org video driver",
+			#conflicts = ['xf86-video-amdgpu', 'xorg-server<1.19.0', 'X-ABI-VIDEODRV_VERSION<23', 'X-ABI-VIDEODRV_VERSION>=24'],
+			#provides  = ['xf86-video-amdgpu'], # in case anything depends on that
+			#groups = ['xorg-drivers'],
+		#)
+		
+		# Further is made by me (Ashark)
+        # To make a more human readable Packages file I used this:
+		# cat Packages | grep -vE "Filename|Size|MD5sum|SHA1|SHA256|Priority|Maintainer|Version: 19.10-785425" >  Packages-short
+		# Just tested for random packages. Later I want to autogen this list.
+		'amdgpu-core': Package(
+            desc = "Core meta package for unified amdgpu driver."
+        ),
+        
+        'amdgpu-hwe': Package(
+            desc = "Meta package to install amdgpu-hwe components."
+        ),
+        
+        'lib32-amdgpu-hwe': Package(
+            desc = "Meta package to install amdgpu-hwe components."
+        )
 	}
 	for key in arch_packages:
 		arch_packages[key].name = key
@@ -176,160 +192,381 @@ def gen_arch_packages():
 # packages without mapping go into 'amdgpu-pro'
 packages_map_default = 'amdgpu-pro'
 packages_map = {
-	'amdgpu-pro':                       'amdgpu-pro',        # deb is metapackage
-	'amdgpu-pro-core':                  'amdgpu-pro',        # deb is metapackage
-	'libgbm1-amdgpu-pro':               'amdgpu-pro',
-	'libgbm1-amdgpu-pro-base':          'amdgpu-pro',
-	'libgbm1-amdgpu-pro-dev':           'amdgpu-pro',
-	'ids-amdgpu-pro':                   'amdgpu-pro',
+	#'amdgpu-pro':                       'amdgpu-pro',        # deb is metapackage
+	#'amdgpu-pro-core':                  'amdgpu-pro',        # deb is metapackage
+	#'libgbm1-amdgpu-pro':               'amdgpu-pro',
+	#'libgbm1-amdgpu-pro-base':          'amdgpu-pro',
+	#'libgbm1-amdgpu-pro-dev':           'amdgpu-pro',
+	#'ids-amdgpu-pro':                   'amdgpu-pro',
 
-	'libllvm5.0-amdgpu-pro':            'amdgpu-pro',
-	'llvm-amdgpu-pro-5.0-dev':          'amdgpu-pro',
-	'llvm-amdgpu-pro-5.0':              'amdgpu-pro',
-	'llvm-amdgpu-pro-5.0-runtime':      'amdgpu-pro',
-	'llvm-amdgpu-pro-runtime':          'amdgpu-pro',
-	'llvm-amdgpu-pro-dev':              'amdgpu-pro',
+	#'libllvm5.0-amdgpu-pro':            'amdgpu-pro',
+	#'llvm-amdgpu-pro-5.0-dev':          'amdgpu-pro',
+	#'llvm-amdgpu-pro-5.0':              'amdgpu-pro',
+	#'llvm-amdgpu-pro-5.0-runtime':      'amdgpu-pro',
+	#'llvm-amdgpu-pro-runtime':          'amdgpu-pro',
+	#'llvm-amdgpu-pro-dev':              'amdgpu-pro',
 
-	'gst-omx-amdgpu-pro':               'amdgpu-pro-gst-omx',
-	'mesa-amdgpu-pro-omx-drivers':      'amdgpu-pro-mesa-omx',
+	#'gst-omx-amdgpu-pro':               'amdgpu-pro-gst-omx',
+	#'mesa-amdgpu-pro-omx-drivers':      'amdgpu-pro-mesa-omx',
 
-	'amdgpu-pro-dkms':                  'amdgpu-pro-dkms',
+	#'amdgpu-pro-dkms':                  'amdgpu-pro-dkms',
 
-	'clinfo-amdgpu-pro':                'amdgpu-pro-opencl',
-	'libopencl1-amdgpu-pro':            'amdgpu-pro-opencl',
-	'opencl-amdgpu-pro-icd':            'amdgpu-pro-opencl',
-	'rocm-amdgpu-pro':                  'amdgpu-pro-opencl',
-	'rocm-amdgpu-pro-icd':              'amdgpu-pro-opencl',
-	'rocm-amdgpu-pro-opencl':           'amdgpu-pro-opencl',
-	'rocm-amdgpu-pro-opencl-dev':       'amdgpu-pro-opencl',
-	'rocr-amdgpu-pro':                  'amdgpu-pro-opencl',
-	'rocr-amdgpu-pro-dev':              'amdgpu-pro-opencl',
-	'roct-amdgpu-pro':                  'amdgpu-pro-opencl',
-	'roct-amdgpu-pro-dev':              'amdgpu-pro-opencl',
-	'hsa-runtime-tools-amdgpu-pro':     'amdgpu-pro-opencl',
-	'hsa-runtime-tools-amdgpu-pro-dev': 'amdgpu-pro-opencl',
-	'hsa-ext-amdgpu-pro-finalize':      'amdgpu-pro-opencl',
-	'hsa-ext-amdgpu-pro-image':         'amdgpu-pro-opencl',
+	#'clinfo-amdgpu-pro':                'amdgpu-pro-opencl',
+	#'libopencl1-amdgpu-pro':            'amdgpu-pro-opencl',
+	#'opencl-amdgpu-pro-icd':            'amdgpu-pro-opencl',
+	#'rocm-amdgpu-pro':                  'amdgpu-pro-opencl',
+	#'rocm-amdgpu-pro-icd':              'amdgpu-pro-opencl',
+	#'rocm-amdgpu-pro-opencl':           'amdgpu-pro-opencl',
+	#'rocm-amdgpu-pro-opencl-dev':       'amdgpu-pro-opencl',
+	#'rocr-amdgpu-pro':                  'amdgpu-pro-opencl',
+	#'rocr-amdgpu-pro-dev':              'amdgpu-pro-opencl',
+	#'roct-amdgpu-pro':                  'amdgpu-pro-opencl',
+	#'roct-amdgpu-pro-dev':              'amdgpu-pro-opencl',
+	#'hsa-runtime-tools-amdgpu-pro':     'amdgpu-pro-opencl',
+	#'hsa-runtime-tools-amdgpu-pro-dev': 'amdgpu-pro-opencl',
+	#'hsa-ext-amdgpu-pro-finalize':      'amdgpu-pro-opencl',
+	#'hsa-ext-amdgpu-pro-image':         'amdgpu-pro-opencl',
 
-	'vulkan-amdgpu-pro':                'amdgpu-pro-vulkan',
+	#'vulkan-amdgpu-pro':                'amdgpu-pro-vulkan',
 
-	'libdrm-amdgpu-pro-amdgpu1':        'amdgpu-pro-libdrm',
-	'libdrm-amdgpu-pro-radeon1':        'amdgpu-pro-libdrm',
-	'libdrm-amdgpu-pro-dev':            'amdgpu-pro-libdrm',
-	'libdrm-amdgpu-pro-utils':          'amdgpu-pro-libdrm',
-	'libdrm2-amdgpu-pro':               'amdgpu-pro-libdrm',
+	#'libdrm-amdgpu-pro-amdgpu1':        'amdgpu-pro-libdrm',
+	#'libdrm-amdgpu-pro-radeon1':        'amdgpu-pro-libdrm',
+	#'libdrm-amdgpu-pro-dev':            'amdgpu-pro-libdrm',
+	#'libdrm-amdgpu-pro-utils':          'amdgpu-pro-libdrm',
+	#'libdrm2-amdgpu-pro':               'amdgpu-pro-libdrm',
 
-	# the following libs will be symlinked by amdgpu-pro-libgl, just like mesa-libgl and nvidia-libgl
-	'libegl1-amdgpu-pro':               'amdgpu-pro-libgl',
-	'libgl1-amdgpu-pro-appprofiles':    'amdgpu-pro-libgl',
-	## contents of this should probably go into /usr/lib/xorg/modules/dri/ instead of /usr/lib/dri ?
-	'libgl1-amdgpu-pro-dri':            'amdgpu-pro',
-	'libgl1-amdgpu-pro-ext':            'amdgpu-pro-libgl',
-	'libgl1-amdgpu-pro-glx':            'amdgpu-pro-libgl',
-	'libgles2-amdgpu-pro':              'amdgpu-pro-libgl',
-	'libglamor-amdgpu-pro-dev':         None, # disabled
+	## the following libs will be symlinked by amdgpu-pro-libgl, just like mesa-libgl and nvidia-libgl
+	#'libegl1-amdgpu-pro':               'amdgpu-pro-libgl',
+	#'libgl1-amdgpu-pro-appprofiles':    'amdgpu-pro-libgl',
+	### contents of this should probably go into /usr/lib/xorg/modules/dri/ instead of /usr/lib/dri ?
+	#'libgl1-amdgpu-pro-dri':            'amdgpu-pro',
+	#'libgl1-amdgpu-pro-ext':            'amdgpu-pro-libgl',
+	#'libgl1-amdgpu-pro-glx':            'amdgpu-pro-libgl',
+	#'libgles2-amdgpu-pro':              'amdgpu-pro-libgl',
+	#'libglamor-amdgpu-pro-dev':         None, # disabled
 
-	'libvdpau-amdgpu-pro':              'amdgpu-pro-vdpau',
-	'xserver-xorg-video-amdgpu-pro':    'xf86-video-amdgpu-pro',
-	'xserver-xorg-video-glamoregl-amdgpu-pro':    None,
-	'xserver-xorg-video-modesetting-amdgpu-pro':    'xf86-video-amdgpu-pro',
-
-
-	'lib32-amdgpu-pro':                 'lib32-amdgpu-pro', # deb is a metapackage
-	'lib32-amdgpu-pro-lib32':           'lib32-amdgpu-pro', # deb is a metapackage
-	'lib32-libgbm1-amdgpu-pro':         'lib32-amdgpu-pro',
-	'lib32-libgbm1-amdgpu-pro-dev':     'lib32-amdgpu-pro',
-
-	'lib32-gst-omx-amdgpu-pro':         'lib32-amdgpu-pro-gst-omx',
-	'lib32-mesa-amdgpu-pro-omx-drivers':'lib32-amdgpu-pro-mesa-omx',
-
-	'lib32-opencl-amdgpu-pro-icd':      'lib32-amdgpu-pro-opencl',
-	'lib32-libopencl1-amdgpu-pro':      'lib32-amdgpu-pro-opencl',
-	'lib32-rocm-amdgpu-pro':            'lib32-amdgpu-pro-opencl',
-	'lib32-rocm-amdgpu-pro-icd':        'lib32-amdgpu-pro-opencl',
-	'lib32-rocm-amdgpu-pro-opencl':     'lib32-amdgpu-pro-opencl',
-	'lib32-rocm-amdgpu-pro-opencl-dev': 'lib32-amdgpu-pro-opencl',
-	'lib32-rocr-amdgpu-pro':            'lib32-amdgpu-pro-opencl',
-	'lib32-rocr-amdgpu-pro-dev':        'lib32-amdgpu-pro-opencl',
-	'lib32-roct-amdgpu-pro':            'lib32-amdgpu-pro-opencl',
-	'lib32-roct-amdgpu-pro-dev':        'lib32-amdgpu-pro-opencl',
-
-	'lib32-vulkan-amdgpu-pro':          'lib32-amdgpu-pro-vulkan',
-
-	'lib32-libdrm-amdgpu-pro-amdgpu1':  'lib32-amdgpu-pro-libdrm',
-	'lib32-libdrm-amdgpu-pro-radeon1':  'lib32-amdgpu-pro-libdrm',
-	'lib32-libdrm-amdgpu-pro-dev':      'lib32-amdgpu-pro-libdrm',
-	'lib32-libdrm2-amdgpu-pro':         'lib32-amdgpu-pro-libdrm',
+	#'libvdpau-amdgpu-pro':              'amdgpu-pro-vdpau',
+	#'xserver-xorg-video-amdgpu-pro':    'xf86-video-amdgpu-pro',
+	#'xserver-xorg-video-glamoregl-amdgpu-pro':    None,
+	#'xserver-xorg-video-modesetting-amdgpu-pro':    'xf86-video-amdgpu-pro',
 
 
-	'lib32-libegl1-amdgpu-pro':         'lib32-amdgpu-pro-libgl',
-	'lib32-libgl1-amdgpu-pro-dri':      'lib32-amdgpu-pro',
-	'lib32-libgl1-amdgpu-pro-ext':      'lib32-amdgpu-pro-libgl',
-	'lib32-libgl1-amdgpu-pro-glx':      'lib32-amdgpu-pro-libgl',
-	'lib32-libgles2-amdgpu-pro':        'lib32-amdgpu-pro-libgl',
-	'lib32-libglamor-amdgpu-pro-dev':   None,
+	#'lib32-amdgpu-pro':                 'lib32-amdgpu-pro', # deb is a metapackage
+	#'lib32-amdgpu-pro-lib32':           'lib32-amdgpu-pro', # deb is a metapackage
+	#'lib32-libgbm1-amdgpu-pro':         'lib32-amdgpu-pro',
+	#'lib32-libgbm1-amdgpu-pro-dev':     'lib32-amdgpu-pro',
 
-	'lib32-libvdpau-amdgpu-pro':        'lib32-amdgpu-pro-vdpau',
+	#'lib32-gst-omx-amdgpu-pro':         'lib32-amdgpu-pro-gst-omx',
+	#'lib32-mesa-amdgpu-pro-omx-drivers':'lib32-amdgpu-pro-mesa-omx',
 
-	# the following are not needed and should be discarded:
-	'lib32-xserver-xorg-video-amdgpu-pro':              None,
-	'lib32-xserver-xorg-video-glamoregl-amdgpu-pro':    None,
-	'lib32-xserver-xorg-video-modesetting-amdgpu-pro':  None,
-	'lib32-clinfo-amdgpu-pro': None,
-	'lib32-libdrm-amdgpu-pro-utils': None,
+	#'lib32-opencl-amdgpu-pro-icd':      'lib32-amdgpu-pro-opencl',
+	#'lib32-libopencl1-amdgpu-pro':      'lib32-amdgpu-pro-opencl',
+	#'lib32-rocm-amdgpu-pro':            'lib32-amdgpu-pro-opencl',
+	#'lib32-rocm-amdgpu-pro-icd':        'lib32-amdgpu-pro-opencl',
+	#'lib32-rocm-amdgpu-pro-opencl':     'lib32-amdgpu-pro-opencl',
+	#'lib32-rocm-amdgpu-pro-opencl-dev': 'lib32-amdgpu-pro-opencl',
+	#'lib32-rocr-amdgpu-pro':            'lib32-amdgpu-pro-opencl',
+	#'lib32-rocr-amdgpu-pro-dev':        'lib32-amdgpu-pro-opencl',
+	#'lib32-roct-amdgpu-pro':            'lib32-amdgpu-pro-opencl',
+	#'lib32-roct-amdgpu-pro-dev':        'lib32-amdgpu-pro-opencl',
+
+	#'lib32-vulkan-amdgpu-pro':          'lib32-amdgpu-pro-vulkan',
+
+	#'lib32-libdrm-amdgpu-pro-amdgpu1':  'lib32-amdgpu-pro-libdrm',
+	#'lib32-libdrm-amdgpu-pro-radeon1':  'lib32-amdgpu-pro-libdrm',
+	#'lib32-libdrm-amdgpu-pro-dev':      'lib32-amdgpu-pro-libdrm',
+	#'lib32-libdrm2-amdgpu-pro':         'lib32-amdgpu-pro-libdrm',
+
+
+	#'lib32-libegl1-amdgpu-pro':         'lib32-amdgpu-pro-libgl',
+	#'lib32-libgl1-amdgpu-pro-dri':      'lib32-amdgpu-pro',
+	#'lib32-libgl1-amdgpu-pro-ext':      'lib32-amdgpu-pro-libgl',
+	#'lib32-libgl1-amdgpu-pro-glx':      'lib32-amdgpu-pro-libgl',
+	#'lib32-libgles2-amdgpu-pro':        'lib32-amdgpu-pro-libgl',
+	#'lib32-libglamor-amdgpu-pro-dev':   None,
+
+	#'lib32-libvdpau-amdgpu-pro':        'lib32-amdgpu-pro-vdpau',
+
+	## the following are not needed and should be discarded:
+	#'lib32-xserver-xorg-video-amdgpu-pro':              None,
+	#'lib32-xserver-xorg-video-glamoregl-amdgpu-pro':    None,
+	#'lib32-xserver-xorg-video-modesetting-amdgpu-pro':  None,
+	#'lib32-clinfo-amdgpu-pro': None,
+	#'lib32-libdrm-amdgpu-pro-utils': None,
+	
+	# Further is made by me (Ashark)
+	# To make this list I used:
+	# cat Packages | grep Package | cut -f2 -d " " > list_tmp # all presented debian packages
+	# prev=""; for line in $(cat list_tmp); do if [[ $prev != $line ]]; then echo $line; else echo $line:i386; fi; prev=$line; done > list_tmp2 # rename 32bit debian packages
+	# for line in $(cat list_tmp2); do str="'$line': "; if [[ $line != *"i386" ]]; then str="$str '$line',"; else str="$str None, #lib32-${line//:i386/}?"; fi; echo $str; done | column -t > list_tmp3 # stupid mapping
+	# Then it's needed to carefully check pkgs mapping manually.
+	
+    'amdgpu':                                     'amdgpu',                                
+    'amdgpu:i386':                                None,                                    #lib32-amdgpu?
+    'amdgpu-core':                                'amdgpu-core',                           
+    'amdgpu-dkms':                                'amdgpu-dkms',                           
+    'amdgpu-doc':                                 'amdgpu-doc',                            
+    'amdgpu-hwe':                                 'amdgpu-hwe',                            
+    'amdgpu-hwe:i386':                            None,                                    #lib32-amdgpu-hwe?
+    'amdgpu-lib':                                 'amdgpu-lib',                            
+    'amdgpu-lib:i386':                            None,                                    #lib32-amdgpu-lib?
+    'amdgpu-lib-hwe':                             'amdgpu-lib-hwe',                        
+    'amdgpu-lib-hwe:i386':                        None,                                    #lib32-amdgpu-lib-hwe?
+    'amdgpu-lib32':                               'amdgpu-lib32',                          
+    'amdgpu-pro':                                 'amdgpu-pro',                            
+    'amdgpu-pro:i386':                            None,                                    #lib32-amdgpu-pro?
+    'amdgpu-pro-core':                            'amdgpu-pro-core',                       
+    'amdgpu-pro-hwe':                             'amdgpu-pro-hwe',                        
+    'amdgpu-pro-hwe:i386':                        None,                                    #lib32-amdgpu-pro-hwe?
+    'amdgpu-pro-lib32':                           'amdgpu-pro-lib32',                      
+    'amdgpu-pro-pin':                             'amdgpu-pro-pin',                        
+    'amf-amdgpu-pro':                             'amf-amdgpu-pro',                        
+    'clinfo-amdgpu-pro':                          'clinfo-amdgpu-pro',                     
+    'clinfo-amdgpu-pro:i386':                     None,                                    #lib32-clinfo-amdgpu-pro?
+    'glamor-amdgpu':                              'glamor-amdgpu',                         
+    'glamor-amdgpu:i386':                         None,                                    #lib32-glamor-amdgpu?
+    'glamor-amdgpu-dev':                          'glamor-amdgpu-dev',                     
+    'glamor-amdgpu-dev:i386':                     None,                                    #lib32-glamor-amdgpu-dev?
+    'gst-omx-amdgpu':                             'gst-omx-amdgpu',                        
+    'gst-omx-amdgpu:i386':                        None,                                    #lib32-gst-omx-amdgpu?
+    'libdrm-amdgpu-amdgpu1':                      'libdrm-amdgpu-amdgpu1',                 
+    'libdrm-amdgpu-amdgpu1:i386':                 None,                                    #lib32-libdrm-amdgpu-amdgpu1?
+    'libdrm-amdgpu-common':                       'libdrm-amdgpu-common',                  
+    'libdrm-amdgpu-dev':                          'libdrm-amdgpu-dev',                     
+    'libdrm-amdgpu-dev:i386':                     None,                                    #lib32-libdrm-amdgpu-dev?
+    'libdrm-amdgpu-radeon1':                      'libdrm-amdgpu-radeon1',                 
+    'libdrm-amdgpu-radeon1:i386':                 None,                                    #lib32-libdrm-amdgpu-radeon1?
+    'libdrm-amdgpu-utils':                        'libdrm-amdgpu-utils',                   
+    'libdrm-amdgpu-utils:i386':                   None,                                    #lib32-libdrm-amdgpu-utils?
+    'libdrm2-amdgpu':                             'libdrm2-amdgpu',                        
+    'libdrm2-amdgpu:i386':                        None,                                    #lib32-libdrm2-amdgpu?
+    'libegl1-amdgpu-mesa':                        'libegl1-amdgpu-mesa',                   
+    'libegl1-amdgpu-mesa:i386':                   None,                                    #lib32-libegl1-amdgpu-mesa?
+    'libegl1-amdgpu-mesa-dev':                    'libegl1-amdgpu-mesa-dev',               
+    'libegl1-amdgpu-mesa-dev:i386':               None,                                    #lib32-libegl1-amdgpu-mesa-dev?
+    'libegl1-amdgpu-mesa-drivers':                'libegl1-amdgpu-mesa-drivers',           
+    'libegl1-amdgpu-mesa-drivers:i386':           None,                                    #lib32-libegl1-amdgpu-mesa-drivers?
+    'libegl1-amdgpu-pro':                         'libegl1-amdgpu-pro',                    
+    'libegl1-amdgpu-pro:i386':                    None,                                    #lib32-libegl1-amdgpu-pro?
+    'libgbm-amdgpu-dev':                          'libgbm-amdgpu-dev',                     
+    'libgbm-amdgpu-dev:i386':                     None,                                    #lib32-libgbm-amdgpu-dev?
+    'libgbm1-amdgpu':                             'libgbm1-amdgpu',                        
+    'libgbm1-amdgpu:i386':                        None,                                    #lib32-libgbm1-amdgpu?
+    'libgbm1-amdgpu-pro':                         'libgbm1-amdgpu-pro',                    
+    'libgbm1-amdgpu-pro:i386':                    None,                                    #lib32-libgbm1-amdgpu-pro?
+    'libgbm1-amdgpu-pro-base':                    'libgbm1-amdgpu-pro-base',               
+    'libgbm1-amdgpu-pro-dev':                     'libgbm1-amdgpu-pro-dev',                
+    'libgbm1-amdgpu-pro-dev:i386':                None,                                    #lib32-libgbm1-amdgpu-pro-dev?
+    'libgl1-amdgpu-mesa-dev':                     'libgl1-amdgpu-mesa-dev',                
+    'libgl1-amdgpu-mesa-dev:i386':                None,                                    #lib32-libgl1-amdgpu-mesa-dev?
+    'libgl1-amdgpu-mesa-dri':                     'libgl1-amdgpu-mesa-dri',                
+    'libgl1-amdgpu-mesa-dri:i386':                None,                                    #lib32-libgl1-amdgpu-mesa-dri?
+    'libgl1-amdgpu-mesa-glx':                     'libgl1-amdgpu-mesa-glx',                
+    'libgl1-amdgpu-mesa-glx:i386':                None,                                    #lib32-libgl1-amdgpu-mesa-glx?
+    'libgl1-amdgpu-pro-appprofiles':              'libgl1-amdgpu-pro-appprofiles',         
+    'libgl1-amdgpu-pro-dri':                      'libgl1-amdgpu-pro-dri',                 
+    'libgl1-amdgpu-pro-dri:i386':                 None,                                    #lib32-libgl1-amdgpu-pro-dri?
+    'libgl1-amdgpu-pro-ext':                      'libgl1-amdgpu-pro-ext',                 
+    'libgl1-amdgpu-pro-ext:i386':                 None,                                    #lib32-libgl1-amdgpu-pro-ext?
+    'libgl1-amdgpu-pro-ext-hwe':                  'libgl1-amdgpu-pro-ext-hwe',             
+    'libgl1-amdgpu-pro-ext-hwe:i386':             None,                                    #lib32-libgl1-amdgpu-pro-ext-hwe?
+    'libgl1-amdgpu-pro-glx':                      'libgl1-amdgpu-pro-glx',                 
+    'libgl1-amdgpu-pro-glx:i386':                 None,                                    #lib32-libgl1-amdgpu-pro-glx?
+    'libglapi-amdgpu-mesa':                       'libglapi-amdgpu-mesa',                  
+    'libglapi-amdgpu-mesa:i386':                  None,                                    #lib32-libglapi-amdgpu-mesa?
+    'libglapi1-amdgpu-pro':                       'libglapi1-amdgpu-pro',                  
+    'libglapi1-amdgpu-pro:i386':                  None,                                    #lib32-libglapi1-amdgpu-pro?
+    'libgles1-amdgpu-mesa':                       'libgles1-amdgpu-mesa',                  
+    'libgles1-amdgpu-mesa:i386':                  None,                                    #lib32-libgles1-amdgpu-mesa?
+    'libgles1-amdgpu-mesa-dev':                   'libgles1-amdgpu-mesa-dev',              
+    'libgles1-amdgpu-mesa-dev:i386':              None,                                    #lib32-libgles1-amdgpu-mesa-dev?
+    'libgles2-amdgpu-mesa':                       'libgles2-amdgpu-mesa',                  
+    'libgles2-amdgpu-mesa:i386':                  None,                                    #lib32-libgles2-amdgpu-mesa?
+    'libgles2-amdgpu-mesa-dev':                   'libgles2-amdgpu-mesa-dev',              
+    'libgles2-amdgpu-mesa-dev:i386':              None,                                    #lib32-libgles2-amdgpu-mesa-dev?
+    'libgles2-amdgpu-pro':                        'libgles2-amdgpu-pro',                   
+    'libgles2-amdgpu-pro:i386':                   None,                                    #lib32-libgles2-amdgpu-pro?
+    'libllvm7.1-amdgpu':                          'libllvm7.1-amdgpu',                     
+    'libllvm7.1-amdgpu:i386':                     None,                                    #lib32-libllvm7.1-amdgpu?
+    'libopencl1-amdgpu-pro':                      'libopencl1-amdgpu-pro',                 
+    'libopencl1-amdgpu-pro:i386':                 None,                                    #lib32-libopencl1-amdgpu-pro?
+    'libosmesa6-amdgpu':                          'libosmesa6-amdgpu',                     
+    'libosmesa6-amdgpu:i386':                     None,                                    #lib32-libosmesa6-amdgpu?
+    'libosmesa6-amdgpu-dev':                      'libosmesa6-amdgpu-dev',                 
+    'libosmesa6-amdgpu-dev:i386':                 None,                                    #lib32-libosmesa6-amdgpu-dev?
+    'libwayland-amdgpu-client0':                  'libwayland-amdgpu-client0',             
+    'libwayland-amdgpu-client0:i386':             None,                                    #lib32-libwayland-amdgpu-client0?
+    'libwayland-amdgpu-cursor0':                  'libwayland-amdgpu-cursor0',             
+    'libwayland-amdgpu-cursor0:i386':             None,                                    #lib32-libwayland-amdgpu-cursor0?
+    'libwayland-amdgpu-dev':                      'libwayland-amdgpu-dev',                 
+    'libwayland-amdgpu-dev:i386':                 None,                                    #lib32-libwayland-amdgpu-dev?
+    'libwayland-amdgpu-doc':                      'libwayland-amdgpu-doc',                 
+    'libwayland-amdgpu-egl1':                     'libwayland-amdgpu-egl1',                
+    'libwayland-amdgpu-egl1:i386':                None,                                    #lib32-libwayland-amdgpu-egl1?
+    'libwayland-amdgpu-server0':                  'libwayland-amdgpu-server0',             
+    'libwayland-amdgpu-server0:i386':             None,                                    #lib32-libwayland-amdgpu-server0?
+    'libxatracker-amdgpu-dev':                    'libxatracker-amdgpu-dev',               
+    'libxatracker-amdgpu-dev:i386':               None,                                    #lib32-libxatracker-amdgpu-dev?
+    'libxatracker2-amdgpu':                       'libxatracker2-amdgpu',                  
+    'libxatracker2-amdgpu:i386':                  None,                                    #lib32-libxatracker2-amdgpu?
+    'llvm-amdgpu':                                'llvm-amdgpu',                           
+    'llvm-amdgpu:i386':                           None,                                    #lib32-llvm-amdgpu?
+    'llvm-amdgpu-7.1':                            'llvm-amdgpu-7.1',                       
+    'llvm-amdgpu-7.1:i386':                       None,                                    #lib32-llvm-amdgpu-7.1?
+    'llvm-amdgpu-7.1-dev':                        'llvm-amdgpu-7.1-dev',                   
+    'llvm-amdgpu-7.1-dev:i386':                   None,                                    #lib32-llvm-amdgpu-7.1-dev?
+    'llvm-amdgpu-7.1-doc':                        'llvm-amdgpu-7.1-doc',                   
+    'llvm-amdgpu-7.1-runtime':                    'llvm-amdgpu-7.1-runtime',               
+    'llvm-amdgpu-7.1-runtime:i386':               None,                                    #lib32-llvm-amdgpu-7.1-runtime?
+    'llvm-amdgpu-dev':                            'llvm-amdgpu-dev',                       
+    'llvm-amdgpu-dev:i386':                       None,                                    #lib32-llvm-amdgpu-dev?
+    'llvm-amdgpu-runtime':                        'llvm-amdgpu-runtime',                   
+    'llvm-amdgpu-runtime:i386':                   None,                                    #lib32-llvm-amdgpu-runtime?
+    'mesa-amdgpu-common-dev':                     'mesa-amdgpu-common-dev',                
+    'mesa-amdgpu-common-dev:i386':                None,                                    #lib32-mesa-amdgpu-common-dev?
+    'mesa-amdgpu-omx-drivers':                    'mesa-amdgpu-omx-drivers',               
+    'mesa-amdgpu-omx-drivers:i386':               None,                                    #lib32-mesa-amdgpu-omx-drivers?
+    'mesa-amdgpu-va-drivers':                     'mesa-amdgpu-va-drivers',                
+    'mesa-amdgpu-va-drivers:i386':                None,                                    #lib32-mesa-amdgpu-va-drivers?
+    'mesa-amdgpu-vdpau-drivers':                  'mesa-amdgpu-vdpau-drivers',             
+    'mesa-amdgpu-vdpau-drivers:i386':             None,                                    #lib32-mesa-amdgpu-vdpau-drivers?
+    'opencl-amdgpu-pro':                          'opencl-amdgpu-pro',                     
+    'opencl-amdgpu-pro-dev':                      'opencl-amdgpu-pro-dev',                 
+    'opencl-amdgpu-pro-icd':                      'opencl-amdgpu-pro-icd',                 
+    'opencl-orca-amdgpu-pro-icd':                 'opencl-orca-amdgpu-pro-icd',            
+    'opencl-orca-amdgpu-pro-icd:i386':            None,                                    #lib32-opencl-orca-amdgpu-pro-icd?
+    'roct-amdgpu-pro':                            'roct-amdgpu-pro',                       
+    'roct-amdgpu-pro-dev':                        'roct-amdgpu-pro-dev',                   
+    'vulkan-amdgpu':                              'vulkan-amdgpu',                         
+    'vulkan-amdgpu:i386':                         None,                                    #lib32-vulkan-amdgpu?
+    'vulkan-amdgpu-pro':                          'vulkan-amdgpu-pro',                     
+    'vulkan-amdgpu-pro:i386':                     None,                                    #lib32-vulkan-amdgpu-pro?
+    'wayland-protocols-amdgpu':                   'wayland-protocols-amdgpu',              
+    'wsa-amdgpu':                                 'wsa-amdgpu',                            
+    'wsa-amdgpu:i386':                            None,                                    #lib32-wsa-amdgpu?
+    'xserver-xorg-amdgpu-video-amdgpu':           'xserver-xorg-amdgpu-video-amdgpu',      
+    'xserver-xorg-amdgpu-video-amdgpu:i386':      None,                                    #lib32-xserver-xorg-amdgpu-video-amdgpu?
+    'xserver-xorg-hwe-amdgpu-video-amdgpu':       'xserver-xorg-hwe-amdgpu-video-amdgpu',  
+    'xserver-xorg-hwe-amdgpu-video-amdgpu:i386':  None,                                    #lib32-xserver-xorg-hwe-amdgpu-video-amdgpu?
+	# Not yet mapped manually
 }
 
 
 
 ## maps debian dependencies to arch dependencies
 replace_deps = {
-	"libc6":                None,
-	"libgcc1":              None,
-	"libstdc++6":           None,
-	"libx11-6":             "libx11",
-	"libx11-xcb1":          None,
-	"libxcb-dri2-0":        "libxcb",
-	"libxcb-dri3-0":        "libxcb",
-	"libxcb-present0":      "libxcb",
-	"libxcb-sync1":         "libxcb",
-	"libxcb-glx0":          "libxcb",
-	"libxcb1":              "libxcb",
-	"libxext6":             "libxext",
-	"libxshmfence1":        "libxshmfence",
-	"libxdamage1":          "libxdamage",
-	"libxfixes3":           "libxfixes",
-	"libxxf86vm1":          "libxxf86vm",
-	"libudev1":             "libsystemd",
-	"libpciaccess0":        "libpciaccess",
-	"libepoxy0":            "libepoxy",
-	"libelf1":              None, # no lib32- package in Arch, just disabling for now
-	"xserver-xorg-core":    "xorg-server",
-	"libcunit1":            "bcunit",
-	"libdrm-radeon1":       "libdrm",
-	"amdgpu-pro-firmware":  "linux-firmware",
-	"libssl1.0.0":          "openssl",
-	"zlib1g":               "zlib",
+	#"libc6":                None,
+	#"libgcc1":              None,
+	#"libstdc++6":           None,
+	#"libx11-6":             "libx11",
+	#"libx11-xcb1":          None,
+	#"libxcb-dri2-0":        "libxcb",
+	#"libxcb-dri3-0":        "libxcb",
+	#"libxcb-present0":      "libxcb",
+	#"libxcb-sync1":         "libxcb",
+	#"libxcb-glx0":          "libxcb",
+	#"libxcb1":              "libxcb",
+	#"libxext6":             "libxext",
+	#"libxshmfence1":        "libxshmfence",
+	#"libxdamage1":          "libxdamage",
+	#"libxfixes3":           "libxfixes",
+	#"libxxf86vm1":          "libxxf86vm",
+	#"libudev1":             "libsystemd",
+	#"libpciaccess0":        "libpciaccess",
+	#"libepoxy0":            "libepoxy",
+	#"libelf1":              None, # no lib32- package in Arch, just disabling for now
+	#"xserver-xorg-core":    "xorg-server",
+	#"libcunit1":            "bcunit",
+	#"libdrm-radeon1":       "libdrm",
+	#"amdgpu-pro-firmware":  "linux-firmware",
+	#"libssl1.0.0":          "openssl",
+	#"zlib1g":               "zlib",
 
-	"libvdpau1": "libvdpau",
-	"libtinfo5": "ncurses5-compat-libs",
-	"libgstreamer1.0-0": "gstreamer",
-	"libgstreamer-plugins-base1.0-0": "gst-plugins-base",
-	"libglib2.0-0": "glib2",
-	"libomxil-bellagio0": "libomxil-bellagio",
+	#"libvdpau1": "libvdpau",
+	#"libtinfo5": "ncurses5-compat-libs",
+	#"libgstreamer1.0-0": "gstreamer",
+	#"libgstreamer-plugins-base1.0-0": "gst-plugins-base",
+	#"libglib2.0-0": "glib2",
+	#"libomxil-bellagio0": "libomxil-bellagio",
 
-	# replace *-dev packages with arch linux ones containing the headers
-	"libffi-dev": "libffi",
-	"lib32-libffi-dev": "lib32-libffi",
-	"libtinfo-dev": "ncurses",
-	"lib32-libtinfo-dev": "lib32-ncurses",
-	"libedit2": "libedit",
-	"libpci3": "pciutils",
+	## replace *-dev packages with arch linux ones containing the headers
+	#"libffi-dev": "libffi",
+	#"lib32-libffi-dev": "lib32-libffi",
+	#"libtinfo-dev": "ncurses",
+	#"lib32-libtinfo-dev": "lib32-ncurses",
+	#"libedit2": "libedit",
+	#"libpci3": "pciutils",
 
 
-	#"libjs-jquery": "jquery",
-	#"libjs-underscorea": "underscorejs" # the underscroejs AUR pkg dos not install to /usr/share/javascript !
-	"libjs-jquery":       None,
-	"libjs-underscorea":  None,
+	##"libjs-jquery": "jquery",
+	##"libjs-underscorea": "underscorejs" # the underscroejs AUR pkg dos not install to /usr/share/javascript !
+	#"libjs-jquery":       None,
+	#"libjs-underscorea":  None,
+	
+    # Further is made by me (Ashark)
+	# To make this list I used:
+	# cat Packages | grep Depends | sed 's/Depends: //' | sed 's/, /\n/g' | sort -u | grep -v "amdgpu" > list_tmp # extra deps in debian
+    # cat list_tmp | cut -f1 -d" " | sort -u > list_tmp2 # removed versions
+    # for line in $(cat list_tmp2); do str="'$line': "; str="$str 'some-arch-dep',"; echo $str; done | column -t > list_tmp3 # prepare columns
+    # Then we need to carefully check deps mapping manually.
+    'binfmt-support':                  'some-arch-dep',
+    'dkms':                            'some-arch-dep',
+    'libc6':                           'some-arch-dep',
+    'libcunit1':                       'some-arch-dep',
+    'libedit2':                        'some-arch-dep',
+    'libelf1':                         'some-arch-dep',
+    'libepoxy0':                       'some-arch-dep',
+    'libexpat1':                       'some-arch-dep',
+    'libffi6':                         'some-arch-dep',
+    'libffi-dev':                      'some-arch-dep',
+    'libgcc1':                         'some-arch-dep',
+    'libglib2.0-0':                    'some-arch-dep',
+    'libgstreamer1.0-0':               'some-arch-dep',
+    'libgstreamer-plugins-base1.0-0':  'some-arch-dep',
+    'libjs-jquery':                    'some-arch-dep',
+    'libjs-underscore':                'some-arch-dep',
+    'libmirclient-dev':                'some-arch-dep',
+    'libnuma1':                        'some-arch-dep',
+    'libomxil-bellagio0':              'some-arch-dep',
+    'libpci3':                         'some-arch-dep',
+    'libselinux1':                     'some-arch-dep',
+    'libstdc++6':                      'some-arch-dep',
+    'libtinfo5':                       'some-arch-dep',
+    'libtinfo-dev':                    'some-arch-dep',
+    'libudev1':                        'some-arch-dep',
+    'libudev-dev':                     'some-arch-dep',
+    'libx11-6':                        'some-arch-dep',
+    'libx11-dev':                      'some-arch-dep',
+    'libx11-xcb1':                     'some-arch-dep',
+    'libx11-xcb-dev':                  'some-arch-dep',
+    'libxcb1':                         'some-arch-dep',
+    'libxcb-dri2-0':                   'some-arch-dep',
+    'libxcb-dri2-0-dev':               'some-arch-dep',
+    'libxcb-dri3-0':                   'some-arch-dep',
+    'libxcb-dri3-dev':                 'some-arch-dep',
+    'libxcb-glx0':                     'some-arch-dep',
+    'libxcb-glx0-dev':                 'some-arch-dep',
+    'libxcb-present0':                 'some-arch-dep',
+    'libxcb-present-dev':              'some-arch-dep',
+    'libxcb-sync1':                    'some-arch-dep',
+    'libxcb-sync-dev':                 'some-arch-dep',
+    'libxcb-xfixes0':                  'some-arch-dep',
+    'libxdamage1':                     'some-arch-dep',
+    'libxdamage-dev':                  'some-arch-dep',
+    'libxext6':                        'some-arch-dep',
+    'libxext-dev':                     'some-arch-dep',
+    'libxfixes3':                      'some-arch-dep',
+    'libxfixes-dev':                   'some-arch-dep',
+    'libxml2':                         'some-arch-dep',
+    'libxshmfence1':                   'some-arch-dep',
+    'libxshmfence-dev':                'some-arch-dep',
+    'libxxf86vm1':                     'some-arch-dep',
+    'libxxf86vm-dev':                  'some-arch-dep',
+    'x11proto-dri2-dev':               'some-arch-dep',
+    'x11proto-gl-dev':                 'some-arch-dep',
+    'xserver-xorg-hwe-18.04':          'some-arch-dep',
+    'zlib1g':                          'some-arch-dep',
+	# Not yet mapped manually
 }
 
 ## do not convert the dependencies listed to lib32 variants
@@ -501,8 +738,8 @@ class Package:
 			deps = None
 
 		domap = True
-		if self.name == "amdgpu-pro" or self.name == "lib32-amdgpu-pro":
-			domap = False
+		#if self.name == "amdgpu-pro" or self.name == "lib32-amdgpu-pro":
+			#domap = False
 
 		if deps:
 			deps = [ dependencyRE.match(dep).groups() for dep in deps ]
@@ -623,7 +860,7 @@ def writePackages(f):
 		deb_archs[info["Package"]].add(info["Architecture"])
 		package_list.append(info)
 
-	deb_package_names = ["lib32-" + info["Package"] if info["Architecture"] == "i386" else info["Package"] for info in package_list]
+	deb_package_names = [info["Package"] + ":i386" if info["Architecture"] == "i386" else info["Package"] for info in package_list]
 
 	f.seek(0)
 
@@ -631,7 +868,7 @@ def writePackages(f):
 		name = info["Package"]
 		arch_pkg = arch_packages[ packages_map_default ]
 		if info["Architecture"] == "i386":
-			name = "lib32-" + info["Package"]
+			name = info["Package"] + ":i386"
 			arch_pkg = arch_packages[ "lib32-" + packages_map_default ] # use lib32-<default-pkg> for 32bit packages as default package
 		if name in packages_map:
 			if packages_map[name] in arch_packages:
