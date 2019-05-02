@@ -22,7 +22,7 @@ source_url_resolved = "https://drivers.amd.com/drivers/linux/amdgpu-pro-{0}-{1}-
 source_file = "amdgpu-pro-{0}-{1}-ubuntu-18.04.tar.xz".format(pkgver_base, pkgver_build)
 
 def gen_arch_packages():
-    arch_packages = {
+    pkgbuild_packages = {
         'amdgpu-pro': Package(
             desc = "The AMDGPU Pro driver package",
             install = "amdgpu-pro-core.install",
@@ -183,9 +183,9 @@ def gen_arch_packages():
             desc = "Meta package to install amdgpu-hwe components."
         )
     }
-    for key in arch_packages:
-        arch_packages[key].name = key
-    return arch_packages
+    for key in pkgbuild_packages:
+        pkgbuild_packages[key].name = key
+    return pkgbuild_packages
 
 
 # this maps which deb packages should go into specific arch package
@@ -580,7 +580,7 @@ replace_version = {
 }
 
 ## maps debians archs to arch's archs
-arch_map = {
+architectures_map = {
     "amd64": "x86_64",
     "i386": "i686",
     "all": "any"
@@ -716,24 +716,24 @@ class Package:
             self.arch = default_arch
         self.deb_source_infos = []
 
-    def add_deb(self, info):
-        self.deb_source_infos.append(info)
+    def add_deb(self, deb_info):
+        self.deb_source_infos.append(deb_info)
 
         try:
-            self.arch = [ arch_map[info["Architecture"]], ]
+            self.arch = [architectures_map[deb_info["Architecture"]], ]
         except:
             self.arch = default_arch
 
-        if info["Architecture"] == "i386":
+        if deb_info["Architecture"] == "i386":
             if self.name.startswith('lib32-'):
                 self.arch = ['x86_64']
             else:
                 import sys
-                sys.stderr.write("ERROR: There is a bug in this script, package '%s' is i386 (came from %s) and should start with 'lib32'. Check packages_map!\n" % (self.name,info["Package"]))
+                sys.stderr.write("ERROR: There is a bug in this script, package '%s' is i386 (came from %s) and should start with 'lib32'. Check packages_map!\n" % (self.name, deb_info["Package"]))
 
 
         try:
-            deps = info["Depends"].split(', ')
+            deps = deb_info["Depends"].split(', ')
         except:
             deps = None
 
@@ -744,7 +744,7 @@ class Package:
         if deps:
             deps = [ dependencyRE.match(dep).groups() for dep in deps ]
             deps = [(replace_deps[name] if name in replace_deps else name, version) for name, version in deps]
-            deps = ["\"" + convertName(fix_32(name), info, domap) + convertVersionSpecifier(fix_32(name), version) + "\"" for name, version in deps if name]
+            deps = ["\"" + convertName(fix_32(name), deb_info, domap) + convertVersionSpecifier(fix_32(name), version) + "\"" for name, version in deps if name]
             deps = [ dep for dep in deps if not dep.startswith("\"=")]
 
             # remove all dependencies on itself
@@ -756,13 +756,13 @@ class Package:
             self.depends = list(sorted(set( deps ))) # remove duplicates and append to already existing dependencies
 
             if not hasattr(self, 'desc'):
-                desc = info["Description"].split("\n")
+                desc = deb_info["Description"].split("\n")
                 if len(desc) > 2:
                     desc = desc[0]
                 else:
                     desc = " ".join(x.strip() for x in desc)
 
-                if info["Architecture"] == "i386":
+                if deb_info["Architecture"] == "i386":
                     desc += ' (32bit libraries)'
 
                 self.desc = desc
@@ -803,7 +803,7 @@ class Package:
         return ret
 
 
-arch_packages = gen_arch_packages()
+pkgbuild_packages = gen_arch_packages()
 
 
 # regex for parsing version information of a deb dependency
@@ -849,41 +849,41 @@ def fix_32(dep):
     return rdep
 
 
-def writePackages(f):
+def parse_Packages_file(f):
     global deb_package_names
     package_list=[]
 
-    for info in deb822.Packages.iter_paragraphs(f):
-        if not info["Package"] in deb_archs:
-            deb_archs[info["Package"]] = set()
+    for deb_info in deb822.Packages.iter_paragraphs(f):
+        if not deb_info["Package"] in deb_archs:
+            deb_archs[deb_info["Package"]] = set()
 
-        deb_archs[info["Package"]].add(info["Architecture"])
-        package_list.append(info)
+        deb_archs[deb_info["Package"]].add(deb_info["Architecture"])
+        package_list.append(deb_info)
 
     deb_package_names = [info["Package"] + ":i386" if info["Architecture"] == "i386" else info["Package"] for info in package_list]
 
     f.seek(0)
 
-    for info in package_list:
-        name = info["Package"]
-        arch_pkg = arch_packages[ packages_map_default ]
-        if info["Architecture"] == "i386":
-            name = info["Package"] + ":i386"
-            arch_pkg = arch_packages[ "lib32-" + packages_map_default ] # use lib32-<default-pkg> for 32bit packages as default package
+    for deb_info in package_list:
+        name = deb_info["Package"]
+        arch_pkg = pkgbuild_packages[ packages_map_default]
+        if deb_info["Architecture"] == "i386":
+            name = deb_info["Package"] + ":i386"
+            arch_pkg = pkgbuild_packages["lib32-" + packages_map_default] # use lib32-<default-pkg> for 32bit packages as default package
         if name in packages_map:
-            if packages_map[name] in arch_packages:
-                arch_pkg = arch_packages[ packages_map[name] ]
+            if packages_map[name] in pkgbuild_packages:
+                arch_pkg = pkgbuild_packages[ packages_map[name]]
             else:
                 arch_pkg = None
 
         if arch_pkg:
-            arch_pkg.add_deb(info)
+            arch_pkg.add_deb(deb_info)
 
-    #    print(convertPackage(info, package_names + optional_names))
+    #    print(convertPackage(deb_info, package_names + optional_names))
 
 
 # get list of unique arch packages from package map
-arch_package_names=list(arch_packages.keys())
+arch_package_names=list(pkgbuild_packages.keys())
 arch_package_names.sort()
 deb_package_names=[]
 
@@ -904,7 +904,7 @@ print(package_functions)
 with lzma.open(source_file, "r") as tar:
     with tarfile.open(fileobj=tar) as tf:
         with tf.extractfile("amdgpu-pro-%s-%s-ubuntu-18.04/Packages" %(pkgver_base,pkgver_build)) as packages:
-            writePackages(packages)
+            parse_Packages_file(packages)
 
 for pkg in arch_package_names:
-    print( arch_packages[pkg].toPKGBUILD() )
+    print(pkgbuild_packages[pkg].toPKGBUILD())
