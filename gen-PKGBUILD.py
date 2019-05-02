@@ -23,17 +23,17 @@ source_file = "amdgpu-pro-{0}-{1}-ubuntu-18.04.tar.xz".format(pkgver_base, pkgve
 
 def gen_arch_packages():
     pkgbuild_packages = {
-        'amdgpu-pro': Package(
-            desc = "The AMDGPU Pro driver package",
-            install = "amdgpu-pro-core.install",
-            extra_commands = [
-                "mv \"${pkgdir}\"/usr/lib/x86_64-linux-gnu/dri ${pkgdir}/usr/lib/",
-                "# This is needed because libglx.so has a hardcoded DRI_DRIVER_PATH",
-                "ln -s /usr/lib/dri ${pkgdir}/usr/lib/x86_64-linux-gnu/dri",
-                'mkdir -p "${pkgdir}/etc/ld.so.conf.d/"',
-                'echo "/opt/amdgpu-pro/lib/x86_64-linux-gnu/" > "${pkgdir}"/etc/ld.so.conf.d/amdgpu-pro.conf',
-            ]
-        ),
+        #'amdgpu-pro': Package(
+            #desc = "The AMDGPU Pro driver package",
+            #install = "amdgpu-pro-core.install",
+            #extra_commands = [
+                #"mv \"${pkgdir}\"/usr/lib/x86_64-linux-gnu/dri ${pkgdir}/usr/lib/",
+                #"# This is needed because libglx.so has a hardcoded DRI_DRIVER_PATH",
+                #"ln -s /usr/lib/dri ${pkgdir}/usr/lib/x86_64-linux-gnu/dri",
+                #'mkdir -p "${pkgdir}/etc/ld.so.conf.d/"',
+                #'echo "/opt/amdgpu-pro/lib/x86_64-linux-gnu/" > "${pkgdir}"/etc/ld.so.conf.d/amdgpu-pro.conf',
+            #]
+        #),
 
         #'amdgpu-pro-dkms': Package(
             #arch = ['any'],
@@ -94,17 +94,17 @@ def gen_arch_packages():
             #desc = "GStreamer OpenMAX plugins for AMDGPU Pro",
         #),
 
-        'lib32-amdgpu-pro': Package(
-            desc = "The AMDGPU Pro driver package (32bit libraries)",
-            extra_commands = [
-                'mkdir -p "${pkgdir}"/usr/lib32/',
-                'mv "${pkgdir}"/usr/lib/i386-linux-gnu/dri "${pkgdir}"/usr/lib32/',
+        #'lib32-amdgpu-pro': Package(
+            #desc = "The AMDGPU Pro driver package (32bit libraries)",
+            #extra_commands = [
+                #'mkdir -p "${pkgdir}"/usr/lib32/',
+                #'mv "${pkgdir}"/usr/lib/i386-linux-gnu/dri "${pkgdir}"/usr/lib32/',
 
-                'rm -rf "${pkgdir}"/etc',
-                'mkdir -p "${pkgdir}/etc/ld.so.conf.d/"',
-                'echo "/opt/amdgpu-pro/lib/i386-linux-gnu/" > "${pkgdir}"/etc/ld.so.conf.d/lib32-amdgpu-pro.conf'
-            ]
-        ),
+                #'rm -rf "${pkgdir}"/etc',
+                #'mkdir -p "${pkgdir}/etc/ld.so.conf.d/"',
+                #'echo "/opt/amdgpu-pro/lib/i386-linux-gnu/" > "${pkgdir}"/etc/ld.so.conf.d/lib32-amdgpu-pro.conf'
+            #]
+        #),
 
         #'lib32-amdgpu-pro-opencl': Package(
             #desc = "The AMDGPU Pro OpenCL implementation",
@@ -170,18 +170,270 @@ def gen_arch_packages():
         # Further is made by me (Ashark)
         # To make a more human readable Packages file I used this:
         # cat Packages | grep -vE "Filename|Size|MD5sum|SHA1|SHA256|Priority|Maintainer|Version: 19.10-785425" >  Packages-short
-        # Just tested for random packages. Later I want to autogen this list.
+        
+        # To generate this I used:
+        # cat list_tmp3 | cut -f4 -d"'" | sort -u > list_tmp4
+        # for line in $(cat list_tmp4); do echo -e "        '$line': Package(\n        ),"; done
+        # desc attribute could be used to override Description from deb package.
+        'amdgpu': Package(
+        ),
         'amdgpu-core': Package(
-            desc = "Core meta package for unified amdgpu driver."
         ),
-        
+        'amdgpu-dkms': Package(
+        ),
+        'amdgpu-doc': Package(
+        ),
         'amdgpu-hwe': Package(
-            desc = "Meta package to install amdgpu-hwe components."
         ),
-        
+        'amdgpu-lib': Package(
+        ),
+        'amdgpu-lib32': Package(
+        ),
+        'amdgpu-lib-hwe': Package(
+        ),
+        'amdgpu-pro': Package(
+        ),
+        'amdgpu-pro-core': Package(
+        ),
+        'amdgpu-pro-hwe': Package(
+        ),
+        'amdgpu-pro-lib32': Package(
+        ),
+        'amdgpu-pro-pin': Package(
+        ),
+        'amf-amdgpu-pro': Package(
+        ),
+        'clinfo-amdgpu-pro': Package(
+        ),
+        'glamor-amdgpu': Package(
+        ),
+        'gst-omx-amdgpu': Package(
+        ),
+        'lib32-amdgpu': Package(
+        ),
         'lib32-amdgpu-hwe': Package(
-            desc = "Meta package to install amdgpu-hwe components."
-        )
+        ),
+        'lib32-amdgpu-lib': Package(
+        ),
+        'lib32-amdgpu-lib-hwe': Package(
+        ),
+        'lib32-amdgpu-pro': Package(
+        ),
+        'lib32-amdgpu-pro-hwe': Package(
+        ),
+        'lib32-clinfo-amdgpu-pro': Package(
+        ),
+        'lib32-glamor-amdgpu': Package(
+        ),
+        'lib32-gst-omx-amdgpu': Package(
+        ),
+        'lib32-libdrm2-amdgpu': Package(
+        ),
+        'lib32-libdrm-amdgpu': Package(
+        ),
+        'lib32-libdrm-amdgpu-amdgpu1': Package(
+        ),
+        'lib32-libdrm-amdgpu-radeon1': Package(
+        ),
+        'lib32-libdrm-amdgpu-utils': Package(
+        ),
+        'lib32-libegl1-amdgpu-mesa': Package(
+        ),
+        'lib32-libegl1-amdgpu-mesa-drivers': Package(
+        ),
+        'lib32-libegl1-amdgpu-pro': Package(
+        ),
+        'lib32-libgbm1-amdgpu': Package(
+        ),
+        'lib32-libgbm1-amdgpu-pro': Package(
+        ),
+        'lib32-libgbm-amdgpu': Package(
+        ),
+        'lib32-libgl1-amdgpu-mesa': Package(
+        ),
+        'lib32-libgl1-amdgpu-mesa-dri': Package(
+        ),
+        'lib32-libgl1-amdgpu-mesa-glx': Package(
+        ),
+        'lib32-libgl1-amdgpu-pro-dri': Package(
+        ),
+        'lib32-libgl1-amdgpu-pro-ext': Package(
+        ),
+        'lib32-libgl1-amdgpu-pro-ext-hwe': Package(
+        ),
+        'lib32-libgl1-amdgpu-pro-glx': Package(
+        ),
+        'lib32-libglapi1-amdgpu-pro': Package(
+        ),
+        'lib32-libglapi-amdgpu-mesa': Package(
+        ),
+        'lib32-libgles1-amdgpu-mesa': Package(
+        ),
+        'lib32-libgles2-amdgpu-mesa': Package(
+        ),
+        'lib32-libgles2-amdgpu-pro': Package(
+        ),
+        'lib32-libllvm7.1-amdgpu': Package(
+        ),
+        'lib32-libopencl1-amdgpu-pro': Package(
+        ),
+        'lib32-libosmesa6-amdgpu': Package(
+        ),
+        'lib32-libwayland-amdgpu': Package(
+        ),
+        'lib32-libwayland-amdgpu-client0': Package(
+        ),
+        'lib32-libwayland-amdgpu-cursor0': Package(
+        ),
+        'lib32-libwayland-amdgpu-egl1': Package(
+        ),
+        'lib32-libwayland-amdgpu-server0': Package(
+        ),
+        'lib32-libxatracker2-amdgpu': Package(
+        ),
+        'lib32-libxatracker-amdgpu': Package(
+        ),
+        'lib32-llvm-amdgpu': Package(
+        ),
+        'lib32-llvm-amdgpu-7.1': Package(
+        ),
+        'lib32-llvm-amdgpu-7.1-runtime': Package(
+        ),
+        'lib32-llvm-amdgpu-runtime': Package(
+        ),
+        'lib32-mesa-amdgpu-common': Package(
+        ),
+        'lib32-mesa-amdgpu-omx-drivers': Package(
+        ),
+        'lib32-mesa-amdgpu-va-drivers': Package(
+        ),
+        'lib32-mesa-amdgpu-vdpau-drivers': Package(
+        ),
+        'lib32-opencl-orca-amdgpu-pro-icd': Package(
+        ),
+        'lib32-vulkan-amdgpu': Package(
+        ),
+        'lib32-vulkan-amdgpu-pro': Package(
+        ),
+        'lib32-wsa-amdgpu': Package(
+        ),
+        'lib32-xserver-xorg-amdgpu-video-amdgpu': Package(
+        ),
+        'lib32-xserver-xorg-hwe-amdgpu-video-amdgpu': Package(
+        ),
+        'libdrm2-amdgpu': Package(
+        ),
+        'libdrm-amdgpu': Package(
+        ),
+        'libdrm-amdgpu-amdgpu1': Package(
+        ),
+        'libdrm-amdgpu-common': Package(
+        ),
+        'libdrm-amdgpu-radeon1': Package(
+        ),
+        'libdrm-amdgpu-utils': Package(
+        ),
+        'libegl1-amdgpu-mesa': Package(
+        ),
+        'libegl1-amdgpu-mesa-drivers': Package(
+        ),
+        'libegl1-amdgpu-pro': Package(
+        ),
+        'libgbm1-amdgpu': Package(
+        ),
+        'libgbm1-amdgpu-pro': Package(
+        ),
+        'libgbm1-amdgpu-pro-base': Package(
+        ),
+        'libgbm-amdgpu': Package(
+        ),
+        'libgl1-amdgpu-mesa': Package(
+        ),
+        'libgl1-amdgpu-mesa-dri': Package(
+        ),
+        'libgl1-amdgpu-mesa-glx': Package(
+        ),
+        'libgl1-amdgpu-pro-appprofiles': Package(
+        ),
+        'libgl1-amdgpu-pro-dri': Package(
+        ),
+        'libgl1-amdgpu-pro-ext': Package(
+        ),
+        'libgl1-amdgpu-pro-ext-hwe': Package(
+        ),
+        'libgl1-amdgpu-pro-glx': Package(
+        ),
+        'libglapi1-amdgpu-pro': Package(
+        ),
+        'libglapi-amdgpu-mesa': Package(
+        ),
+        'libgles1-amdgpu-mesa': Package(
+        ),
+        'libgles2-amdgpu-mesa': Package(
+        ),
+        'libgles2-amdgpu-pro': Package(
+        ),
+        'libllvm7.1-amdgpu': Package(
+        ),
+        'libopencl1-amdgpu-pro': Package(
+        ),
+        'libosmesa6-amdgpu': Package(
+        ),
+        'libwayland-amdgpu': Package(
+        ),
+        'libwayland-amdgpu-client0': Package(
+        ),
+        'libwayland-amdgpu-cursor0': Package(
+        ),
+        'libwayland-amdgpu-doc': Package(
+        ),
+        'libwayland-amdgpu-egl1': Package(
+        ),
+        'libwayland-amdgpu-server0': Package(
+        ),
+        'libxatracker2-amdgpu': Package(
+        ),
+        'libxatracker-amdgpu': Package(
+        ),
+        'llvm-amdgpu': Package(
+        ),
+        'llvm-amdgpu-7.1': Package(
+        ),
+        'llvm-amdgpu-7.1-doc': Package(
+        ),
+        'llvm-amdgpu-7.1-runtime': Package(
+        ),
+        'llvm-amdgpu-runtime': Package(
+        ),
+        'mesa-amdgpu-common': Package(
+        ),
+        'mesa-amdgpu-omx-drivers': Package(
+        ),
+        'mesa-amdgpu-va-drivers': Package(
+        ),
+        'mesa-amdgpu-vdpau-drivers': Package(
+        ),
+        'opencl-amdgpu-pro': Package(
+        ),
+        'opencl-amdgpu-pro-icd': Package(
+        ),
+        'opencl-orca-amdgpu-pro-icd': Package(
+        ),
+        'roct-amdgpu-pro': Package(
+        ),
+        'vulkan-amdgpu': Package(
+        ),
+        'vulkan-amdgpu-pro': Package(
+        ),
+        'wayland-protocols-amdgpu': Package(
+        ),
+        'wsa-amdgpu': Package(
+        ),
+        'xserver-xorg-amdgpu-video-amdgpu': Package(
+        ),
+        'xserver-xorg-hwe-amdgpu-video-amdgpu': Package(
+        ),
+        # Not yet checked manually, and not yet checked for preinst/postinst/etc files
     }
     for key in pkgbuild_packages:
         pkgbuild_packages[key].name = key
