@@ -757,67 +757,77 @@ replace_deps = {
     
     # Further is made by me (Ashark)
     # To make this list I used:
-    # cat Packages | grep Depends | sed 's/Depends: //' | sed 's/, /\n/g' | sort -u | grep -v "amdgpu" > list_tmp # extra deps in debian
-    # cat list_tmp | cut -f1 -d" " | sort -u > list_tmp2 # removed versions
-    # for line in $(cat list_tmp2); do str="'$line': "; str="$str 'some-arch-dep',"; echo $str; done | column -t > list_tmp3 # prepare columns
+    #cat Packages | grep Depends | sed 's/Depends: //' | sed 's/, /\n/g' | sort -u | grep -v "amdgpu" > list_tmp # extra deps in debian
+    #cat list_tmp | cut -f1 -d" " | sort -u > list_tmp2 # removed versions
+    #echo > list_tmp3 # clear file
+    #for line in $(cat list_tmp2); do
+    #echo now processing $line;
+    #arch_dep=`bash ./translate_deb_to_arch_dependency.sh $line`; # https://github.com/helixarch/debtap/issues/41#issuecomment-489166020
+    #if [[ $arch_dep == "could_not_translate" ]]; then arch_str="'$line', #could_not_auto_translate";
+    #elif [[ $arch_dep == "" ]]; then arch_str="None, #auto_translated";
+    #else arch_str="'$arch_dep', #auto_translated"
+    #fi
+    #str="'$line': "; str="$str $arch_str"; echo $str >> list_tmp3;
+    #done
+    #cat list_tmp3 | column -t | sed 's/^'\''/    '\''/' > list_tmp4 # prepare columns
     # Then we need to carefully check deps mapping manually.
-    'binfmt-support':                  'some-arch-dep',
-    'dkms':                            'some-arch-dep',
-    'libc6':                           'some-arch-dep',
-    'libcunit1':                       'some-arch-dep',
-    'libedit2':                        'some-arch-dep',
-    'libelf1':                         'some-arch-dep',
-    'libepoxy0':                       'some-arch-dep',
-    'libexpat1':                       'some-arch-dep',
-    'libffi6':                         'some-arch-dep',
-    'libffi-dev':                      'some-arch-dep',
-    'libgcc1':                         'some-arch-dep',
-    'libglib2.0-0':                    'some-arch-dep',
-    'libgstreamer1.0-0':               'some-arch-dep',
-    'libgstreamer-plugins-base1.0-0':  'some-arch-dep',
-    'libjs-jquery':                    'some-arch-dep',
-    'libjs-underscore':                'some-arch-dep',
-    'libmirclient-dev':                'some-arch-dep',
-    'libnuma1':                        'some-arch-dep',
-    'libomxil-bellagio0':              'some-arch-dep',
-    'libpci3':                         'some-arch-dep',
-    'libselinux1':                     'some-arch-dep',
-    'libstdc++6':                      'some-arch-dep',
-    'libtinfo5':                       'some-arch-dep',
-    'libtinfo-dev':                    'some-arch-dep',
-    'libudev1':                        'some-arch-dep',
-    'libudev-dev':                     'some-arch-dep',
-    'libx11-6':                        'some-arch-dep',
-    'libx11-dev':                      'some-arch-dep',
-    'libx11-xcb1':                     'some-arch-dep',
-    'libx11-xcb-dev':                  'some-arch-dep',
-    'libxcb1':                         'some-arch-dep',
-    'libxcb-dri2-0':                   'some-arch-dep',
-    'libxcb-dri2-0-dev':               'some-arch-dep',
-    'libxcb-dri3-0':                   'some-arch-dep',
-    'libxcb-dri3-dev':                 'some-arch-dep',
-    'libxcb-glx0':                     'some-arch-dep',
-    'libxcb-glx0-dev':                 'some-arch-dep',
-    'libxcb-present0':                 'some-arch-dep',
-    'libxcb-present-dev':              'some-arch-dep',
-    'libxcb-sync1':                    'some-arch-dep',
-    'libxcb-sync-dev':                 'some-arch-dep',
-    'libxcb-xfixes0':                  'some-arch-dep',
-    'libxdamage1':                     'some-arch-dep',
-    'libxdamage-dev':                  'some-arch-dep',
-    'libxext6':                        'some-arch-dep',
-    'libxext-dev':                     'some-arch-dep',
-    'libxfixes3':                      'some-arch-dep',
-    'libxfixes-dev':                   'some-arch-dep',
-    'libxml2':                         'some-arch-dep',
-    'libxshmfence1':                   'some-arch-dep',
-    'libxshmfence-dev':                'some-arch-dep',
-    'libxxf86vm1':                     'some-arch-dep',
-    'libxxf86vm-dev':                  'some-arch-dep',
-    'x11proto-dri2-dev':               'some-arch-dep',
-    'x11proto-gl-dev':                 'some-arch-dep',
-    'xserver-xorg-hwe-18.04':          'some-arch-dep',
-    'zlib1g':                          'some-arch-dep',
+    'binfmt-support':                  'opera',                    #auto_translated
+    'dkms':                            'dkms',                     #auto_translated
+    'libc6':                           'aarch64-linux-gnu-glibc',  #auto_translated
+    'libcunit1':                       'cunit',                    #auto_translated
+    'libedit2':                        'libedit',                  #auto_translated
+    'libelf1':                         'libelf',                   #auto_translated
+    'libepoxy0':                       'libepoxy',                 #auto_translated
+    'libexpat1':                       'expat',                    #auto_translated
+    'libffi6':                         'libffi',                   #auto_translated
+    'libffi-dev':                      'libffi',                   #auto_translated
+    'libgcc1':                         None,                       #auto_translated
+    'libglib2.0-0':                    'glib2',                    #auto_translated
+    'libgstreamer1.0-0':               'gstreamer',                #auto_translated
+    'libgstreamer-plugins-base1.0-0':  'gst-plugins-base-libs',    #auto_translated
+    'libjs-jquery':                    'libjs-jquery',             #could_not_auto_translate
+    'libjs-underscore':                'libjs-underscore',         #could_not_auto_translate
+    'libmirclient-dev':                'libmirclient-dev',         #could_not_auto_translate
+    'libnuma1':                        'numactl',                  #auto_translated
+    'libomxil-bellagio0':              'libomxil-bellagio',        #auto_translated
+    'libpci3':                         None,                       #auto_translated
+    'libselinux1':                     'libselinux',               #auto_translated
+    'libstdc++6':                      'aarch64-linux-gnu-gcc',    #auto_translated
+    'libtinfo5':                       'libtinfo5',                #could_not_auto_translate
+    'libtinfo-dev':                    'libtinfo-dev',             #could_not_auto_translate
+    'libudev1':                        'systemd-libs',             #auto_translated
+    'libudev-dev':                     'systemd-libs',             #auto_translated
+    'libx11-6':                        'libx11',                   #auto_translated
+    'libx11-dev':                      'libx11',                   #auto_translated
+    'libx11-xcb1':                     'libx11',                   #auto_translated
+    'libx11-xcb-dev':                  'libx11',                   #auto_translated
+    'libxcb1':                         'libxcb',                   #auto_translated
+    'libxcb-dri2-0':                   'libxcb',                   #auto_translated
+    'libxcb-dri2-0-dev':               'libxcb',                   #auto_translated
+    'libxcb-dri3-0':                   'libxcb',                   #auto_translated
+    'libxcb-dri3-dev':                 'libxcb',                   #auto_translated
+    'libxcb-glx0':                     'libxcb',                   #auto_translated
+    'libxcb-glx0-dev':                 'libxcb',                   #auto_translated
+    'libxcb-present0':                 'libxcb',                   #auto_translated
+    'libxcb-present-dev':              'libxcb',                   #auto_translated
+    'libxcb-sync1':                    'libxcb',                   #auto_translated
+    'libxcb-sync-dev':                 'libxcb',                   #auto_translated
+    'libxcb-xfixes0':                  'libxcb',                   #auto_translated
+    'libxdamage1':                     'libxdamage',               #auto_translated
+    'libxdamage-dev':                  'libxdamage',               #auto_translated
+    'libxext6':                        'libxext',                  #auto_translated
+    'libxext-dev':                     'libxext',                  #auto_translated
+    'libxfixes3':                      'libxfixes',                #auto_translated
+    'libxfixes-dev':                   'libxfixes',                #auto_translated
+    'libxml2':                         'libxml2',                  #auto_translated
+    'libxshmfence1':                   'libxshmfence',             #auto_translated
+    'libxshmfence-dev':                'libxshmfence',             #auto_translated
+    'libxxf86vm1':                     'libxxf86vm',               #auto_translated
+    'libxxf86vm-dev':                  'libxxf86vm',               #auto_translated
+    'x11proto-dri2-dev':               'x11proto-dri2-dev',        #could_not_auto_translate
+    'x11proto-gl-dev':                 'x11proto-gl-dev',          #could_not_auto_translate
+    'xserver-xorg-hwe-18.04':          'xserver-xorg-hwe-18.04',   #could_not_auto_translate
+    'zlib1g':                          'zlib',                     #auto_translated
     # Not yet mapped manually
 }
 
