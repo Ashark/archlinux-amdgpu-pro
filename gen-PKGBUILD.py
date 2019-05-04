@@ -175,11 +175,32 @@ def gen_arch_packages():
         # cat list_tmp3 | cut -f4 -d"'" | sort -u > list_tmp4
         # for line in $(cat list_tmp4); do echo -e "        '$line': Package(\n        ),"; done
         # desc attribute could be used to override Description from deb package.
+        
+        # To simplify porting of conffiles I used this:
+        #for file in $(ls *deb);
+        #do
+            #tmpdir=tmpdir; rm -rf "$tmpdir"; mkdir "$tmpdir"; cd "$tmpdir"
+            #ar x ../$file control.tar.xz
+            #files=$(tar -tf control.tar.xz | grep -vE "control|md5sums|./$" | grep conffiles)
+            #if [[ $files != "" ]]; then
+                #echo -e "$file:\nbackup = ["
+                #tar -xf control.tar.xz ./conffiles -O | sed 's/^\//'\''/' | sed 's/$/'\'',/'
+                #echo "],"
+            #fi
+            #files=""; cd ..
+        #done
+        #rm -rf tmpdir
+        # Then I manually copied them to Package objects
+
         'amdgpu': Package(
         ),
         'amdgpu-core': Package(
         ),
         'amdgpu-dkms': Package(
+            backup = [
+            'etc/modprobe.d/blacklist-radeon.conf',
+            'etc/udev/rules.d/70-amdgpu.rules',
+            ],
         ),
         'amdgpu-doc': Package(
         ),
@@ -200,6 +221,9 @@ def gen_arch_packages():
         'amdgpu-pro-lib32': Package(
         ),
         'amdgpu-pro-pin': Package(
+            backup = [
+            'etc/apt/preferences.d/amdgpu-pro',
+            ],
         ),
         'amf-amdgpu-pro': Package(
         ),
@@ -208,6 +232,9 @@ def gen_arch_packages():
         'glamor-amdgpu': Package(
         ),
         'gst-omx-amdgpu': Package(
+            backup = [
+            'etc/xdg/gstomx.conf',
+            ],
         ),
         'lib32-amdgpu': Package(
         ),
@@ -344,6 +371,9 @@ def gen_arch_packages():
         'libgbm1-amdgpu-pro': Package(
         ),
         'libgbm1-amdgpu-pro-base': Package(
+            backup = [
+            'etc/gbm/gbm.conf',
+            ],
         ),
         'libgbm-amdgpu': Package(
         ),
@@ -354,6 +384,9 @@ def gen_arch_packages():
         'libgl1-amdgpu-mesa-glx': Package(
         ),
         'libgl1-amdgpu-pro-appprofiles': Package(
+            backup = [
+            'etc/amd/amdapfxx.blb',
+            ],
         ),
         'libgl1-amdgpu-pro-dri': Package(
         ),
@@ -362,6 +395,10 @@ def gen_arch_packages():
         'libgl1-amdgpu-pro-ext-hwe': Package(
         ),
         'libgl1-amdgpu-pro-glx': Package(
+            backup = [
+            'etc/amd/amdrc',
+            'etc/ld.so.conf.d/10-amdgpu-pro-x86_64.conf', # 'etc/ld.so.conf.d/10-amdgpu-pro-i386.conf',
+            ],
         ),
         'libglapi1-amdgpu-pro': Package(
         ),
@@ -416,8 +453,14 @@ def gen_arch_packages():
         'opencl-amdgpu-pro': Package(
         ),
         'opencl-amdgpu-pro-icd': Package(
+            backup = [
+            'etc/OpenCL/vendors/amdocl64.icd',
+            ],
         ),
         'opencl-orca-amdgpu-pro-icd': Package(
+            backup = [
+            'etc/OpenCL/vendors/amdocl-orca64.icd', # 'etc/OpenCL/vendors/amdocl-orca32.icd',
+            ],
         ),
         'roct-amdgpu-pro': Package(
         ),
@@ -1045,7 +1088,10 @@ class Package:
 
         if hasattr(self, 'depends'):
             ret += "    depends=(%s)\n\n" % " ".join(self.depends)
-
+        
+        if hasattr(self, 'backup'):
+            ret += "    backup=(%s)\n\n" % " ".join(self.backup)
+            
         for info in self.deb_source_infos:
             tmp_str=package_deb_extract_tpl.format(**info)
             ret += tmp_str.replace(str(pkgver_base), "${major}").replace(str(pkgver_build), "${minor}")
