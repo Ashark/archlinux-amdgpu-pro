@@ -460,8 +460,6 @@ def gen_arch_packages():
 
 
 # this maps which deb packages should go into specific arch package
-# packages without mapping go into 'amdgpu-pro'
-packages_map_default = 'amdgpu-pro'
 packages_map = {
     #'amdgpu-pro':                       'amdgpu-pro',        # deb is metapackage
     #'amdgpu-pro-core':                  'amdgpu-pro',        # deb is metapackage
@@ -596,13 +594,13 @@ packages_map = {
     'amdgpu-lib:i386':                            None,                                      #disabled_by_script
     'amdgpu-lib-hwe':                             'amdgpu-lib',                              
     'amdgpu-lib-hwe:i386':                        'lib32-amdgpu-lib',                        
-    'amdgpu-lib32':                               'amdgpu-lib32',                            
+    # 'amdgpu-lib32':                               'amdgpu-lib32',                          
     'amdgpu-pro':                                 None,                                      #disabled_by_script
     'amdgpu-pro:i386':                            None,                                      #disabled_by_script
     'amdgpu-pro-core':                            'amdgpu-pro-core',                         
     'amdgpu-pro-hwe':                             'amdgpu-pro',                              
     'amdgpu-pro-hwe:i386':                        'lib32-amdgpu-pro',                        
-    'amdgpu-pro-lib32':                           'amdgpu-pro-lib32',                        
+    # 'amdgpu-pro-lib32':                           'amdgpu-pro-lib32',                      
     'amdgpu-pro-pin':                             None,                                      #disabled_by_script
     'amf-amdgpu-pro':                             'amf-amdgpu-pro',                          
     'clinfo-amdgpu-pro':                          'clinfo-amdgpu-pro',                       
@@ -1164,15 +1162,12 @@ def parse_Packages_file(f):
 
     for deb_info in package_list:
         name = deb_info["Package"]
-        arch_pkg = pkgbuild_packages[ packages_map_default]
+        arch_pkg = None
         if deb_info["Architecture"] == "i386":
             name = deb_info["Package"] + ":i386"
-            arch_pkg = pkgbuild_packages["lib32-" + packages_map_default] # use lib32-<default-pkg> for 32bit packages as default package
-        if name in packages_map:
-            if packages_map[name] in pkgbuild_packages:
+        if name in packages_map: # to allow temporary commenting out mappings from packages_map while using full Packages file
+            if packages_map[name] in pkgbuild_packages: # to allow temporary commenting out packages from pkgbuild_packages
                 arch_pkg = pkgbuild_packages[ packages_map[name]]
-            else:
-                arch_pkg = None
 
         if arch_pkg:
             arch_pkg.add_deb(deb_info)
