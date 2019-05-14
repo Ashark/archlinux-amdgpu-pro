@@ -455,7 +455,7 @@ def gen_arch_packages():
         # Not yet checked manually, and not yet checked for preinst/postinst/etc files
     }
     for key in pkgbuild_packages:
-        pkgbuild_packages[key].name = key
+        pkgbuild_packages[key].arch_pkg_name = key
     return pkgbuild_packages
 
 
@@ -1009,7 +1009,7 @@ class Package:
             self.arch = default_arch
         self.deb_source_infos = []
 
-    def add_deb(self, deb_info):
+    def add_deb_info(self, deb_info):
         self.deb_source_infos.append(deb_info)
 
         try:
@@ -1018,35 +1018,35 @@ class Package:
             self.arch = default_arch
 
         if deb_info["Architecture"] == "i386":
-            if self.name.startswith('lib32-'):
+            if self.arch_pkg_name.startswith('lib32-'):
                 self.arch = ['x86_64']
             else:
                 import sys
-                sys.stderr.write("ERROR: There is a bug in this script, package '%s' is i386 (came from %s) and should start with 'lib32'. Check packages_map!\n" % (self.name, deb_info["Package"]))
+                sys.stderr.write("ERROR: There is a bug in this script, package '%s' is i386 (came from %s) and should start with 'lib32'. Check packages_map!\n" % (self.arch_pkg_name, deb_info["Package"]))
 
 
         try:
-            deps = deb_info["Depends"].split(', ')
+            deb_deps = deb_info["Depends"].split(', ')
         except:
-            deps = None
+            deb_deps = None
 
         domap = True
-        #if self.name == "amdgpu-pro" or self.name == "lib32-amdgpu-pro":
+        #if self.arch_pkg_name == "amdgpu-pro" or self.arch_pkg_name == "lib32-amdgpu-pro":
             #domap = False
 
-        if deps:
-            deps = [ dependencyRE.match(dep).groups() for dep in deps ]
-            deps = [(replace_deps[name] if name in replace_deps else name, version) for name, version in deps]
-            deps = ["\"" + convertName(fix_32(name), deb_info, domap) + convertVersionSpecifier(fix_32(name), version) + "\"" for name, version in deps if name]
-            deps = [ dep for dep in deps if not dep.startswith("\"=")]
+        if deb_deps:
+            deb_deps = [ dependencyRE.match(dep).groups() for dep in deb_deps ]
+            deb_deps = [(replace_deps[deb_pkg_name] if deb_pkg_name in replace_deps else deb_pkg_name, version) for deb_pkg_name, version in deb_deps]
+            deb_deps = ["\"" + convertName(fix_32(deb_pkg_name), deb_info, domap) + convertVersionSpecifier(fix_32(deb_pkg_name), version) + "\"" for deb_pkg_name, version in deb_deps if deb_pkg_name]
+            deb_deps = [ dep for dep in deb_deps if not dep.startswith("\"=")]
 
             # remove all dependencies on itself
-            deps = [ dep for dep in deps if dep[1:len(self.name)+1] != self.name ]
+            deb_deps = [ dep for dep in deb_deps if dep[1:len(self.arch_pkg_name)+1] != self.arch_pkg_name ]
 
             if hasattr(self, 'depends') and self.depends:
-                deps += self.depends
+                deb_deps += self.depends
 
-            self.depends = list(sorted(set( deps ))) # remove duplicates and append to already existing dependencies
+            self.depends = list(sorted(set( deb_deps ))) # remove duplicates and append to already existing dependencies
 
             if not hasattr(self, 'desc'):
                 desc = deb_info["Description"].split("\n")
@@ -1062,8 +1062,8 @@ class Package:
 
     def toPKGBUILD(self):
         ret = package_header_tpl.format(
-            NAME=self.name,
-            DESC=quote(self.desc) if hasattr(self, 'desc') else quote("No description for package %s" % self.name),
+            NAME=self.arch_pkg_name,
+            DESC=quote(self.desc) if hasattr(self, 'desc') else quote("No description for package %s" % self.arch_pkg_name),
         )
 
         if hasattr(self, 'install'):
@@ -1084,7 +1084,7 @@ class Package:
             tmp_str=package_deb_extract_tpl.format(**info)
             ret += tmp_str.replace(str(pkgver_base), "${major}").replace(str(pkgver_build), "${minor}")
 
-        if self.name.startswith('lib32-'):
+        if self.arch_pkg_name.startswith('lib32-'):
             ret += package_header_i386
         else:
             ret += package_header_x86_64
@@ -1093,7 +1093,7 @@ class Package:
             ret += "\n\t# extra_commands:\n\t"
             ret += "\n\t".join( self.extra_commands )
 
-        if self.name.startswith('lib32-'):
+        if self.arch_pkg_name.startswith('lib32-'):
             ret += package_lib32_cleanup
         ret += package_footer
         return ret
@@ -1107,9 +1107,9 @@ dependencyRE = re.compile(r"([^ ]+)(?: \((.+)\))?")
 
 deb_archs={}
 
-def convertName(name, info, domap=True):
+def convertName(name, deb_info, domap=True):
     ret = name
-    if info["Architecture"] == "i386" and (name not in deb_archs or "any" not in deb_archs[name]):
+    if deb_info["Architecture"] == "i386" and (name not in deb_archs or "any" not in deb_archs[name]):
         if not name in no_lib32_convert:
             ret = "lib32-" + name
 
@@ -1147,20 +1147,20 @@ def fix_32(dep):
 
 def parse_Packages_file(f):
     global deb_package_names
-    package_list=[]
+    deb_package_list=[]
 
     for deb_info in deb822.Packages.iter_paragraphs(f):
         if not deb_info["Package"] in deb_archs:
             deb_archs[deb_info["Package"]] = set()
 
         deb_archs[deb_info["Package"]].add(deb_info["Architecture"])
-        package_list.append(deb_info)
+        deb_package_list.append(deb_info)
 
-    deb_package_names = [info["Package"] + ":i386" if info["Architecture"] == "i386" else info["Package"] for info in package_list]
+    deb_package_names = [info["Package"] + ":i386" if info["Architecture"] == "i386" else info["Package"] for info in deb_package_list]
 
     f.seek(0)
 
-    for deb_info in package_list:
+    for deb_info in deb_package_list:
         name = deb_info["Package"]
         arch_pkg = None
         if deb_info["Architecture"] == "i386":
@@ -1170,7 +1170,7 @@ def parse_Packages_file(f):
                 arch_pkg = pkgbuild_packages[ packages_map[name]]
 
         if arch_pkg:
-            arch_pkg.add_deb(deb_info)
+            arch_pkg.add_deb_info(deb_info)
 
     #    print(convertPackage(deb_info, package_names + optional_names))
 
