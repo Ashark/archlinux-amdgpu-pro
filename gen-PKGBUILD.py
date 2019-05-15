@@ -594,13 +594,13 @@ packages_map = {
     'amdgpu-lib:i386':                            None,                                      #disabled_by_script
     'amdgpu-lib-hwe':                             'amdgpu-lib',                              
     'amdgpu-lib-hwe:i386':                        'lib32-amdgpu-lib',                        
-    # 'amdgpu-lib32':                               'amdgpu-lib32',                          
+    'amdgpu-lib32':                                'amdgpu-lib32',                           
     'amdgpu-pro':                                 None,                                      #disabled_by_script
     'amdgpu-pro:i386':                            None,                                      #disabled_by_script
     'amdgpu-pro-core':                            'amdgpu-pro-core',                         
     'amdgpu-pro-hwe':                             'amdgpu-pro',                              
     'amdgpu-pro-hwe:i386':                        'lib32-amdgpu-pro',                        
-    # 'amdgpu-pro-lib32':                           'amdgpu-pro-lib32',                      
+    'amdgpu-pro-lib32':                           'amdgpu-pro-lib32',                      
     'amdgpu-pro-pin':                             None,                                      #disabled_by_script
     'amf-amdgpu-pro':                             'amf-amdgpu-pro',                          
     'clinfo-amdgpu-pro':                          'clinfo-amdgpu-pro',                       
@@ -1035,7 +1035,8 @@ class Package:
             #domap = False
 
         if deb_deps:
-            deb_deps = [ dependencyRE.match(dep).groups() for dep in deb_deps ]
+            deb_deps = [ depWithAlt_to_singleDep(dep) if dependencyWithAltRE.search(dep) else dep for dep in deb_deps ]
+            deb_deps = [ dependencyNameWithVersionRE.match(dep).groups() for dep in deb_deps ]
             deb_deps = [(replace_deps[deb_pkg_name] if deb_pkg_name in replace_deps else deb_pkg_name, version) for deb_pkg_name, version in deb_deps]
             deb_deps = ["\"" + convertName(fix_32(deb_pkg_name), deb_info, domap) + convertVersionSpecifier(fix_32(deb_pkg_name), version) + "\"" for deb_pkg_name, version in deb_deps if deb_pkg_name]
             deb_deps = [ dep for dep in deb_deps if not dep.startswith("\"=")]
@@ -1103,7 +1104,35 @@ pkgbuild_packages = gen_arch_packages()
 
 
 # regex for parsing version information of a deb dependency
-dependencyRE = re.compile(r"([^ ]+)(?: \((.+)\))?")
+dependencyNameWithVersionRE = re.compile(r"([^ ]+)(?: \((.+)\))?")
+
+# regex for detecting dependency with alternative
+dependencyWithAltRE = re.compile(r" \| ")
+
+def depWithAlt_to_singleDep(depWithAlt):
+    # I (Ashark) used this to get a list of dependencies with alternatives:
+    # cat Packages | grep -vE "Filename|Size|MD5sum|SHA1|SHA256|Priority|Maintainer|Version: 19.10-785425|Description|^ +" >  Packages-short-nodesc
+    # cat Packages-short-nodesc | grep Depends | grep "|" | sed "s/Depends: //" | sed "s/, /\n/g" | grep "|" | sort -u
+    # And I got this list:
+        # amdgpu (= 19.10-785425) | amdgpu-hwe (= 19.10-785425) # choose latest (i.e. hwe)
+        # amdgpu-lib (= 19.10-785425) | amdgpu-lib-hwe (= 19.10-785425) # choose latest (i.e. hwe)
+        # amdgpu-pro (= 19.10-785425) | amdgpu-pro-hwe (= 19.10-785425) # choose latest (i.e. hwe)
+        # libudev1 | libudev0 # choose latest (i.e. libudev1)
+        # libva1-amdgpu | libva2-amdgpu | libva1 | libva2 # choose latest (i.e. libva2*) But don't know which variant
+        # libvdpau1-amdgpu | libvdpau1 # do not know which variant
+
+    splitted_alts = dependencyWithAltRE.split(depWithAlt)
+    splitted_name_and_ver = [dependencyNameWithVersionRE.match(dep).groups() for dep in splitted_alts]
+
+    if splitted_name_and_ver[0][0] + "-hwe" == splitted_name_and_ver[1][0]:
+        return splitted_alts[1] # use hwe variant
+    if splitted_name_and_ver[0][0] == "libudev1" and splitted_name_and_ver[1][0] == "libudev0":
+        return splitted_alts[0] # use libudev1 variant
+    if splitted_name_and_ver[0][0] == "libva1-amdgpu" and splitted_name_and_ver[1][0] == "libva2-amdgpu" and splitted_name_and_ver[2][0] == "libva1" and splitted_name_and_ver[3][0] == "libva2":
+        return "TODO!_Do_not_know_what_to_choose" # TODO set correct variant here
+    if splitted_name_and_ver[0][0] == "libvdpau1-amdgpu" and splitted_name_and_ver[1][0] == "libvdpau1":
+        return "TODO!_Do_not_know_what_to_choose" # TODO set correct variant here
+    return "Warning!_Do_not_know_which_alt_to_choose!"
 
 deb_archs={}
 
