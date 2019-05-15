@@ -183,18 +183,16 @@ def gen_arch_packages():
             #ar x ../$file control.tar.xz
             #files=$(tar -tf control.tar.xz | grep -vE "control|md5sums|./$" | grep conffiles)
             #if [[ $files != "" ]]; then
-                #echo -e "$file:\nbackup = ["
-                #tar -xf control.tar.xz ./conffiles -O | sed 's/^\//'\''/' | sed 's/$/'\'',/'
-                #echo "],"
+                #echo -e "$file:\n           backup = ["
+                #tar -xf control.tar.xz ./conffiles -O | sed 's/^\//              '\''/' | sed 's/$/'\'',/'
+                #echo "           ],"
             #fi
             #files=""; cd ..
         #done
         #rm -rf tmpdir
         # Then I manually copied them to Package objects
 
-        'amdgpu': Package(
-        ),
-        'amdgpu-core': Package(
+        'amdgpu-core-meta': Package(
         ),
         'amdgpu-dkms': Package(
             backup = [
@@ -204,15 +202,17 @@ def gen_arch_packages():
         ),
         'amdgpu-doc': Package(
         ),
-        'amdgpu-lib': Package(
+        'amdgpu-lib32-meta': Package(
         ),
-        'amdgpu-lib32': Package(
+        'amdgpu-lib-meta': Package(
         ),
-        'amdgpu-pro': Package(
+        'amdgpu-meta': Package(
         ),
-        'amdgpu-pro-core': Package(
+        'amdgpu-pro-core-meta': Package(
         ),
-        'amdgpu-pro-lib32': Package(
+        'amdgpu-pro-lib32-meta': Package(
+        ),
+        'amdgpu-pro-meta': Package(
         ),
         'amf-amdgpu-pro': Package(
         ),
@@ -225,11 +225,11 @@ def gen_arch_packages():
             'etc/xdg/gstomx.conf',
             ],
         ),
-        'lib32-amdgpu': Package(
+        'lib32-amdgpu-lib-meta': Package(
         ),
-        'lib32-amdgpu-lib': Package(
+        'lib32-amdgpu-meta': Package(
         ),
-        'lib32-amdgpu-pro': Package(
+        'lib32-amdgpu-pro-meta': Package(
         ),
         'lib32-clinfo-amdgpu-pro': Package(
         ),
@@ -270,6 +270,10 @@ def gen_arch_packages():
         'lib32-libgl1-amdgpu-pro-ext': Package(
         ),
         'lib32-libgl1-amdgpu-pro-glx': Package(
+            backup = [
+            'etc/amd/amdrc',
+            'etc/ld.so.conf.d/10-amdgpu-pro-i386.conf',
+            ],
         ),
         'lib32-libglapi1-amdgpu-pro': Package(
         ),
@@ -318,6 +322,9 @@ def gen_arch_packages():
         'lib32-mesa-amdgpu-vdpau-drivers': Package(
         ),
         'lib32-opencl-orca-amdgpu-pro-icd': Package(
+            backup = [
+            'etc/OpenCL/vendors/amdocl-orca32.icd',
+            ],
         ),
         'lib32-vulkan-amdgpu': Package(
         ),
@@ -374,7 +381,7 @@ def gen_arch_packages():
         'libgl1-amdgpu-pro-glx': Package(
             backup = [
             'etc/amd/amdrc',
-            'etc/ld.so.conf.d/10-amdgpu-pro-x86_64.conf', # 'etc/ld.so.conf.d/10-amdgpu-pro-i386.conf',
+            'etc/ld.so.conf.d/10-amdgpu-pro-x86_64.conf',
             ],
         ),
         'libglapi1-amdgpu-pro': Package(
@@ -434,9 +441,11 @@ def gen_arch_packages():
             'etc/OpenCL/vendors/amdocl64.icd',
             ],
         ),
+        'opencl-amdgpu-pro-meta': Package(
+        ),
         'opencl-orca-amdgpu-pro-icd': Package(
             backup = [
-            'etc/OpenCL/vendors/amdocl-orca64.icd', # 'etc/OpenCL/vendors/amdocl-orca32.icd',
+            'etc/OpenCL/vendors/amdocl-orca64.icd',
             ],
         ),
         'roct-amdgpu-pro': Package(
@@ -563,8 +572,21 @@ packages_map = {
     #'lib32-clinfo-amdgpu-pro': None,
     #'lib32-libdrm-amdgpu-pro-utils': None,
     
-    # Further is made by me (Ashark)
-    #To make this list I used:
+    ## Further is made by me (Ashark)
+    ## get list of deb-metapackages:
+    #cat Packages | grep -vE "Filename|Size|MD5sum|SHA1|SHA256|Priority|Maintainer|Version: 19.10-785425|Description|^ +" | grep -B4 "Section: metapackages" | grep -vE "Depends:|Section:" > list_tmp
+    #echo > deb_metapackages_list
+
+    #while read line; do
+        #if [[ $line =~ ^Package* ]]; then pkg=$(echo $line | sed "s/^Package: //"); continue; fi
+        #if [[ $line =~ ^Architecture* ]]; then
+            #arch=$(echo $line | sed "s/^Architecture: //")
+            #if [[ $arch == i386 ]]; then arch=":i386"; else arch=""; fi
+            #echo "$pkg$arch" >> deb_metapackages_list;continue;
+        #fi
+    #done < list_tmp
+
+    ##To make this list I used:
     #cat Packages | grep Package | cut -f2 -d " " > list_tmp # all presented debian packages
     #prev=""; for line in $(cat list_tmp); do if [[ $prev != $line ]]; then echo $line; else echo $line:i386; fi; prev=$line; done > list_tmp2 # rename 32bit debian packages
     #echo > non_hwe_list
@@ -572,36 +594,37 @@ packages_map = {
         #grep hwe list_tmp2 | sed 's/-hwe//' > non_hwe_list
     #fi
     #for line in $(cat list_tmp2); do
-        #str="    '$line': ";
+        #str="    '$line': "; comment="";
         #if [[ $line != *"i386" ]]; then archpkg=$line; else archpkg="lib32-${line//:i386/}"; fi;
         #if [[ $archpkg == *"-dev" ]]; then archpkg=${archpkg//-dev/}; fi;
-        #if [[ $line == "amdgpu-pro-pin" ]]; then archpkg=None; fi;
-        #if grep -Fx $line non_hwe_list > /dev/null; then archpkg=None; fi;
+        #if [[ $line == "amdgpu-pro-pin" ]]; then archpkg=None; comment="debian_specific_package,_not_needed"; fi;
+        #if grep -Fx $line non_hwe_list > /dev/null; then archpkg=None; comment="disabled_because_hwe_version_is_available"; fi;
         #if [[ $archpkg == *"-hwe"* ]]; then archpkg=${archpkg//-hwe/}; fi;
-        #if [[ $archpkg == "None" ]]; then str="$str $archpkg, #disabled_by_script"; else str="$str '$archpkg',"; fi
+        #if grep $line deb_metapackages_list > /dev/null && [[ $archpkg != None ]]; then archpkg="$archpkg-meta"; fi;
+        #if [[ $archpkg == "None" ]]; then str="$str $archpkg, #$comment"; else str="$str '$archpkg',"; fi
         #echo -e "$str";
     #done | column -t | sed 's/^/    /' > list_tmp3 # stupid mapping
-    #Then it's needed to carefully check pkgs mapping manually.
+    ##Then it's needed to carefully check pkgs mapping manually.
     
-    'amdgpu':                                     None,                                      #disabled_by_script
-    'amdgpu:i386':                                None,                                      #disabled_by_script
-    'amdgpu-core':                                'amdgpu-core',                             
+    'amdgpu':                                     None,                                      #disabled_because_hwe_version_is_available
+    'amdgpu:i386':                                None,                                      #disabled_because_hwe_version_is_available
+    'amdgpu-core':                                'amdgpu-core-meta',                        
     'amdgpu-dkms':                                'amdgpu-dkms',                             
     'amdgpu-doc':                                 'amdgpu-doc',                              
-    'amdgpu-hwe':                                 'amdgpu',                                  
-    'amdgpu-hwe:i386':                            'lib32-amdgpu',                            
-    'amdgpu-lib':                                 None,                                      #disabled_by_script
-    'amdgpu-lib:i386':                            None,                                      #disabled_by_script
-    'amdgpu-lib-hwe':                             'amdgpu-lib',                              
-    'amdgpu-lib-hwe:i386':                        'lib32-amdgpu-lib',                        
-    'amdgpu-lib32':                                'amdgpu-lib32',                           
-    'amdgpu-pro':                                 None,                                      #disabled_by_script
-    'amdgpu-pro:i386':                            None,                                      #disabled_by_script
-    'amdgpu-pro-core':                            'amdgpu-pro-core',                         
-    'amdgpu-pro-hwe':                             'amdgpu-pro',                              
-    'amdgpu-pro-hwe:i386':                        'lib32-amdgpu-pro',                        
-    'amdgpu-pro-lib32':                           'amdgpu-pro-lib32',                      
-    'amdgpu-pro-pin':                             None,                                      #disabled_by_script
+    'amdgpu-hwe':                                 'amdgpu-meta',                             
+    'amdgpu-hwe:i386':                            'lib32-amdgpu-meta',                       
+    'amdgpu-lib':                                 None,                                      #disabled_because_hwe_version_is_available
+    'amdgpu-lib:i386':                            None,                                      #disabled_because_hwe_version_is_available
+    'amdgpu-lib-hwe':                             'amdgpu-lib-meta',                         
+    'amdgpu-lib-hwe:i386':                        'lib32-amdgpu-lib-meta',                   
+    'amdgpu-lib32':                               'amdgpu-lib32-meta',                       
+    'amdgpu-pro':                                 None,                                      #disabled_because_hwe_version_is_available
+    'amdgpu-pro:i386':                            None,                                      #disabled_because_hwe_version_is_available
+    'amdgpu-pro-core':                            'amdgpu-pro-core-meta',                    
+    'amdgpu-pro-hwe':                             'amdgpu-pro-meta',                         
+    'amdgpu-pro-hwe:i386':                        'lib32-amdgpu-pro-meta',                   
+    'amdgpu-pro-lib32':                           'amdgpu-pro-lib32-meta',                   
+    'amdgpu-pro-pin':                             None,                                      #debian_specific_package,_not_needed
     'amf-amdgpu-pro':                             'amf-amdgpu-pro',                          
     'clinfo-amdgpu-pro':                          'clinfo-amdgpu-pro',                       
     'clinfo-amdgpu-pro:i386':                     'lib32-clinfo-amdgpu-pro',                 
@@ -648,8 +671,8 @@ packages_map = {
     'libgl1-amdgpu-pro-appprofiles':              'libgl1-amdgpu-pro-appprofiles',           
     'libgl1-amdgpu-pro-dri':                      'libgl1-amdgpu-pro-dri',                   
     'libgl1-amdgpu-pro-dri:i386':                 'lib32-libgl1-amdgpu-pro-dri',             
-    'libgl1-amdgpu-pro-ext':                      None,                                      #disabled_by_script
-    'libgl1-amdgpu-pro-ext:i386':                 None,                                      #disabled_by_script
+    'libgl1-amdgpu-pro-ext':                      None,                                      #disabled_because_hwe_version_is_available
+    'libgl1-amdgpu-pro-ext:i386':                 None,                                      #disabled_because_hwe_version_is_available
     'libgl1-amdgpu-pro-ext-hwe':                  'libgl1-amdgpu-pro-ext',                   
     'libgl1-amdgpu-pro-ext-hwe:i386':             'lib32-libgl1-amdgpu-pro-ext',             
     'libgl1-amdgpu-pro-glx':                      'libgl1-amdgpu-pro-glx',                   
@@ -712,7 +735,7 @@ packages_map = {
     'mesa-amdgpu-va-drivers:i386':                'lib32-mesa-amdgpu-va-drivers',            
     'mesa-amdgpu-vdpau-drivers':                  'mesa-amdgpu-vdpau-drivers',               
     'mesa-amdgpu-vdpau-drivers:i386':             'lib32-mesa-amdgpu-vdpau-drivers',         
-    'opencl-amdgpu-pro':                          'opencl-amdgpu-pro',                       
+    'opencl-amdgpu-pro':                          'opencl-amdgpu-pro-meta',                  
     'opencl-amdgpu-pro-dev':                      'opencl-amdgpu-pro',                       
     'opencl-amdgpu-pro-icd':                      'opencl-amdgpu-pro-icd',                   
     'opencl-orca-amdgpu-pro-icd':                 'opencl-orca-amdgpu-pro-icd',              
@@ -726,8 +749,8 @@ packages_map = {
     'wayland-protocols-amdgpu':                   'wayland-protocols-amdgpu',                
     'wsa-amdgpu':                                 'wsa-amdgpu',                              
     'wsa-amdgpu:i386':                            'lib32-wsa-amdgpu',                        
-    'xserver-xorg-amdgpu-video-amdgpu':           None,                                      #disabled_by_script
-    'xserver-xorg-amdgpu-video-amdgpu:i386':      None,                                      #disabled_by_script
+    'xserver-xorg-amdgpu-video-amdgpu':           None,                                      #disabled_because_hwe_version_is_available
+    'xserver-xorg-amdgpu-video-amdgpu:i386':      None,                                      #disabled_because_hwe_version_is_available
     'xserver-xorg-hwe-amdgpu-video-amdgpu':       'xserver-xorg-amdgpu-video-amdgpu',        
     'xserver-xorg-hwe-amdgpu-video-amdgpu:i386':  'lib32-xserver-xorg-amdgpu-video-amdgpu',  
 
