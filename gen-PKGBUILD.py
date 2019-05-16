@@ -1061,7 +1061,7 @@ class Package:
             deb_deps = [ depWithAlt_to_singleDep(dep) if dependencyWithAltRE.search(dep) else dep for dep in deb_deps ]
             deb_deps = [ dependencyNameWithVersionRE.match(dep).groups() for dep in deb_deps ]
             deb_deps = [(replace_deps[deb_pkg_name] if deb_pkg_name in replace_deps else deb_pkg_name, version) for deb_pkg_name, version in deb_deps]
-            deb_deps = ["\"" + convertName(fix_32(deb_pkg_name), deb_info, domap) + convertVersionSpecifier(fix_32(deb_pkg_name), version) + "\"" for deb_pkg_name, version in deb_deps if deb_pkg_name]
+            deb_deps = ["\"" + convertName(fix_32(deb_pkg_name), deb_info, domap) + convertVersionSpecifier(deb_pkg_name, version) + "\"" for deb_pkg_name, version in deb_deps if deb_pkg_name]
             deb_deps = [ dep for dep in deb_deps if not dep.startswith("\"=")]
 
             # remove all dependencies on itself
@@ -1174,14 +1174,15 @@ def convertName(name, deb_info, domap=True):
 def convertVersionSpecifier(name, spec):
     if name in replace_version:
         return replace_version[name]
-    if name in deb_package_names:
-        return "=${major}.${minor}-${pkgrel}"
     if not spec:
         return ""
 
     sign, spec = spec.split(" ", 1)
 
     spec = spec.strip()
+    if name in deb_package_names:
+        spec = spec.replace(pkgver_base, "${major}").replace(pkgver_build, "${minor}").replace("-","_")
+        return sign + spec
     if ":" in spec:
         whatever, spec = spec.rsplit(":", 1)
     return sign + spec
