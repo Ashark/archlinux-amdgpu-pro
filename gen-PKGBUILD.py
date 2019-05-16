@@ -1072,17 +1072,17 @@ class Package:
 
             self.depends = list(sorted(set( deb_deps ))) # remove duplicates and append to already existing dependencies
 
-            if not hasattr(self, 'desc'):
-                desc = deb_info["Description"].split("\n")
-                if len(desc) > 2:
-                    desc = desc[0]
-                else:
-                    desc = " ".join(x.strip() for x in desc)
+        if not hasattr(self, 'desc'):
+            desc = deb_info["Description"].split("\n")
+            if len(desc) > 2:
+                desc = desc[0]
+            else:
+                desc = " ".join(x.strip() for x in desc)
 
-                if deb_info["Architecture"] == "i386":
-                    desc += ' (32bit libraries)'
+            if deb_info["Architecture"] == "i386":
+                desc += ' (32bit libraries)'
 
-                self.desc = desc
+            self.desc = desc
 
     def toPKGBUILD(self):
         ret = package_header_tpl.format(
