@@ -991,7 +991,7 @@ package_{NAME} () {{
     pkgdesc={DESC}
 """
 
-package_deb_extract_tpl = """    extract_deb "${{srcdir}}"/amdgpu-pro-${{major}}-${{minor}}/{Filename}
+package_deb_extract_tpl = """    extract_deb "${{srcdir}}"/amdgpu-pro-${{major}}-${{minor}}-ubuntu-18.04/{Filename}
 """
 
 #package_header_i386 = """    move_libdir "${pkgdir}/opt/amdgpu-pro" "usr"
@@ -1061,7 +1061,7 @@ class Package:
             deb_deps = [ depWithAlt_to_singleDep(dep) if dependencyWithAltRE.search(dep) else dep for dep in deb_deps ]
             deb_deps = [ dependencyNameWithVersionRE.match(dep).groups() for dep in deb_deps ]
             deb_deps = [(replace_deps[deb_pkg_name] if deb_pkg_name in replace_deps else deb_pkg_name, version) for deb_pkg_name, version in deb_deps]
-            deb_deps = ["\"" + convertName(fix_32(deb_pkg_name), deb_info, domap) + convertVersionSpecifier(deb_pkg_name, version) + "\"" for deb_pkg_name, version in deb_deps if deb_pkg_name]
+            deb_deps = ["\"" + convertName(lib32_prefix_if_32bit(deb_pkg_name), deb_info, domap) + convertVersionSpecifier(deb_pkg_name, version) + "\"" for deb_pkg_name, version in deb_deps if deb_pkg_name]
             deb_deps = [ dep for dep in deb_deps if not dep.startswith("\"=")]
 
             # remove all dependencies on itself
@@ -1080,9 +1080,11 @@ class Package:
                 desc = " ".join(x.strip() for x in desc)
 
             if deb_info["Architecture"] == "i386":
-                desc += ' (32bit libraries)'
+                desc += ' (32-bit)'
 
             self.desc = desc
+
+        deb_info["Filename"] = deb_info["Filename"].replace("./","")
 
     def toPKGBUILD(self):
         ret = package_header_tpl.format(
@@ -1188,7 +1190,7 @@ def convertVersionSpecifier(name, spec):
     return sign + spec
 
 dep32RE = re.compile(r"(.*):i386")
-def fix_32(dep):
+def lib32_prefix_if_32bit(dep):
     rdep = dep
     match = dep32RE.match(dep)
     if match:
