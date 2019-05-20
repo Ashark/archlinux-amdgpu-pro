@@ -984,6 +984,13 @@ move_libdir() {
         fi
     fi
 }
+# move copyright file to proper place and remove debian changelog
+move_copyright() {
+    rm "${pkgdir}/usr/share/doc/${pkgname//-meta}/changelog.Debian.gz"
+    mkdir -p ${pkgdir}/usr/share/licenses/${pkgname}
+    mv ${pkgdir}/usr/share/doc/${pkgname//-meta}/copyright ${pkgdir}/usr/share/licenses/${pkgname}
+    find ${pkgdir}/usr/share/doc -type d -empty -delete
+}
 """
 
 package_header_tpl = """
@@ -994,17 +1001,19 @@ package_{NAME} () {{
 package_deb_extract_tpl = """    extract_deb "${{srcdir}}"/amdgpu-pro-${{major}}-${{minor}}-ubuntu-18.04/{Filename}
 """
 
-#package_header_i386 = """    move_libdir "${pkgdir}/opt/amdgpu-pro" "usr"
+#package_move_libdir_i386 = """    move_libdir "${pkgdir}/opt/amdgpu-pro" "usr"
 #    move_libdir "${pkgdir}/opt/amdgpu-pro/lib/i386-linux-gnu" "usr/lib32"
-package_header_i386 = """
+package_move_libdir_i386 = """
     move_libdir "${pkgdir}/lib" "usr/lib32"
 """
 
-#package_header_x86_64 = """    move_libdir "${pkgdir}/opt/amdgpu-pro" "usr"
+#package_move_libdir_x86_64 = """    move_libdir "${pkgdir}/opt/amdgpu-pro" "usr"
 #    move_libdir "${pkgdir}/opt/amdgpu-pro/lib/x86_64-linux-gnu"
-package_header_x86_64 = """
+package_move_libdir_x86_64 = """
     move_libdir "${pkgdir}/lib"
 """
+
+package_move_copyright = """    move_copyright"""
 
 package_lib32_cleanup = """
 
@@ -1111,9 +1120,11 @@ class Package:
             ret += tmp_str.replace(str(pkgver_base), "${major}").replace(str(pkgver_build), "${minor}")
 
         if self.arch_pkg_name.startswith('lib32-'):
-            ret += package_header_i386
+            ret += package_move_libdir_i386
         else:
-            ret += package_header_x86_64
+            ret += package_move_libdir_x86_64
+
+        ret += package_move_copyright
 
         if hasattr(self, 'extra_commands'):
             ret += "\n\t# extra_commands:\n\t"
