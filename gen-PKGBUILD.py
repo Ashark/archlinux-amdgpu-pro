@@ -894,7 +894,8 @@ no_lib32_convert = [
 
 ## override the version requirement extracted from deb
 replace_version = {
-    "linux-firmware": "",
+    "linux-firmware": "", # not made by me (Ashark). Is it needed?
+    "libdrm-amdgpu": "= redefined", # doesn't work for some reason, TODO fix that
 }
 
 ## maps debians archs to arch's archs
@@ -1095,6 +1096,12 @@ class Package:
 
             self.desc = desc
 
+        if not hasattr(self, 'version'):
+            ver = deb_info["Version"]
+            ver = ver.replace(pkgver_base, "${major}").replace(pkgver_build, "${minor}").replace("-","_").replace("1:","") + "-${pkgrel}"
+            if ver != "${major}_${minor}-${pkgrel}":
+                self.version = ver
+
         deb_info["Filename"] = deb_info["Filename"].replace("./","")
 
     def toPKGBUILD(self):
@@ -1102,6 +1109,9 @@ class Package:
             NAME=self.arch_pkg_name,
             DESC=quote(self.desc) if hasattr(self, 'desc') else quote("No description for package %s" % self.arch_pkg_name),
         )
+
+        if hasattr(self, 'version'):
+            ret += "    version=%s\n" % self.version
 
         if hasattr(self, 'install'):
             ret += "    install=%s\n" % self.install
@@ -1167,10 +1177,10 @@ def depWithAlt_to_singleDep(depWithAlt):
     if splitted_name_and_ver[0][0] == "libudev1" and splitted_name_and_ver[1][0] == "libudev0":
         return splitted_alts[0] # use libudev1 variant
     if splitted_name_and_ver[0][0] == "libva1-amdgpu" and splitted_name_and_ver[1][0] == "libva2-amdgpu" and splitted_name_and_ver[2][0] == "libva1" and splitted_name_and_ver[3][0] == "libva2":
-        return "TODO!_Do_not_know_what_to_choose" # TODO set correct variant here
+        return "TODO_Do_not_know_what_to_choose" # TODO set correct variant here
     if splitted_name_and_ver[0][0] == "libvdpau1-amdgpu" and splitted_name_and_ver[1][0] == "libvdpau1":
-        return "TODO!_Do_not_know_what_to_choose" # TODO set correct variant here
-    return "Warning!_Do_not_know_which_alt_to_choose!"
+        return "TODO_Do_not_know_what_to_choose" # TODO set correct variant here
+    return "Warning_Do_not_know_which_alt_to_choose"
 
 deb_archs={}
 
@@ -1195,11 +1205,18 @@ def convertVersionSpecifier(name, spec):
     sign, spec = spec.split(" ", 1)
 
     spec = spec.strip()
+    if ":" in spec: # debian epochs means nothing in arch context, so strip them
+        deb_epoch, spec = spec.rsplit(":", 1)
+        # also would be good to omit debian-revision, as it has nothing to do with arch's pkgrel
+        # but anyway we omit > and >= deps, so I did not implemented it yet
     if name in deb_package_names:
         spec = spec.replace(pkgver_base, "${major}").replace(pkgver_build, "${minor}").replace("-","_")
+        if not re.search(r'minor', spec):
+            spec = spec + "_${minor}"
+        spec = spec + "-${pkgrel}"
         return sign + spec
-    if ":" in spec:
-        whatever, spec = spec.rsplit(":", 1)
+    if sign == ">" or sign == ">=": # assume Arch users have latest versions of all packages
+        return ""
     return sign + spec
 
 dep32RE = re.compile(r"(.*):i386")
