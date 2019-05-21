@@ -1130,11 +1130,12 @@ class Package:
         for info in self.deb_source_infos:
             tmp_str=package_deb_extract_tpl.format(**info)
             ret += tmp_str.replace(str(pkgver_base), "${major}").replace(str(pkgver_build), "${minor}")
-
-        if self.arch_pkg_name.startswith('lib32-'):
-            ret += package_move_libdir_i386
-        else:
-            ret += package_move_libdir_x86_64
+		
+        if not self.arch_pkg_name.endswith("-meta"):
+            if self.arch_pkg_name.startswith('lib32-'):
+                ret += package_move_libdir_i386
+            else:
+                ret += package_move_libdir_x86_64
 
         ret += package_move_copyright
 
