@@ -1211,35 +1211,6 @@ def lib32_prefix_if_32bit(dep):
     return rdep
 
 
-def parse_Packages_file(f):
-    global deb_package_names
-    deb_package_list=[]
-
-    for deb_info in deb822.Packages.iter_paragraphs(f):
-        if not deb_info["Package"] in deb_archs:
-            deb_archs[deb_info["Package"]] = set()
-
-        deb_archs[deb_info["Package"]].add(deb_info["Architecture"])
-        deb_package_list.append(deb_info)
-
-    deb_package_names = [info["Package"] + ":i386" if info["Architecture"] == "i386" else info["Package"] for info in deb_package_list]
-
-    f.seek(0)
-
-    for deb_info in deb_package_list:
-        name = deb_info["Package"]
-        arch_pkg = None
-        if deb_info["Architecture"] == "i386":
-            name = deb_info["Package"] + ":i386"
-        if name in packages_map: # to allow temporary commenting out mappings from packages_map while using full Packages file
-            if packages_map[name] in pkgbuild_packages: # to allow temporary commenting out packages from pkgbuild_packages
-                arch_pkg = pkgbuild_packages[ packages_map[name]]
-
-        if arch_pkg:
-            arch_pkg.add_deb_info(deb_info)
-
-    #    print(convertPackage(deb_info, package_names + optional_names))
-
 
 # get list of unique arch packages from package map
 arch_package_names=list(pkgbuild_packages.keys())
@@ -1262,8 +1233,37 @@ print(package_functions)
 
 with lzma.open(source_file, "r") as tar:
     with tarfile.open(fileobj=tar) as tf:
-        with tf.extractfile("amdgpu-pro-%s-%s-ubuntu-18.04/Packages" %(pkgver_base,pkgver_build)) as packages:
-            parse_Packages_file(packages)
+        tf.extract("amdgpu-pro-%s-%s-ubuntu-18.04/Packages" % (pkgver_base, pkgver_build))
+        subprocess.run(["mv", "amdgpu-pro-%s-%s-ubuntu-18.04/Packages" % (pkgver_base, pkgver_build), "Packages-extracted"])
+        subprocess.run(["rmdir", "amdgpu-pro-%s-%s-ubuntu-18.04" % (pkgver_base, pkgver_build)])
+
+f = open("Packages-extracted", "r")
+
+deb_package_list = []
+
+for deb_info in deb822.Packages.iter_paragraphs(f):
+    if not deb_info["Package"] in deb_archs:
+        deb_archs[deb_info["Package"]] = set()
+
+    deb_archs[deb_info["Package"]].add(deb_info["Architecture"])
+    deb_package_list.append(deb_info)
+
+deb_package_names = [info["Package"] + ":i386" if info["Architecture"] == "i386" else info["Package"] for info in
+                     deb_package_list]
+
+f.close()
+
+for deb_info in deb_package_list:
+    name = deb_info["Package"]
+    arch_pkg = None
+    if deb_info["Architecture"] == "i386":
+        name = deb_info["Package"] + ":i386"
+    if name in packages_map:  # to allow temporary commenting out mappings from packages_map while using full Packages file
+        if packages_map[name] in pkgbuild_packages:  # to allow temporary commenting out packages from pkgbuild_packages
+            arch_pkg = pkgbuild_packages[packages_map[name]]
+
+    if arch_pkg:
+        arch_pkg.add_deb_info(deb_info)
 
 for pkg in arch_package_names:
     print(pkgbuild_packages[pkg].toPKGBUILD())
