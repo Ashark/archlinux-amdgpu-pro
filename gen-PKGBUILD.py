@@ -1,4 +1,5 @@
 from debian import deb822
+from debian import debfile
 import re
 import gzip
 import lzma
@@ -905,6 +906,45 @@ architectures_map = {
     "all": "any"
 }
 
+# To see list of uniq licences files and packages that uses them, I used this:
+    # tmpdir=tmpdir; rm -rf "$tmpdir"; mkdir "$tmpdir";
+    # for file in  $(ls *deb);
+    # do
+    #     cd "$tmpdir"
+    #     ar x ../$file data.tar.xz
+    #     files=$(tar -tf data.tar.xz)
+    #     if [[ $files != "" ]]; then
+    #         tar -xvf data.tar.xz ./usr/share/doc;
+    #         rm data.tar.xz;
+    #     fi
+    #     files=""; cd ..
+    # done
+    #
+    # cd tmpdir/usr/share/doc
+    # rm list_tmp
+    # for dir in $(ls -d *); do
+    #     md5sum $dir/copyright >> list_tmp
+    # done
+    # cat list_tmp | sort
+# Then I mapped each copyright hash to its short licence name:
+
+licenses_hashes_map = {
+    "063e0448ac11bde832bec75b88775293": "custom",
+    "1cc2ccbd48178dec3ac4fe3f75deb273": "MIT",
+    "241ed682eeb4973b7b7ac9131624f31f": "custom",
+    "41133d491f0177abc7dcd732e55763d3": "custom",
+    "65863e6b7e72f9b0d6921bfb874872e2": "MIT",
+    "66f2e857194d9a397e5d81fedef2fb99": "X11",
+    "7409e7a90acac9454eac07568798ae6e": "MIT",
+    "757ddbf4ba06bfecb85c5bd02f8e188c": "custom",
+    "75da66945980a43adf1e1856271b9d4a": "custom",
+    "acc80450c1bd42944061a30272f0c132": "MIT",
+    "b1afa13daf74f4073c4813368bc1b1b0": "MIT",
+    "c7b12b6702da38ca028ace54aae3d484": "MIT",
+    "d41d8cd98f00b204e9800998ecf8427e": "empty license?",
+    "e0bd46672d2d82a9d57216a931d0e0bf": "custom:AMD GPU-PRO",
+    "f2b0e0926d102efc9a09f8b9a740209d": "GPL2",
+}
 
 if not debugging:
     subprocess.run(["wget", "--referer", url_ref, "-N", source_url_resolved])
@@ -944,7 +984,7 @@ pkgver=${{major}}_${{minor}}
 pkgrel={pkgrel}
 arch=('x86_64')
 url='https://www.amd.com/en/support/kb/release-notes/rn-rad-lin-19-10-unified'
-license=('custom:AMD')
+license=('custom')
 makedepends=('wget')
 
 DLAGENTS='{dlagents}'
@@ -1104,6 +1144,15 @@ class Package:
 
         deb_info["Filename"] = deb_info["Filename"].replace("./","")
 
+        if not hasattr(self, 'license'):
+            deb = debfile.DebFile("src/amdgpu-pro-19.10-785425-ubuntu-18.04/%s" % deb_info["Filename"])
+            copyright_md5 = deb.md5sums()[b'usr/share/doc/%s/copyright' % (str.encode(deb_info["Package"]))]
+            if copyright_md5 in licenses_hashes_map:
+                self.license = "('%s')" % licenses_hashes_map[copyright_md5]
+            else:
+                self.license = "('NOT_IN_MAP')"
+
+
     def toPKGBUILD(self):
         ret = package_header_tpl.format(
             NAME=self.arch_pkg_name,
@@ -1112,7 +1161,8 @@ class Package:
 
         if hasattr(self, 'version'):
             ret += "    version=%s\n" % self.version
-
+        if hasattr(self, 'license'):
+            ret += "    license=%s\n" % self.license
         if hasattr(self, 'install'):
             ret += "    install=%s\n" % self.install
 
@@ -1250,13 +1300,12 @@ if not debugging:
 
     print(package_functions)
 
+f = ""
 if not debugging:
     with lzma.open(source_file, "r") as tar:
         with tarfile.open(fileobj=tar) as tf:
-            tf.extract("amdgpu-pro-%s-%s-ubuntu-18.04/Packages" % (pkgver_base, pkgver_build))
-            subprocess.run(["mv", "amdgpu-pro-%s-%s-ubuntu-18.04/Packages" % (pkgver_base, pkgver_build), "Packages-extracted"])
-            subprocess.run(["rmdir", "amdgpu-pro-%s-%s-ubuntu-18.04" % (pkgver_base, pkgver_build)])
-        f = open("Packages-extracted", "r")
+            tf.extractall("src")
+    f = open("src/amdgpu-pro-%s-%s-ubuntu-18.04/Packages" % (pkgver_base, pkgver_build), "r")
 else:
     f = open("Packages-debugging", "r")
 
