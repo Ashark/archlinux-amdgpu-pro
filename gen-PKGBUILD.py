@@ -7,6 +7,7 @@ import tarfile
 import subprocess
 import hashlib
 import glob
+from pathlib import Path
 
 pkgver_base = "19.10"
 pkgver_build = "785425"
@@ -169,17 +170,17 @@ def gen_arch_packages():
             #provides  = ['xf86-video-amdgpu'], # in case anything depends on that
             #groups = ['xorg-drivers'],
         #)
-        
+
         # Further is made by me (Ashark)
         # To make a more human readable Packages file I used this:
         # cat Packages | grep -vE "Filename|Size|MD5sum|SHA1|SHA256|Priority|Maintainer|Version: 19.10-785425" >  Packages-short
-        
+
         # To generate this I used:
         # cat list_tmp3 | cut -f4 -d"'" | sort -u > list_tmp4
         # for line in $(cat list_tmp4); do echo -e "        '$line': Package(\n        ),"; done
         # desc attribute could be used to override Description from deb package.
-        
-        # To simplify porting of conffiles I used this:
+
+        # To show packages with their conffiles I used this:
         #for file in $(ls *deb);
         #do
             #tmpdir=tmpdir; rm -rf "$tmpdir"; mkdir "$tmpdir"; cd "$tmpdir"
@@ -193,15 +194,28 @@ def gen_arch_packages():
             #files=""; cd ..
         #done
         #rm -rf tmpdir
-        # Then I manually copied them to Package objects
+        # They are added automatically, but you can override a backup array as shown in the example:
+
+        # 'overriding-example': Package(
+        #     desc = "This overrides original description",
+        #     version = "555",
+        #     license = "lic_name",
+        #     arch = ["x86_64"],
+        #     provides = ["one", "two"],
+        #     conflicts = ["one", "two"],
+        #     optdepends = ["one", "two"],
+        #     install = "random_filename.install",
+        #     backup = [ 'file/one', 'file/two'],
+        #     depends = ["one", "two"],
+        #     extra_commands = [
+        #         "do_one",
+        #         "do_two",
+        #     ],
+        # ),
 
         'amdgpu-core-meta': Package(
         ),
         'amdgpu-dkms': Package(
-            backup = [
-            'etc/modprobe.d/blacklist-radeon.conf',
-            'etc/udev/rules.d/70-amdgpu.rules',
-            ],
         ),
         'amdgpu-doc': Package(
         ),
@@ -224,9 +238,6 @@ def gen_arch_packages():
         'glamor-amdgpu': Package(
         ),
         'gst-omx-amdgpu': Package(
-            backup = [
-            'etc/xdg/gstomx.conf',
-            ],
         ),
         'lib32-amdgpu-lib-meta': Package(
         ),
@@ -273,10 +284,6 @@ def gen_arch_packages():
         'lib32-libgl1-amdgpu-pro-ext': Package(
         ),
         'lib32-libgl1-amdgpu-pro-glx': Package(
-            backup = [
-            'etc/amd/amdrc',
-            'etc/ld.so.conf.d/10-amdgpu-pro-i386.conf',
-            ],
         ),
         'lib32-libglapi1-amdgpu-pro': Package(
         ),
@@ -325,9 +332,6 @@ def gen_arch_packages():
         'lib32-mesa-amdgpu-vdpau-drivers': Package(
         ),
         'lib32-opencl-orca-amdgpu-pro-icd': Package(
-            backup = [
-            'etc/OpenCL/vendors/amdocl-orca32.icd',
-            ],
         ),
         'lib32-vulkan-amdgpu': Package(
         ),
@@ -360,9 +364,6 @@ def gen_arch_packages():
         'libgbm1-amdgpu-pro': Package(
         ),
         'libgbm1-amdgpu-pro-base': Package(
-            backup = [
-            'etc/gbm/gbm.conf',
-            ],
         ),
         'libgbm-amdgpu': Package(
         ),
@@ -373,19 +374,12 @@ def gen_arch_packages():
         'libgl1-amdgpu-mesa-glx': Package(
         ),
         'libgl1-amdgpu-pro-appprofiles': Package(
-            backup = [
-            'etc/amd/amdapfxx.blb',
-            ],
         ),
         'libgl1-amdgpu-pro-dri': Package(
         ),
         'libgl1-amdgpu-pro-ext': Package(
         ),
         'libgl1-amdgpu-pro-glx': Package(
-            backup = [
-            'etc/amd/amdrc',
-            'etc/ld.so.conf.d/10-amdgpu-pro-x86_64.conf',
-            ],
         ),
         'libglapi1-amdgpu-pro': Package(
         ),
@@ -440,16 +434,10 @@ def gen_arch_packages():
         'opencl-amdgpu-pro': Package(
         ),
         'opencl-amdgpu-pro-icd': Package(
-            backup = [
-            'etc/OpenCL/vendors/amdocl64.icd',
-            ],
         ),
         'opencl-amdgpu-pro-meta': Package(
         ),
         'opencl-orca-amdgpu-pro-icd': Package(
-            backup = [
-            'etc/OpenCL/vendors/amdocl-orca64.icd',
-            ],
         ),
         'roct-amdgpu-pro': Package(
         ),
@@ -1046,27 +1034,24 @@ package_deb_extract_tpl = """    extract_deb "${{srcdir}}"/amdgpu-pro-${{major}}
 
 #package_move_libdir_i386 = """    move_libdir "${pkgdir}/opt/amdgpu-pro" "usr"
 #    move_libdir "${pkgdir}/opt/amdgpu-pro/lib/i386-linux-gnu" "usr/lib32"
-package_move_libdir_i386 = """
-    move_libdir "${pkgdir}/lib" "usr/lib32"
+package_move_libdir_i386 = """    move_libdir "${pkgdir}/lib" "usr/lib32"
 """
 
 #package_move_libdir_x86_64 = """    move_libdir "${pkgdir}/opt/amdgpu-pro" "usr"
 #    move_libdir "${pkgdir}/opt/amdgpu-pro/lib/x86_64-linux-gnu"
-package_move_libdir_x86_64 = """
-    move_libdir "${pkgdir}/lib"
+package_move_libdir_x86_64 = """    move_libdir "${pkgdir}/lib"
 """
 
-package_move_copyright = """    move_copyright"""
+package_move_copyright = """    move_copyright
+"""
 
 package_lib32_cleanup = """
-
     # lib32 cleanup
     rm -rf "${pkgdir}"/usr/{bin,lib,include,share} "${pkgdir}/var" "${pkgdir}"/opt/amdgpu-pro/{bin,include,share}
     rm -rf "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/
 """
 
-package_footer = """
-}
+package_footer = """}
 """
 
 default_arch = ['x86_64']
@@ -1143,14 +1128,23 @@ class Package:
                 self.version = ver
 
         deb_info["Filename"] = deb_info["Filename"].replace("./","")
+        deb_file = debfile.DebFile("src/amdgpu-pro-19.10-785425-ubuntu-18.04/%s" % deb_info["Filename"])
 
         if not hasattr(self, 'license'):
-            deb = debfile.DebFile("src/amdgpu-pro-19.10-785425-ubuntu-18.04/%s" % deb_info["Filename"])
-            copyright_md5 = deb.md5sums()[b'usr/share/doc/%s/copyright' % (str.encode(deb_info["Package"]))]
+            copyright_md5 = deb_file.md5sums()[b'usr/share/doc/%s/copyright' % (str.encode(deb_info["Package"]))]
             if copyright_md5 in licenses_hashes_map:
                 self.license = "('%s')" % licenses_hashes_map[copyright_md5]
             else:
                 self.license = "('NOT_IN_MAP')"
+
+        if not hasattr(self,'backup'):
+            if deb_file.control.has_file("conffiles"):
+                self.backup = [ line.decode('utf-8').replace("\n","") for line in deb_file.control.get_file("conffiles") if line.decode('utf-8') ]
+                self.backup = [ re.sub("^/", "", line) for line in self.backup ] # removing leading slash
+
+        if not hasattr(self, 'install'):
+            if Path("%s.install" % self.arch_pkg_name).is_file():
+                self.install = "%s.install" % self.arch_pkg_name
 
 
     def toPKGBUILD(self):
@@ -1172,15 +1166,17 @@ class Package:
                 ret += "    %s=('%s')\n" % (array, "' '".join(getattr(self, array)))
 
         if hasattr(self, 'depends'):
-            ret += "    depends=(%s)\n\n" % " ".join(self.depends)
-        
+            ret += "    depends=(%s)\n" % " ".join(self.depends)
+
         if hasattr(self, 'backup'):
-            ret += "    backup=(%s)\n\n" % " ".join(self.backup)
-            
+            ret += "    backup=(%s)\n" % " ".join(self.backup)
+
+        ret += "\n" # separating variables and functions with empty line
+
         for info in self.deb_source_infos:
             tmp_str=package_deb_extract_tpl.format(**info)
             ret += tmp_str.replace(str(pkgver_base), "${major}").replace(str(pkgver_build), "${minor}")
-		
+
         if not self.arch_pkg_name.endswith("-meta"):
             if self.arch_pkg_name.startswith('lib32-'):
                 ret += package_move_libdir_i386
