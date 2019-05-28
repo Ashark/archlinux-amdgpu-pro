@@ -1287,7 +1287,6 @@ def lib32_prefix_if_32bit(dep):
 
 # get list of unique arch packages from package map
 arch_package_names=list(pkgbuild_packages.keys())
-arch_package_names.sort()
 deb_package_names=[]
 
 if not debugging:
