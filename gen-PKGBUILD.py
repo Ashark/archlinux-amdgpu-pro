@@ -17,7 +17,6 @@ debugging = False
 
 debug_pkgext = True if debugging else False
 
-pkgver = "{0}.{1}".format(pkgver_base, pkgver_build)
 url_ref = "https://www.amd.com/en/support/kb/release-notes/rn-rad-lin-19-10-unified"
 dlagents = "https::/usr/bin/wget --referer {0} -N %u".format(url_ref)
 
@@ -1004,49 +1003,38 @@ extract_deb() {
     tar -C "${pkgdir}" -xf data.tar.xz
 }
 # move ubuntu specific /usr/lib/x86_64-linux-gnu to /usr/lib
-# $1: library dir
-# $2: destination (optional)
+# $1: debian package library dir (goes from opt/amdgpu or opt/amdgpu-pro and from x86_64 or i386)
+# $2: arch package library dir (goes to usr/lib or usr/lib32)
 move_libdir() {
-    local libdir="usr/lib"
-    if [ -n "$2" ]; then
-        libdir="$2"
-    fi
-    if [ -d "$1" ]; then
-        if [ -d "${pkgdir}/${libdir}" ]; then
-            cp -ar -t "${pkgdir}/${libdir}/" "$1"/*
-            rm -rf "$1"
-        else
-            mkdir -p "${pkgdir}/${libdir}"
-            mv -t "${pkgdir}/${libdir}/" "$1"/*
-            rmdir "$1"
+    local deb_libdir="$1"
+    local arch_libdir="$2"
+
+    if [ -d "${pkgdir}/${deb_libdir}" ]; then
+        if [ ! -d "${pkgdir}/${arch_libdir}" ]; then
+            mkdir -p "${pkgdir}/${arch_libdir}"
         fi
+        mv -t "${pkgdir}/${arch_libdir}/" "${pkgdir}/${deb_libdir}"/*
+        find ${pkgdir} -type d -empty -delete
     fi
 }
 # move copyright file to proper place and remove debian changelog
 move_copyright() {
-    rm "${pkgdir}/usr/share/doc/${pkgname//-meta}/changelog.Debian.gz"
+    pkgname_deb=${pkgname//-meta}; pkgname_deb=${pkgname_deb/lib32-/};
+    rm "${pkgdir}/usr/share/doc/${pkgname_deb}/changelog.Debian.gz"
     mkdir -p ${pkgdir}/usr/share/licenses/${pkgname}
-    mv ${pkgdir}/usr/share/doc/${pkgname//-meta}/copyright ${pkgdir}/usr/share/licenses/${pkgname}
+    mv ${pkgdir}/usr/share/doc/${pkgname_deb}/copyright ${pkgdir}/usr/share/licenses/${pkgname}
     find ${pkgdir}/usr/share/doc -type d -empty -delete
 }
 """
 
-package_header_tpl = """
-package_{NAME} () {{
+package_header_tpl = """package_{NAME} () {{
     pkgdesc={DESC}
 """
 
 package_deb_extract_tpl = """    extract_deb "${{srcdir}}"/amdgpu-pro-${{major}}-${{minor}}-ubuntu-18.04/{Filename}
 """
 
-#package_move_libdir_i386 = """    move_libdir "${pkgdir}/opt/amdgpu-pro" "usr"
-#    move_libdir "${pkgdir}/opt/amdgpu-pro/lib/i386-linux-gnu" "usr/lib32"
-package_move_libdir_i386 = """    move_libdir "${pkgdir}/lib" "usr/lib32"
-"""
-
-#package_move_libdir_x86_64 = """    move_libdir "${pkgdir}/opt/amdgpu-pro" "usr"
-#    move_libdir "${pkgdir}/opt/amdgpu-pro/lib/x86_64-linux-gnu"
-package_move_libdir_x86_64 = """    move_libdir "${pkgdir}/lib"
+package_move_libdir_tpl = """    move_libdir "opt/amdgpu{PRO}/lib/{DEBDIR}-linux-gnu" "usr/lib{ARCHDIR}"
 """
 
 package_move_copyright = """    move_copyright
@@ -1185,10 +1173,22 @@ class Package:
             ret += tmp_str.replace(str(pkgver_base), "${major}").replace(str(pkgver_build), "${minor}")
 
         if not self.arch_pkg_name.endswith("-meta"):
+            PRO=""
+            DEBDIR=""
+            ARCHDIR=""
+            if "amdgpu-pro" in self.arch_pkg_name:
+                PRO="-pro"
             if self.arch_pkg_name.startswith('lib32-'):
-                ret += package_move_libdir_i386
+                DEBDIR="i386"
+                ARCHDIR="32"
             else:
-                ret += package_move_libdir_x86_64
+                DEBDIR="x86_64"
+                ARCHDIR=""
+            ret += package_move_libdir_tpl.format(
+                PRO=PRO,
+                DEBDIR=DEBDIR,
+                ARCHDIR=ARCHDIR,
+            )
 
         ret += package_move_copyright
 
@@ -1291,7 +1291,7 @@ deb_package_names=[]
 
 if not debugging:
     print(header_tpl.format(
-        package_names="(" + " ".join( arch_package_names ) + ")",
+        package_names="(\n" + "\n".join( arch_package_names ) + "\n)",
         pkgrel=pkgrel,
         dlagents=dlagents,
         pkgver_base=pkgver_base,
