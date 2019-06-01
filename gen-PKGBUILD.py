@@ -15,7 +15,7 @@ pkgrel = 1
 
 debugging = False
 
-debug_pkgext = True if debugging else False
+debug_pkgext = True #if debugging else False
 
 url_ref = "https://www.amd.com/en/support/kb/release-notes/rn-rad-lin-19-10-unified"
 dlagents = "https::/usr/bin/wget --referer {0} -N %u".format(url_ref)
@@ -276,8 +276,15 @@ def gen_arch_packages():
         'lib32-libdrm-amdgpu-utils': Package(
         ),
         'libdrm2-amdgpu': Package(
+            extra_commands = [
+                "mv ${pkgdir}/lib/* ${pkgdir}/usr/lib",
+                "rmdir ${pkgdir}/lib\n"
+            ],
         ),
         'lib32-libdrm2-amdgpu': Package(
+            extra_commands = [
+                "mv ${pkgdir}/lib ${pkgdir}/usr\n"
+            ],
         ),
         'libegl1-amdgpu-mesa': Package(
         ),
@@ -889,7 +896,6 @@ no_lib32_convert = [
 
 ## override the version requirement extracted from deb
 replace_version = {
-    "linux-firmware": "", # not made by me (Ashark). Is it needed?
     "libdrm-amdgpu": "= redefined", # doesn't work for some reason, TODO fix that
 }
 
@@ -938,6 +944,19 @@ licenses_hashes_map = {
     "d41d8cd98f00b204e9800998ecf8427e": "empty license?",
     "e0bd46672d2d82a9d57216a931d0e0bf": "custom:AMD GPU-PRO",
     "f2b0e0926d102efc9a09f8b9a740209d": "GPL2",
+}
+
+# To see list of suggested and recommended packages:
+# cat Packages-extracted | egrep "Suggest|Recommends" | sort -u
+optdepends_descriptions = {
+    "libegl1-amdgpu-mesa-drivers":   "TODO_some_description",
+    "libgl1-amdgpu-mesa-dri":        "TODO_some_description",
+    "libgl1-amdgpu-pro-dri":         "TODO_some_description",
+    #"libtxc-dxtn-s2tc0 | libtxc-dxtn0": "TODO_some_description", # which variant?
+    "llvm-amdgpu-7.1-dev":           "TODO_some_description",
+    "libglide3":                     "TODO_some_description",
+    "linux-firmware":                "TODO_some_description",
+    "llvm-amdgpu-7.1-doc":           "TODO_some_description",
 }
 
 if not debugging:
@@ -1018,12 +1037,19 @@ move_libdir() {
     fi
 }
 # move copyright file to proper place and remove debian changelog
-move_copyright() {
+# move_copyright() {
+#     pkgname_deb=${pkgname//-meta}; pkgname_deb=${pkgname_deb/lib32-/};
+#     rm "${pkgdir}/usr/share/doc/${pkgname_deb}/changelog.Debian.gz"
+#     mkdir -p ${pkgdir}/usr/share/licenses/${pkgname}
+#     mv ${pkgdir}/usr/share/doc/${pkgname_deb}/copyright ${pkgdir}/usr/share/licenses/${pkgname}
+#     find ${pkgdir}/usr/share/doc -type d -empty -delete
+# }
+# remove copyright file and remove debian changelog - only while debugging, not for release
+remove_copyright() {
     pkgname_deb=${pkgname//-meta}; pkgname_deb=${pkgname_deb/lib32-/};
     rm "${pkgdir}/usr/share/doc/${pkgname_deb}/changelog.Debian.gz"
-    mkdir -p ${pkgdir}/usr/share/licenses/${pkgname}
-    mv ${pkgdir}/usr/share/doc/${pkgname_deb}/copyright ${pkgdir}/usr/share/licenses/${pkgname}
-    find ${pkgdir}/usr/share/doc -type d -empty -delete
+    rm "${pkgdir}/usr/share/doc/${pkgname_deb}/copyright" # only while debugging, not for release
+    find ${pkgdir}/usr -type d -empty -delete
 }
 """
 
@@ -1037,7 +1063,7 @@ package_deb_extract_tpl = """    extract_deb "${{srcdir}}"/amdgpu-pro-${{major}}
 package_move_libdir_tpl = """    move_libdir "opt/amdgpu{PRO}/lib/{DEBDIR}-linux-gnu" "usr/lib{ARCHDIR}"
 """
 
-package_move_copyright = """    move_copyright
+package_move_copyright = """    remove_copyright
 """
 
 package_lib32_cleanup = """
@@ -1063,6 +1089,8 @@ class Package:
         if not hasattr(self, "arch"):
             self.arch = default_arch
         self.deb_source_infos = []
+
+        self.optdepends = []
 
     def fill_arch_info(self, deb_info):
         self.deb_source_infos.append(deb_info)
@@ -1104,6 +1132,30 @@ class Package:
 
             self.depends = list(sorted(set( deb_deps ))) # remove duplicates and append to already existing dependencies
 
+        try:
+            deb_suggs = deb_info["Suggests"].split(', ')
+        except:
+            deb_suggs = None
+
+        try:
+            deb_recomms = deb_info["Recommends"].split(', ')
+        except:
+            deb_recomms = None
+
+        deb_optdeps = []
+        if deb_suggs:
+            deb_optdeps = deb_suggs
+        if deb_recomms:
+            deb_optdeps = deb_optdeps + deb_recomms
+
+        deb_optdeps = [depWithAlt_to_singleDep(dep) if dependencyWithAltRE.search(dep) else dep for dep in deb_optdeps]
+        deb_optdeps = [dependencyNameWithVersionRE.match(dep).groups() for dep in deb_optdeps]
+        deb_optdeps = [(replace_deps[deb_pkg_name] if deb_pkg_name in replace_deps else deb_pkg_name, version) for deb_pkg_name, version in deb_optdeps]
+        deb_optdeps = ["\"" + convertName(lib32_prefix_if_32bit(deb_pkg_name), deb_info, domap) + convertVersionSpecifier(deb_pkg_name, version) + ": "
+                       + (optdepends_descriptions[deb_pkg_name] if deb_pkg_name in optdepends_descriptions else "Warning unspecified optdep description" )
+                       + "\"" for deb_pkg_name, version in deb_optdeps if deb_pkg_name]
+        self.optdepends = self.optdepends + list(sorted(set(deb_optdeps)))
+
         if not hasattr(self, 'desc'):
             desc = deb_info["Description"].split("\n")
             if len(desc) > 2:
@@ -1118,9 +1170,9 @@ class Package:
 
         if not hasattr(self, 'version'):
             ver = deb_info["Version"]
-            ver = ver.replace(pkgver_base, "${major}").replace(pkgver_build, "${minor}").replace("-","_").replace("1:","") + "-${pkgrel}"
-            if ver != "${major}_${minor}-${pkgrel}":
-                self.version = ver
+            ver = ver.replace(pkgver_base, "${major}").replace(pkgver_build, "${minor}").replace("-","_").replace("1:","")
+            #if ver != "${major}_${minor}":
+            self.version = ver
 
         deb_info["Filename"] = deb_info["Filename"].replace("./","")
         deb_file = debfile.DebFile("src/amdgpu-pro-19.10-785425-ubuntu-18.04/%s" % deb_info["Filename"])
@@ -1149,20 +1201,21 @@ class Package:
         )
 
         if hasattr(self, 'version'):
-            ret += "    version=%s\n" % self.version
+            ret += "    pkgver=%s\n" % self.version
         if hasattr(self, 'license'):
             ret += "    license=%s\n" % self.license
         if hasattr(self, 'install'):
             ret += "    install=%s\n" % self.install
 
         # add any given list/array with one of those names to the pkgbuild
-        for array in ('arch', 'provides', 'conflicts', 'replaces', 'groups', 'optdepends'):
+        for array in ('arch', 'provides', 'conflicts', 'replaces', 'groups'):
             if(hasattr(self, array)):
                 ret += "    %s=('%s')\n" % (array, "' '".join(getattr(self, array)))
 
         if hasattr(self, 'depends'):
             ret += "    depends=(%s)\n" % " ".join(self.depends)
-
+        if self.optdepends:
+            ret += "    optdepends=(%s)\n" % "\n                ".join(self.optdepends)
         if hasattr(self, 'backup'):
             ret += "    backup=(%s)\n" % " ".join(self.backup)
 
@@ -1193,8 +1246,8 @@ class Package:
         ret += package_move_copyright
 
         if hasattr(self, 'extra_commands'):
-            ret += "\n\t# extra_commands:\n\t"
-            ret += "\n\t".join( self.extra_commands )
+            ret += "\n    # extra_commands:\n    "
+            ret += "\n    ".join( self.extra_commands )
 
         if self.arch_pkg_name.startswith('lib32-'):
             ret += package_lib32_cleanup
@@ -1214,7 +1267,7 @@ dependencyWithAltRE = re.compile(r" \| ")
 def depWithAlt_to_singleDep(depWithAlt):
     # I (Ashark) used this to get a list of dependencies with alternatives:
     # cat Packages | grep -vE "Filename|Size|MD5sum|SHA1|SHA256|Priority|Maintainer|Version: 19.10-785425|Description|^ +" >  Packages-short-nodesc
-    # cat Packages-short-nodesc | grep Depends | grep "|" | sed "s/Depends: //" | sed "s/, /\n/g" | grep "|" | sort -u
+    # cat Packages-short-nodesc | grep Depends | grep "|" | sed "s/Depends: //" | sed "s/, /\n/g" | grep "|" | sort -u # also see Recommends and Suggests
     # And I got this list:
         # amdgpu (= 19.10-785425) | amdgpu-hwe (= 19.10-785425) # choose latest (i.e. hwe)
         # amdgpu-lib (= 19.10-785425) | amdgpu-lib-hwe (= 19.10-785425) # choose latest (i.e. hwe)
@@ -1233,6 +1286,8 @@ def depWithAlt_to_singleDep(depWithAlt):
     if splitted_name_and_ver[0][0] == "libva1-amdgpu" and splitted_name_and_ver[1][0] == "libva2-amdgpu" and splitted_name_and_ver[2][0] == "libva1" and splitted_name_and_ver[3][0] == "libva2":
         return "TODO_Do_not_know_what_to_choose" # TODO set correct variant here
     if splitted_name_and_ver[0][0] == "libvdpau1-amdgpu" and splitted_name_and_ver[1][0] == "libvdpau1":
+        return "TODO_Do_not_know_what_to_choose" # TODO set correct variant here
+    if splitted_name_and_ver[0][0] == "libtxc-dxtn-s2tc0" and splitted_name_and_ver[1][0] == "libtxc-dxtn0": # from libgl1-amdgpu-mesa-dri Recommends array
         return "TODO_Do_not_know_what_to_choose" # TODO set correct variant here
     return "Warning_Do_not_know_which_alt_to_choose"
 
