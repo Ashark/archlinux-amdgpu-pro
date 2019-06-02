@@ -181,7 +181,7 @@ def gen_arch_packages():
                 #if grep -Fxq "$line" already_used.txt; then continue;
                 #else
                     #echo $line >> already_used.txt
-                    #echo -e "        '$line': Package(\n        ),";
+                    #echo -e "        '$line': Package(  ),";
                 #fi
             #done
             #rm already_used.txt
@@ -219,62 +219,34 @@ def gen_arch_packages():
         #     ],
         # ),
 
-        'amdgpu-core-meta': Package(
-        ),
-        'amdgpu-dkms': Package(
-        ),
-        'amdgpu-doc': Package(
-        ),
-        'amdgpu-meta': Package(
-        ),
-        'lib32-amdgpu-meta': Package(
-        ),
-        'amdgpu-lib-meta': Package(
-        ),
-        'lib32-amdgpu-lib-meta': Package(
-        ),
-        'amdgpu-lib32-meta': Package(
-        ),
-        'amdgpu-pro-core-meta': Package(
-        ),
-        'amdgpu-pro-meta': Package(
-        ),
-        'lib32-amdgpu-pro-meta': Package(
-        ),
-        'amdgpu-pro-lib32-meta': Package(
-        ),
-        'amf-amdgpu-pro': Package(
-        ),
-        'clinfo-amdgpu-pro': Package(
-        ),
-        'lib32-clinfo-amdgpu-pro': Package(
-        ),
-        'glamor-amdgpu': Package(
-        ),
-        'lib32-glamor-amdgpu': Package(
-        ),
-        'gst-omx-amdgpu': Package(
-        ),
-        'lib32-gst-omx-amdgpu': Package(
-        ),
-        'libdrm-amdgpu-amdgpu1': Package(
-        ),
-        'lib32-libdrm-amdgpu-amdgpu1': Package(
-        ),
-        'libdrm-amdgpu-common': Package(
-        ),
-        'libdrm-amdgpu': Package(
-        ),
-        'lib32-libdrm-amdgpu': Package(
-        ),
-        'libdrm-amdgpu-radeon1': Package(
-        ),
-        'lib32-libdrm-amdgpu-radeon1': Package(
-        ),
-        'libdrm-amdgpu-utils': Package(
-        ),
-        'lib32-libdrm-amdgpu-utils': Package(
-        ),
+        'amdgpu-core-meta': Package(  ),
+        'amdgpu-dkms': Package(  ),
+        'amdgpu-doc': Package(  ),
+        'amdgpu-meta': Package(  ),
+        'lib32-amdgpu-meta': Package(  ),
+        'amdgpu-lib-meta': Package(  ),
+        'lib32-amdgpu-lib-meta': Package(  ),
+        'amdgpu-lib32-meta': Package(  ),
+        'amdgpu-pro-core-meta': Package(  ),
+        'amdgpu-pro-meta': Package(  ),
+        'lib32-amdgpu-pro-meta': Package(  ),
+        'amdgpu-pro-lib32-meta': Package(  ),
+        'amf-amdgpu-pro': Package(  ),
+        'clinfo-amdgpu-pro': Package(  ),
+        'lib32-clinfo-amdgpu-pro': Package(  ),
+        'glamor-amdgpu': Package(  ),
+        'lib32-glamor-amdgpu': Package(  ),
+        'gst-omx-amdgpu': Package(  ),
+        'lib32-gst-omx-amdgpu': Package(  ),
+        'libdrm-amdgpu-amdgpu1': Package(  ),
+        'lib32-libdrm-amdgpu-amdgpu1': Package(  ),
+        'libdrm-amdgpu-common': Package(  ),
+        'libdrm-amdgpu': Package(  ),
+        'lib32-libdrm-amdgpu': Package(  ),
+        'libdrm-amdgpu-radeon1': Package(  ),
+        'lib32-libdrm-amdgpu-radeon1': Package(  ),
+        'libdrm-amdgpu-utils': Package(  ),
+        'lib32-libdrm-amdgpu-utils': Package(  ),
         'libdrm2-amdgpu': Package(
             extra_commands = [
                 "mv ${pkgdir}/lib/* ${pkgdir}/usr/lib",
@@ -286,184 +258,95 @@ def gen_arch_packages():
                 "mv ${pkgdir}/lib ${pkgdir}/usr\n"
             ],
         ),
-        'libegl1-amdgpu-mesa': Package(
-        ),
-        'lib32-libegl1-amdgpu-mesa': Package(
-        ),
-        'libegl1-amdgpu-mesa-drivers': Package(
-        ),
-        'lib32-libegl1-amdgpu-mesa-drivers': Package(
-        ),
-        'libegl1-amdgpu-pro': Package(
-        ),
-        'lib32-libegl1-amdgpu-pro': Package(
-        ),
-        'libgbm-amdgpu': Package(
-        ),
-        'lib32-libgbm-amdgpu': Package(
-        ),
-        'libgbm1-amdgpu': Package(
-        ),
-        'lib32-libgbm1-amdgpu': Package(
-        ),
-        'libgbm1-amdgpu-pro': Package(
-        ),
-        'lib32-libgbm1-amdgpu-pro': Package(
-        ),
-        'libgbm1-amdgpu-pro-base': Package(
-        ),
-        'libgl1-amdgpu-mesa': Package(
-        ),
-        'lib32-libgl1-amdgpu-mesa': Package(
-        ),
-        'libgl1-amdgpu-mesa-dri': Package(
-        ),
-        'lib32-libgl1-amdgpu-mesa-dri': Package(
-        ),
-        'libgl1-amdgpu-mesa-glx': Package(
-        ),
-        'lib32-libgl1-amdgpu-mesa-glx': Package(
-        ),
-        'libgl1-amdgpu-pro-appprofiles': Package(
-        ),
-        'libgl1-amdgpu-pro-dri': Package(
-        ),
-        'lib32-libgl1-amdgpu-pro-dri': Package(
-        ),
-        'libgl1-amdgpu-pro-ext': Package(
-        ),
-        'lib32-libgl1-amdgpu-pro-ext': Package(
-        ),
-        'libgl1-amdgpu-pro-glx': Package(
-        ),
-        'lib32-libgl1-amdgpu-pro-glx': Package(
-        ),
-        'libglapi-amdgpu-mesa': Package(
-        ),
-        'lib32-libglapi-amdgpu-mesa': Package(
-        ),
-        'libglapi1-amdgpu-pro': Package(
-        ),
-        'lib32-libglapi1-amdgpu-pro': Package(
-        ),
-        'libgles1-amdgpu-mesa': Package(
-        ),
-        'lib32-libgles1-amdgpu-mesa': Package(
-        ),
-        'libgles2-amdgpu-mesa': Package(
-        ),
-        'lib32-libgles2-amdgpu-mesa': Package(
-        ),
-        'libgles2-amdgpu-pro': Package(
-        ),
-        'lib32-libgles2-amdgpu-pro': Package(
-        ),
-        'libllvm7.1-amdgpu': Package(
-        ),
-        'lib32-libllvm7.1-amdgpu': Package(
-        ),
-        'libopencl1-amdgpu-pro': Package(
-        ),
-        'lib32-libopencl1-amdgpu-pro': Package(
-        ),
-        'libosmesa6-amdgpu': Package(
-        ),
-        'lib32-libosmesa6-amdgpu': Package(
-        ),
-        'libwayland-amdgpu-client0': Package(
-        ),
-        'lib32-libwayland-amdgpu-client0': Package(
-        ),
-        'libwayland-amdgpu-cursor0': Package(
-        ),
-        'lib32-libwayland-amdgpu-cursor0': Package(
-        ),
-        'libwayland-amdgpu': Package(
-        ),
-        'lib32-libwayland-amdgpu': Package(
-        ),
-        'libwayland-amdgpu-doc': Package(
-        ),
-        'libwayland-amdgpu-egl1': Package(
-        ),
-        'lib32-libwayland-amdgpu-egl1': Package(
-        ),
-        'libwayland-amdgpu-server0': Package(
-        ),
-        'lib32-libwayland-amdgpu-server0': Package(
-        ),
-        'libxatracker-amdgpu': Package(
-        ),
-        'lib32-libxatracker-amdgpu': Package(
-        ),
-        'libxatracker2-amdgpu': Package(
-        ),
-        'lib32-libxatracker2-amdgpu': Package(
-        ),
-        'llvm-amdgpu': Package(
-        ),
-        'lib32-llvm-amdgpu': Package(
-        ),
-        'llvm-amdgpu-7.1': Package(
-        ),
-        'lib32-llvm-amdgpu-7.1': Package(
-        ),
-        'llvm-amdgpu-7.1-doc': Package(
-        ),
-        'llvm-amdgpu-7.1-runtime': Package(
-        ),
-        'lib32-llvm-amdgpu-7.1-runtime': Package(
-        ),
-        'llvm-amdgpu-runtime': Package(
-        ),
-        'lib32-llvm-amdgpu-runtime': Package(
-        ),
-        'mesa-amdgpu-common': Package(
-        ),
-        'lib32-mesa-amdgpu-common': Package(
-        ),
-        'mesa-amdgpu-omx-drivers': Package(
-        ),
-        'lib32-mesa-amdgpu-omx-drivers': Package(
-        ),
-        'mesa-amdgpu-va-drivers': Package(
-        ),
-        'lib32-mesa-amdgpu-va-drivers': Package(
-        ),
-        'mesa-amdgpu-vdpau-drivers': Package(
-        ),
-        'lib32-mesa-amdgpu-vdpau-drivers': Package(
-        ),
-        'opencl-amdgpu-pro-meta': Package(
-        ),
-        'opencl-amdgpu-pro': Package(
-        ),
-        'opencl-amdgpu-pro-icd': Package(
-        ),
-        'opencl-orca-amdgpu-pro-icd': Package(
-        ),
-        'lib32-opencl-orca-amdgpu-pro-icd': Package(
-        ),
-        'roct-amdgpu-pro': Package(
-        ),
-        'vulkan-amdgpu': Package(
-        ),
-        'lib32-vulkan-amdgpu': Package(
-        ),
-        'vulkan-amdgpu-pro': Package(
-        ),
-        'lib32-vulkan-amdgpu-pro': Package(
-        ),
-        'wayland-protocols-amdgpu': Package(
-        ),
-        'wsa-amdgpu': Package(
-        ),
-        'lib32-wsa-amdgpu': Package(
-        ),
-        'xserver-xorg-amdgpu-video-amdgpu': Package(
-        ),
-        'lib32-xserver-xorg-amdgpu-video-amdgpu': Package(
-        ),
+        'libegl1-amdgpu-mesa': Package(  ),
+        'lib32-libegl1-amdgpu-mesa': Package(  ),
+        'libegl1-amdgpu-mesa-drivers': Package(  ),
+        'lib32-libegl1-amdgpu-mesa-drivers': Package(  ),
+        'libegl1-amdgpu-pro': Package(  ),
+        'lib32-libegl1-amdgpu-pro': Package(  ),
+        'libgbm-amdgpu': Package(  ),
+        'lib32-libgbm-amdgpu': Package(  ),
+        'libgbm1-amdgpu': Package(  ),
+        'lib32-libgbm1-amdgpu': Package(  ),
+        'libgbm1-amdgpu-pro': Package(  ),
+        'lib32-libgbm1-amdgpu-pro': Package(  ),
+        'libgbm1-amdgpu-pro-base': Package(  ),
+        'libgl1-amdgpu-mesa': Package(  ),
+        'lib32-libgl1-amdgpu-mesa': Package(  ),
+        'libgl1-amdgpu-mesa-dri': Package(  ),
+        'lib32-libgl1-amdgpu-mesa-dri': Package(  ),
+        'libgl1-amdgpu-mesa-glx': Package(  ),
+        'lib32-libgl1-amdgpu-mesa-glx': Package(  ),
+        'libgl1-amdgpu-pro-appprofiles': Package(  ),
+        'libgl1-amdgpu-pro-dri': Package(  ),
+        'lib32-libgl1-amdgpu-pro-dri': Package(  ),
+        'libgl1-amdgpu-pro-ext': Package(  ),
+        'lib32-libgl1-amdgpu-pro-ext': Package(  ),
+        'libgl1-amdgpu-pro-glx': Package(  ),
+        'lib32-libgl1-amdgpu-pro-glx': Package(  ),
+        'libglapi-amdgpu-mesa': Package(  ),
+        'lib32-libglapi-amdgpu-mesa': Package(  ),
+        'libglapi1-amdgpu-pro': Package(  ),
+        'lib32-libglapi1-amdgpu-pro': Package(  ),
+        'libgles1-amdgpu-mesa': Package(  ),
+        'lib32-libgles1-amdgpu-mesa': Package(  ),
+        'libgles2-amdgpu-mesa': Package(  ),
+        'lib32-libgles2-amdgpu-mesa': Package(  ),
+        'libgles2-amdgpu-pro': Package(  ),
+        'lib32-libgles2-amdgpu-pro': Package(  ),
+        'libllvm7.1-amdgpu': Package(  ),
+        'lib32-libllvm7.1-amdgpu': Package(  ),
+        'libopencl1-amdgpu-pro': Package(  ),
+        'lib32-libopencl1-amdgpu-pro': Package(  ),
+        'libosmesa6-amdgpu': Package(  ),
+        'lib32-libosmesa6-amdgpu': Package(  ),
+        'libwayland-amdgpu-client0': Package(  ),
+        'lib32-libwayland-amdgpu-client0': Package(  ),
+        'libwayland-amdgpu-cursor0': Package(  ),
+        'lib32-libwayland-amdgpu-cursor0': Package(  ),
+        'libwayland-amdgpu': Package(  ),
+        'lib32-libwayland-amdgpu': Package(  ),
+        'libwayland-amdgpu-doc': Package(  ),
+        'libwayland-amdgpu-egl1': Package(  ),
+        'lib32-libwayland-amdgpu-egl1': Package(  ),
+        'libwayland-amdgpu-server0': Package(  ),
+        'lib32-libwayland-amdgpu-server0': Package(  ),
+        'libxatracker-amdgpu': Package(  ),
+        'lib32-libxatracker-amdgpu': Package(  ),
+        'libxatracker2-amdgpu': Package(  ),
+        'lib32-libxatracker2-amdgpu': Package(  ),
+        'llvm-amdgpu': Package(  ),
+        'lib32-llvm-amdgpu': Package(  ),
+        'llvm-amdgpu-7.1': Package(  ),
+        'lib32-llvm-amdgpu-7.1': Package(  ),
+        'llvm-amdgpu-7.1-doc': Package(  ),
+        'llvm-amdgpu-7.1-runtime': Package(  ),
+        'lib32-llvm-amdgpu-7.1-runtime': Package(  ),
+        'llvm-amdgpu-runtime': Package(  ),
+        'lib32-llvm-amdgpu-runtime': Package(  ),
+        'mesa-amdgpu-common': Package(  ),
+        'lib32-mesa-amdgpu-common': Package(  ),
+        'mesa-amdgpu-omx-drivers': Package(  ),
+        'lib32-mesa-amdgpu-omx-drivers': Package(  ),
+        'mesa-amdgpu-va-drivers': Package(  ),
+        'lib32-mesa-amdgpu-va-drivers': Package(  ),
+        'mesa-amdgpu-vdpau-drivers': Package(  ),
+        'lib32-mesa-amdgpu-vdpau-drivers': Package(  ),
+        'opencl-amdgpu-pro-meta': Package(  ),
+        'opencl-amdgpu-pro': Package(  ),
+        'opencl-amdgpu-pro-icd': Package(  ),
+        'opencl-orca-amdgpu-pro-icd': Package(  ),
+        'lib32-opencl-orca-amdgpu-pro-icd': Package(  ),
+        'roct-amdgpu-pro': Package(  ),
+        'vulkan-amdgpu': Package(  ),
+        'lib32-vulkan-amdgpu': Package(  ),
+        'vulkan-amdgpu-pro': Package(  ),
+        'lib32-vulkan-amdgpu-pro': Package(  ),
+        'wayland-protocols-amdgpu': Package(  ),
+        'wsa-amdgpu': Package(  ),
+        'lib32-wsa-amdgpu': Package(  ),
+        'xserver-xorg-amdgpu-video-amdgpu': Package(  ),
+        'lib32-xserver-xorg-amdgpu-video-amdgpu': Package(  ),
 
         # Not yet checked manually, and not yet checked for preinst/postinst/etc files
     }
