@@ -296,7 +296,10 @@ def gen_arch_packages():
         'lib32-libgles2-amdgpu-pro': Package(  ),
         'libllvm7.1-amdgpu': Package(  ),
         'lib32-libllvm7.1-amdgpu': Package(  ),
-        'libopencl1-amdgpu-pro': Package(  ),
+        'libopencl1-amdgpu-pro': Package(
+            provides=["opencl-icd-loader"],
+            #conflicts=["ocl-icd"], # uncomment when we use standard system libs path
+        ),
         'lib32-libopencl1-amdgpu-pro': Package(  ),
         'libosmesa6-amdgpu': Package(  ),
         'lib32-libosmesa6-amdgpu': Package(  ),
@@ -699,6 +702,7 @@ replace_deps = {
     # Further is made by me (Ashark)
     # To make this list I used:
     #cat Packages | grep Depends | sed 's/Depends: //' | sed 's/, /\n/g' | sort -u | grep -v "amdgpu" > list_tmp # extra deps in debian
+    # Most deps containing amdgpu substring are provided packages. The only lines we will miss are: libva-amdgpu... and libvdpau-amdgpu... (I added them manually to the list).
     #cat list_tmp | cut -f1 -d" " | sort -u > list_tmp2 # removed versions
     #echo > list_tmp3 # clear file
     #for line in $(cat list_tmp2); do
@@ -770,6 +774,11 @@ replace_deps = {
     'xserver-xorg-hwe-18.04':          'xserver-xorg-hwe-18.04',   #could_not_auto_translate
     'zlib1g':                          'zlib',                     #auto_translated
     # Not yet mapped manually
+    # Missed while inverted grepping of amdgpu substring:
+    'libva2':                          'libva',
+    'libvdpau1':                       'libvdpau',
+    # From Recommends array
+    'libtxc-dxtn-s2tc0':               'libtxc_dxtn',
 }
 
 ## do not convert the dependencies listed to lib32 variants
@@ -835,7 +844,7 @@ optdepends_descriptions = {
     "libegl1-amdgpu-mesa-drivers":   "TODO_some_description",
     "libgl1-amdgpu-mesa-dri":        "TODO_some_description",
     "libgl1-amdgpu-pro-dri":         "TODO_some_description",
-    #"libtxc-dxtn-s2tc0 | libtxc-dxtn0": "TODO_some_description", # which variant?
+    "libtxc-dxtn-s2tc0":             "TODO_some_description",
     "llvm-amdgpu-7.1-dev":           "TODO_some_description",
     "libglide3":                     "TODO_some_description",
     "linux-firmware":                "TODO_some_description",
@@ -1120,13 +1129,13 @@ class Package:
             else:
                 DEBDIR="x86_64"
                 ARCHDIR=""
-            ret += package_move_libdir_tpl.format(
-                PRO=PRO,
-                DEBDIR=DEBDIR,
-                ARCHDIR=ARCHDIR,
-            )
+            # ret += package_move_libdir_tpl.format(
+            #     PRO=PRO,
+            #     DEBDIR=DEBDIR,
+            #     ARCHDIR=ARCHDIR,
+            # )
 
-        ret += package_move_copyright
+        # ret += package_move_copyright
 
         if hasattr(self, 'extra_commands'):
             ret += "\n    # extra_commands:\n    "
@@ -1156,8 +1165,8 @@ def depWithAlt_to_singleDep(depWithAlt):
         # amdgpu-lib (= 19.10-785425) | amdgpu-lib-hwe (= 19.10-785425) # choose latest (i.e. hwe)
         # amdgpu-pro (= 19.10-785425) | amdgpu-pro-hwe (= 19.10-785425) # choose latest (i.e. hwe)
         # libudev1 | libudev0 # choose latest (i.e. libudev1)
-        # libva1-amdgpu | libva2-amdgpu | libva1 | libva2 # choose latest (i.e. libva2*) But don't know which variant
-        # libvdpau1-amdgpu | libvdpau1 # do not know which variant
+        # libva1-amdgpu | libva2-amdgpu | libva1 | libva2 # choose latest (i.e. libva2). libva*-amdgpu doesn't exist in repos and not provided in bundle. Probably amd's mistake
+        # libvdpau1-amdgpu | libvdpau1 # choose libvdpau1. libvdpau1-amdgpu doesn't exist in repos and not provided in bundle. Probably amd's mistake
 
     splitted_alts = dependencyWithAltRE.split(depWithAlt)
     splitted_name_and_ver = [dependencyNameWithVersionRE.match(dep).groups() for dep in splitted_alts]
@@ -1167,11 +1176,11 @@ def depWithAlt_to_singleDep(depWithAlt):
     if splitted_name_and_ver[0][0] == "libudev1" and splitted_name_and_ver[1][0] == "libudev0":
         return splitted_alts[0] # use libudev1 variant
     if splitted_name_and_ver[0][0] == "libva1-amdgpu" and splitted_name_and_ver[1][0] == "libva2-amdgpu" and splitted_name_and_ver[2][0] == "libva1" and splitted_name_and_ver[3][0] == "libva2":
-        return "TODO_Do_not_know_what_to_choose" # TODO set correct variant here
+        return splitted_alts[3] # use libva2 variant
     if splitted_name_and_ver[0][0] == "libvdpau1-amdgpu" and splitted_name_and_ver[1][0] == "libvdpau1":
-        return "TODO_Do_not_know_what_to_choose" # TODO set correct variant here
+        return splitted_alts[1] # use libvdpau1
     if splitted_name_and_ver[0][0] == "libtxc-dxtn-s2tc0" and splitted_name_and_ver[1][0] == "libtxc-dxtn0": # from libgl1-amdgpu-mesa-dri Recommends array
-        return "TODO_Do_not_know_what_to_choose" # TODO set correct variant here
+        return splitted_alts[0] # use libtxc-dxtn-s2tc0
     return "Warning_Do_not_know_which_alt_to_choose"
 
 deb_archs={}
