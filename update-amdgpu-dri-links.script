@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# d92079d94c43be3c80dfdc3fc0221a71  libgl1-amdgpu-mesa-dri_18.3.0-785425_amd64.deb/postinst
+# Converted for arch linux (hook script part):
+create_links() {
+    for f in /opt/amdgpu/lib/x86_64-linux-gnu/dri/*_dri.so; do
+        ln -sb $f /usr/lib/dri
+    done
+
+    # Support I+A hybrid graphics
+    if [ -f /usr/lib/dri/i965_dri.so ] ; then # there also was && [ "/usr/lib/dri" != "/opt/amdgpu/lib/x86_64-linux-gnu/dri" ] , but this will always be true due to they compare two strings.
+        ln -s /usr/lib/dri/i965_dri.so /opt/amdgpu/lib/x86_64-linux-gnu/dri
+    fi
+}
+
+remove_links() {
+    rm -f /opt/amdgpu/lib/x86_64-linux-gnu/dri/i965_dri.so
+
+    for f in $(readlink -e /usr/lib/dri/*.so); do
+        if [ "${f%/*}" = "/opt/amdgpu/lib/x86_64-linux-gnu/dri" ]; then # I (Ashark) fixed ${f%%/*} -> ${f%/*}
+            f=${f##*/}
+            rm -f /usr/lib/dri/$f
+            if [ -f /usr/lib/dri/$f~ ]; then
+                mv -f /usr/lib/dri/$f{~,}
+            fi
+        fi
+    done
+}
