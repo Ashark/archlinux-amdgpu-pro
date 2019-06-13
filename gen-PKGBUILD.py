@@ -9,15 +9,15 @@ import hashlib
 import glob
 from pathlib import Path
 
-pkgver_base = "19.10"
-pkgver_build = "785425"
+pkgver_base = "19.20"
+pkgver_build = "812932"
 pkgrel = 1
 
 debugging = False
 
 debug_pkgext = True #if debugging else False
 
-url_ref = "https://www.amd.com/en/support/kb/release-notes/rn-rad-lin-19-10-unified"
+url_ref = "https://www.amd.com/en/support/kb/release-notes/rn-rad-lin-19-20-unified"
 dlagents = "https::/usr/bin/wget --referer {0} -N %u".format(url_ref)
 
 source_url = "https://drivers.amd.com/drivers/linux/amdgpu-pro-${major}-${minor}-ubuntu-18.04.tar.xz"
@@ -172,7 +172,7 @@ def gen_arch_packages():
 
         # Further is made by me (Ashark)
         # To make a more human readable Packages file I used this:
-        # cat Packages | grep -vE "Filename|Size|MD5sum|SHA1|SHA256|Priority|Maintainer|Version: 19.10-785425" >  Packages-short
+        # cat Packages | grep -vE "Filename|Size|MD5sum|SHA1|SHA256|Priority|Maintainer|Version: 19.20" >  Packages-short
 
         ## To generate this I used:
             #cat list_tmp3 | cut -f4 -d"'" > list_tmp4
@@ -922,7 +922,7 @@ pkgname={package_names}
 pkgver=${{major}}_${{minor}}
 pkgrel={pkgrel}
 arch=('x86_64')
-url='https://www.amd.com/en/support/kb/release-notes/rn-rad-lin-19-10-unified'
+url={url}
 license=('custom')
 groups=('Radeon_Software_for_Linux')
 makedepends=('wget')
@@ -1102,7 +1102,7 @@ class Package:
             self.version = ver
 
         deb_info["Filename"] = deb_info["Filename"].replace("./","")
-        deb_file = debfile.DebFile("src/amdgpu-pro-19.10-785425-ubuntu-18.04/%s" % deb_info["Filename"])
+        deb_file = debfile.DebFile("src/amdgpu-pro-%s-%s-ubuntu-18.04/%s" % (pkgver_base, pkgver_build, deb_info["Filename"]))
 
         if not hasattr(self, 'license'):
             copyright_md5 = deb_file.md5sums()[b'usr/share/doc/%s/copyright' % (str.encode(deb_info["Package"]))]
@@ -1276,6 +1276,7 @@ if not debugging:
     print(header_tpl.format(
         package_names="(\n" + "\n".join( arch_package_names ) + "\n)",
         pkgrel=pkgrel,
+        url=url_ref,
         dlagents=dlagents,
         pkgver_base=pkgver_base,
         pkgver_build=pkgver_build,
