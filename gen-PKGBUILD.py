@@ -731,23 +731,25 @@ replace_deps = {
     #"libjs-jquery":       None,
     #"libjs-underscorea":  None,
     
-    # Further is made by me (Ashark)
-    # To make this list I used:
-    #cat Packages | grep Depends | sed 's/Depends: //' | sed 's/, /\n/g' | sort -u | grep -v "amdgpu" > list_tmp # extra deps in debian
-    # Most deps containing amdgpu substring are provided packages. The only lines we will miss are: libva-amdgpu... and libvdpau-amdgpu... (I added them manually to the list).
-    #cat list_tmp | cut -f1 -d" " | sort -u > list_tmp2 # removed versions
-    #echo > list_tmp3 # clear file
-    #for line in $(cat list_tmp2); do
-    #echo now processing $line;
-    #arch_dep=`bash ./translate_deb_to_arch_dependency.sh $line`; # https://github.com/helixarch/debtap/issues/41#issuecomment-489166020
-    #if [[ $arch_dep == "could_not_translate" ]]; then arch_str="'$line', #could_not_auto_translate";
-    #elif [[ $arch_dep == "" ]]; then arch_str="None, #auto_translated";
-    #else arch_str="'$arch_dep', #auto_translated"
-    #fi
-    #str="'$line': "; str="$str $arch_str"; echo $str >> list_tmp3;
-    #done
-    #cat list_tmp3 | column -t | sed 's/^'\''/    '\''/' > list_tmp4 # prepare columns
-    # Then we need to carefully check deps mapping manually.
+    # # Further is made by me (Ashark)
+    # # To make this list I used:
+    # cat Packages | egrep "Depends|Suggests|Recommends" | sed 's/Depends: //' | sed 's/Suggests: //' | sed 's/Recommends: //'| sed 's/, /\n/g' | sort -u | grep -v "amdgpu" > tmp_extra_deps_in_debian.txt
+    # # Most deps containing amdgpu substring are provided packages. The only lines we will miss are: libva-amdgpu... and libvdpau-amdgpu... (I added them manually to the list).
+    # # The only lines with alternatives are: libtxc-dxtn-s2tc0 | libtxc-dxtn0 and libudev1 | libudev0. Left choises are ok here, so we do not parse for pipes.
+    # cat tmp_extra_deps_in_debian.txt | cut -f1 -d" " | sort -u > tmp_removed_versions.txt # removed versions
+    # echo > tmp_translated_deps.txt # clear file
+    # for line in $(cat tmp_removed_versions.txt); do
+    #     echo now processing $line;
+    #     arch_dep=`bash ./translate_deb_to_arch_dependency.sh $line`; # https://github.com/helixarch/debtap/issues/41#issuecomment-489166020
+    #     if [[ $arch_dep == "could_not_translate" ]]; then arch_str="'$line', #could_not_auto_translate";
+    #     elif [[ $arch_dep == "" ]]; then arch_str="None, #auto_translated";
+    #     else arch_str="'$arch_dep', #auto_translated"
+    #     fi
+    #     str="'$line': "; str="$str $arch_str"; echo $str >> tmp_translated_deps.txt;
+    # done
+    # cat tmp_translated_deps.txt | column -t | sed 's/^'\''/    '\''/' > tmp_prepared_columns.txt
+    # # Then we need to carefully check deps mapping manually.
+
     'binfmt-support':                  'opera',                    #auto_translated
     'dkms':                            'dkms',                     #auto_translated
     'libc6':                           'aarch64-linux-gnu-glibc',  #auto_translated
@@ -760,6 +762,7 @@ replace_deps = {
     'libffi-dev':                      'libffi',                   #auto_translated
     'libgcc1':                         None,                       #auto_translated
     'libglib2.0-0':                    'glib2',                    #auto_translated
+    'libglide3':                       'glide',                    #auto_translated
     'libgstreamer1.0-0':               'gstreamer',                #auto_translated
     'libgstreamer-plugins-base1.0-0':  'gst-plugins-base-libs',    #auto_translated
     'libjs-jquery':                    'libjs-jquery',             #could_not_auto_translate
@@ -772,6 +775,7 @@ replace_deps = {
     'libstdc++6':                      'aarch64-linux-gnu-gcc',    #auto_translated
     'libtinfo5':                       'libtinfo5',                #could_not_auto_translate
     'libtinfo-dev':                    'libtinfo-dev',             #could_not_auto_translate
+    'libtxc-dxtn-s2tc0':               'libtxc_dxtn',              # mapped manually
     'libudev1':                        'systemd-libs',             #auto_translated
     'libudev-dev':                     'systemd-libs',             #auto_translated
     'libx11-6':                        'libx11',                   #auto_translated
@@ -801,6 +805,7 @@ replace_deps = {
     'libxshmfence-dev':                'libxshmfence',             #auto_translated
     'libxxf86vm1':                     'libxxf86vm',               #auto_translated
     'libxxf86vm-dev':                  'libxxf86vm',               #auto_translated
+    'linux-firmware':                  None,                       #auto_translated
     'x11proto-dri2-dev':               'x11proto-dri2-dev',        #could_not_auto_translate
     'x11proto-gl-dev':                 'x11proto-gl-dev',          #could_not_auto_translate
     'xserver-xorg-hwe-18.04':          'xserver-xorg-hwe-18.04',   #could_not_auto_translate
@@ -809,8 +814,6 @@ replace_deps = {
     # Missed while inverted grepping of amdgpu substring:
     'libva2':                          'libva',
     'libvdpau1':                       'libvdpau',
-    # From Recommends array
-    'libtxc-dxtn-s2tc0':               'libtxc_dxtn',
 }
 
 ## do not convert the dependencies listed to lib32 variants
@@ -1221,29 +1224,31 @@ dependencyWithAltRE = re.compile(r" \| ")
 
 def depWithAlt_to_singleDep(depWithAlt):
     # I (Ashark) used this to get a list of dependencies with alternatives:
-    # cat Packages | grep -vE "Filename|Size|MD5sum|SHA1|SHA256|Priority|Maintainer|Version: 19.10-785425|Description|^ +" >  Packages-short-nodesc
-    # cat Packages-short-nodesc | grep Depends | grep "|" | sed "s/Depends: //" | sed "s/, /\n/g" | grep "|" | sort -u # also see Recommends and Suggests
+    # cat Packages | grep -vE "Filename|Size|MD5sum|SHA1|SHA256|Priority|Maintainer|Version|Description|^ +" >  Packages-short-nodesc
+    # cat Packages-short-nodesc | egrep "Depends|Suggests|Recommends" | grep "|" | sed 's/Depends: //' | sed 's/Suggests: //' | sed 's/Recommends: //' | sed "s/, /\n/g" | grep "|" | sort -u
     # And I got this list:
-        # amdgpu (= 19.10-785425) | amdgpu-hwe (= 19.10-785425) # choose latest (i.e. hwe)
-        # amdgpu-lib (= 19.10-785425) | amdgpu-lib-hwe (= 19.10-785425) # choose latest (i.e. hwe)
-        # amdgpu-pro (= 19.10-785425) | amdgpu-pro-hwe (= 19.10-785425) # choose latest (i.e. hwe)
-        # libudev1 | libudev0 # choose latest (i.e. libudev1)
-        # libva1-amdgpu | libva2-amdgpu | libva1 | libva2 # choose latest (i.e. libva2). libva*-amdgpu doesn't exist in repos and not provided in bundle. Probably amd's mistake
-        # libvdpau1-amdgpu | libvdpau1 # choose libvdpau1. libvdpau1-amdgpu doesn't exist in repos and not provided in bundle. Probably amd's mistake
+        # amdgpu (= 19.20-812932) | amdgpu-hwe (= 19.20-812932)
+        # amdgpu-lib (= 19.20-812932) | amdgpu-lib-hwe (= 19.20-812932)
+        # amdgpu-pro (= 19.20-812932) | amdgpu-pro-hwe (= 19.20-812932)
+        # libtxc-dxtn-s2tc0 | libtxc-dxtn0
+        # libudev1 | libudev0
+        # libva1-amdgpu | libva2-amdgpu | libva1 | libva2
+        # libvdpau1-amdgpu | libvdpau1
 
     splitted_alts = dependencyWithAltRE.split(depWithAlt)
     splitted_name_and_ver = [dependencyNameWithVersionRE.match(dep).groups() for dep in splitted_alts]
 
     if splitted_name_and_ver[0][0] + "-hwe" == splitted_name_and_ver[1][0]:
-        return splitted_alts[1] # use hwe variant
-    if splitted_name_and_ver[0][0] == "libudev1" and splitted_name_and_ver[1][0] == "libudev0":
-        return splitted_alts[0] # use libudev1 variant
-    if splitted_name_and_ver[0][0] == "libva1-amdgpu" and splitted_name_and_ver[1][0] == "libva2-amdgpu" and splitted_name_and_ver[2][0] == "libva1" and splitted_name_and_ver[3][0] == "libva2":
-        return splitted_alts[3] # use libva2 variant
-    if splitted_name_and_ver[0][0] == "libvdpau1-amdgpu" and splitted_name_and_ver[1][0] == "libvdpau1":
-        return splitted_alts[1] # use libvdpau1
+        return splitted_alts[1] # use hwe variant (i.e. latest)
     if splitted_name_and_ver[0][0] == "libtxc-dxtn-s2tc0" and splitted_name_and_ver[1][0] == "libtxc-dxtn0": # from libgl1-amdgpu-mesa-dri Recommends array
-        return splitted_alts[0] # use libtxc-dxtn-s2tc0
+        return splitted_alts[0] # use libtxc-dxtn-s2tc0. libtxc-dxtn0 is a virtual package, which is provided by libtxc-dxtn-s2tc0
+    if splitted_name_and_ver[0][0] == "libudev1" and splitted_name_and_ver[1][0] == "libudev0":
+        return splitted_alts[0] # use libudev1 (i.e. latest)
+    if splitted_name_and_ver[0][0] == "libva1-amdgpu" and splitted_name_and_ver[1][0] == "libva2-amdgpu" and splitted_name_and_ver[2][0] == "libva1" and splitted_name_and_ver[3][0] == "libva2":
+        return splitted_alts[3] # use libva2. libva*-amdgpu doesn't exist in repos and not provided in bundle. Probably amd's mistake
+    if splitted_name_and_ver[0][0] == "libvdpau1-amdgpu" and splitted_name_and_ver[1][0] == "libvdpau1":
+        return splitted_alts[1] # use libvdpau1. libvdpau1-amdgpu doesn't exist in repos and not provided in bundle. Probably amd's mistake
+
     return "Warning_Do_not_know_which_alt_to_choose"
 
 deb_archs={}
