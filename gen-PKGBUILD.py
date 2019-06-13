@@ -924,6 +924,7 @@ pkgrel={pkgrel}
 arch=('x86_64')
 url='https://www.amd.com/en/support/kb/release-notes/rn-rad-lin-19-10-unified'
 license=('custom')
+groups=('Radeon_Software_for_Linux')
 makedepends=('wget')
 
 DLAGENTS='{dlagents}'
