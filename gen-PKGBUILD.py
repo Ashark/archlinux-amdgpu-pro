@@ -292,7 +292,12 @@ def gen_arch_packages():
         'libgl1-amdgpu-pro-appprofiles': Package(  ),
         'libgl1-amdgpu-pro-dri': Package(  ),
         'lib32-libgl1-amdgpu-pro-dri': Package(  ),
-        'libgl1-amdgpu-pro-ext': Package(  ),
+        'libgl1-amdgpu-pro-ext': Package(
+            extra_commands = [
+                # This is instead of libgl1-amdgpu-pro-ext-hwe_19.20-812932_amd64.deb/postinst and libgl1-amdgpu-pro-ext-hwe_19.20-812932_amd64.deb/prerm
+                'mv "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx-ext-hwe.so "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx.so',
+            ]
+        ),
         'lib32-libgl1-amdgpu-pro-ext': Package(  ),
         'libgl1-amdgpu-pro-glx': Package(  ),
         'lib32-libgl1-amdgpu-pro-glx': Package(  ),

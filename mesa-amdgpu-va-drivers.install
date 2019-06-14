@@ -1,0 +1,20 @@
+# 903d1cf9f8a969554e901f2bfd91cab7  mesa-amdgpu-va-drivers_18.3.0-812932_amd64.deb/postinst
+# Converted for arch linux:
+post_install() {
+    for f in /opt/amdgpu/lib/x86_64-linux-gnu/dri/*_drv_video.so; do
+        ln -sb $f /usr/lib/dri
+    done
+}
+
+# f1b401b23a832bdf38fd7c08ac19c8b7  mesa-amdgpu-va-drivers_18.3.0-812932_amd64.deb/prerm
+# Converted for arch linux:
+pre_remove() {
+    for f in /opt/amdgpu/lib/x86_64-linux-gnu/dri/*_drv_video.so; do
+        f=${f##*/}
+        if [ -f /usr/lib/dri/$f~ ]; then
+            mv -f /usr/lib/dri/$f~ /usr/lib/dri/$f
+        else
+            rm -f /usr/lib/dri/$f
+        fi
+    done
+}

@@ -1,0 +1,20 @@
+# 80f11220eb7082272a4468d4fba5cf4f  mesa-amdgpu-va-drivers_18.3.0-812932_i386.deb/postinst
+# Converted for arch linux:
+post_install() {
+    for f in /opt/amdgpu/lib/i386-linux-gnu/dri/*_drv_video.so; do
+        ln -sb $f /usr/lib32/dri
+    done
+}
+
+# ae29d92f96011da12e92203a4899b1a9  mesa-amdgpu-va-drivers_18.3.0-812932_i386.deb/prerm
+# Converted for arch linux:
+pre_remove() {
+    for f in /opt/amdgpu/lib/i386-linux-gnu/dri/*_drv_video.so; do
+        f=${f##*/}
+        if [ -f /usr/lib32/dri/$f~ ]; then
+            mv -f /usr/lib32/dri/$f~ /usr/lib32/dri/$f
+        else
+            rm -f /usr/lib32/dri/$f
+        fi
+    done
+}
