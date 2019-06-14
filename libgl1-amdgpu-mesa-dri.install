@@ -1,11 +1,11 @@
-# d92079d94c43be3c80dfdc3fc0221a71  libgl1-amdgpu-mesa-dri_18.3.0-785425_amd64.deb/postinst
+# d92079d94c43be3c80dfdc3fc0221a71  libgl1-amdgpu-mesa-dri_18.3.0-812932_amd64.deb/postinst
 # Converted for arch linux (install script part):
 post_install() {
     source /usr/share/libalpm/scripts/update-amdgpu-dri-links
     create_links
 }
 
-# f81f8fbe57013765c0514e53e83caf37  libgl1-amdgpu-mesa-dri_18.3.0-785425_amd64.deb/prerm
+# f81f8fbe57013765c0514e53e83caf37  libgl1-amdgpu-mesa-dri_18.3.0-812932_amd64.deb/prerm
 # Converted for arch linux:
 pre_remove() {
     rm -f /opt/amdgpu/lib/x86_64-linux-gnu/dri/i965_dri.so

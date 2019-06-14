@@ -1,4 +1,4 @@
-# 995d510d3099f2be343b1d6445a85bdc  amdgpu-pro-core_19.10-785425_all.deb/postinst
+# 995d510d3099f2be343b1d6445a85bdc  amdgpu-pro-core_19.20-812932_all.deb/postinst
 # Converted for arch linux:
 post_install() {
     prefix=/opt/amdgpu-pro
@@ -8,7 +8,7 @@ post_install() {
     echo "$prefix/lib/i386-linux-gnu" >>$conf
 }
 
-# 41e43dfaf280600942eab53da384100d  amdgpu-pro-core_19.10-785425_all.deb/prerm
+# 41e43dfaf280600942eab53da384100d  amdgpu-pro-core_19.20-812932_all.deb/prerm
 # Converted for arch linux:
 pre_remove() {
     rm -f /etc/ld.so.conf.d/10-amdgpu-pro.conf && /sbin/ldconfig
