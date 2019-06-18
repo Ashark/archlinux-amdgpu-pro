@@ -258,7 +258,12 @@ def gen_arch_packages():
                 'mv "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx-ext-hwe.so "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx.so',
             ]
         ),
-        'lib32-libgl1-amdgpu-pro-ext': Package(  ),
+        'lib32-libgl1-amdgpu-pro-ext': Package(
+            extra_commands=[
+                # This is instead of libgl1-amdgpu-pro-ext-hwe_19.20-812932_i386.deb/postinst and libgl1-amdgpu-pro-ext-hwe_19.20-812932_i386.deb/prerm
+                'mv "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx-ext-hwe.so "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx.so',
+            ]
+        ),
         'libgl1-amdgpu-pro-glx': Package(  ),
         'lib32-libgl1-amdgpu-pro-glx': Package(  ),
         'libglapi1-amdgpu-pro': Package(  ),
@@ -305,8 +310,24 @@ def gen_arch_packages():
         'lib32-opencl-orca-amdgpu-pro-icd': Package(  ),
         'roct-amdgpu-pro': Package(  ),
         'roct-amdgpu-pro-dev': Package(  ),
-        'vulkan-amdgpu-pro': Package(  ),
-        'lib32-vulkan-amdgpu-pro': Package(  ),
+        'vulkan-amdgpu-pro': Package(
+            provides=['vulkan-driver'],
+            extra_commands = [
+                # This is instead of vulkan-amdgpu-pro_19.20-812932_amd64.deb/postinst and vulkan-amdgpu-pro_19.20-812932_amd64.deb/prerm
+                'mkdir -p "${pkgdir}"/usr/share/vulkan/icd.d/',
+                'mv "${pkgdir}"/opt/amdgpu-pro/etc/vulkan/icd.d/amd_icd64.json "${pkgdir}"/usr/share/vulkan/icd.d/amd_pro_icd64.json',
+                'rm -rf "${pkgdir}"/opt/amdgpu-pro/etc/'
+            ]
+        ),
+        'lib32-vulkan-amdgpu-pro': Package(
+            provides=['lib32-vulkan-driver'],
+            extra_commands = [
+                # This is instead of vulkan-amdgpu-pro_19.20-812932_i386.deb/postinst and vulkan-amdgpu-pro_19.20-812932_i386.deb/prerm
+                'mkdir -p "${pkgdir}"/usr/share/vulkan/icd.d/',
+                'mv "${pkgdir}"/opt/amdgpu-pro/etc/vulkan/icd.d/amd_icd32.json "${pkgdir}"/usr/share/vulkan/icd.d/amd_pro_icd32.json',
+                'rm -rf "${pkgdir}"/opt/amdgpu-pro/etc/'
+            ]
+        ),
         'wayland-protocols-amdgpu': Package(  ),
         'wsa-amdgpu': Package(  ),
         'lib32-wsa-amdgpu': Package(  ),
