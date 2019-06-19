@@ -215,99 +215,55 @@ def gen_arch_packages():
         'amdgpu-pro-meta': Package(  ),
         'lib32-amdgpu-pro-meta': Package(  ),
         'amdgpu-pro-lib32-meta': Package(  ),
-        # 'amf-amdgpu-pro': Package(  ), # it depends on libgl1-amdgpu-mesa-glx, tmp disable
-        'clinfo-amdgpu-pro': Package(  ),
-        'lib32-clinfo-amdgpu-pro': Package(  ),
-        'glamor-amdgpu': Package(  ),
-        'lib32-glamor-amdgpu': Package(  ),
-        'glamor-amdgpu-dev': Package(  ),
-        'lib32-glamor-amdgpu-dev': Package(  ),
-        'libdrm-amdgpu-amdgpu1': Package(  ),
-        'lib32-libdrm-amdgpu-amdgpu1': Package(  ),
-        'libdrm-amdgpu-common': Package(  ),
-        'libdrm-amdgpu-dev': Package(  ),
-        'lib32-libdrm-amdgpu-dev': Package(  ),
-        'libdrm-amdgpu-radeon1': Package(  ),
-        'lib32-libdrm-amdgpu-radeon1': Package(  ),
-        'libdrm-amdgpu-utils': Package(  ),
-        'lib32-libdrm-amdgpu-utils': Package(  ),
-        'libdrm2-amdgpu': Package(
+        'amf-amdgpu-pro': Package(  ),
+        'libdrm-amdgpu': Package(
+            provides = ['libdrm'],
             extra_commands = [
+                # This applies to libdrm2-amdgpu
                 "mv ${pkgdir}/lib/* ${pkgdir}/usr/lib",
                 "rmdir ${pkgdir}/lib"
             ],
         ),
-        'lib32-libdrm2-amdgpu': Package(
+        'lib32-libdrm-amdgpu': Package(
+            provides=['lib32-libdrm'],
             extra_commands = [
-                "mv ${pkgdir}/lib ${pkgdir}/usr\n"
+                # This applies to libdrm2-amdgpu:i386
+                "mv ${pkgdir}/lib ${pkgdir}/usr"
             ],
         ),
-        'libegl1-amdgpu-pro': Package(  ),
-        'lib32-libegl1-amdgpu-pro': Package(  ),
-        'libgbm1-amdgpu-pro': Package(  ),
-        'lib32-libgbm1-amdgpu-pro': Package(  ),
-        'libgbm1-amdgpu-pro-base': Package(  ),
-        'libgbm1-amdgpu-pro-dev': Package(  ),
-        'lib32-libgbm1-amdgpu-pro-dev': Package(  ),
-        'libgl1-amdgpu-pro-appprofiles': Package(  ),
-        'libgl1-amdgpu-pro-dri': Package(  ),
-        'lib32-libgl1-amdgpu-pro-dri': Package(  ),
-        'libgl1-amdgpu-pro-ext': Package(
+        'amdgpu-pro-libgl': Package(
+            provides  = ['libgl'],
             extra_commands = [
                 # This is instead of libgl1-amdgpu-pro-ext-hwe_19.20-812932_amd64.deb/postinst and libgl1-amdgpu-pro-ext-hwe_19.20-812932_amd64.deb/prerm
                 'mv "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx-ext-hwe.so "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx.so',
             ]
         ),
-        'lib32-libgl1-amdgpu-pro-ext': Package(
+        'lib32-amdgpu-pro-libgl': Package(
+            provides=['lib32-libgl'],
             extra_commands=[
                 # This is instead of libgl1-amdgpu-pro-ext-hwe_19.20-812932_i386.deb/postinst and libgl1-amdgpu-pro-ext-hwe_19.20-812932_i386.deb/prerm
                 'mv "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx-ext-hwe.so "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx.so',
             ]
         ),
-        'libgl1-amdgpu-pro-glx': Package(  ),
-        'lib32-libgl1-amdgpu-pro-glx': Package(  ),
-        'libglapi1-amdgpu-pro': Package(  ),
-        'lib32-libglapi1-amdgpu-pro': Package(  ),
-        'libgles2-amdgpu-pro': Package(  ),
-        'lib32-libgles2-amdgpu-pro': Package(  ),
-        'libopencl1-amdgpu-pro': Package(
-            provides=["opencl-icd-loader"],
-            #conflicts=["ocl-icd"], # uncomment when we use standard system libs path
-        ),
-        'lib32-libopencl1-amdgpu-pro': Package(  ),
         'libwayland-amdgpu-client0': Package(  ),
         'lib32-libwayland-amdgpu-client0': Package(  ),
         'libwayland-amdgpu-cursor0': Package(  ),
         'lib32-libwayland-amdgpu-cursor0': Package(  ),
-        # 'libwayland-amdgpu-dev': Package(  ), # it depends on libwayland-amdgpu-egl1, tmp disable
-        # 'lib32-libwayland-amdgpu-dev': Package(  ), # it depends on libwayland-amdgpu-egl1, tmp disable
-        'libwayland-amdgpu-doc': Package(  ),
         'libwayland-amdgpu-server0': Package(  ),
         'lib32-libwayland-amdgpu-server0': Package(  ),
-        # 'libxatracker-amdgpu-dev': Package(  ), # it depends on libxatracker2-amdgpu, tmp disable
-        # 'lib32-libxatracker-amdgpu-dev': Package(  ), # it depends on libxatracker2-amdgpu, tmp disable
-        'llvm-amdgpu': Package(  ),
-        'lib32-llvm-amdgpu': Package(  ),
-        # 'llvm-amdgpu-7.1': Package(  ), # it depends on libllvm7.1-amdgpu, tmp disable
-        # 'lib32-llvm-amdgpu-7.1': Package(  ), # it depends on libllvm7.1-amdgpu, tmp disable
-        # 'llvm-amdgpu-7.1-dev': Package(  ), # it depends on libllvm7.1-amdgpu and llvm-amdgpu-7.1, tmp disable
-        # 'lib32-llvm-amdgpu-7.1-dev': Package(  ),# it depends on libllvm7.1-amdgpu and llvm-amdgpu-7.1, tmp disable
-        'llvm-amdgpu-7.1-doc': Package(  ),
-        # 'llvm-amdgpu-7.1-runtime': Package(  ), # it depends on libllvm7.1-amdgpu, tmp disable
-        # 'lib32-llvm-amdgpu-7.1-runtime': Package(  ), # it depends on libllvm7.1-amdgpu, tmp disable
-        'llvm-amdgpu-dev': Package(  ),
-        'lib32-llvm-amdgpu-dev': Package(  ),
-        'llvm-amdgpu-runtime': Package(  ),
-        'lib32-llvm-amdgpu-runtime': Package(  ),
-        'mesa-amdgpu-common-dev': Package(  ),
-        'lib32-mesa-amdgpu-common-dev': Package(  ),
-        # 'opencl-amdgpu-pro-meta': Package(  ), # it depends on amdgpu-dkms, tmp disable
+        'opencl-amdgpu-pro-meta': Package(  ),
         'opencl-amdgpu-pro-comgr': Package(  ),
         'opencl-amdgpu-pro-dev': Package(  ),
         'opencl-amdgpu-pro-hip': Package(  ),
-        'opencl-amdgpu-pro-icd': Package(  ),
-        'opencl-orca-amdgpu-pro-icd': Package(  ),
-        'lib32-opencl-orca-amdgpu-pro-icd': Package(  ),
+        'opencl-amdgpu-pro': Package(
+            provides=['opencl-driver']
+        ),
+        'opencl-amdgpu-pro-orca': Package(
+            provides=['opencl-driver']
+        ),
+        'lib32-opencl-amdgpu-pro-orca': Package(
+            provides=['lib32-opencl-driver']
+        ),
         'roct-amdgpu-pro': Package(  ),
         'roct-amdgpu-pro-dev': Package(  ),
         'vulkan-amdgpu-pro': Package(
@@ -328,11 +284,9 @@ def gen_arch_packages():
                 'rm -rf "${pkgdir}"/opt/amdgpu-pro/etc/'
             ]
         ),
-        'wayland-protocols-amdgpu': Package(  ),
         'wsa-amdgpu': Package(  ),
         'lib32-wsa-amdgpu': Package(  ),
 
-        # Not yet checked manually, and not yet checked for preinst/postinst/etc files
     }
     for key in pkgbuild_packages:
         pkgbuild_packages[key].arch_pkg_name = key
@@ -449,7 +403,7 @@ packages_map = {
 
     'amdgpu':                                     None,                                #unneeded_open_component
     'amdgpu:i386':                                None,                                #unneeded_open_component
-    'amdgpu-core':                                'amdgpu-core-meta',                  
+    'amdgpu-core':                                'amdgpu-core-meta',                  #
     'amdgpu-dkms':                                None,                                #unneeded_open_component
     'amdgpu-doc':                                 None,                                #arch_specific_instructions_will_be_covered_in_archwiki
     'amdgpu-hwe':                                 None,                                #unneeded_open_component
@@ -461,67 +415,67 @@ packages_map = {
     'amdgpu-lib32':                               None,                                #unneeded_open_component
     'amdgpu-pro':                                 None,                                #disabled_because_hwe_version_is_available
     'amdgpu-pro:i386':                            None,                                #disabled_because_hwe_version_is_available
-    'amdgpu-pro-core':                            'amdgpu-pro-core-meta',              
-    'amdgpu-pro-hwe':                             'amdgpu-pro-meta',                   
-    'amdgpu-pro-hwe:i386':                        'lib32-amdgpu-pro-meta',             
-    'amdgpu-pro-lib32':                           'amdgpu-pro-lib32-meta',             
+    'amdgpu-pro-core':                            'amdgpu-pro-core-meta',              #
+    'amdgpu-pro-hwe':                             'amdgpu-pro-meta',                   #
+    'amdgpu-pro-hwe:i386':                        'lib32-amdgpu-pro-meta',             #
+    'amdgpu-pro-lib32':                           'amdgpu-pro-lib32-meta',             #
     'amdgpu-pro-pin':                             None,                                #debian_specific_package,_not_needed
-    'amf-amdgpu-pro':                             'amf-amdgpu-pro',                    
-    'clinfo-amdgpu-pro':                          'clinfo-amdgpu-pro',                 
-    'clinfo-amdgpu-pro:i386':                     'lib32-clinfo-amdgpu-pro',           
-    'glamor-amdgpu':                              'glamor-amdgpu',                     
-    'glamor-amdgpu:i386':                         'lib32-glamor-amdgpu',               
-    'glamor-amdgpu-dev':                          'glamor-amdgpu-dev',                 
-    'glamor-amdgpu-dev:i386':                     'lib32-glamor-amdgpu-dev',           
+    'amf-amdgpu-pro':                             'amf-amdgpu-pro',                    #
+    'clinfo-amdgpu-pro':                          None,                                #unneeded_pro_component
+    'clinfo-amdgpu-pro:i386':                     None,                                #unneeded_pro_component
+    'glamor-amdgpu':                              None,                                #unneeded_open_component
+    'glamor-amdgpu:i386':                         None,                                #unneeded_open_component
+    'glamor-amdgpu-dev':                          None,                                #unneeded_open_component
+    'glamor-amdgpu-dev:i386':                     None,                                #unneeded_open_component
     'gst-omx-amdgpu':                             None,                                #unneeded_open_component
     'gst-omx-amdgpu:i386':                        None,                                #unneeded_open_component
-    'libdrm-amdgpu-amdgpu1':                      'libdrm-amdgpu-amdgpu1',             
-    'libdrm-amdgpu-amdgpu1:i386':                 'lib32-libdrm-amdgpu-amdgpu1',       
-    'libdrm-amdgpu-common':                       'libdrm-amdgpu-common',              
-    'libdrm-amdgpu-dev':                          'libdrm-amdgpu-dev',                 
-    'libdrm-amdgpu-dev:i386':                     'lib32-libdrm-amdgpu-dev',           
-    'libdrm-amdgpu-radeon1':                      'libdrm-amdgpu-radeon1',             
-    'libdrm-amdgpu-radeon1:i386':                 'lib32-libdrm-amdgpu-radeon1',       
-    'libdrm-amdgpu-utils':                        'libdrm-amdgpu-utils',               
-    'libdrm-amdgpu-utils:i386':                   'lib32-libdrm-amdgpu-utils',         
-    'libdrm2-amdgpu':                             'libdrm2-amdgpu',                    
-    'libdrm2-amdgpu:i386':                        'lib32-libdrm2-amdgpu',              
+    'libdrm-amdgpu-amdgpu1':                      'libdrm-amdgpu',                     #needed_because_probably_changed_by_amd_and_doesnt_work_with_standard_libdrm
+    'libdrm-amdgpu-amdgpu1:i386':                 'lib32-libdrm-amdgpu',               #needed_because_probably_changed_by_amd_and_doesnt_work_with_standard_libdrm
+    'libdrm-amdgpu-common':                       'libdrm-amdgpu',                     #needed_because_probably_changed_by_amd_and_doesnt_work_with_standard_libdrm
+    'libdrm-amdgpu-dev':                          None,                                #not_installed_even_in_ubuntu
+    'libdrm-amdgpu-dev:i386':                     None,                                #not_installed_even_in_ubuntu
+    'libdrm-amdgpu-radeon1':                      None,                                #not_installed_even_in_ubuntu
+    'libdrm-amdgpu-radeon1:i386':                 None,                                #not_installed_even_in_ubuntu
+    'libdrm-amdgpu-utils':                        None,                                #not_installed_even_in_ubuntu
+    'libdrm-amdgpu-utils:i386':                   None,                                #not_installed_even_in_ubuntu
+    'libdrm2-amdgpu':                             'libdrm-amdgpu',                     #needed_because_probably_changed_by_amd_and_doesnt_work_with_standard_libdrm
+    'libdrm2-amdgpu:i386':                        'lib32-libdrm-amdgpu',               #needed_because_probably_changed_by_amd_and_doesnt_work_with_standard_libdrm
     'libegl1-amdgpu-mesa':                        None,                                #unneeded_open_component
     'libegl1-amdgpu-mesa:i386':                   None,                                #unneeded_open_component
     'libegl1-amdgpu-mesa-dev':                    None,                                #unneeded_open_component
     'libegl1-amdgpu-mesa-dev:i386':               None,                                #unneeded_open_component
     'libegl1-amdgpu-mesa-drivers':                None,                                #unneeded_open_component
     'libegl1-amdgpu-mesa-drivers:i386':           None,                                #unneeded_open_component
-    'libegl1-amdgpu-pro':                         'libegl1-amdgpu-pro',                
-    'libegl1-amdgpu-pro:i386':                    'lib32-libegl1-amdgpu-pro',          
+    'libegl1-amdgpu-pro':                         'amdgpu-pro-libgl',                  #
+    'libegl1-amdgpu-pro:i386':                    'lib32-amdgpu-pro-libgl',            #
     'libgbm-amdgpu-dev':                          None,                                #unneeded_open_component
     'libgbm-amdgpu-dev:i386':                     None,                                #unneeded_open_component
     'libgbm1-amdgpu':                             None,                                #unneeded_open_component
     'libgbm1-amdgpu:i386':                        None,                                #unneeded_open_component
-    'libgbm1-amdgpu-pro':                         'libgbm1-amdgpu-pro',                
-    'libgbm1-amdgpu-pro:i386':                    'lib32-libgbm1-amdgpu-pro',          
-    'libgbm1-amdgpu-pro-base':                    'libgbm1-amdgpu-pro-base',           
-    'libgbm1-amdgpu-pro-dev':                     'libgbm1-amdgpu-pro-dev',            
-    'libgbm1-amdgpu-pro-dev:i386':                'lib32-libgbm1-amdgpu-pro-dev',      
+    'libgbm1-amdgpu-pro':                         'amdgpu-pro-libgl',                  #
+    'libgbm1-amdgpu-pro:i386':                    'lib32-amdgpu-pro-libgl',            #
+    'libgbm1-amdgpu-pro-base':                    'amdgpu-pro-libgl',                  #
+    'libgbm1-amdgpu-pro-dev':                     None,                                #not_installed_even_in_ubuntu
+    'libgbm1-amdgpu-pro-dev:i386':                None,                                #not_installed_even_in_ubuntu
     'libgl1-amdgpu-mesa-dev':                     None,                                #unneeded_open_component
     'libgl1-amdgpu-mesa-dev:i386':                None,                                #unneeded_open_component
     'libgl1-amdgpu-mesa-dri':                     None,                                #unneeded_open_component
     'libgl1-amdgpu-mesa-dri:i386':                None,                                #unneeded_open_component
     'libgl1-amdgpu-mesa-glx':                     None,                                #unneeded_open_component
     'libgl1-amdgpu-mesa-glx:i386':                None,                                #unneeded_open_component
-    'libgl1-amdgpu-pro-appprofiles':              'libgl1-amdgpu-pro-appprofiles',     
-    'libgl1-amdgpu-pro-dri':                      'libgl1-amdgpu-pro-dri',             
-    'libgl1-amdgpu-pro-dri:i386':                 'lib32-libgl1-amdgpu-pro-dri',       
+    'libgl1-amdgpu-pro-appprofiles':              'amdgpu-pro-libgl',                  #
+    'libgl1-amdgpu-pro-dri':                      'amdgpu-pro-libgl',                  #
+    'libgl1-amdgpu-pro-dri:i386':                 'lib32-amdgpu-pro-libgl',            #
     'libgl1-amdgpu-pro-ext':                      None,                                #disabled_because_hwe_version_is_available
     'libgl1-amdgpu-pro-ext:i386':                 None,                                #disabled_because_hwe_version_is_available
-    'libgl1-amdgpu-pro-ext-hwe':                  'libgl1-amdgpu-pro-ext',             
-    'libgl1-amdgpu-pro-ext-hwe:i386':             'lib32-libgl1-amdgpu-pro-ext',       
-    'libgl1-amdgpu-pro-glx':                      'libgl1-amdgpu-pro-glx',             
-    'libgl1-amdgpu-pro-glx:i386':                 'lib32-libgl1-amdgpu-pro-glx',       
+    'libgl1-amdgpu-pro-ext-hwe':                  'amdgpu-pro-libgl',                  #
+    'libgl1-amdgpu-pro-ext-hwe:i386':             'lib32-amdgpu-pro-libgl',            #
+    'libgl1-amdgpu-pro-glx':                      'amdgpu-pro-libgl',                  #
+    'libgl1-amdgpu-pro-glx:i386':                 'lib32-amdgpu-pro-libgl',            #
     'libglapi-amdgpu-mesa':                       None,                                #unneeded_open_component
     'libglapi-amdgpu-mesa:i386':                  None,                                #unneeded_open_component
-    'libglapi1-amdgpu-pro':                       'libglapi1-amdgpu-pro',              
-    'libglapi1-amdgpu-pro:i386':                  'lib32-libglapi1-amdgpu-pro',        
+    'libglapi1-amdgpu-pro':                       'amdgpu-pro-libgl',                  #
+    'libglapi1-amdgpu-pro:i386':                  'lib32-amdgpu-pro-libgl',            #
     'libgles1-amdgpu-mesa':                       None,                                #unneeded_open_component
     'libgles1-amdgpu-mesa:i386':                  None,                                #unneeded_open_component
     'libgles1-amdgpu-mesa-dev':                   None,                                #unneeded_open_component
@@ -530,74 +484,73 @@ packages_map = {
     'libgles2-amdgpu-mesa:i386':                  None,                                #unneeded_open_component
     'libgles2-amdgpu-mesa-dev':                   None,                                #unneeded_open_component
     'libgles2-amdgpu-mesa-dev:i386':              None,                                #unneeded_open_component
-    'libgles2-amdgpu-pro':                        'libgles2-amdgpu-pro',               
-    'libgles2-amdgpu-pro:i386':                   'lib32-libgles2-amdgpu-pro',         
+    'libgles2-amdgpu-pro':                        'amdgpu-pro-libgl',                  #
+    'libgles2-amdgpu-pro:i386':                   'lib32-amdgpu-pro-libgl',            #
     'libllvm7.1-amdgpu':                          None,                                #unneeded_open_component
     'libllvm7.1-amdgpu:i386':                     None,                                #unneeded_open_component
-    'libopencl1-amdgpu-pro':                      'libopencl1-amdgpu-pro',             
-    'libopencl1-amdgpu-pro:i386':                 'lib32-libopencl1-amdgpu-pro',       
+    'libopencl1-amdgpu-pro':                      None,                                #unneeded_pro_component
+    'libopencl1-amdgpu-pro:i386':                 None,                                #unneeded_pro_component
     'libosmesa6-amdgpu':                          None,                                #unneeded_open_component
     'libosmesa6-amdgpu:i386':                     None,                                #unneeded_open_component
     'libosmesa6-amdgpu-dev':                      None,                                #unneeded_open_component
     'libosmesa6-amdgpu-dev:i386':                 None,                                #unneeded_open_component
-    'libwayland-amdgpu-client0':                  'libwayland-amdgpu-client0',         
-    'libwayland-amdgpu-client0:i386':             'lib32-libwayland-amdgpu-client0',   
-    'libwayland-amdgpu-cursor0':                  'libwayland-amdgpu-cursor0',         
-    'libwayland-amdgpu-cursor0:i386':             'lib32-libwayland-amdgpu-cursor0',   
-    'libwayland-amdgpu-dev':                      'libwayland-amdgpu-dev',             
-    'libwayland-amdgpu-dev:i386':                 'lib32-libwayland-amdgpu-dev',       
-    'libwayland-amdgpu-doc':                      'libwayland-amdgpu-doc',             
+    'libwayland-amdgpu-client0':                  'libwayland-amdgpu-client0',         #
+    'libwayland-amdgpu-client0:i386':             'lib32-libwayland-amdgpu-client0',   #
+    'libwayland-amdgpu-cursor0':                  'libwayland-amdgpu-cursor0',         #
+    'libwayland-amdgpu-cursor0:i386':             'lib32-libwayland-amdgpu-cursor0',   #
+    'libwayland-amdgpu-dev':                      None,                                #not_installed_even_in_ubuntu
+    'libwayland-amdgpu-dev:i386':                 None,                                #not_installed_even_in_ubuntu
+    'libwayland-amdgpu-doc':                      None,                                #not_installed_even_in_ubuntu
     'libwayland-amdgpu-egl1':                     None,                                #unneeded_open_component
     'libwayland-amdgpu-egl1:i386':                None,                                #unneeded_open_component
-    'libwayland-amdgpu-server0':                  'libwayland-amdgpu-server0',         
-    'libwayland-amdgpu-server0:i386':             'lib32-libwayland-amdgpu-server0',   
-    'libxatracker-amdgpu-dev':                    'libxatracker-amdgpu-dev',           
-    'libxatracker-amdgpu-dev:i386':               'lib32-libxatracker-amdgpu-dev',     
+    'libwayland-amdgpu-server0':                  'libwayland-amdgpu-server0',         #
+    'libwayland-amdgpu-server0:i386':             'lib32-libwayland-amdgpu-server0',   #
+    'libxatracker-amdgpu-dev':                    None,                                #not_installed_even_in_ubuntu
+    'libxatracker-amdgpu-dev:i386':               None,                                #not_installed_even_in_ubuntu
     'libxatracker2-amdgpu':                       None,                                #unneeded_open_component
     'libxatracker2-amdgpu:i386':                  None,                                #unneeded_open_component
-    'llvm-amdgpu':                                'llvm-amdgpu',                       
-    'llvm-amdgpu:i386':                           'lib32-llvm-amdgpu',                 
-    'llvm-amdgpu-7.1':                            'llvm-amdgpu-7.1',                   
-    'llvm-amdgpu-7.1:i386':                       'lib32-llvm-amdgpu-7.1',             
-    'llvm-amdgpu-7.1-dev':                        'llvm-amdgpu-7.1-dev',               
-    'llvm-amdgpu-7.1-dev:i386':                   'lib32-llvm-amdgpu-7.1-dev',         
-    'llvm-amdgpu-7.1-doc':                        'llvm-amdgpu-7.1-doc',               
-    'llvm-amdgpu-7.1-runtime':                    'llvm-amdgpu-7.1-runtime',           
-    'llvm-amdgpu-7.1-runtime:i386':               'lib32-llvm-amdgpu-7.1-runtime',     
-    'llvm-amdgpu-dev':                            'llvm-amdgpu-dev',                   
-    'llvm-amdgpu-dev:i386':                       'lib32-llvm-amdgpu-dev',             
-    'llvm-amdgpu-runtime':                        'llvm-amdgpu-runtime',               
-    'llvm-amdgpu-runtime:i386':                   'lib32-llvm-amdgpu-runtime',         
-    'mesa-amdgpu-common-dev':                     'mesa-amdgpu-common-dev',            
-    'mesa-amdgpu-common-dev:i386':                'lib32-mesa-amdgpu-common-dev',      
+    'llvm-amdgpu':                                None,                                #not_installed_even_in_ubuntu
+    'llvm-amdgpu:i386':                           None,                                #not_installed_even_in_ubuntu
+    'llvm-amdgpu-7.1':                            None,                                #not_installed_even_in_ubuntu
+    'llvm-amdgpu-7.1:i386':                       None,                                #not_installed_even_in_ubuntu
+    'llvm-amdgpu-7.1-dev':                        None,                                #not_installed_even_in_ubuntu
+    'llvm-amdgpu-7.1-dev:i386':                   None,                                #not_installed_even_in_ubuntu
+    'llvm-amdgpu-7.1-doc':                        None,                                #not_installed_even_in_ubuntu
+    'llvm-amdgpu-7.1-runtime':                    None,                                #not_installed_even_in_ubuntu
+    'llvm-amdgpu-7.1-runtime:i386':               None,                                #not_installed_even_in_ubuntu
+    'llvm-amdgpu-dev':                            None,                                #not_installed_even_in_ubuntu
+    'llvm-amdgpu-dev:i386':                       None,                                #not_installed_even_in_ubuntu
+    'llvm-amdgpu-runtime':                        None,                                #not_installed_even_in_ubuntu
+    'llvm-amdgpu-runtime:i386':                   None,                                #not_installed_even_in_ubuntu
+    'mesa-amdgpu-common-dev':                     None,                                #not_installed_even_in_ubuntu
+    'mesa-amdgpu-common-dev:i386':                None,                                #not_installed_even_in_ubuntu
     'mesa-amdgpu-omx-drivers':                    None,                                #unneeded_open_component
     'mesa-amdgpu-omx-drivers:i386':               None,                                #unneeded_open_component
     'mesa-amdgpu-va-drivers':                     None,                                #unneeded_open_component
     'mesa-amdgpu-va-drivers:i386':                None,                                #unneeded_open_component
     'mesa-amdgpu-vdpau-drivers':                  None,                                #unneeded_open_component
     'mesa-amdgpu-vdpau-drivers:i386':             None,                                #unneeded_open_component
-    'opencl-amdgpu-pro':                          'opencl-amdgpu-pro-meta',            
-    'opencl-amdgpu-pro-comgr':                    'opencl-amdgpu-pro-comgr',           
-    'opencl-amdgpu-pro-dev':                      'opencl-amdgpu-pro-dev',             
-    'opencl-amdgpu-pro-hip':                      'opencl-amdgpu-pro-hip',             
-    'opencl-amdgpu-pro-icd':                      'opencl-amdgpu-pro-icd',             
-    'opencl-orca-amdgpu-pro-icd':                 'opencl-orca-amdgpu-pro-icd',        
-    'opencl-orca-amdgpu-pro-icd:i386':            'lib32-opencl-orca-amdgpu-pro-icd',  
-    'roct-amdgpu-pro':                            'roct-amdgpu-pro',                   
-    'roct-amdgpu-pro-dev':                        'roct-amdgpu-pro-dev',               
+    'opencl-amdgpu-pro':                          'opencl-amdgpu-pro-meta',            #
+    'opencl-amdgpu-pro-comgr':                    'opencl-amdgpu-pro-comgr',           #
+    'opencl-amdgpu-pro-dev':                      'opencl-amdgpu-pro-dev',             #
+    'opencl-amdgpu-pro-hip':                      'opencl-amdgpu-pro-hip',             #
+    'opencl-amdgpu-pro-icd':                      'opencl-amdgpu-pro',             #
+    'opencl-orca-amdgpu-pro-icd':                 'opencl-amdgpu-pro-orca',        #
+    'opencl-orca-amdgpu-pro-icd:i386':            'lib32-opencl-amdgpu-pro-orca',  #
+    'roct-amdgpu-pro':                            'roct-amdgpu-pro',                   #
+    'roct-amdgpu-pro-dev':                        'roct-amdgpu-pro-dev',               #
     'vulkan-amdgpu':                              None,                                #unneeded_open_component
     'vulkan-amdgpu:i386':                         None,                                #unneeded_open_component
-    'vulkan-amdgpu-pro':                          'vulkan-amdgpu-pro',                 
-    'vulkan-amdgpu-pro:i386':                     'lib32-vulkan-amdgpu-pro',           
-    'wayland-protocols-amdgpu':                   'wayland-protocols-amdgpu',          
-    'wsa-amdgpu':                                 'wsa-amdgpu',                        
-    'wsa-amdgpu:i386':                            'lib32-wsa-amdgpu',                  
+    'vulkan-amdgpu-pro':                          'vulkan-amdgpu-pro',                 #
+    'vulkan-amdgpu-pro:i386':                     'lib32-vulkan-amdgpu-pro',           #
+    'wayland-protocols-amdgpu':                   None,                                #not_installed_even_in_ubuntu
+    'wsa-amdgpu':                                 'wsa-amdgpu',                        #
+    'wsa-amdgpu:i386':                            'lib32-wsa-amdgpu',                  #
     'xserver-xorg-amdgpu-video-amdgpu':           None,                                #unneeded_open_component
     'xserver-xorg-amdgpu-video-amdgpu:i386':      None,                                #unneeded_open_component
     'xserver-xorg-hwe-amdgpu-video-amdgpu':       None,                                #unneeded_open_component
     'xserver-xorg-hwe-amdgpu-video-amdgpu:i386':  None,                                #unneeded_open_component
 
-    # Not yet checked carefully manually
 }
 
 
@@ -673,7 +626,7 @@ replace_deps = {
 
     'binfmt-support':                  'opera',                    #auto_translated
     'dkms':                            'dkms',                     #auto_translated
-    'libc6':                           'aarch64-linux-gnu-glibc',  #auto_translated
+    'libc6':                           'glibc',                    # manually mapped
     'libcunit1':                       'cunit',                    #auto_translated
     'libedit2':                        'libedit',                  #auto_translated
     'libelf1':                         'libelf',                   #auto_translated
@@ -693,7 +646,7 @@ replace_deps = {
     'libomxil-bellagio0':              'libomxil-bellagio',        #auto_translated
     'libpci3':                         None,                       #auto_translated
     'libselinux1':                     'libselinux',               #auto_translated
-    'libstdc++6':                      'aarch64-linux-gnu-gcc',    #auto_translated
+    'libstdc++6':                      'gcc-libs',                 # manually mapped
     'libtinfo5':                       'libtinfo5',                #could_not_auto_translate
     'libtinfo-dev':                    'libtinfo-dev',             #could_not_auto_translate
     'libtxc-dxtn-s2tc0':               'libtxc_dxtn',              # mapped manually
@@ -795,7 +748,7 @@ licenses_hashes_map = {
     "b1afa13daf74f4073c4813368bc1b1b0": "MIT",
     "c7b12b6702da38ca028ace54aae3d484": "MIT",
     "d41d8cd98f00b204e9800998ecf8427e": "empty license?",
-    "e0bd46672d2d82a9d57216a931d0e0bf": "custom:AMD GPU-PRO",
+    "e0bd46672d2d82a9d57216a931d0e0bf": "custom: AMDGPU-PRO EULA",
     "f2b0e0926d102efc9a09f8b9a740209d": "GPL2",
 }
 
@@ -873,12 +826,6 @@ for patch in patches:
     #interest /usr/lib/i386-linux-gnu/dri
 # They are triggered when files are changed in interest path. I (Ashark) created corresponding alpm hooks.
 
-sources.append("update-amdgpu-dri-links.script")
-sha256sums.append("SKIP")
-sources.append("update-amdgpu-dri-links.hook")
-sha256sums.append("SKIP")
-
-
 
 header_tpl = """# Author: Janusz Lewandowski <lew21@xtreeme.org>
 # Contributor: David McFarland <corngood@gmail.com>
@@ -942,12 +889,12 @@ move_libdir() {
 #     find ${pkgdir}/usr/share/doc -type d -empty -delete
 # }
 # remove copyright file and remove debian changelog - only while debugging, not for release
-remove_copyright() {
-    pkgname_deb=${pkgname//-meta}; pkgname_deb=${pkgname_deb/lib32-/};
-    rm "${pkgdir}/usr/share/doc/${pkgname_deb}/changelog.Debian.gz"
-    rm "${pkgdir}/usr/share/doc/${pkgname_deb}/copyright" # only while debugging, not for release
-    find ${pkgdir}/usr -type d -empty -delete
-}
+# remove_copyright() {
+#     pkgname_deb=${pkgname//-meta}; pkgname_deb=${pkgname_deb/lib32-/};
+#     rm "${pkgdir}/usr/share/doc/${pkgname_deb}/changelog.Debian.gz"
+#     rm "${pkgdir}/usr/share/doc/${pkgname_deb}/copyright" # only while debugging, not for release
+#     find ${pkgdir}/usr -type d -empty -delete
+# }
 """
 
 package_header_tpl = """package_{NAME} () {{
@@ -1014,6 +961,7 @@ class Package:
         #if self.arch_pkg_name == "amdgpu-pro" or self.arch_pkg_name == "lib32-amdgpu-pro":
             #domap = False
 
+        # Removing unneeded dependencies
         if self.arch_pkg_name == "amdgpu-pro-meta" or self.arch_pkg_name == "lib32-amdgpu-pro-meta":
             # Removes dependency on many open components, which are provided by standard arch repos
             deb_deps.remove('amdgpu-hwe (= %s-%s)' % (pkgver_base, pkgver_build))  # for hwe releases
@@ -1021,6 +969,14 @@ class Package:
         if self.arch_pkg_name == "amdgpu-pro-lib32-meta":
             deb_deps.remove('amdgpu (= %s-%s) | amdgpu-hwe (= %s-%s)' % (pkgver_base, pkgver_build, pkgver_base, pkgver_build))
             deb_deps.remove('amdgpu-lib32 (= %s-%s)' % (pkgver_base, pkgver_build))
+        if self.arch_pkg_name == "opencl-amdgpu-pro-dev":
+            deb_deps.remove('libopencl1-amdgpu-pro (= %s-%s)' % (pkgver_base, pkgver_build))
+        if self.arch_pkg_name == "amf-amdgpu-pro":
+            deb_deps.remove("libgl1-amdgpu-mesa-glx") # I do not know what is amf and if it will work normal without this dep, but I removed that open component
+        if self.arch_pkg_name == "opencl-amdgpu-pro-meta":
+            deb_deps.remove('amdgpu-dkms (= %s-%s)' % (pkgver_base, pkgver_build)) # I do not know why it wants amdgpu-dkms, but I did not built it, so just rm this dep for now
+            deb_deps.remove('clinfo-amdgpu-pro (= %s-%s)' % (pkgver_base, pkgver_build))
+            deb_deps.remove('libopencl1-amdgpu-pro (= %s-%s)' % (pkgver_base, pkgver_build))
 
         if deb_deps:
             deb_deps = [ depWithAlt_to_singleDep(dep) if dependencyWithAltRE.search(dep) else dep for dep in deb_deps ]

@@ -35,9 +35,11 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
     if [[ $archpkg == *"-hwe"* ]]; then archpkg=${archpkg//-hwe/}; fi;
  
     if grep $line tmp_deb_metapackages_list.txt > /dev/null && [[ $archpkg != None ]]; then archpkg="$archpkg-meta"; fi;
-            case $line in
+
+    case $line in
          amdgpu@(-dkms||:i386|-hwe|-hwe:i386|-lib32)\
         |amdgpu-lib@(|:i386|-hwe|-hwe:i386)\
+        |glamor-amdgpu@(|:i386|-dev|-dev:i386)\
         |gst-omx-amdgpu@(|:i386)\
         |libegl1-amdgpu-mesa@(|:i386|-dev|-dev:i386)\
         |libegl1-amdgpu-mesa-drivers@(|:i386)\
@@ -60,15 +62,71 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
         )
             archpkg=None; comment="unneeded_open_component"
             ;;
+         clinfo-amdgpu-pro@(|:i386)\
+        |libopencl1-amdgpu-pro@(|:i386)\
+        )
+            archpkg=None; comment="unneeded_pro_component"
+            ;;
+         llvm-amdgpu@(|:i386)\
+        |llvm-amdgpu-7.1@(|:i386|-dev|-dev:i386|-doc|-runtime|-runtime:i386)\
+        |llvm-amdgpu@(-dev|-dev:i386|-runtime|-runtime:i386)\
+        |libdrm-amdgpu-dev@(|:i386)\
+        |libdrm-amdgpu-radeon1@(|:i386)\
+        |libdrm-amdgpu-utils@(|:i386)\
+        |libgbm1-amdgpu-pro-dev@(|:i386)\
+        |libwayland-amdgpu-@(doc|dev|dev:i386)\
+        |libxatracker-amdgpu-dev@(|:i386)\
+        |mesa-amdgpu-common-dev@(|:i386)\
+        |wayland-protocols-amdgpu\
+        )
+            archpkg=None; comment="not_installed_even_in_ubuntu"
+            ;;
         "amdgpu-pro-pin")
             archpkg=None; comment="debian_specific_package,_not_needed"
             ;;
         "amdgpu-doc")
             archpkg=None; comment="arch_specific_instructions_will_be_covered_in_archwiki"
             ;;
+         libdrm-amdgpu@(-amdgpu1|-common)\
+        |libdrm2-amdgpu\
+        )
+            archpkg=libdrm-amdgpu; comment="needed_because_probably_changed_by_amd_and_doesnt_work_with_standard_libdrm"
+            ;;
+        libdrm-amdgpu@(-amdgpu1:i386)\
+        |libdrm2-amdgpu:i386\
+        )
+            archpkg=lib32-libdrm-amdgpu; comment="needed_because_probably_changed_by_amd_and_doesnt_work_with_standard_libdrm"
+            ;;
+
+         libegl1-amdgpu-pro\
+        |libgbm1-amdgpu-pro@(|-base)\
+        |libgl1-amdgpu-pro-@(appprofiles|dri|ext-hwe|glx)\
+        |libglapi1-amdgpu-pro\
+        |libgles2-amdgpu-pro\
+        )
+            archpkg=amdgpu-pro-libgl;
+            ;;
+
+         libegl1-amdgpu-pro:i386\
+        |libgbm1-amdgpu-pro:i386\
+        |libgl1-amdgpu-pro-@(dri|ext-hwe|glx):i386\
+        |libglapi1-amdgpu-pro:i386\
+        |libgles2-amdgpu-pro:i386\
+        )
+            archpkg=lib32-amdgpu-pro-libgl;
+            ;;
+        # Renaming to comply with other arch opencl packages
+        opencl-orca-amdgpu-pro-icd) archpkg=opencl-amdgpu-pro-orca ;;
+        opencl-orca-amdgpu-pro-icd:i386) archpkg=lib32-opencl-amdgpu-pro-orca ;;
+        opencl-amdgpu-pro-icd) archpkg=opencl-amdgpu-pro ;;
     esac
-    if [[ $archpkg == "None" ]]; then str="$str $archpkg, #$comment"; else str="$str '$archpkg',"; fi
+    if [[ $archpkg == "None" ]]; then
+        str="$str $archpkg, #$comment";
+    else
+        str="$str '$archpkg', #$comment"
+    fi
     echo -e "$str";
+#     echo -e "$str" | egrep -v "None|opencl|amf|meta|vulkan|wsa|libdrm|roct|wayland" # debugging
 done | column -t | sed 's/^/    /'
 rm tmp_deb_metapackages_list.txt
 rm tmp_non_hwe_list.txt
