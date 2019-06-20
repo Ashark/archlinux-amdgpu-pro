@@ -118,7 +118,7 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
         # Renaming to comply with other arch opencl packages
         opencl-orca-amdgpu-pro-icd) archpkg=opencl-amdgpu-pro-orca ;;
         opencl-orca-amdgpu-pro-icd:i386) archpkg=lib32-opencl-amdgpu-pro-orca ;;
-        opencl-amdgpu-pro-icd) archpkg=opencl-amdgpu-pro ;;
+        opencl-amdgpu-pro-icd) archpkg=opencl-amdgpu-pro-pal ;;
     esac
     if [[ $archpkg == "None" ]]; then
         str="$str $archpkg, #$comment";

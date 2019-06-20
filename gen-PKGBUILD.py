@@ -255,7 +255,7 @@ def gen_arch_packages():
         'opencl-amdgpu-pro-comgr': Package(  ),
         'opencl-amdgpu-pro-dev': Package(  ),
         'opencl-amdgpu-pro-hip': Package(  ),
-        'opencl-amdgpu-pro': Package(
+        'opencl-amdgpu-pro-pal': Package(
             provides=['opencl-driver']
         ),
         'opencl-amdgpu-pro-orca': Package(
@@ -534,9 +534,9 @@ packages_map = {
     'opencl-amdgpu-pro-comgr':                    'opencl-amdgpu-pro-comgr',           #
     'opencl-amdgpu-pro-dev':                      'opencl-amdgpu-pro-dev',             #
     'opencl-amdgpu-pro-hip':                      'opencl-amdgpu-pro-hip',             #
-    'opencl-amdgpu-pro-icd':                      'opencl-amdgpu-pro',             #
-    'opencl-orca-amdgpu-pro-icd':                 'opencl-amdgpu-pro-orca',        #
-    'opencl-orca-amdgpu-pro-icd:i386':            'lib32-opencl-amdgpu-pro-orca',  #
+    'opencl-amdgpu-pro-icd':                      'opencl-amdgpu-pro-pal',             #
+    'opencl-orca-amdgpu-pro-icd':                 'opencl-amdgpu-pro-orca',            #
+    'opencl-orca-amdgpu-pro-icd:i386':            'lib32-opencl-amdgpu-pro-orca',      #
     'roct-amdgpu-pro':                            'roct-amdgpu-pro',                   #
     'roct-amdgpu-pro-dev':                        'roct-amdgpu-pro-dev',               #
     'vulkan-amdgpu':                              None,                                #unneeded_open_component
@@ -697,7 +697,7 @@ no_lib32_convert = [
 
 ## override the version requirement extracted from deb
 replace_version = {
-    "libdrm-amdgpu": "= redefined", # doesn't work for some reason, TODO fix that
+    # "some-debian-package-name": "=redefinedVersion",
 }
 
 ## maps debians archs to arch's archs
@@ -1029,12 +1029,6 @@ class Package:
 
             self.desc = desc
 
-        if not hasattr(self, 'version'):
-            ver = deb_info["Version"]
-            ver = ver.replace(pkgver_base, "${major}").replace(pkgver_build, "${minor}").replace("-","_").replace("1:","")
-            #if ver != "${major}_${minor}":
-            self.version = ver
-
         deb_info["Filename"] = deb_info["Filename"].replace("./","")
         deb_file = debfile.DebFile("src/amdgpu-pro-%s-%s-ubuntu-18.04/%s" % (pkgver_base, pkgver_build, deb_info["Filename"]))
 
@@ -1061,8 +1055,6 @@ class Package:
             DESC=quote(self.desc) if hasattr(self, 'desc') else quote("No description for package %s" % self.arch_pkg_name),
         )
 
-        if hasattr(self, 'version'):
-            ret += "    pkgver=%s\n" % self.version
         if hasattr(self, 'license'):
             ret += "    license=%s\n" % self.license
         if hasattr(self, 'install'):
@@ -1172,25 +1164,26 @@ def convertName(name, deb_info, domap=True):
 def convertVersionSpecifier(name, spec):
     if name in replace_version:
         return replace_version[name]
+
+    if name in deb_package_names:
+        # Different pkgver is not supported for split packages, see here: https://bbs.archlinux.org/viewtopic.php?id=246815
+        # So we use the same pkgver for all split packages.
+        return "=${major}_${minor}-${pkgrel}"
+
     if not spec:
         return ""
 
     sign, spec = spec.split(" ", 1)
-
     spec = spec.strip()
+
+    if sign == ">" or sign == ">=": # assume Arch users have latest versions of all packages
+        return ""
+
     if ":" in spec: # debian epochs means nothing in arch context, so strip them
         deb_epoch, spec = spec.rsplit(":", 1)
         # also would be good to omit debian-revision, as it has nothing to do with arch's pkgrel
         # but anyway we omit > and >= deps, so I did not implemented it yet
-    if name in deb_package_names:
-        spec = spec.replace(pkgver_base, "${major}").replace(pkgver_build, "${minor}").replace("-","_")
-        if not re.search(r'minor', spec):
-            spec = spec + "_${minor}"
-        spec = spec + "-${pkgrel}"
         return sign + spec
-    if sign == ">" or sign == ">=": # assume Arch users have latest versions of all packages
-        return ""
-    return sign + spec
 
 dep32RE = re.compile(r"(.*):i386")
 def lib32_prefix_if_32bit(dep):
