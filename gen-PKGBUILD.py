@@ -692,7 +692,7 @@ replace_deps = {
 
 ## do not convert the dependencies listed to lib32 variants
 no_lib32_convert = [
-    "binfmt-support"
+    # "some_debian_package_name",
 ]
 
 ## override the version requirement extracted from deb
@@ -982,7 +982,7 @@ class Package:
             deb_deps = [ depWithAlt_to_singleDep(dep) if dependencyWithAltRE.search(dep) else dep for dep in deb_deps ]
             deb_deps = [ dependencyNameWithVersionRE.match(dep).groups() for dep in deb_deps ]
             deb_deps = [(replace_deps[deb_pkg_name] if deb_pkg_name in replace_deps else deb_pkg_name, version) for deb_pkg_name, version in deb_deps]
-            deb_deps = ["\"" + convertName(lib32_prefix_if_32bit(deb_pkg_name), deb_info, domap) + convertVersionSpecifier(deb_pkg_name, version) + "\"" for deb_pkg_name, version in deb_deps if deb_pkg_name]
+            deb_deps = ["\"" + convertName(deb_pkg_name, deb_info, domap) + convertVersionSpecifier(deb_pkg_name, version) + "\"" for deb_pkg_name, version in deb_deps if deb_pkg_name]
             deb_deps = [ dep for dep in deb_deps if not dep.startswith("\"=")]
 
             # remove all dependencies on itself
@@ -1013,7 +1013,7 @@ class Package:
             deb_optdeps = [depWithAlt_to_singleDep(dep) if dependencyWithAltRE.search(dep) else dep for dep in deb_optdeps]
             deb_optdeps = [dependencyNameWithVersionRE.match(dep).groups() for dep in deb_optdeps]
             deb_optdeps = [(replace_deps[deb_pkg_name] if deb_pkg_name in replace_deps else deb_pkg_name, version) for deb_pkg_name, version in deb_optdeps]
-            deb_optdeps = ["\"" + convertName(lib32_prefix_if_32bit(deb_pkg_name), deb_info, domap) + convertVersionSpecifier(deb_pkg_name, version) + ": "
+            deb_optdeps = ["\"" + convertName(deb_pkg_name, deb_info, domap) + convertVersionSpecifier(deb_pkg_name, version) + ": "
                            + (optdepends_descriptions[deb_pkg_name] if deb_pkg_name in optdepends_descriptions else "Warning unspecified optdep description" )
                            + "\"" for deb_pkg_name, version in deb_optdeps if deb_pkg_name]
 
@@ -1156,18 +1156,33 @@ def depWithAlt_to_singleDep(depWithAlt):
 
     return "Warning_Do_not_know_which_alt_to_choose"
 
-deb_archs={}
+deb_pkgs_avail_archs={}
 
+dep32RE = re.compile(r"(.*):i386")
 def convertName(name, deb_info, domap=True):
     ret = name
-    if deb_info["Architecture"] == "i386" and (name not in deb_archs or "any" not in deb_archs[name]):
+    match = dep32RE.match(name)
+    if match: # explicit :i386 dependency
+        ret = match.group(1)
+        if not ret in no_lib32_convert:
+            ret = 'lib32-%s' % ret
+
+    if deb_info["Architecture"] == "i386" and (name not in deb_pkgs_avail_archs or "all" not in deb_pkgs_avail_archs[name]):
         if not name in no_lib32_convert:
             ret = "lib32-" + name
 
-    if name in packages_map:
+    unambiguous_name = name
+    if deb_info["Architecture"] == "i386":
+        unambiguous_name = name + ":i386"
+
+    if unambiguous_name in packages_map:
         if domap:
-            return packages_map[name]
+            return packages_map[unambiguous_name]
         return ""
+    if ret == "amdgpu-core":
+        return packages_map[ret]
+    if ret in packages_map:
+        return packages_map[ret]
     return ret
 
 def convertVersionSpecifier(name, spec):
@@ -1193,18 +1208,6 @@ def convertVersionSpecifier(name, spec):
         # also would be good to omit debian-revision, as it has nothing to do with arch's pkgrel
         # but anyway we omit > and >= deps, so I did not implemented it yet
         return sign + spec
-
-dep32RE = re.compile(r"(.*):i386")
-def lib32_prefix_if_32bit(dep):
-    rdep = dep
-    match = dep32RE.match(dep)
-    if match:
-        rdep = match.group(1)
-        if not rdep in no_lib32_convert:
-            rdep = 'lib32-%s' % rdep
-    return rdep
-
-
 
 # get list of unique arch packages from package map
 arch_package_names=list(pkgbuild_packages.keys())
@@ -1232,14 +1235,15 @@ if not debugging:
     f = open("src/amdgpu-pro-%s-%s-ubuntu-18.04/Packages" % (pkgver_base, pkgver_build), "r")
 else:
     f = open("Packages-debugging", "r")
+    # f = open("Packages-extracted", "r")
 
 deb_package_list = []
 
 for deb_info in deb822.Packages.iter_paragraphs(f):
-    if not deb_info["Package"] in deb_archs:
-        deb_archs[deb_info["Package"]] = set()
+    if not deb_info["Package"] in deb_pkgs_avail_archs:
+        deb_pkgs_avail_archs[deb_info["Package"]] = set()
 
-    deb_archs[deb_info["Package"]].add(deb_info["Architecture"])
+    deb_pkgs_avail_archs[deb_info["Package"]].add(deb_info["Architecture"])
     deb_package_list.append(deb_info)
 
 deb_package_names = [info["Package"] + ":i386" if info["Architecture"] == "i386" else info["Package"] for info in deb_package_list]
