@@ -242,12 +242,6 @@ def gen_arch_packages():
                 'mv "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx-ext-hwe.so "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx.so',
             ]
         ),
-        'libwayland-amdgpu-client0': Package(  ),
-        'lib32-libwayland-amdgpu-client0': Package(  ),
-        'libwayland-amdgpu-cursor0': Package(  ),
-        'lib32-libwayland-amdgpu-cursor0': Package(  ),
-        'libwayland-amdgpu-server0': Package(  ),
-        'lib32-libwayland-amdgpu-server0': Package(  ),
         'opencl-amdgpu-pro-meta': Package(  ),
         'opencl-amdgpu-pro-comgr': Package(  ),
         'opencl-amdgpu-pro-dev': Package(  ),
@@ -281,8 +275,6 @@ def gen_arch_packages():
                 'rm -rf "${pkgdir}"/opt/amdgpu-pro/etc/'
             ]
         ),
-        'wsa-amdgpu': Package(  ),
-        'lib32-wsa-amdgpu': Package(  ),
 
     }
     for key in pkgbuild_packages:
@@ -491,17 +483,17 @@ packages_map = {
     'libosmesa6-amdgpu:i386':                     None,                                #unneeded_open_component
     'libosmesa6-amdgpu-dev':                      None,                                #unneeded_open_component
     'libosmesa6-amdgpu-dev:i386':                 None,                                #unneeded_open_component
-    'libwayland-amdgpu-client0':                  'libwayland-amdgpu-client0',         #
-    'libwayland-amdgpu-client0:i386':             'lib32-libwayland-amdgpu-client0',   #
-    'libwayland-amdgpu-cursor0':                  'libwayland-amdgpu-cursor0',         #
-    'libwayland-amdgpu-cursor0:i386':             'lib32-libwayland-amdgpu-cursor0',   #
+    'libwayland-amdgpu-client0':                  None,                                #installed_in_ubuntu_but_probably_not_needed
+    'libwayland-amdgpu-client0:i386':             None,                                #installed_in_ubuntu_but_probably_not_needed
+    'libwayland-amdgpu-cursor0':                  None,                                #not_installed_even_in_ubuntu
+    'libwayland-amdgpu-cursor0:i386':             None,                                #not_installed_even_in_ubuntu
     'libwayland-amdgpu-dev':                      None,                                #not_installed_even_in_ubuntu
     'libwayland-amdgpu-dev:i386':                 None,                                #not_installed_even_in_ubuntu
     'libwayland-amdgpu-doc':                      None,                                #not_installed_even_in_ubuntu
     'libwayland-amdgpu-egl1':                     None,                                #unneeded_open_component
     'libwayland-amdgpu-egl1:i386':                None,                                #unneeded_open_component
-    'libwayland-amdgpu-server0':                  'libwayland-amdgpu-server0',         #
-    'libwayland-amdgpu-server0:i386':             'lib32-libwayland-amdgpu-server0',   #
+    'libwayland-amdgpu-server0':                  None,                                #installed_in_ubuntu_but_probably_not_needed
+    'libwayland-amdgpu-server0:i386':             None,                                #installed_in_ubuntu_but_probably_not_needed
     'libxatracker-amdgpu-dev':                    None,                                #not_installed_even_in_ubuntu
     'libxatracker-amdgpu-dev:i386':               None,                                #not_installed_even_in_ubuntu
     'libxatracker2-amdgpu':                       None,                                #unneeded_open_component
@@ -541,8 +533,8 @@ packages_map = {
     'vulkan-amdgpu-pro':                          'vulkan-amdgpu-pro',                 #
     'vulkan-amdgpu-pro:i386':                     'lib32-vulkan-amdgpu-pro',           #
     'wayland-protocols-amdgpu':                   None,                                #not_installed_even_in_ubuntu
-    'wsa-amdgpu':                                 'wsa-amdgpu',                        #
-    'wsa-amdgpu:i386':                            'lib32-wsa-amdgpu',                  #
+    'wsa-amdgpu':                                 None,                                #installed_in_ubuntu_but_probably_not_needed
+    'wsa-amdgpu:i386':                            None,                                #installed_in_ubuntu_but_probably_not_needed
     'xserver-xorg-amdgpu-video-amdgpu':           None,                                #unneeded_open_component
     'xserver-xorg-amdgpu-video-amdgpu:i386':      None,                                #unneeded_open_component
     'xserver-xorg-hwe-amdgpu-video-amdgpu':       None,                                #unneeded_open_component
@@ -685,6 +677,12 @@ replace_deps = {
     # Missed while inverted grepping of amdgpu substring:
     'libva2':                          'libva',
     'libvdpau1':                       'libvdpau',
+
+    # Almost every pro package depends on these two, but I omited them (hoping they are not needed, but not tested), so disabling these dependencies globally
+    'libwayland-amdgpu-client0': None,
+    'libwayland-amdgpu-server0': None,
+    # I also omited wsa-amdgpu (do not know if really needed), so remove dependency on it
+    'wsa-amdgpu': None,
 }
 
 ## do not convert the dependencies listed to lib32 variants

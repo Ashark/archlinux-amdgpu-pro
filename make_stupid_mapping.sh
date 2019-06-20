@@ -74,12 +74,17 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
         |libdrm-amdgpu-radeon1@(|:i386)\
         |libdrm-amdgpu-utils@(|:i386)\
         |libgbm1-amdgpu-pro-dev@(|:i386)\
-        |libwayland-amdgpu-@(doc|dev|dev:i386)\
+        |libwayland-amdgpu-@(doc|dev|dev:i386|cursor0|cursor0:i386)\
         |libxatracker-amdgpu-dev@(|:i386)\
         |mesa-amdgpu-common-dev@(|:i386)\
         |wayland-protocols-amdgpu\
         )
             archpkg=None; comment="not_installed_even_in_ubuntu"
+            ;;
+         libwayland-amdgpu-@(client0|client0:i386|server0|server0:i386)\
+        |wsa-amdgpu@(|:i386)\
+        ) 
+            archpkg=None; comment="installed_in_ubuntu_but_probably_not_needed"
             ;;
         "amdgpu-pro-pin")
             archpkg=None; comment="debian_specific_package,_not_needed"
