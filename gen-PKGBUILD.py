@@ -212,9 +212,6 @@ def gen_arch_packages():
 
         'amdgpu-core-meta': Package(  ),
         'amdgpu-pro-core-meta': Package(  ),
-        'amdgpu-pro-meta': Package(  ),
-        'lib32-amdgpu-pro-meta': Package(  ),
-        'amdgpu-pro-lib32-meta': Package(  ),
         'amf-amdgpu-pro': Package(  ),
         'libdrm-amdgpu': Package(
             provides = ['libdrm'],
@@ -416,9 +413,9 @@ packages_map = {
     'amdgpu-pro':                                 None,                                #disabled_because_hwe_version_is_available
     'amdgpu-pro:i386':                            None,                                #disabled_because_hwe_version_is_available
     'amdgpu-pro-core':                            'amdgpu-pro-core-meta',              #
-    'amdgpu-pro-hwe':                             'amdgpu-pro-meta',                   #
-    'amdgpu-pro-hwe:i386':                        'lib32-amdgpu-pro-meta',             #
-    'amdgpu-pro-lib32':                           'amdgpu-pro-lib32-meta',             #
+    'amdgpu-pro-hwe':                             None,                                #we_have_already_combined_libgl_to_single_package
+    'amdgpu-pro-hwe:i386':                        None,                                #we_have_already_combined_libgl_to_single_package
+    'amdgpu-pro-lib32':                           None,                                #we_have_already_combined_libgl_to_single_package
     'amdgpu-pro-pin':                             None,                                #debian_specific_package,_not_needed
     'amf-amdgpu-pro':                             'amf-amdgpu-pro',                    #
     'clinfo-amdgpu-pro':                          None,                                #unneeded_pro_component

@@ -115,6 +115,11 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
         )
             archpkg=lib32-amdgpu-pro-libgl;
             ;;
+         amdgpu-pro-@(hwe|hwe:i386|lib32)\
+        )
+            # amdgpu-pro-hwe:i386 and amdgpu-pro-lib32 are basically installing the same content. The only difference is debian specific resolving of dependencies architectures
+            archpkg=None; comment="we_have_already_combined_libgl_to_single_package"
+            ;;
         # Renaming to comply with other arch opencl packages
         opencl-orca-amdgpu-pro-icd) archpkg=opencl-amdgpu-pro-orca ;;
         opencl-orca-amdgpu-pro-icd:i386) archpkg=lib32-opencl-amdgpu-pro-orca ;;
