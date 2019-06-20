@@ -840,7 +840,7 @@ pkgver=${{major}}_${{minor}}
 pkgrel={pkgrel}
 arch=('x86_64')
 url={url}
-license=('custom')
+license=('custom: multiple')
 groups=('Radeon_Software_for_Linux')
 makedepends=('wget')
 
@@ -1060,8 +1060,12 @@ class Package:
         if hasattr(self, 'install'):
             ret += "    install=%s\n" % self.install
 
+        if hasattr(self, 'arch'):
+            if self.arch != default_arch: # omitting default arch for making pkgbuild cleaner
+                ret += "    arch=('%s')\n" % " ".join(self.arch)
+
         # add any given list/array with one of those names to the pkgbuild
-        for array in ('arch', 'provides', 'conflicts', 'replaces', 'groups'):
+        for array in ('provides', 'conflicts', 'replaces', 'groups'):
             if(hasattr(self, array)):
                 ret += "    %s=('%s')\n" % (array, "' '".join(getattr(self, array)))
 
