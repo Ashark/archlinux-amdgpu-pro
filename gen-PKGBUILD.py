@@ -1009,12 +1009,17 @@ class Package:
         if deb_recomms:
             deb_optdeps = deb_optdeps + deb_recomms
 
-        deb_optdeps = [depWithAlt_to_singleDep(dep) if dependencyWithAltRE.search(dep) else dep for dep in deb_optdeps]
-        deb_optdeps = [dependencyNameWithVersionRE.match(dep).groups() for dep in deb_optdeps]
-        deb_optdeps = [(replace_deps[deb_pkg_name] if deb_pkg_name in replace_deps else deb_pkg_name, version) for deb_pkg_name, version in deb_optdeps]
-        deb_optdeps = ["\"" + convertName(lib32_prefix_if_32bit(deb_pkg_name), deb_info, domap) + convertVersionSpecifier(deb_pkg_name, version) + ": "
-                       + (optdepends_descriptions[deb_pkg_name] if deb_pkg_name in optdepends_descriptions else "Warning unspecified optdep description" )
-                       + "\"" for deb_pkg_name, version in deb_optdeps if deb_pkg_name]
+        if deb_optdeps:
+            deb_optdeps = [depWithAlt_to_singleDep(dep) if dependencyWithAltRE.search(dep) else dep for dep in deb_optdeps]
+            deb_optdeps = [dependencyNameWithVersionRE.match(dep).groups() for dep in deb_optdeps]
+            deb_optdeps = [(replace_deps[deb_pkg_name] if deb_pkg_name in replace_deps else deb_pkg_name, version) for deb_pkg_name, version in deb_optdeps]
+            deb_optdeps = ["\"" + convertName(lib32_prefix_if_32bit(deb_pkg_name), deb_info, domap) + convertVersionSpecifier(deb_pkg_name, version) + ": "
+                           + (optdepends_descriptions[deb_pkg_name] if deb_pkg_name in optdepends_descriptions else "Warning unspecified optdep description" )
+                           + "\"" for deb_pkg_name, version in deb_optdeps if deb_pkg_name]
+
+        # remove all optional dependencies on itself
+        deb_optdeps = [dep for dep in deb_optdeps if dep[1:len(self.arch_pkg_name) + 1] != self.arch_pkg_name]
+
         self.optdepends = self.optdepends + list(sorted(set(deb_optdeps)))
 
         if not hasattr(self, 'desc'):
