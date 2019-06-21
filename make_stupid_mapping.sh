@@ -129,6 +129,7 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
         opencl-orca-amdgpu-pro-icd) archpkg=opencl-amdgpu-pro-orca ;;
         opencl-orca-amdgpu-pro-icd:i386) archpkg=lib32-opencl-amdgpu-pro-orca ;;
         opencl-amdgpu-pro-icd) archpkg=opencl-amdgpu-pro-pal ;;
+        opencl-amdgpu-pro) archpkg=None; comment="its_dependencies_go_directly_to_amf-amdgpu-pro"
     esac
     if [[ $archpkg == "None" ]]; then
         str="$str $archpkg, #$comment";

@@ -242,7 +242,6 @@ def gen_arch_packages():
                 'mv "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx-ext-hwe.so "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx.so',
             ]
         ),
-        'opencl-amdgpu-pro-meta': Package(  ),
         'opencl-amdgpu-pro-comgr': Package(  ),
         'opencl-amdgpu-pro-dev': Package(  ),
         'opencl-amdgpu-pro-hip': Package(  ),
@@ -519,7 +518,7 @@ packages_map = {
     'mesa-amdgpu-va-drivers:i386':                None,                                #unneeded_open_component
     'mesa-amdgpu-vdpau-drivers':                  None,                                #unneeded_open_component
     'mesa-amdgpu-vdpau-drivers:i386':             None,                                #unneeded_open_component
-    'opencl-amdgpu-pro':                          'opencl-amdgpu-pro-meta',            #
+    'opencl-amdgpu-pro':                          None,                                #its_dependencies_go_directly_to_amf-amdgpu-pro
     'opencl-amdgpu-pro-comgr':                    'opencl-amdgpu-pro-comgr',           #
     'opencl-amdgpu-pro-dev':                      'opencl-amdgpu-pro-dev',             #
     'opencl-amdgpu-pro-hip':                      'opencl-amdgpu-pro-hip',             #
@@ -972,6 +971,14 @@ class Package:
             deb_deps.remove('amdgpu-dkms (= %s-%s)' % (pkgver_base, pkgver_build)) # I do not know why it wants amdgpu-dkms, but I did not built it, so just rm this dep for now
             deb_deps.remove('clinfo-amdgpu-pro (= %s-%s)' % (pkgver_base, pkgver_build))
             deb_deps.remove('libopencl1-amdgpu-pro (= %s-%s)' % (pkgver_base, pkgver_build))
+        if self.arch_pkg_name == "amf-amdgpu-pro":
+            # adding dependencies of omitted opencl-amdgpu-pro package
+            deb_deps.remove('opencl-amdgpu-pro')
+            deb_deps.append('amdgpu-pro-core')
+            # deb_deps.append('amdgpu-dkms') # amdgpu-dkms is not build currently, but there is such dep. Probably it extends functionality?
+            # deb_deps.append('libdrm...-amdgpu...) # opencl icd may depend on libdrm-amdgpu already, so skip this
+            deb_deps.append('opencl-orca-amdgpu-pro-icd')
+            deb_deps.append('opencl-amdgpu-pro-icd')
 
         if deb_deps:
             deb_deps = [ depWithAlt_to_singleDep(dep) if dependencyWithAltRE.search(dep) else dep for dep in deb_deps ]
