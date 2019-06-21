@@ -240,6 +240,8 @@ def gen_arch_packages():
             extra_commands=[
                 # This is instead of libgl1-amdgpu-pro-ext-hwe_19.20-812932_i386.deb/postinst and libgl1-amdgpu-pro-ext-hwe_19.20-812932_i386.deb/prerm
                 'mv "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx-ext-hwe.so "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx.so',
+                # Clean-up duplicated files to be able to install simultaneously with 64bit version
+                'rm "${pkgdir}"/etc/amd/amdrc "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx.so',
             ]
         ),
         'opencl-amdgpu-pro-comgr': Package(  ),
@@ -875,20 +877,12 @@ move_libdir() {
     fi
 }
 # move copyright file to proper place and remove debian changelog
-# move_copyright() {
-#     pkgname_deb=${pkgname//-meta}; pkgname_deb=${pkgname_deb/lib32-/};
-#     rm "${pkgdir}/usr/share/doc/${pkgname_deb}/changelog.Debian.gz"
-#     mkdir -p ${pkgdir}/usr/share/licenses/${pkgname}
-#     mv ${pkgdir}/usr/share/doc/${pkgname_deb}/copyright ${pkgdir}/usr/share/licenses/${pkgname}
-#     find ${pkgdir}/usr/share/doc -type d -empty -delete
-# }
-# remove copyright file and remove debian changelog - only while debugging, not for release
-# remove_copyright() {
-#     pkgname_deb=${pkgname//-meta}; pkgname_deb=${pkgname_deb/lib32-/};
-#     rm "${pkgdir}/usr/share/doc/${pkgname_deb}/changelog.Debian.gz"
-#     rm "${pkgdir}/usr/share/doc/${pkgname_deb}/copyright" # only while debugging, not for release
-#     find ${pkgdir}/usr -type d -empty -delete
-# }
+move_copyright() {
+    find ${pkgdir}/usr/share/doc -name "changelog.Debian.gz" -delete
+    mkdir -p ${pkgdir}/usr/share/licenses/${pkgname}
+    find ${pkgdir}/usr/share/doc -name "copyright" -exec mv {} ${pkgdir}/usr/share/licenses/${pkgname} \;
+    find ${pkgdir}/usr/share/doc -type d -empty -delete
+}
 """
 
 package_header_tpl = """package_{NAME} () {{
@@ -901,7 +895,7 @@ package_deb_extract_tpl = """    extract_deb "${{srcdir}}"/amdgpu-pro-${{major}}
 package_move_libdir_tpl = """    move_libdir "opt/amdgpu{PRO}/lib/{DEBDIR}-linux-gnu" "usr/lib{ARCHDIR}"
 """
 
-package_move_copyright = """    remove_copyright
+package_move_copyright = """    move_copyright
 """
 
 package_lib32_cleanup = """
@@ -1115,15 +1109,15 @@ class Package:
             #     ARCHDIR=ARCHDIR,
             # )
 
-        # ret += package_move_copyright
+        ret += package_move_copyright
 
         if hasattr(self, 'extra_commands'):
             ret += "\n    # extra_commands:\n    "
             ret += "\n    ".join( self.extra_commands )
             ret += "\n"
 
-        if self.arch_pkg_name.startswith('lib32-'):
-            ret += package_lib32_cleanup
+        # if self.arch_pkg_name.startswith('lib32-'):
+        #     ret += package_lib32_cleanup
         ret += package_footer
         return ret
 
