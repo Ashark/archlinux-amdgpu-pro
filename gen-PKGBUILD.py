@@ -987,6 +987,14 @@ class Package:
             deb_deps = ["\"" + convertName(deb_pkg_name, deb_info, domap) + convertVersionSpecifier(deb_pkg_name, version) + "\"" for deb_pkg_name, version in deb_deps if deb_pkg_name]
             deb_deps = [ dep for dep in deb_deps if not dep.startswith("\"=")]
 
+            if self.arch_pkg_name == "opencl-amdgpu-pro-orca":
+                deb_deps.append('\"libdrm-amdgpu=${major}_${minor}-${pkgrel}\"')
+            if self.arch_pkg_name == "lib32-opencl-amdgpu-pro-orca":
+                deb_deps.append('\"lib32-libdrm-amdgpu=${major}_${minor}-${pkgrel}\"')
+            # I am not sure if it is needed for pal variant, but just to be safe:
+            if self.arch_pkg_name == "opencl-amdgpu-pro-pal":
+                deb_deps.append('\"libdrm-amdgpu=${major}_${minor}-${pkgrel}\"')
+
             # remove all dependencies on itself
             deb_deps = [ dep for dep in deb_deps if dep[1:len(self.arch_pkg_name)+1] != self.arch_pkg_name ]
 
