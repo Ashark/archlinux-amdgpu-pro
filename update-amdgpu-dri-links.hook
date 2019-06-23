@@ -1,0 +1,15 @@
+# d92079d94c43be3c80dfdc3fc0221a71  libgl1-amdgpu-mesa-dri_18.3.0-812932_amd64.deb/postinst
+# Converted for arch linux (hook trigger part):
+
+[Trigger]
+Type = File
+Operation = Install
+Operation = Upgrade
+Operation = Remove
+# Target path taken from interest trigger of a debian package, corrected for arch linux
+Target = usr/lib/dri/*
+
+[Action]
+Description = Updating amdgpu dri links...
+When = PostTransaction
+Exec = . /usr/share/libalpm/scripts/update-amdgpu-dri-links; remove_links; create_links

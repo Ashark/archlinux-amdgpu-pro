@@ -1,0 +1,21 @@
+# f00d6adb58ed0b888cc28a3b83af9a30  libgl1-amdgpu-mesa-dri_18.3.0-812932_i386.deb/postinst
+# Converted for arch linux (install script part):
+post_install() {
+    source /usr/share/libalpm/scripts/update-amdgpu-dri-links-32
+    create_links
+}
+
+# 84cfe30e8c9c8e424e230d3c7743c969  libgl1-amdgpu-mesa-dri_18.3.0-812932_i386.deb/prerm
+# Converted for arch linux:
+pre_remove() {
+    rm -f /opt/amdgpu/lib/i386-linux-gnu/dri/i965_dri.so
+
+    for f in /opt/amdgpu/lib/i386-linux-gnu/dri/*_dri.so; do
+        f=${f##*/}
+        if [ -f /usr/lib32/dri/$f~ ]; then
+            mv -f /usr/lib32/dri/$f~ /usr/lib32/dri/$f
+        else
+            rm -f /usr/lib32/dri/$f
+        fi
+    done
+}

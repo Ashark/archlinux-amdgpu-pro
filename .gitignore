@@ -4,3 +4,9 @@
 /src/
 /archlinux-bootstrap-*.tar.gz
 /root.x86_64/
+amdgpu-dev.db
+amdgpu-dev.db.tar.gz
+amdgpu-dev.db.tar.gz.old
+amdgpu-dev.files
+amdgpu-dev.files.tar.gz
+amdgpu-dev.files.tar.gz.old
