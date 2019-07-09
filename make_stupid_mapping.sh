@@ -34,7 +34,7 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
 
     if [[ $archpkg == *"-hwe"* ]]; then archpkg=${archpkg//-hwe/}; fi;
  
-    if grep $line tmp_deb_metapackages_list.txt > /dev/null && [[ $archpkg != None ]]; then archpkg="$archpkg-meta"; fi;
+    if grep $line tmp_deb_metapackages_list.txt > /dev/null && [[ $archpkg != None ]]; then archpkg="$archpkg-meta" comment="mapped_manually"; fi;
 
     case $line in
          amdgpu@(-dkms||:i386|-hwe|-hwe:i386|-lib32)\
@@ -49,7 +49,7 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
         |libglapi-amdgpu-mesa@(|:i386)\
         |libgles1-amdgpu-mesa@(|:i386|-dev|-dev:i386)\
         |libgles2-amdgpu-mesa@(|:i386|-dev|-dev:i386)\
-        |libllvm7.1-amdgpu@(|:i386)\
+        |libllvm9.0-amdgpu@(|:i386)\
         |libosmesa6-amdgpu@(|:i386|-dev|-dev:i386)\
         |libwayland-amdgpu-egl1@(|:i386)\
         |libxatracker2-amdgpu@(|:i386)\
@@ -68,7 +68,7 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
             archpkg=None; comment="unneeded_pro_component"
             ;;
          llvm-amdgpu@(|:i386)\
-        |llvm-amdgpu-7.1@(|:i386|-dev|-dev:i386|-doc|-runtime|-runtime:i386)\
+        |llvm-amdgpu-9.0@(|:i386|-dev|-dev:i386|-doc|-runtime|-runtime:i386)\
         |llvm-amdgpu@(-dev|-dev:i386|-runtime|-runtime:i386)\
         |libdrm-amdgpu-dev@(|:i386)\
         |libdrm-amdgpu-radeon1@(|:i386)\
@@ -109,7 +109,7 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
         |libglapi1-amdgpu-pro\
         |libgles2-amdgpu-pro\
         )
-            archpkg=amdgpu-pro-libgl;
+            archpkg=amdgpu-pro-libgl; comment="mapped_manually"
             ;;
 
          libegl1-amdgpu-pro:i386\
@@ -118,7 +118,7 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
         |libglapi1-amdgpu-pro:i386\
         |libgles2-amdgpu-pro:i386\
         )
-            archpkg=lib32-amdgpu-pro-libgl;
+            archpkg=lib32-amdgpu-pro-libgl; comment="mapped_manually"
             ;;
          amdgpu-pro-@(hwe|hwe:i386|lib32)\
         )
@@ -126,9 +126,9 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
             archpkg=None; comment="we_have_already_combined_libgl_to_single_package"
             ;;
         # Renaming to comply with other arch opencl packages
-        opencl-orca-amdgpu-pro-icd) archpkg=opencl-amdgpu-pro-orca ;;
-        opencl-orca-amdgpu-pro-icd:i386) archpkg=lib32-opencl-amdgpu-pro-orca ;;
-        opencl-amdgpu-pro-icd) archpkg=opencl-amdgpu-pro-pal ;;
+        opencl-orca-amdgpu-pro-icd) archpkg=opencl-amdgpu-pro-orca comment="mapped_manually" ;;
+        opencl-orca-amdgpu-pro-icd:i386) archpkg=lib32-opencl-amdgpu-pro-orca comment="mapped_manually" ;;
+        opencl-amdgpu-pro-icd) archpkg=opencl-amdgpu-pro-pal comment="mapped_manually" ;;
         opencl-amdgpu-pro) archpkg=None; comment="its_dependencies_go_directly_to_amf-amdgpu-pro"
     esac
     if [[ $archpkg == "None" ]]; then
