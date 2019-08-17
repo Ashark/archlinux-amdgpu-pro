@@ -10,14 +10,14 @@ import glob
 from pathlib import Path
 
 pkgver_base = "19.30"
-pkgver_build = "838629"
+pkgver_build = "855429"
 pkgrel = 1
 
 debugging = False
 
 debug_pkgext = True #if debugging else False
 
-url_ref = "https://www.amd.com/en/support/kb/release-notes/rn-rad-lin-19-20-unified"
+url_ref = "https://www.amd.com/en/support/kb/release-notes/rn-amdgpu-unified-linux"
 dlagents = "https::/usr/bin/wget --referer {0} -N %u".format(url_ref)
 
 source_url = "https://drivers.amd.com/drivers/linux/amdgpu-pro-${major}-${minor}-ubuntu-18.04.tar.xz"
@@ -26,149 +26,6 @@ source_file = "amdgpu-pro-{0}-{1}-ubuntu-18.04.tar.xz".format(pkgver_base, pkgve
 
 def gen_arch_packages():
     pkgbuild_packages = {
-        #'amdgpu-pro': Package(
-            #desc = "The AMDGPU Pro driver package",
-            #install = "amdgpu-pro-core.install",
-            #extra_commands = [
-                #"mv \"${pkgdir}\"/usr/lib/x86_64-linux-gnu/dri ${pkgdir}/usr/lib/",
-                #"# This is needed because libglx.so has a hardcoded DRI_DRIVER_PATH",
-                #"ln -s /usr/lib/dri ${pkgdir}/usr/lib/x86_64-linux-gnu/dri",
-                #'mkdir -p "${pkgdir}/etc/ld.so.conf.d/"',
-                #'echo "/opt/amdgpu-pro/lib/x86_64-linux-gnu/" > "${pkgdir}"/etc/ld.so.conf.d/amdgpu-pro.conf',
-            #]
-        #),
-
-        #'amdgpu-pro-dkms': Package(
-            #arch = ['any'],
-            #descr = "The AMDGPU Pro kernel module",
-            #extra_commands = [
-                #"msg 'Applying patches...'",
-                #"(cd ${pkgdir}/usr/src/amdgpu-${major}-${minor};",
-                #"\tsed -i 's/\/extra/\/extramodules/' dkms.conf",
-                #";\n".join(["\t\tmsg2 '{0}'\n\t\tpatch -p1 -i \"${{srcdir}}/{0}\"".format(patch) for patch in patches]),
-                #")",
-                #]
-        #),
-
-        #'amdgpu-pro-libgl': Package(
-            #desc = "The AMDGPU Pro libgl library symlinks",
-            #conflicts = ['libgl'],
-            #provides  = ['libgl'],
-        #),
-
-        #'amdgpu-pro-opencl': Package(
-            #desc = "The AMDGPU Pro OpenCL implementation",
-            #provides  = ['opencl-driver']
-        #),
-        #'amdgpu-pro-libdrm': Package(
-            #desc = "The AMDGPU Pro userspace interface to kernel DRM services",
-            #conflicts = ['libdrm'],
-            #provides = ['libdrm'],
-        #),
-
-        #'amdgpu-pro-vulkan': Package(
-            #desc = "The AMDGPU Pro Vulkan driver",
-            #provides = ['vulkan-driver'],
-            #extra_commands = [
-                #'mkdir -p "${pkgdir}"/usr/share/vulkan/icd.d/',
-                #'mv "${pkgdir}"/etc/vulkan/icd.d/amd_icd64.json "${pkgdir}"/usr/share/vulkan/icd.d/',
-                ## https://support.amd.com/en-us/kb-articles/Pages/AMDGPU-PRO-Driver-for-Linux-Release-Notes.aspx
-                ## says you need version 1.0.61 of the vulkan sdk, so I'm guessing this is the correct version supported by this driver
-                #'sed -i "s@abi_versions\(.*\)0.9.0\(.*\)@api_version\\11.0.61\\2@" "${pkgdir}"/usr/share/vulkan/icd.d/amd_icd64.json',
-                #'rm -rf "${pkgdir}"/etc/vulkan/'
-            #]
-        #),
-
-        #'amdgpu-pro-vdpau': Package(
-            #desc = "The AMDGPU Pro VDPAU driver",
-            #extra_commands = [
-                #'mkdir -p "${pkgdir}"/usr/lib/',
-                #'ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib/libvdpau_amdgpu.so.1.0.0',
-                #'ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib/libvdpau_amdgpu.so.1',
-                #'ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib/libvdpau_amdgpu.so',
-            #]
-        #),
-
-        #'amdgpu-pro-mesa-omx': Package(
-            #desc = "Mesa OpenMAX video drivers for AMDGPU Pro",
-        #),
-
-        #'amdgpu-pro-gst-omx': Package(
-            #desc = "GStreamer OpenMAX plugins for AMDGPU Pro",
-        #),
-
-        #'lib32-amdgpu-pro': Package(
-            #desc = "The AMDGPU Pro driver package (32bit libraries)",
-            #extra_commands = [
-                #'mkdir -p "${pkgdir}"/usr/lib32/',
-                #'mv "${pkgdir}"/usr/lib/i386-linux-gnu/dri "${pkgdir}"/usr/lib32/',
-
-                #'rm -rf "${pkgdir}"/etc',
-                #'mkdir -p "${pkgdir}/etc/ld.so.conf.d/"',
-                #'echo "/opt/amdgpu-pro/lib/i386-linux-gnu/" > "${pkgdir}"/etc/ld.so.conf.d/lib32-amdgpu-pro.conf'
-            #]
-        #),
-
-        #'lib32-amdgpu-pro-opencl': Package(
-            #desc = "The AMDGPU Pro OpenCL implementation",
-            #provides  = ['lib32-opencl-driver']
-        #),
-
-        #'lib32-amdgpu-pro-vulkan': Package(
-            #desc = "The AMDGPU Pro Vulkan driver (32bit libraries)",
-            #provides = ['lib32-vulkan-driver'],
-            #extra_commands = [
-                #'mkdir -p "${pkgdir}"/usr/share/vulkan/icd.d/',
-                #'mv "${pkgdir}"/etc/vulkan/icd.d/amd_icd32.json "${pkgdir}"/usr/share/vulkan/icd.d/',
-                ## https://support.amd.com/en-us/kb-articles/Pages/AMDGPU-PRO-Driver-for-Linux-Release-Notes.aspx
-                ## says you need version 1.0.61 of the vulkan sdk, so I'm guessing this is the correct version supported by this driver
-                #'sed -i "s@abi_versions\(.*\)0.9.0\(.*\)@api_version\\11.0.61\\2@" "${pkgdir}"/usr/share/vulkan/icd.d/amd_icd32.json',
-                #'rm -rf "${pkgdir}"/etc/vulkan/'
-            #]
-        #),
-
-        #'lib32-amdgpu-pro-libdrm': Package(
-            #desc = "The AMDGPU Pro userspace interface to kernel DRM services (32bit libraries)",
-            #conflicts = ['lib32-libdrm'],
-            #provides = ['lib32-libdrm'],
-        #),
-
-        #'lib32-amdgpu-pro-libgl': Package(
-            #desc = "The AMDGPU Pro libgl library symlinks (32bit libraries)",
-            #conflicts = ['lib32-libgl'],
-            #provides  = ['lib32-libgl'],
-            #extra_commands = [
-                #'rm -rf "${pkgdir}"/etc',
-            #]
-        #),
-
-        #'lib32-amdgpu-pro-vdpau': Package(
-            #desc = "The AMDGPU Pro VDPAU driver (32bit libraries)",
-            #extra_commands = [
-                #'mkdir -p "${pkgdir}"/usr/lib32/',
-                #'ln -s /opt/amdgpu-pro/lib/i386-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib32/libvdpau_amdgpu.so.1.0.0',
-                #'ln -s /opt/amdgpu-pro/lib/i386-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib32/libvdpau_amdgpu.so.1',
-                #'ln -s /opt/amdgpu-pro/lib/i386-linux-gnu/vdpau/libvdpau_amdgpu.so.1.0.0 "${pkgdir}"/usr/lib32/libvdpau_amdgpu.so',
-            #]
-        #),
-
-        #'lib32-amdgpu-pro-mesa-omx': Package(
-            #desc = "Mesa OpenMAX video drivers for AMDGPU Pro (32bit libraries)",
-            #extra_commands = [
-                #'rm -f "${pkgdir}"/etc/xdg/gstomx.conf'
-            #]
-        #),
-
-        #'lib32-amdgpu-pro-gst-omx': Package(
-            #desc = "GStreamer OpenMAX plugins for AMDGPU Pro (32bit libraries)",
-        #),
-
-        #'xf86-video-amdgpu-pro': Package(
-            #desc = "The AMDGPU Pro X.org video driver",
-            #conflicts = ['xf86-video-amdgpu', 'xorg-server<1.19.0', 'X-ABI-VIDEODRV_VERSION<23', 'X-ABI-VIDEODRV_VERSION>=24'],
-            #provides  = ['xf86-video-amdgpu'], # in case anything depends on that
-            #groups = ['xorg-drivers'],
-        #)
 
         # Further is made by me (Ashark)
         # To make a more human readable Packages file I used this:
@@ -289,107 +146,6 @@ def gen_arch_packages():
 
 # this maps which deb packages should go into specific arch package
 packages_map = {
-    #'amdgpu-pro':                       'amdgpu-pro',        # deb is metapackage
-    #'amdgpu-pro-core':                  'amdgpu-pro',        # deb is metapackage
-    #'libgbm1-amdgpu-pro':               'amdgpu-pro',
-    #'libgbm1-amdgpu-pro-base':          'amdgpu-pro',
-    #'libgbm1-amdgpu-pro-dev':           'amdgpu-pro',
-    #'ids-amdgpu-pro':                   'amdgpu-pro',
-
-    #'libllvm5.0-amdgpu-pro':            'amdgpu-pro',
-    #'llvm-amdgpu-pro-5.0-dev':          'amdgpu-pro',
-    #'llvm-amdgpu-pro-5.0':              'amdgpu-pro',
-    #'llvm-amdgpu-pro-5.0-runtime':      'amdgpu-pro',
-    #'llvm-amdgpu-pro-runtime':          'amdgpu-pro',
-    #'llvm-amdgpu-pro-dev':              'amdgpu-pro',
-
-    #'gst-omx-amdgpu-pro':               'amdgpu-pro-gst-omx',
-    #'mesa-amdgpu-pro-omx-drivers':      'amdgpu-pro-mesa-omx',
-
-    #'amdgpu-pro-dkms':                  'amdgpu-pro-dkms',
-
-    #'clinfo-amdgpu-pro':                'amdgpu-pro-opencl',
-    #'libopencl1-amdgpu-pro':            'amdgpu-pro-opencl',
-    #'opencl-amdgpu-pro-icd':            'amdgpu-pro-opencl',
-    #'rocm-amdgpu-pro':                  'amdgpu-pro-opencl',
-    #'rocm-amdgpu-pro-icd':              'amdgpu-pro-opencl',
-    #'rocm-amdgpu-pro-opencl':           'amdgpu-pro-opencl',
-    #'rocm-amdgpu-pro-opencl-dev':       'amdgpu-pro-opencl',
-    #'rocr-amdgpu-pro':                  'amdgpu-pro-opencl',
-    #'rocr-amdgpu-pro-dev':              'amdgpu-pro-opencl',
-    #'roct-amdgpu-pro':                  'amdgpu-pro-opencl',
-    #'roct-amdgpu-pro-dev':              'amdgpu-pro-opencl',
-    #'hsa-runtime-tools-amdgpu-pro':     'amdgpu-pro-opencl',
-    #'hsa-runtime-tools-amdgpu-pro-dev': 'amdgpu-pro-opencl',
-    #'hsa-ext-amdgpu-pro-finalize':      'amdgpu-pro-opencl',
-    #'hsa-ext-amdgpu-pro-image':         'amdgpu-pro-opencl',
-
-    #'vulkan-amdgpu-pro':                'amdgpu-pro-vulkan',
-
-    #'libdrm-amdgpu-pro-amdgpu1':        'amdgpu-pro-libdrm',
-    #'libdrm-amdgpu-pro-radeon1':        'amdgpu-pro-libdrm',
-    #'libdrm-amdgpu-pro-dev':            'amdgpu-pro-libdrm',
-    #'libdrm-amdgpu-pro-utils':          'amdgpu-pro-libdrm',
-    #'libdrm2-amdgpu-pro':               'amdgpu-pro-libdrm',
-
-    ## the following libs will be symlinked by amdgpu-pro-libgl, just like mesa-libgl and nvidia-libgl
-    #'libegl1-amdgpu-pro':               'amdgpu-pro-libgl',
-    #'libgl1-amdgpu-pro-appprofiles':    'amdgpu-pro-libgl',
-    ### contents of this should probably go into /usr/lib/xorg/modules/dri/ instead of /usr/lib/dri ?
-    #'libgl1-amdgpu-pro-dri':            'amdgpu-pro',
-    #'libgl1-amdgpu-pro-ext':            'amdgpu-pro-libgl',
-    #'libgl1-amdgpu-pro-glx':            'amdgpu-pro-libgl',
-    #'libgles2-amdgpu-pro':              'amdgpu-pro-libgl',
-    #'libglamor-amdgpu-pro-dev':         None, # disabled
-
-    #'libvdpau-amdgpu-pro':              'amdgpu-pro-vdpau',
-    #'xserver-xorg-video-amdgpu-pro':    'xf86-video-amdgpu-pro',
-    #'xserver-xorg-video-glamoregl-amdgpu-pro':    None,
-    #'xserver-xorg-video-modesetting-amdgpu-pro':    'xf86-video-amdgpu-pro',
-
-
-    #'lib32-amdgpu-pro':                 'lib32-amdgpu-pro', # deb is a metapackage
-    #'lib32-amdgpu-pro-lib32':           'lib32-amdgpu-pro', # deb is a metapackage
-    #'lib32-libgbm1-amdgpu-pro':         'lib32-amdgpu-pro',
-    #'lib32-libgbm1-amdgpu-pro-dev':     'lib32-amdgpu-pro',
-
-    #'lib32-gst-omx-amdgpu-pro':         'lib32-amdgpu-pro-gst-omx',
-    #'lib32-mesa-amdgpu-pro-omx-drivers':'lib32-amdgpu-pro-mesa-omx',
-
-    #'lib32-opencl-amdgpu-pro-icd':      'lib32-amdgpu-pro-opencl',
-    #'lib32-libopencl1-amdgpu-pro':      'lib32-amdgpu-pro-opencl',
-    #'lib32-rocm-amdgpu-pro':            'lib32-amdgpu-pro-opencl',
-    #'lib32-rocm-amdgpu-pro-icd':        'lib32-amdgpu-pro-opencl',
-    #'lib32-rocm-amdgpu-pro-opencl':     'lib32-amdgpu-pro-opencl',
-    #'lib32-rocm-amdgpu-pro-opencl-dev': 'lib32-amdgpu-pro-opencl',
-    #'lib32-rocr-amdgpu-pro':            'lib32-amdgpu-pro-opencl',
-    #'lib32-rocr-amdgpu-pro-dev':        'lib32-amdgpu-pro-opencl',
-    #'lib32-roct-amdgpu-pro':            'lib32-amdgpu-pro-opencl',
-    #'lib32-roct-amdgpu-pro-dev':        'lib32-amdgpu-pro-opencl',
-
-    #'lib32-vulkan-amdgpu-pro':          'lib32-amdgpu-pro-vulkan',
-
-    #'lib32-libdrm-amdgpu-pro-amdgpu1':  'lib32-amdgpu-pro-libdrm',
-    #'lib32-libdrm-amdgpu-pro-radeon1':  'lib32-amdgpu-pro-libdrm',
-    #'lib32-libdrm-amdgpu-pro-dev':      'lib32-amdgpu-pro-libdrm',
-    #'lib32-libdrm2-amdgpu-pro':         'lib32-amdgpu-pro-libdrm',
-
-
-    #'lib32-libegl1-amdgpu-pro':         'lib32-amdgpu-pro-libgl',
-    #'lib32-libgl1-amdgpu-pro-dri':      'lib32-amdgpu-pro',
-    #'lib32-libgl1-amdgpu-pro-ext':      'lib32-amdgpu-pro-libgl',
-    #'lib32-libgl1-amdgpu-pro-glx':      'lib32-amdgpu-pro-libgl',
-    #'lib32-libgles2-amdgpu-pro':        'lib32-amdgpu-pro-libgl',
-    #'lib32-libglamor-amdgpu-pro-dev':   None,
-
-    #'lib32-libvdpau-amdgpu-pro':        'lib32-amdgpu-pro-vdpau',
-
-    ## the following are not needed and should be discarded:
-    #'lib32-xserver-xorg-video-amdgpu-pro':              None,
-    #'lib32-xserver-xorg-video-glamoregl-amdgpu-pro':    None,
-    #'lib32-xserver-xorg-video-modesetting-amdgpu-pro':  None,
-    #'lib32-clinfo-amdgpu-pro': None,
-    #'lib32-libdrm-amdgpu-pro-utils': None,
 
     ## Further is made by me (Ashark)
     # To generate this list I used:

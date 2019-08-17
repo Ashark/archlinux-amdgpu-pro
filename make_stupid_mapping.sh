@@ -82,7 +82,6 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
             archpkg=None; comment="not_installed_even_in_ubuntu"
             ;;
          libwayland-amdgpu-@(client0|client0:i386|server0|server0:i386)\
-        |wsa-amdgpu@(|:i386)\
         ) 
             archpkg=None; comment="installed_in_ubuntu_but_probably_not_needed"
             ;;
