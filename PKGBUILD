@@ -12,8 +12,6 @@ amdgpu-core-meta
 amdgpu-pro-core-meta
 amf-amdgpu-pro
 hip-amdgpu-pro
-libdrm-amdgpu
-lib32-libdrm-amdgpu
 amdgpu-pro-libgl
 lib32-amdgpu-pro-libgl
 opencl-amdgpu-pro-comgr
@@ -114,41 +112,11 @@ package_hip-amdgpu-pro () {
     move_copyright
 }
 
-package_libdrm-amdgpu () {
-    pkgdesc="Userspace interface to amdgpu-specific kernel DRM services -- runtime"
-    license=('MIT')
-    provides=('libdrm')
-    depends=("amdgpu-core-meta=${major}_${minor}-${pkgrel}" "glibc")
-
-    extract_deb "${srcdir}"/amdgpu-pro-${major}-${minor}-ubuntu-18.04/libdrm-amdgpu-amdgpu1_2.4.98-${minor}_amd64.deb
-    extract_deb "${srcdir}"/amdgpu-pro-${major}-${minor}-ubuntu-18.04/libdrm-amdgpu-common_1.0.0-${minor}_all.deb
-    extract_deb "${srcdir}"/amdgpu-pro-${major}-${minor}-ubuntu-18.04/libdrm2-amdgpu_2.4.98-${minor}_amd64.deb
-    move_copyright
-
-    # extra_commands:
-    mv ${pkgdir}/lib/* ${pkgdir}/usr/lib
-    rmdir ${pkgdir}/lib
-}
-
-package_lib32-libdrm-amdgpu () {
-    pkgdesc="Userspace interface to amdgpu-specific kernel DRM services -- runtime (32-bit)"
-    license=('MIT')
-    provides=('lib32-libdrm')
-    depends=("amdgpu-core-meta=${major}_${minor}-${pkgrel}" "lib32-glibc" "libdrm-amdgpu=${major}_${minor}-${pkgrel}")
-
-    extract_deb "${srcdir}"/amdgpu-pro-${major}-${minor}-ubuntu-18.04/libdrm-amdgpu-amdgpu1_2.4.98-${minor}_i386.deb
-    extract_deb "${srcdir}"/amdgpu-pro-${major}-${minor}-ubuntu-18.04/libdrm2-amdgpu_2.4.98-${minor}_i386.deb
-    move_copyright
-
-    # extra_commands:
-    mv ${pkgdir}/lib ${pkgdir}/usr
-}
-
 package_amdgpu-pro-libgl () {
     pkgdesc="AMDGPU Pro OpenGL driver"
     license=('custom: AMDGPU-PRO EULA')
     provides=('libgl')
-    depends=("amdgpu-pro-core-meta=${major}_${minor}-${pkgrel}" "gcc-libs" "glibc" "libdrm-amdgpu=${major}_${minor}-${pkgrel}" "libx11" "libxcb" "libxdamage" "libxext" "libxfixes" "libxxf86vm")
+    depends=("amdgpu-pro-core-meta=${major}_${minor}-${pkgrel}" "gcc-libs" "glibc" "libx11" "libxcb" "libxdamage" "libxext" "libxfixes" "libxxf86vm")
     backup=(etc/gbm/gbm.conf)
 
     extract_deb "${srcdir}"/amdgpu-pro-${major}-${minor}-ubuntu-18.04/libegl1-amdgpu-pro_${major}-${minor}_amd64.deb
@@ -170,7 +138,7 @@ package_lib32-amdgpu-pro-libgl () {
     pkgdesc="AMDGPU Pro OpenGL driver (32-bit)"
     license=('custom: AMDGPU-PRO EULA')
     provides=('lib32-libgl')
-    depends=("amdgpu-pro-core-meta=${major}_${minor}-${pkgrel}" "amdgpu-pro-libgl=${major}_${minor}-${pkgrel}" "lib32-gcc-libs" "lib32-glibc" "lib32-libdrm-amdgpu=${major}_${minor}-${pkgrel}" "lib32-libx11" "lib32-libxcb" "lib32-libxdamage" "lib32-libxext" "lib32-libxfixes" "lib32-libxxf86vm")
+    depends=("amdgpu-pro-core-meta=${major}_${minor}-${pkgrel}" "amdgpu-pro-libgl=${major}_${minor}-${pkgrel}" "lib32-gcc-libs" "lib32-glibc" "lib32-libx11" "lib32-libxcb" "lib32-libxdamage" "lib32-libxext" "lib32-libxfixes" "lib32-libxxf86vm")
     backup=(etc/amd/amdrc etc/ld.so.conf.d/10-amdgpu-pro-i386.conf)
 
     extract_deb "${srcdir}"/amdgpu-pro-${major}-${minor}-ubuntu-18.04/libegl1-amdgpu-pro_${major}-${minor}_i386.deb
@@ -209,7 +177,7 @@ package_opencl-amdgpu-pro-pal () {
     pkgdesc="AMDGPU Pro OpenCL driver PAL"
     license=('custom: AMDGPU-PRO EULA')
     provides=('opencl-driver')
-    depends=("amdgpu-pro-core-meta=${major}_${minor}-${pkgrel}" "glibc" "libdrm-amdgpu=${major}_${minor}-${pkgrel}" "opencl-amdgpu-pro-comgr=${major}_${minor}-${pkgrel}")
+    depends=("amdgpu-pro-core-meta=${major}_${minor}-${pkgrel}" "glibc" "opencl-amdgpu-pro-comgr=${major}_${minor}-${pkgrel}")
     backup=(etc/OpenCL/vendors/amdocl64.icd)
 
     extract_deb "${srcdir}"/amdgpu-pro-${major}-${minor}-ubuntu-18.04/opencl-amdgpu-pro-icd_${major}-${minor}_amd64.deb
@@ -220,7 +188,7 @@ package_opencl-amdgpu-pro-orca () {
     pkgdesc="AMDGPU Pro OpenCL driver ORCA aka legacy"
     license=('custom: AMDGPU-PRO EULA')
     provides=('opencl-driver')
-    depends=("amdgpu-pro-core-meta=${major}_${minor}-${pkgrel}" "glibc" "libdrm-amdgpu=${major}_${minor}-${pkgrel}")
+    depends=("amdgpu-pro-core-meta=${major}_${minor}-${pkgrel}" "glibc")
     backup=(etc/OpenCL/vendors/amdocl-orca64.icd)
 
     extract_deb "${srcdir}"/amdgpu-pro-${major}-${minor}-ubuntu-18.04/opencl-orca-amdgpu-pro-icd_${major}-${minor}_amd64.deb
@@ -231,7 +199,7 @@ package_lib32-opencl-amdgpu-pro-orca () {
     pkgdesc="AMDGPU Pro OpenCL driver ORCA aka legacy (32-bit)"
     license=('custom: AMDGPU-PRO EULA')
     provides=('lib32-opencl-driver')
-    depends=("amdgpu-pro-core-meta=${major}_${minor}-${pkgrel}" "lib32-glibc" "lib32-libdrm-amdgpu=${major}_${minor}-${pkgrel}")
+    depends=("amdgpu-pro-core-meta=${major}_${minor}-${pkgrel}" "lib32-glibc")
     backup=(etc/OpenCL/vendors/amdocl-orca32.icd)
 
     extract_deb "${srcdir}"/amdgpu-pro-${major}-${minor}-ubuntu-18.04/opencl-orca-amdgpu-pro-icd_${major}-${minor}_i386.deb

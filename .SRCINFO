@@ -39,28 +39,12 @@ pkgname = hip-amdgpu-pro
 	depends = amdgpu-pro-core-meta=19.30_855429-1
 	depends = glibc
 
-pkgname = libdrm-amdgpu
-	pkgdesc = Userspace interface to amdgpu-specific kernel DRM services -- runtime
-	license = MIT
-	depends = amdgpu-core-meta=19.30_855429-1
-	depends = glibc
-	provides = libdrm
-
-pkgname = lib32-libdrm-amdgpu
-	pkgdesc = Userspace interface to amdgpu-specific kernel DRM services -- runtime (32-bit)
-	license = MIT
-	depends = amdgpu-core-meta=19.30_855429-1
-	depends = lib32-glibc
-	depends = libdrm-amdgpu=19.30_855429-1
-	provides = lib32-libdrm
-
 pkgname = amdgpu-pro-libgl
 	pkgdesc = AMDGPU Pro OpenGL driver
 	license = custom: AMDGPU-PRO EULA
 	depends = amdgpu-pro-core-meta=19.30_855429-1
 	depends = gcc-libs
 	depends = glibc
-	depends = libdrm-amdgpu=19.30_855429-1
 	depends = libx11
 	depends = libxcb
 	depends = libxdamage
@@ -77,7 +61,6 @@ pkgname = lib32-amdgpu-pro-libgl
 	depends = amdgpu-pro-libgl=19.30_855429-1
 	depends = lib32-gcc-libs
 	depends = lib32-glibc
-	depends = lib32-libdrm-amdgpu=19.30_855429-1
 	depends = lib32-libx11
 	depends = lib32-libxcb
 	depends = lib32-libxdamage
@@ -104,7 +87,6 @@ pkgname = opencl-amdgpu-pro-pal
 	license = custom: AMDGPU-PRO EULA
 	depends = amdgpu-pro-core-meta=19.30_855429-1
 	depends = glibc
-	depends = libdrm-amdgpu=19.30_855429-1
 	depends = opencl-amdgpu-pro-comgr=19.30_855429-1
 	provides = opencl-driver
 	backup = etc/OpenCL/vendors/amdocl64.icd
@@ -114,7 +96,6 @@ pkgname = opencl-amdgpu-pro-orca
 	license = custom: AMDGPU-PRO EULA
 	depends = amdgpu-pro-core-meta=19.30_855429-1
 	depends = glibc
-	depends = libdrm-amdgpu=19.30_855429-1
 	provides = opencl-driver
 	backup = etc/OpenCL/vendors/amdocl-orca64.icd
 
@@ -123,7 +104,6 @@ pkgname = lib32-opencl-amdgpu-pro-orca
 	license = custom: AMDGPU-PRO EULA
 	depends = amdgpu-pro-core-meta=19.30_855429-1
 	depends = lib32-glibc
-	depends = lib32-libdrm-amdgpu=19.30_855429-1
 	provides = lib32-opencl-driver
 	backup = etc/OpenCL/vendors/amdocl-orca32.icd
 

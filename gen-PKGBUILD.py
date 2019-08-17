@@ -70,21 +70,21 @@ def gen_arch_packages():
         'amdgpu-pro-core-meta': Package( desc = "Config file /etc/ld.so.conf.d/10-amdgpu-pro.conf" ),
         'amf-amdgpu-pro': Package(  ),
         'hip-amdgpu-pro': Package(desc="HIP-CLANG runtime. HIP-CLANG allows developers to convert CUDA code to common C++"),
-        'libdrm-amdgpu': Package(
-            provides = ['libdrm'],
-            extra_commands = [
-                # This applies to libdrm2-amdgpu
-                "mv ${pkgdir}/lib/* ${pkgdir}/usr/lib",
-                "rmdir ${pkgdir}/lib"
-            ],
-        ),
-        'lib32-libdrm-amdgpu': Package(
-            provides=['lib32-libdrm'],
-            extra_commands = [
-                # This applies to libdrm2-amdgpu:i386
-                "mv ${pkgdir}/lib ${pkgdir}/usr"
-            ],
-        ),
+        # 'libdrm-amdgpu': Package(
+        #     provides = ['libdrm'],
+        #     extra_commands = [
+        #         # This applies to libdrm2-amdgpu
+        #         "mv ${pkgdir}/lib/* ${pkgdir}/usr/lib",
+        #         "rmdir ${pkgdir}/lib"
+        #     ],
+        # ),
+        # 'lib32-libdrm-amdgpu': Package(
+        #     provides=['lib32-libdrm'],
+        #     extra_commands = [
+        #         # This applies to libdrm2-amdgpu:i386
+        #         "mv ${pkgdir}/lib ${pkgdir}/usr"
+        #     ],
+        # ),
         'amdgpu-pro-libgl': Package(
             desc = "AMDGPU Pro OpenGL driver",
             provides  = ['libgl'],
@@ -180,17 +180,17 @@ packages_map = {
     'gst-omx-amdgpu':                             None,                            #unneeded_open_component
     'gst-omx-amdgpu:i386':                        None,                            #unneeded_open_component
     'hip-amdgpu-pro':                             'hip-amdgpu-pro',                #
-    'libdrm-amdgpu-amdgpu1':                      'libdrm-amdgpu',                 #needed_because_probably_changed_by_amd_and_doesnt_work_with_standard_libdrm
-    'libdrm-amdgpu-amdgpu1:i386':                 'lib32-libdrm-amdgpu',           #needed_because_probably_changed_by_amd_and_doesnt_work_with_standard_libdrm
-    'libdrm-amdgpu-common':                       'libdrm-amdgpu',                 #needed_because_probably_changed_by_amd_and_doesnt_work_with_standard_libdrm
+    'libdrm-amdgpu-amdgpu1':                      None,                            #unneeded_open_component
+    'libdrm-amdgpu-amdgpu1:i386':                 None,                            #unneeded_open_component
+    'libdrm-amdgpu-common':                       None,                            #unneeded_open_component
     'libdrm-amdgpu-dev':                          None,                            #not_installed_even_in_ubuntu
     'libdrm-amdgpu-dev:i386':                     None,                            #not_installed_even_in_ubuntu
     'libdrm-amdgpu-radeon1':                      None,                            #not_installed_even_in_ubuntu
     'libdrm-amdgpu-radeon1:i386':                 None,                            #not_installed_even_in_ubuntu
     'libdrm-amdgpu-utils':                        None,                            #not_installed_even_in_ubuntu
     'libdrm-amdgpu-utils:i386':                   None,                            #not_installed_even_in_ubuntu
-    'libdrm2-amdgpu':                             'libdrm-amdgpu',                 #needed_because_probably_changed_by_amd_and_doesnt_work_with_standard_libdrm
-    'libdrm2-amdgpu:i386':                        'lib32-libdrm-amdgpu',           #needed_because_probably_changed_by_amd_and_doesnt_work_with_standard_libdrm
+    'libdrm2-amdgpu':                             None,                            #unneeded_open_component
+    'libdrm2-amdgpu:i386':                        None,                            #unneeded_open_component
     'libegl1-amdgpu-mesa':                        None,                            #unneeded_open_component
     'libegl1-amdgpu-mesa:i386':                   None,                            #unneeded_open_component
     'libegl1-amdgpu-mesa-dev':                    None,                            #unneeded_open_component
@@ -737,15 +737,16 @@ class Package:
             deb_deps = [ dependencyNameWithVersionRE.match(dep).groups() for dep in deb_deps ]
             deb_deps = [(replace_deps[deb_pkg_name] if deb_pkg_name in replace_deps else deb_pkg_name, version) for deb_pkg_name, version in deb_deps]
             deb_deps = ["\"" + convertName(deb_pkg_name, deb_info, domap) + convertVersionSpecifier(deb_pkg_name, version) + "\"" for deb_pkg_name, version in deb_deps if deb_pkg_name]
+            deb_deps = [ dep for dep in deb_deps if dep != "\"\"" ]
             deb_deps = [ dep for dep in deb_deps if not dep.startswith("\"=")]
 
-            if self.arch_pkg_name == "opencl-amdgpu-pro-orca":
-                deb_deps.append('\"libdrm-amdgpu=${major}_${minor}-${pkgrel}\"')
-            if self.arch_pkg_name == "lib32-opencl-amdgpu-pro-orca":
-                deb_deps.append('\"lib32-libdrm-amdgpu=${major}_${minor}-${pkgrel}\"')
-            # I am not sure if it is needed for pal variant, but just to be safe:
-            if self.arch_pkg_name == "opencl-amdgpu-pro-pal":
-                deb_deps.append('\"libdrm-amdgpu=${major}_${minor}-${pkgrel}\"')
+            # if self.arch_pkg_name == "opencl-amdgpu-pro-orca":
+            #     deb_deps.append('\"libdrm-amdgpu=${major}_${minor}-${pkgrel}\"')
+            # if self.arch_pkg_name == "lib32-opencl-amdgpu-pro-orca":
+            #     deb_deps.append('\"lib32-libdrm-amdgpu=${major}_${minor}-${pkgrel}\"')
+            # # I am not sure if it is needed for pal variant, but just to be safe:
+            # if self.arch_pkg_name == "opencl-amdgpu-pro-pal":
+            #     deb_deps.append('\"libdrm-amdgpu=${major}_${minor}-${pkgrel}\"')
 
             # remove all dependencies on itself
             deb_deps = [ dep for dep in deb_deps if dep[1:len(self.arch_pkg_name)+1] != self.arch_pkg_name ]
@@ -939,7 +940,9 @@ def convertName(name, deb_info, domap=True):
 
     if unambiguous_name in packages_map:
         if domap:
-            return packages_map[unambiguous_name]
+            if packages_map[unambiguous_name]: # this is to prevent returning None type, because we want to concatenate with str type
+                return packages_map[unambiguous_name]
+            return ""
         return ""
     if ret == "amdgpu-core":
         return packages_map[ret]

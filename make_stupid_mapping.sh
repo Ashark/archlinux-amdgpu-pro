@@ -94,12 +94,14 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
          libdrm-amdgpu@(-amdgpu1|-common)\
         |libdrm2-amdgpu\
         )
-            archpkg=libdrm-amdgpu; comment="needed_because_probably_changed_by_amd_and_doesnt_work_with_standard_libdrm"
+            #archpkg=libdrm-amdgpu; comment="needed_because_probably_changed_by_amd_and_doesnt_work_with_standard_libdrm" # since 19.30-838629 it seems not true anymore
+            archpkg=None; comment="unneeded_open_component"
             ;;
         libdrm-amdgpu@(-amdgpu1:i386)\
         |libdrm2-amdgpu:i386\
         )
-            archpkg=lib32-libdrm-amdgpu; comment="needed_because_probably_changed_by_amd_and_doesnt_work_with_standard_libdrm"
+            # archpkg=lib32-libdrm-amdgpu; comment="needed_because_probably_changed_by_amd_and_doesnt_work_with_standard_libdrm" # since 19.30-838629 it seems not true anymore
+            archpkg=None; comment="unneeded_open_component"
             ;;
 
          libegl1-amdgpu-pro\
