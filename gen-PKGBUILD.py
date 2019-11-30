@@ -148,7 +148,7 @@ def gen_arch_packages():
 from packages_map import packages_map
 
 # This maps debian dependencies to arch linux dependencies
-from replace_deps import  replace_deps
+from replace_deps import replace_deps
 
 # Almost every pro package depends on these two, but I omited them (hoping they are not needed, but not tested), so disabling these dependencies globally
 replace_deps['libwayland-amdgpu-client0'] = None
@@ -170,26 +170,6 @@ architectures_map = {
     "i386": "i686",
     "all": "any"
 }
-
-# For more convenient development, I (Ashark) have unpackaed all deb packages. For this I did:
-    # tmpdir=unpacked_debs; rm -rf "$tmpdir"; mkdir "$tmpdir";
-    # for file in $(ls *deb); #  amdgpu_19.20-812932_amd64.deb #
-    # do
-    #     echo processing $file
-    #     cd "$tmpdir"; mkdir $file; cd $file
-    #     ar x ../../$file
-    #     rm debian-binary
-    #     tar -xf control.tar.xz; rm control.tar.xz;
-    #     tar -xf data.tar.xz; rm data.tar.xz;
-    #
-    #     find usr/share/doc -type f -name 'copyright' -exec mv {} . \;
-    #     find usr/share/doc -type f -name "changelog.Debian.gz" -exec mv {} . \;
-    #
-    #     find . -type d -empty -delete
-    #
-    #     cd ../..
-    # done
-
 
 # To see list of uniq licences files and packages that uses them, I used this:
     # cd unpacked_debs
@@ -253,42 +233,6 @@ for patch in patches:
 
 #sources.append("20-amdgpu.conf")
 #sha256sums.append(hashFile("20-amdgpu.conf"))
-
-# To see transaction scripts of debian packages I (Ashark) used this:
-    # cd unpacked_debs
-    # rm *.install_scripts.sh
-    # for dir in $(ls); do
-    #     for file in postinst preinst prerm; do
-    #         if [ -f $dir/$file ]; then
-    #             file_md5=$(md5sum $dir/$file)
-    #             echo -e "# $file_md5"  >> $dir.install_scripts.sh
-    #             cat $dir/$file >> $dir.install_scripts.sh
-    #         fi
-    #     done
-    # done
-# After that its needed to carefully convert them to pacman .install files or hooks
-
-# All (except two) libs debian packages have just ldconfig awaiting trigger.
-# To check this I (Ashark) used the following:
-    #cd unpacked_debs
-    #for dir in $(ls -d *deb);
-    #do
-        #cd "$dir"
-        #if [ -f triggers ]; then
-            #if [[ $(cat triggers) == "# Triggers added by dh_makeshlibs/11.1.6ubuntu2
-    #activate-noawait ldconfig" ]];
-            #then     cd ..; continue; fi
-            #echo $dir
-            #cat triggers
-        #fi
-        #cd ..
-    #done
-# Two exceptions are:
-    #libgl1-amdgpu-mesa-dri_18.3.0-812932_amd64.deb
-    #interest /usr/lib/x86_64-linux-gnu/dri
-    #libgl1-amdgpu-mesa-dri_18.3.0-812932_i386.deb
-    #interest /usr/lib/i386-linux-gnu/dri
-# They are triggered when files are changed in interest path. I (Ashark) created corresponding alpm hooks.
 
 
 header_tpl = """# Author: Janusz Lewandowski <lew21@xtreeme.org>
