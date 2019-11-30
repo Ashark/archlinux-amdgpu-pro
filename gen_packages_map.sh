@@ -7,7 +7,7 @@ echo -e "# for driver version `sed -n 2p Packages-extracted | cut -f 2 -d " "`\n
 echo "packages_map = {"
 # get list of deb-metapackages:
 cat Packages-extracted | grep -vE "Filename|Size|MD5sum|SHA1|SHA256|Priority|Maintainer|Version|Description|^ +" | grep -B4 "Section: metapackages" | grep -vE "Depends:|Section:" > tmp_Packages.txt
-echo > deb_metapackages_list
+echo > tmp_deb_metapackages_list.txt
 
 while read line; do
     if [[ $line =~ ^Package* ]]; then pkg=$(echo $line | sed "s/^Package: //"); continue; fi
