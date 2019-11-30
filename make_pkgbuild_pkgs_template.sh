@@ -12,5 +12,5 @@ for line in $(cat tmp_arch_packages.txt); do
     fi
 done
 rm tmp_already_used.txt
-
+rm tmp_arch_packages.txt
 

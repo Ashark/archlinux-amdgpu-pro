@@ -50,3 +50,12 @@ echo -e "# Generated with ./gen_replace_deps.sh > replace_deps.py\n\
 echo "replace_deps = {"
 cat tmp_prepared_columns.txt
 echo "}"
+
+rm tmp_amdgpu_deps_in_debian.txt
+rm tmp_deps_in_debian_amdgpu.txt
+rm tmp_extra_deps_in_debian_amdgpu.txt
+rm tmp_extra_deps_in_debian_removed_versions.txt
+rm tmp_extra_deps_in_debian.txt
+rm tmp_prepared_columns.txt
+rm tmp_removed_versions_amdgpu.txt
+rm tmp_translated_deps.txt
