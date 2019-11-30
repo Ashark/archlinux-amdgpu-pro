@@ -147,97 +147,12 @@ def gen_arch_packages():
 # This maps which deb packages should go into specific arch package
 from packages_map import packages_map
 
+# This maps debian dependencies to arch linux dependencies
+from replace_deps import  replace_deps
 
-## maps debian dependencies to arch dependencies
-replace_deps = {
-    # # Further is made by me (Ashark)
-    # # To make this list I used:
-    # cat Packages | egrep "Depends|Suggests|Recommends" | sed 's/Depends: //' | sed 's/Suggests: //' | sed 's/Recommends: //'| sed 's/, /\n/g' | sort -u | grep -v "amdgpu" > tmp_extra_deps_in_debian.txt
-    # # Most deps containing amdgpu substring are provided packages. The only lines we will miss are: libva-amdgpu... and libvdpau-amdgpu... (I added them manually to the list).
-    # # The only lines with alternatives are: libtxc-dxtn-s2tc0 | libtxc-dxtn0 and libudev1 | libudev0. Left choises are ok here, so we do not parse for pipes.
-    # cat tmp_extra_deps_in_debian.txt | cut -f1 -d" " | sort -u > tmp_removed_versions.txt # removed versions
-    # echo > tmp_translated_deps.txt # clear file
-    # for line in $(cat tmp_removed_versions.txt); do
-    #     echo now processing $line;
-    #     arch_dep=`bash ./translate_deb_to_arch_dependency.sh $line`; # https://github.com/helixarch/debtap/issues/41#issuecomment-489166020
-    #     if [[ $arch_dep == "could_not_translate" ]]; then arch_str="'$line', #could_not_auto_translate";
-    #     elif [[ $arch_dep == "" ]]; then arch_str="None, #auto_translated";
-    #     else arch_str="'$arch_dep', #auto_translated"
-    #     fi
-    #     str="'$line': "; str="$str $arch_str"; echo $str >> tmp_translated_deps.txt;
-    # done
-    # cat tmp_translated_deps.txt | column -t | sed 's/^'\''/    '\''/' > tmp_prepared_columns.txt
-    # # Then we need to carefully check deps mapping manually.
-
-    'binfmt-support':                  'opera',                    #auto_translated
-    'dkms':                            'dkms',                     #auto_translated
-    'libc6':                           'glibc',                    #manually_mapped
-    'libcunit1':                       'cunit',                    #auto_translated
-    'libedit2':                        'libedit',                  #auto_translated
-    'libelf1':                         'libelf',                   #auto_translated
-    'libepoxy0':                       'libepoxy',                 #auto_translated
-    'libexpat1':                       'expat',                    #auto_translated
-    'libffi6':                         'libffi',                   #auto_translated
-    'libffi-dev':                      'libffi',                   #auto_translated
-    'libgcc1':                         None,                       #auto_translated
-    'libglib2.0-0':                    'glib2',                    #auto_translated
-    'libglide3':                       'glide',                    #auto_translated
-    'libgstreamer1.0-0':               'gstreamer',                #auto_translated
-    'libgstreamer-plugins-base1.0-0':  'gst-plugins-base-libs',    #auto_translated
-    'libjs-jquery':                    'jquery',                   #manually_mapped
-    'libjs-underscore':                'underscorejs',             #manually_mapped
-    'libmirclient-dev':                'libmirclient-dev',         #could_not_auto_translate
-    'libnuma1':                        'numactl',                  #auto_translated
-    'libomxil-bellagio0':              'libomxil-bellagio',        #auto_translated
-    'libpci3':                         None,                       #auto_translated
-    'libselinux1':                     'libselinux',               #auto_translated
-    'libstdc++6':                      'gcc-libs',                 #manually mapped
-    'libtinfo5':                       'ncurses5-compat-libs',     #manually_mapped
-    'libtinfo-dev':                    'ncurses',                  #manually_mapped
-    'libtxc-dxtn-s2tc0':               'libtxc_dxtn',              #manually_mapped
-    'libudev1':                        'systemd-libs',             #auto_translated
-    'libudev-dev':                     'systemd-libs',             #auto_translated
-    'libx11-6':                        'libx11',                   #auto_translated
-    'libx11-dev':                      'libx11',                   #auto_translated
-    'libx11-xcb1':                     'libx11',                   #auto_translated
-    'libx11-xcb-dev':                  'libx11',                   #auto_translated
-    'libxcb1':                         'libxcb',                   #auto_translated
-    'libxcb-dri2-0':                   'libxcb',                   #auto_translated
-    'libxcb-dri2-0-dev':               'libxcb',                   #auto_translated
-    'libxcb-dri3-0':                   'libxcb',                   #auto_translated
-    'libxcb-dri3-dev':                 'libxcb',                   #auto_translated
-    'libxcb-glx0':                     'libxcb',                   #auto_translated
-    'libxcb-glx0-dev':                 'libxcb',                   #auto_translated
-    'libxcb-present0':                 'libxcb',                   #auto_translated
-    'libxcb-present-dev':              'libxcb',                   #auto_translated
-    'libxcb-sync1':                    'libxcb',                   #auto_translated
-    'libxcb-sync-dev':                 'libxcb',                   #auto_translated
-    'libxcb-xfixes0':                  'libxcb',                   #auto_translated
-    'libxdamage1':                     'libxdamage',               #auto_translated
-    'libxdamage-dev':                  'libxdamage',               #auto_translated
-    'libxext6':                        'libxext',                  #auto_translated
-    'libxext-dev':                     'libxext',                  #auto_translated
-    'libxfixes3':                      'libxfixes',                #auto_translated
-    'libxfixes-dev':                   'libxfixes',                #auto_translated
-    'libxml2':                         'libxml2',                  #auto_translated
-    'libxshmfence1':                   'libxshmfence',             #auto_translated
-    'libxshmfence-dev':                'libxshmfence',             #auto_translated
-    'libxxf86vm1':                     'libxxf86vm',               #auto_translated
-    'libxxf86vm-dev':                  'libxxf86vm',               #auto_translated
-    'linux-firmware':                  None,                       #auto_translated
-    'x11proto-dri2-dev':               'x11proto-dri2-dev',        #could_not_auto_translate
-    'x11proto-gl-dev':                 'x11proto-gl-dev',          #could_not_auto_translate
-    'xserver-xorg-hwe-18.04':          None,                       # manually disabled.
-    'zlib1g':                          'zlib',                     #auto_translated
-
-    # Missed while inverted grepping of amdgpu substring:
-    'libva2':                          'libva',
-    'libvdpau1':                       'libvdpau',
-
-    # Almost every pro package depends on these two, but I omited them (hoping they are not needed, but not tested), so disabling these dependencies globally
-    'libwayland-amdgpu-client0': None,
-    'libwayland-amdgpu-server0': None,
-}
+# Almost every pro package depends on these two, but I omited them (hoping they are not needed, but not tested), so disabling these dependencies globally
+replace_deps['libwayland-amdgpu-client0'] = None
+replace_deps['libwayland-amdgpu-server0'] = None
 
 ## do not convert the dependencies listed to lib32 variants
 no_lib32_convert = [
