@@ -150,54 +150,6 @@ from packages_map import packages_map
 
 ## maps debian dependencies to arch dependencies
 replace_deps = {
-    #"libc6":                None,
-    #"libgcc1":              None,
-    #"libstdc++6":           None,
-    #"libx11-6":             "libx11",
-    #"libx11-xcb1":          None,
-    #"libxcb-dri2-0":        "libxcb",
-    #"libxcb-dri3-0":        "libxcb",
-    #"libxcb-present0":      "libxcb",
-    #"libxcb-sync1":         "libxcb",
-    #"libxcb-glx0":          "libxcb",
-    #"libxcb1":              "libxcb",
-    #"libxext6":             "libxext",
-    #"libxshmfence1":        "libxshmfence",
-    #"libxdamage1":          "libxdamage",
-    #"libxfixes3":           "libxfixes",
-    #"libxxf86vm1":          "libxxf86vm",
-    #"libudev1":             "libsystemd",
-    #"libpciaccess0":        "libpciaccess",
-    #"libepoxy0":            "libepoxy",
-    #"libelf1":              None, # no lib32- package in Arch, just disabling for now
-    #"xserver-xorg-core":    "xorg-server",
-    #"libcunit1":            "bcunit",
-    #"libdrm-radeon1":       "libdrm",
-    #"amdgpu-pro-firmware":  "linux-firmware",
-    #"libssl1.0.0":          "openssl",
-    #"zlib1g":               "zlib",
-
-    #"libvdpau1": "libvdpau",
-    #"libtinfo5": "ncurses5-compat-libs",
-    #"libgstreamer1.0-0": "gstreamer",
-    #"libgstreamer-plugins-base1.0-0": "gst-plugins-base",
-    #"libglib2.0-0": "glib2",
-    #"libomxil-bellagio0": "libomxil-bellagio",
-
-    ## replace *-dev packages with arch linux ones containing the headers
-    #"libffi-dev": "libffi",
-    #"lib32-libffi-dev": "lib32-libffi",
-    #"libtinfo-dev": "ncurses",
-    #"lib32-libtinfo-dev": "lib32-ncurses",
-    #"libedit2": "libedit",
-    #"libpci3": "pciutils",
-
-
-    ##"libjs-jquery": "jquery",
-    ##"libjs-underscorea": "underscorejs" # the underscroejs AUR pkg dos not install to /usr/share/javascript !
-    #"libjs-jquery":       None,
-    #"libjs-underscorea":  None,
-    
     # # Further is made by me (Ashark)
     # # To make this list I used:
     # cat Packages | egrep "Depends|Suggests|Recommends" | sed 's/Depends: //' | sed 's/Suggests: //' | sed 's/Recommends: //'| sed 's/, /\n/g' | sort -u | grep -v "amdgpu" > tmp_extra_deps_in_debian.txt
@@ -219,7 +171,7 @@ replace_deps = {
 
     'binfmt-support':                  'opera',                    #auto_translated
     'dkms':                            'dkms',                     #auto_translated
-    'libc6':                           'glibc',                    # manually mapped
+    'libc6':                           'glibc',                    #manually_mapped
     'libcunit1':                       'cunit',                    #auto_translated
     'libedit2':                        'libedit',                  #auto_translated
     'libelf1':                         'libelf',                   #auto_translated
@@ -232,17 +184,17 @@ replace_deps = {
     'libglide3':                       'glide',                    #auto_translated
     'libgstreamer1.0-0':               'gstreamer',                #auto_translated
     'libgstreamer-plugins-base1.0-0':  'gst-plugins-base-libs',    #auto_translated
-    'libjs-jquery':                    'libjs-jquery',             #could_not_auto_translate
-    'libjs-underscore':                'libjs-underscore',         #could_not_auto_translate
+    'libjs-jquery':                    'jquery',                   #manually_mapped
+    'libjs-underscore':                'underscorejs',             #manually_mapped
     'libmirclient-dev':                'libmirclient-dev',         #could_not_auto_translate
     'libnuma1':                        'numactl',                  #auto_translated
     'libomxil-bellagio0':              'libomxil-bellagio',        #auto_translated
     'libpci3':                         None,                       #auto_translated
     'libselinux1':                     'libselinux',               #auto_translated
-    'libstdc++6':                      'gcc-libs',                 # manually mapped
-    'libtinfo5':                       'libtinfo5',                #could_not_auto_translate
-    'libtinfo-dev':                    'libtinfo-dev',             #could_not_auto_translate
-    'libtxc-dxtn-s2tc0':               'libtxc_dxtn',              # mapped manually
+    'libstdc++6':                      'gcc-libs',                 #manually mapped
+    'libtinfo5':                       'ncurses5-compat-libs',     #manually_mapped
+    'libtinfo-dev':                    'ncurses',                  #manually_mapped
+    'libtxc-dxtn-s2tc0':               'libtxc_dxtn',              #manually_mapped
     'libudev1':                        'systemd-libs',             #auto_translated
     'libudev-dev':                     'systemd-libs',             #auto_translated
     'libx11-6':                        'libx11',                   #auto_translated
@@ -277,7 +229,7 @@ replace_deps = {
     'x11proto-gl-dev':                 'x11proto-gl-dev',          #could_not_auto_translate
     'xserver-xorg-hwe-18.04':          None,                       # manually disabled.
     'zlib1g':                          'zlib',                     #auto_translated
-    # Not yet mapped manually
+
     # Missed while inverted grepping of amdgpu substring:
     'libva2':                          'libva',
     'libvdpau1':                       'libvdpau',
@@ -285,8 +237,6 @@ replace_deps = {
     # Almost every pro package depends on these two, but I omited them (hoping they are not needed, but not tested), so disabling these dependencies globally
     'libwayland-amdgpu-client0': None,
     'libwayland-amdgpu-server0': None,
-    # I also omited wsa-amdgpu (do not know if really needed), so remove dependency on it
-    'wsa-amdgpu': None,
 }
 
 ## do not convert the dependencies listed to lib32 variants
