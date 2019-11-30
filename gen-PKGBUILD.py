@@ -10,14 +10,14 @@ import glob
 from pathlib import Path
 
 pkgver_base = "19.30"
-pkgver_build = "855429"
+pkgver_build = "934563"
 pkgrel = 1
 
 debugging = False
 
 debug_pkgext = True #if debugging else False
 
-url_ref = "https://www.amd.com/en/support/kb/release-notes/rn-amdgpu-unified-linux"
+url_ref = "https://www.amd.com/en/support/kb/release-notes/rn-rad-lin-19-30-unified"
 dlagents = "https::/usr/bin/wget --referer {0} -N %u".format(url_ref)
 
 source_url = "https://drivers.amd.com/drivers/linux/amdgpu-pro-${major}-${minor}-ubuntu-18.04.tar.xz"
