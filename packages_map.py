@@ -1,4 +1,6 @@
 # Generated with ./gen_packages_map.sh > packages_map.py
+# for driver version 19.30-934563
+
 packages_map = {
     'amdgpu':                                     None,                            #unneeded_open_component
     'amdgpu:i386':                                None,                            #unneeded_open_component

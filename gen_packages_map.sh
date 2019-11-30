@@ -2,6 +2,8 @@
 
 # This script prepares a packages mapping dict for using in gen-PKGBUILD.py
 echo "# Generated with ./gen_packages_map.sh > packages_map.py"
+echo -e "# for driver version `sed -n 2p Packages-extracted | cut -f 2 -d " "`\n"
+
 echo "packages_map = {"
 # get list of deb-metapackages:
 cat Packages-extracted | grep -vE "Filename|Size|MD5sum|SHA1|SHA256|Priority|Maintainer|Version|Description|^ +" | grep -B4 "Section: metapackages" | grep -vE "Depends:|Section:" > tmp_Packages.txt
