@@ -40,9 +40,9 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
     if grep $line tmp_deb_metapackages_list.txt > /dev/null && [[ $archpkg != None ]]; then archpkg="$archpkg-meta" comment="mapped_manually"; fi;
 
     case $line in
-         amdgpu@(-dkms||:i386|-hwe|-hwe:i386|-lib32)\
-        |amdgpu-lib@(|:i386|-hwe|-hwe:i386)\
-        |glamor-amdgpu@(|:i386|-dev|-dev:i386)\
+         amdgpu@(-dkms||-hwe|-lib32)\
+        |amdgpu-lib@(|-hwe)\
+        |glamor-amdgpu@(|-dev)\
         |gst-omx-amdgpu@(|:i386)\
         |libegl1-amdgpu-mesa@(|:i386|-dev|-dev:i386)\
         |libegl1-amdgpu-mesa-drivers@(|:i386)\
@@ -59,8 +59,8 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
         |mesa-amdgpu-omx-drivers@(|:i386)\
         |mesa-amdgpu-va-drivers@(|:i386)\
         |mesa-amdgpu-vdpau-drivers@(|:i386)\
-        |xserver-xorg-amdgpu-video-amdgpu@(|:i386)\
-        |xserver-xorg-hwe-amdgpu-video-amdgpu@(|:i386)\
+        |xserver-xorg-amdgpu-video-amdgpu\
+        |xserver-xorg-hwe-amdgpu-video-amdgpu\
         |vulkan-amdgpu@(|:i386)\
         )
             archpkg=None; comment="unneeded_open_component"
@@ -76,7 +76,6 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
         |libdrm-amdgpu-dev@(|:i386)\
         |libdrm-amdgpu-radeon1@(|:i386)\
         |libdrm-amdgpu-utils@(|:i386)\
-        |libgbm1-amdgpu-pro-dev@(|:i386)\
         |libwayland-amdgpu-@(doc|dev|dev:i386|cursor0|cursor0:i386)\
         |libxatracker-amdgpu-dev@(|:i386)\
         |mesa-amdgpu-common-dev@(|:i386)\
@@ -108,7 +107,6 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
             ;;
 
          libegl1-amdgpu-pro\
-        |libgbm1-amdgpu-pro@(|-base)\
         |libgl1-amdgpu-pro-@(appprofiles|dri|ext-hwe|glx)\
         |libglapi1-amdgpu-pro\
         |libgles2-amdgpu-pro\
@@ -117,16 +115,14 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
             ;;
 
          libegl1-amdgpu-pro:i386\
-        |libgbm1-amdgpu-pro:i386\
         |libgl1-amdgpu-pro-@(dri|ext-hwe|glx):i386\
         |libglapi1-amdgpu-pro:i386\
         |libgles2-amdgpu-pro:i386\
         )
             archpkg=lib32-amdgpu-pro-libgl; comment="mapped_manually"
             ;;
-         amdgpu-pro-@(hwe|hwe:i386|lib32)\
+         amdgpu-pro-@(hwe|lib32)\
         )
-            # amdgpu-pro-hwe:i386 and amdgpu-pro-lib32 are basically installing the same content. The only difference is debian specific resolving of dependencies architectures
             archpkg=None; comment="we_have_already_combined_libgl_to_single_package"
             ;;
         # Renaming to comply with other arch opencl packages

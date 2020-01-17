@@ -9,15 +9,15 @@ import hashlib
 import glob
 from pathlib import Path
 
-pkgver_base = "19.30"
-pkgver_build = "934563"
+pkgver_base = "19.50"
+pkgver_build = "967956"
 pkgrel = 1
 
 debugging = False
 
 debug_pkgext = True #if debugging else False
 
-url_ref = "https://www.amd.com/en/support/kb/release-notes/rn-rad-lin-19-30-unified"
+url_ref = "https://www.amd.com/en/support/kb/release-notes/rn-rad-lin-19-50-unified"
 dlagents = "https::/usr/bin/wget --referer {0} -N %u".format(url_ref)
 
 source_url = "https://drivers.amd.com/drivers/linux/amdgpu-pro-${major}-${minor}-ubuntu-18.04.tar.xz"
@@ -85,6 +85,8 @@ def gen_arch_packages():
         #         "mv ${pkgdir}/lib ${pkgdir}/usr"
         #     ],
         # ),
+        'hsakmt-roct-amdgpu': Package( desc = "development environment for hsakmt-roct" ),
+        'hsakmt-roct-amdgpu-dev': Package( desc = "development environment for hsakmt-roct" ),
         'amdgpu-pro-libgl': Package(
             desc = "AMDGPU Pro OpenGL driver",
             provides  = ['libgl'],
@@ -117,8 +119,6 @@ def gen_arch_packages():
             desc="AMDGPU Pro OpenCL driver ORCA aka legacy (32-bit)",
             provides=['lib32-opencl-driver']
         ),
-        'roct-amdgpu-pro': Package( desc = "development environment for hsakmt-roct" ),
-        'roct-amdgpu-pro-dev': Package( desc = "development environment for hsakmt-roct" ),
         'vulkan-amdgpu-pro': Package(
             provides=['vulkan-driver'],
             extra_commands = [

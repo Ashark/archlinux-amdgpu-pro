@@ -3,19 +3,34 @@
 # This script extracts transaction scripts of deb packages to a file, so it is possible to read it and compare with previous version.
 # After that its needed to carefully convert them to pacman .install files or hooks if needed
 
-ARCHIVE=amdgpu-pro-19.30-934563-ubuntu-18.04.tar.xz
+majorold=19.30
+minorold=934563
+
+majornew=19.50
+minornew=967956
+
+major=$majornew
+minor=$minornew
+# major=$majorold
+# minor=$minorold
+
+ARCHIVE=amdgpu-pro-$major-$minor-ubuntu-18.04.tar.xz
 cd ${ARCHIVE%.tar.xz}
 cd unpacked_debs
 rm -f *.install_scripts.sh
+rm -rf ../install_scripts_"$major"-"$minor"
+rm -rf ../install_scripts
+mkdir -p ../install_scripts
 > transaction_scripts_and_triggers_md5sums.txt # clear file
 echo -e "md5sums of transaction scripts and triggers of deb packages from archive ${ARCHIVE}\n" > transaction_scripts_and_triggers_md5sums.txt
 for dir in $(ls); do
     for file in postinst preinst prerm; do
         if [ -f $dir/$file ]; then
             file_md5=$(md5sum $dir/$file)
-            echo -e "# $file_md5"  >> $dir.install_scripts.sh
-            echo -e "# $file_md5"  >> transaction_scripts_and_triggers_md5sums.txt
-            cat $dir/$file >> $dir.install_scripts.sh
+            # echo -e "# $file_md5"  >> $dir.install_scripts.sh
+            echo -e "$file_md5"  >> transaction_scripts_and_triggers_md5sums.txt
+            #cat $dir/$file >> $dir.install_scripts.sh
+            cat $dir/$file > ../install_scripts/"$dir"_"$file".txt
         fi
     done
 done
@@ -37,6 +52,18 @@ do
 activate-noawait ldconfig" ]];
         then continue; fi
         file_md5=$(md5sum $dir/triggers)
-        echo -e "# $file_md5" >> transaction_scripts_and_triggers_md5sums.txt
+        echo -e "$file_md5" >> transaction_scripts_and_triggers_md5sums.txt
+        cat $dir/triggers > ../install_scripts/"$dir"_"triggers".txt
     fi
 done
+
+sed -i -e "1 ! s/$major/XX.XX/g" -e "1 ! s/$minor/XXXXXX/g" transaction_scripts_and_triggers_md5sums.txt
+cd ..
+
+rename "$major" "XX.XX" install_scripts/*.txt
+rename "$minor" "XXXXXX" install_scripts/*.txt
+rename "19.2.0" "YY.Y.Y" install_scripts/*.txt
+rename "19.2.2" "YY.Y.Y" install_scripts/*.txt
+mv install_scripts install_scripts_"$major"-"$minor"
+cd ..
+meld amdgpu-pro-$majorold-$minorold-ubuntu-18.04/install_scripts_"$majorold"-"$minorold" amdgpu-pro-$majornew-$minornew-ubuntu-18.04/install_scripts_"$majornew"-"$minornew"

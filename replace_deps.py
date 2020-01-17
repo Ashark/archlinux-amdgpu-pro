@@ -1,11 +1,12 @@
 # Generated with ./gen_replace_deps.sh > replace_deps.py
-# for driver version 19.30-934563
+# for driver version 19.50-967956
 
 replace_deps = {
     'binfmt-support':                  'opera',                  #auto_translated
     'dkms':                            'dkms',                   #auto_translated
     'libc6':                           'glibc',                  #manually_mapped
     'libcunit1':                       'cunit',                  #auto_translated
+    'libdrm-radeon1':                  'libdrm',                 #auto_translated
     'libedit2':                        'libedit',                #auto_translated
     'libelf1':                         'libelf',                 #auto_translated
     'libepoxy0':                       'libepoxy',               #auto_translated
