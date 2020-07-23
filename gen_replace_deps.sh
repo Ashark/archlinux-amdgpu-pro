@@ -5,7 +5,7 @@ cat Packages-extracted | egrep "Depends|Suggests|Recommends" | sed 's/Depends: /
 cat tmp_extra_deps_in_debian.txt | cut -f1 -d" " | sort -u > tmp_extra_deps_in_debian_removed_versions.txt # removed versions
 
 # Detecting dependencies, named with amdgpu (and their alternatives), that are not provided in bundled amd archive
-cat Packages-extracted | egrep "Depends|Suggests|Recommends" | sed 's/Depends: //' | sed 's/Suggests: //' | sed 's/Recommends: //'| sed 's/, /\n/g' | sort -u | grep "amdgpu" | sed "s/ | /\n/g" > tmp_deps_in_debian_amdgpu.txt
+cat Packages-extracted | egrep "Depends|Suggests|Recommends" | sed 's/Pre-Depends: //' | sed 's/Depends: //' | sed 's/Suggests: //' | sed 's/Recommends: //'| sed 's/, /\n/g' | sort -u | grep "amdgpu" | sed "s/ | /\n/g" > tmp_deps_in_debian_amdgpu.txt
 cat tmp_deps_in_debian_amdgpu.txt | cut -f1 -d" " | sort -u > tmp_removed_versions_amdgpu.txt # removed versions
 cat tmp_removed_versions_amdgpu.txt | sed "s/:i386$//g" | sort -u > tmp_amdgpu_deps_in_debian.txt
 > tmp_extra_deps_in_debian_amdgpu.txt # clear file
@@ -13,6 +13,8 @@ for line in $(cat tmp_amdgpu_deps_in_debian.txt); do
     if grep -q "Package: $line" Packages-extracted; then continue; fi
     echo $line >> tmp_extra_deps_in_debian_amdgpu.txt
 done
+
+sed -i 's/-hwe//g' tmp_extra_deps_in_debian_amdgpu.txt
 
 
 echo > tmp_translated_deps.txt # clear file

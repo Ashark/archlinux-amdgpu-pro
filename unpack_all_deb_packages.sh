@@ -2,7 +2,7 @@
 
 # This script unpacks all deb packages (control and data). It is for simplifying operations of checking preinst scripts, making list of licenses hashes and so on.
 
-ARCHIVE=amdgpu-pro-19.50-967956-ubuntu-18.04.tar.xz
+ARCHIVE=amdgpu-pro-20.20-1098277-ubuntu-20.04.tar.xz
 tar -xf $ARCHIVE
 cd ${ARCHIVE%.tar.xz}
 

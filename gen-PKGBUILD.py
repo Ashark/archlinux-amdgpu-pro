@@ -9,20 +9,21 @@ import hashlib
 import glob
 from pathlib import Path
 
-pkgver_base = "19.50"
-pkgver_build = "967956"
+pkgver_base = "20.20"
+pkgver_build = "1098277"
+ubuntu_ver = "20.04"
 pkgrel = 1
 
 debugging = False
 
 debug_pkgext = True #if debugging else False
 
-url_ref = "https://www.amd.com/en/support/kb/release-notes/rn-rad-lin-19-50-unified"
+url_ref = "https://www.amd.com/en/support/kb/release-notes/rn-amdgpu-unified-linux-20-20"
 dlagents = "https::/usr/bin/wget --referer {0} -N %u".format(url_ref)
 
-source_url = "https://drivers.amd.com/drivers/linux/amdgpu-pro-${major}-${minor}-ubuntu-18.04.tar.xz"
-source_url_resolved = "https://drivers.amd.com/drivers/linux/amdgpu-pro-{0}-{1}-ubuntu-18.04.tar.xz".format(pkgver_base, pkgver_build)
-source_file = "amdgpu-pro-{0}-{1}-ubuntu-18.04.tar.xz".format(pkgver_base, pkgver_build)
+source_url = "https://drivers.amd.com/drivers/linux/amdgpu-pro-${major}-${minor}-ubuntu-${ubuntu_ver}.tar.xz"
+source_url_resolved = "https://drivers.amd.com/drivers/linux/amdgpu-pro-{0}-{1}-ubuntu-{2}.tar.xz".format(pkgver_base, pkgver_build, ubuntu_ver)
+source_file = "amdgpu-pro-{0}-{1}-ubuntu-{2}.tar.xz".format(pkgver_base, pkgver_build, ubuntu_ver)
 
 def gen_arch_packages():
     pkgbuild_packages = {
@@ -68,7 +69,7 @@ def gen_arch_packages():
 
         'amdgpu-core-meta': Package( desc = "Config file /etc/ld.so.conf.d/20-amdgpu.conf" ),
         'amdgpu-pro-core-meta': Package( desc = "Config file /etc/ld.so.conf.d/10-amdgpu-pro.conf" ),
-        'amf-amdgpu-pro': Package(  ),
+        'amf-amdgpu-pro': Package(),
         'hip-amdgpu-pro': Package(desc="HIP-CLANG runtime. HIP-CLANG allows developers to convert CUDA code to common C++"),
         # 'libdrm-amdgpu': Package(
         #     provides = ['libdrm'],
@@ -85,22 +86,20 @@ def gen_arch_packages():
         #         "mv ${pkgdir}/lib ${pkgdir}/usr"
         #     ],
         # ),
-        'hsakmt-roct-amdgpu': Package( desc = "development environment for hsakmt-roct" ),
-        'hsakmt-roct-amdgpu-dev': Package( desc = "development environment for hsakmt-roct" ),
         'amdgpu-pro-libgl': Package(
             desc = "AMDGPU Pro OpenGL driver",
             provides  = ['libgl'],
-            extra_commands = [
-                # This is instead of libgl1-amdgpu-pro-ext-hwe_19.20-812932_amd64.deb/postinst and libgl1-amdgpu-pro-ext-hwe_19.20-812932_amd64.deb/prerm
-                'mv "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx-ext-hwe.so "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx.so',
-            ]
+            # extra_commands = [
+            #     # This is instead of libgl1-amdgpu-pro-ext-hwe_19.20-812932_amd64.deb/postinst and libgl1-amdgpu-pro-ext-hwe_19.20-812932_amd64.deb/prerm
+            #     'mv "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx-ext-hwe.so "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx.so',
+            # ]
         ),
         'lib32-amdgpu-pro-libgl': Package(
             desc = "AMDGPU Pro OpenGL driver (32-bit)",
             provides=['lib32-libgl'],
             extra_commands=[
-                # This is instead of libgl1-amdgpu-pro-ext-hwe_19.20-812932_i386.deb/postinst and libgl1-amdgpu-pro-ext-hwe_19.20-812932_i386.deb/prerm
-                'mv "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx-ext-hwe.so "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx.so',
+                # # This is instead of libgl1-amdgpu-pro-ext-hwe_19.20-812932_i386.deb/postinst and libgl1-amdgpu-pro-ext-hwe_19.20-812932_i386.deb/prerm
+                # 'mv "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx-ext-hwe.so "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx.so',
                 # Clean-up duplicated files to be able to install simultaneously with 64bit version
                 'rm "${pkgdir}"/etc/amd/amdrc "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx.so',
             ]
@@ -242,6 +241,7 @@ header_tpl = """# Author: Janusz Lewandowski <lew21@xtreeme.org>
 
 major={pkgver_base}
 minor={pkgver_build}
+ubuntu_ver={ubuntu_ver}
 
 pkgbase=amdgpu-pro-installer
 pkgname={package_names}
@@ -302,7 +302,7 @@ package_header_tpl = """package_{NAME} () {{
     pkgdesc={DESC}
 """
 
-package_deb_extract_tpl = """    extract_deb "${{srcdir}}"/amdgpu-pro-${{major}}-${{minor}}-ubuntu-18.04/{Filename}
+package_deb_extract_tpl = """    extract_deb "${{srcdir}}"/amdgpu-pro-${{major}}-${{minor}}-ubuntu-${{ubuntu_ver}}/{Filename}
 """
 
 package_move_libdir_tpl = """    move_libdir "opt/amdgpu{PRO}/lib/{DEBDIR}-linux-gnu" "usr/lib{ARCHDIR}"
@@ -372,8 +372,8 @@ class Package:
             deb_deps.remove('amdgpu-lib32 (= %s-%s)' % (pkgver_base, pkgver_build))
         if self.arch_pkg_name == "opencl-amdgpu-pro-dev":
             deb_deps.remove('libopencl1-amdgpu-pro (= %s-%s)' % (pkgver_base, pkgver_build))
-        if self.arch_pkg_name == "amf-amdgpu-pro":
-            deb_deps.remove("libgl1-amdgpu-mesa-glx") # I do not know what is amf and if it will work normal without this dep, but I removed that open component
+        # if self.arch_pkg_name == "amf-amdgpu-pro":
+        #     deb_deps.remove("libgl1-amdgpu-mesa-glx") # I do not know what is amf and if it will work normal without this dep, but I removed that open component
         if self.arch_pkg_name == "opencl-amdgpu-pro-meta":
             deb_deps.remove('amdgpu-dkms (= %s-%s)' % (pkgver_base, pkgver_build)) # I do not know why it wants amdgpu-dkms, but I did not built it, so just rm this dep for now
             deb_deps.remove('clinfo-amdgpu-pro (= %s-%s)' % (pkgver_base, pkgver_build))
@@ -453,7 +453,7 @@ class Package:
             self.desc = desc
 
         deb_info["Filename"] = deb_info["Filename"].replace("./","")
-        deb_file = debfile.DebFile("src/amdgpu-pro-%s-%s-ubuntu-18.04/%s" % (pkgver_base, pkgver_build, deb_info["Filename"]))
+        deb_file = debfile.DebFile("src/amdgpu-pro-%s-%s-ubuntu-%s/%s" % (pkgver_base, pkgver_build, ubuntu_ver, deb_info["Filename"]))
 
         if not hasattr(self, 'license'):
             copyright_md5 = deb_file.md5sums()[b'usr/share/doc/%s/copyright' % (str.encode(deb_info["Package"]))]
@@ -641,6 +641,7 @@ if not debugging:
         dlagents=dlagents,
         pkgver_base=pkgver_base,
         pkgver_build=pkgver_build,
+        ubuntu_ver=ubuntu_ver,
         source="\n\t".join(sources),
         sha256sums="\n\t".join(sha256sums)
     ))
@@ -652,7 +653,7 @@ if not debugging:
     with lzma.open(source_file, "r") as tar:
         with tarfile.open(fileobj=tar) as tf:
             tf.extractall("src")
-    f = open("src/amdgpu-pro-%s-%s-ubuntu-18.04/Packages" % (pkgver_base, pkgver_build), "r")
+    f = open("src/amdgpu-pro-%s-%s-ubuntu-%s/Packages" % (pkgver_base, pkgver_build, ubuntu_ver), "r")
 else:
     f = open("Packages-debugging", "r")
     # f = open("Packages-extracted", "r")

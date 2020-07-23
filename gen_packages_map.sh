@@ -40,7 +40,7 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
     if grep $line tmp_deb_metapackages_list.txt > /dev/null && [[ $archpkg != None ]]; then archpkg="$archpkg-meta" comment="mapped_manually"; fi;
 
     case $line in
-         amdgpu@(-dkms||-hwe|-lib32)\
+         amdgpu@(-dkms|-dkms-firmware||-hwe|-lib32)\
         |amdgpu-lib@(|-hwe)\
         |glamor-amdgpu@(|-dev)\
         |gst-omx-amdgpu@(|:i386)\
@@ -52,9 +52,8 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
         |libglapi-amdgpu-mesa@(|:i386)\
         |libgles1-amdgpu-mesa@(|:i386|-dev|-dev:i386)\
         |libgles2-amdgpu-mesa@(|:i386|-dev|-dev:i386)\
-        |libllvm9.0-amdgpu@(|:i386)\
+        |libllvm10.0-amdgpu@(|:i386)\
         |libosmesa6-amdgpu@(|:i386|-dev|-dev:i386)\
-        |libwayland-amdgpu-egl1@(|:i386)\
         |libxatracker2-amdgpu@(|:i386)\
         |mesa-amdgpu-omx-drivers@(|:i386)\
         |mesa-amdgpu-va-drivers@(|:i386)\
@@ -71,23 +70,17 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
             archpkg=None; comment="unneeded_pro_component"
             ;;
          llvm-amdgpu@(|:i386)\
-        |llvm-amdgpu-9.0@(|:i386|-dev|-dev:i386|-doc|-runtime|-runtime:i386)\
+        |llvm-amdgpu-10.0@(|:i386|-dev|-dev:i386|-doc|-runtime|-runtime:i386)\
         |llvm-amdgpu@(-dev|-dev:i386|-runtime|-runtime:i386)\
         |libdrm-amdgpu-dev@(|:i386)\
         |libdrm-amdgpu-radeon1@(|:i386)\
         |libdrm-amdgpu-utils@(|:i386)\
-        |libwayland-amdgpu-@(doc|dev|dev:i386|cursor0|cursor0:i386)\
         |libxatracker-amdgpu-dev@(|:i386)\
         |mesa-amdgpu-common-dev@(|:i386)\
-        |wayland-protocols-amdgpu\
         )
             archpkg=None; comment="not_installed_even_in_ubuntu"
             ;;
-         libwayland-amdgpu-@(client0|client0:i386|server0|server0:i386)\
-        ) 
-            archpkg=None; comment="installed_in_ubuntu_but_probably_not_needed"
-            ;;
-        "amdgpu-pro-pin")
+        amdgpu-pro-pin|amdgpu-pin)
             archpkg=None; comment="debian_specific_package,_not_needed"
             ;;
         "amdgpu-doc")
@@ -107,7 +100,7 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
             ;;
 
          libegl1-amdgpu-pro\
-        |libgl1-amdgpu-pro-@(appprofiles|dri|ext-hwe|glx)\
+        |libgl1-amdgpu-pro-@(appprofiles|dri|ext-hwe|ext|glx)\
         |libglapi1-amdgpu-pro\
         |libgles2-amdgpu-pro\
         )
@@ -115,13 +108,13 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
             ;;
 
          libegl1-amdgpu-pro:i386\
-        |libgl1-amdgpu-pro-@(dri|ext-hwe|glx):i386\
+        |libgl1-amdgpu-pro-@(dri|ext-hwe|ext|glx):i386\
         |libglapi1-amdgpu-pro:i386\
         |libgles2-amdgpu-pro:i386\
         )
             archpkg=lib32-amdgpu-pro-libgl; comment="mapped_manually"
             ;;
-         amdgpu-pro-@(hwe|lib32)\
+         amdgpu-pro-@(hwe|lib32)|amdgpu-pro\
         )
             archpkg=None; comment="we_have_already_combined_libgl_to_single_package"
             ;;
