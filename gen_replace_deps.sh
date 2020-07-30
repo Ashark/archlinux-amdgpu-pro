@@ -23,17 +23,19 @@ for line in $(cat tmp_extra_deps_in_debian_removed_versions.txt tmp_extra_deps_i
     echo now processing $line >&2;
     case $line in
 
-        libc6) arch_str="'glibc', #manually_mapped" ;;
+        libc6) arch_str="None, #manually_mapped" ;; # It maps to 'glibc', which is required by base, so no need to explicitly depend on it
+        libgcc-s1) arch_str="None, #manually_mapped" ;; # It maps to 'gcc', but I doubt it depends on gcc, the compiler
+        libgl1) arch_str="'libglvnd', #manually_mapped" ;;
         libjs-jquery) arch_str="'jquery', #manually_mapped" ;;
         libjs-underscore) arch_str="'underscorejs', #manually_mapped" ;;
-        libstdc++6) arch_str="'gcc-libs', #manually_mapped" ;;
+        libstdc++6) arch_str="None, #manually_mapped" ;; # It maps to 'gcc-libs', which is required by base, so no need to explicitly depend on it
         libtxc-dxtn-s2tc0) arch_str="'libtxc_dxtn', #manually_mapped" ;;
         libtxc-dxtn0) arch_str="None, #manually_mapped" ;; # have alternative libtxc-dxtn-s2tc0
         libtinfo5) arch_str="'ncurses5-compat-libs', #manually_mapped" ;;
         libtinfo-dev) arch_str="'ncurses', #manually_mapped" ;;
         libudev0) arch_str="None, #manually_mapped" ;; # have alternative libudev1
+        linux-firmware) arch_str="'linux-firmware', #manually_mapped" ;; # debtap takes very long time and finally faulty auto translates to None.
         xserver-xorg-hwe-18.04) arch_str="None, #manually_disabled" ;;
-        
         #---) arch_str="'---', #manually_mapped" ;; # templpate
         
         *)
