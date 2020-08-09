@@ -3,16 +3,27 @@
 # This script extracts transaction scripts of deb packages to a file, so it is possible to read it and compare with previous version.
 # After that its needed to carefully convert them to pacman .install files or hooks if needed
 
+. ./versions.sh
+
+majornew=$pkgver_base
+minornew=$pkgver_build
+ubuntuvernew=$ubuntu_ver
+
 majorold=20.20
-minorold=1089974
+minorold=1098277
+ubuntuverold=20.04
 
-majornew=20.20
-minornew=1098277
+# Switch for running this script against another release. Use NEW or OLD values
+RUN_FOR_VERSION=NEW
+# RUN_FOR_VERSION=OLD
 
-major=$majornew
-minor=$minornew
-# major=$majorold
-# minor=$minorold
+if [ $RUN_FOR_VERSION == "NEW" ]; then
+    major=$majornew
+    minor=$minornew
+elif [ $RUN_FOR_VERSION == "OLD" ];then
+    major=$majorold
+    minor=$minorold
+fi
 
 ARCHIVE=amdgpu-pro-$major-$minor-ubuntu-20.04.tar.xz
 cd ${ARCHIVE%.tar.xz}
@@ -62,11 +73,13 @@ cd ..
 
 rename "$major" "XX.XX" install_scripts/*.txt
 rename "$minor" "XXXXXX" install_scripts/*.txt
-rename "19.2.0" "YY.Y.Y" install_scripts/*.txt
-rename "19.2.2" "YY.Y.Y" install_scripts/*.txt
-rename "5.6.0.13" "Y.Y.Y.YY" install_scripts/*.txt
-rename "5.6.0.15" "Y.Y.Y.YY" install_scripts/*.txt
+rename "20.0.5" "YY.Y.Y" install_scripts/*.txt # old mesa version
+rename "20.1.0" "YY.Y.Y" install_scripts/*.txt # new mesa version
+rename "5.6.0.15" "Y.Y.Y.YY" install_scripts/*.txt # old amdgpu-dkms version
+rename "5.6.5.24" "Y.Y.Y.YY" install_scripts/*.txt # new amdgpu-dkms version
+
 
 mv install_scripts install_scripts_"$major"-"$minor"
 cd ..
-meld amdgpu-pro-$majorold-$minorold-ubuntu-20.04/install_scripts_"$majorold"-"$minorold" amdgpu-pro-$majornew-$minornew-ubuntu-20.04/install_scripts_"$majornew"-"$minornew"
+echo "Opening meld for comparison..."
+meld amdgpu-pro-$majorold-$minorold-ubuntu-$ubuntuverold/install_scripts_"$majorold"-"$minorold" amdgpu-pro-$majornew-$minornew-ubuntu-$ubuntuvernew/install_scripts_"$majornew"-"$minornew"
