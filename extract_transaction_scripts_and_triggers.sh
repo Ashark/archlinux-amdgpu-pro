@@ -3,11 +3,7 @@
 # This script extracts transaction scripts of deb packages to a file, so it is possible to read it and compare with previous version.
 # After that its needed to carefully convert them to pacman .install files or hooks if needed
 
-majorold=20.20
-minorold=1089974
-
-majornew=20.20
-minornew=1098277
+. ./versions.sh
 
 major=$majornew
 minor=$minornew
@@ -69,4 +65,4 @@ rename "5.6.0.15" "Y.Y.Y.YY" install_scripts/*.txt
 
 mv install_scripts install_scripts_"$major"-"$minor"
 cd ..
-meld amdgpu-pro-$majorold-$minorold-ubuntu-20.04/install_scripts_"$majorold"-"$minorold" amdgpu-pro-$majornew-$minornew-ubuntu-20.04/install_scripts_"$majornew"-"$minornew"
+meld amdgpu-pro-$majorold-$minorold-ubuntu-$ubuntuverold/install_scripts_"$majorold"-"$minorold" amdgpu-pro-$majornew-$minornew-ubuntu-$ubuntuvernew/install_scripts_"$majornew"-"$minornew"
