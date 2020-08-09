@@ -1,5 +1,5 @@
 # Generated with ./gen_replace_deps.sh > replace_deps.py
-# for driver version 20.20-1098277
+# for driver version 20.30-1109583
 
 replace_deps = {
     'binfmt-support':                  'opera',                  #auto_translated

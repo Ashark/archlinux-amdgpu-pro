@@ -65,7 +65,7 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
             archpkg=None; comment="unneeded_open_component"
             ;;
          clinfo-amdgpu-pro@(|:i386)\
-        |libopencl1-amdgpu-pro@(|:i386)\
+        |ocl-icd-libopencl1-amdgpu-pro@(|:i386|-dev|-dev:i386)\
         )
             archpkg=None; comment="unneeded_pro_component"
             ;;
