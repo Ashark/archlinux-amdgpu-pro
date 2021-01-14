@@ -9,8 +9,8 @@ import hashlib
 import glob
 from pathlib import Path
 
-pkgver_base = "20.30"
-pkgver_build = "1109583"
+pkgver_base = "20.45"
+pkgver_build = "1188099"
 ubuntu_ver = "20.04"
 pkgrel = 1
 
@@ -70,7 +70,6 @@ def gen_arch_packages():
         'amdgpu-core-meta': Package( desc = "Config file /etc/ld.so.conf.d/20-amdgpu.conf" ),
         'amdgpu-pro-core-meta': Package( desc = "Config file /etc/ld.so.conf.d/10-amdgpu-pro.conf" ),
         'amf-amdgpu-pro': Package(),
-        'hip-amdgpu-pro': Package(desc="HIP-CLANG runtime. HIP-CLANG allows developers to convert CUDA code to common C++"),
         # 'libdrm-amdgpu': Package(
         #     provides = ['libdrm'],
         #     extra_commands = [
@@ -104,20 +103,20 @@ def gen_arch_packages():
                 'rm "${pkgdir}"/etc/amd/amdrc "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx.so "${pkgdir}"/opt/amdgpu/share/drirc.d/10-amdgpu-pro.conf',
             ]
         ),
-        'opencl-amdgpu-pro-comgr': Package( desc = "Code object manager (COMGR)" ),
-        'opencl-amdgpu-pro-dev': Package(  ),
-        'opencl-amdgpu-pro-pal': Package(
-            desc = "AMDGPU Pro OpenCL driver PAL",
-            provides=['opencl-driver']
-        ),
-        'opencl-amdgpu-pro-orca': Package(
-            desc = "AMDGPU Pro OpenCL driver ORCA aka legacy",
-            provides=['opencl-driver']
-        ),
-        'lib32-opencl-amdgpu-pro-orca': Package(
-            desc="AMDGPU Pro OpenCL driver ORCA aka legacy (32-bit)",
-            provides=['lib32-opencl-driver']
-        ),
+        #'opencl-amdgpu-pro-comgr': Package( desc = "Code object manager (COMGR)" ),
+        #'opencl-amdgpu-pro-dev': Package(  ),
+        #'opencl-amdgpu-pro-pal': Package(
+            #desc = "AMDGPU Pro OpenCL driver PAL",
+            #provides=['opencl-driver']
+        #),
+        #'opencl-amdgpu-pro-orca': Package(
+            #desc = "AMDGPU Pro OpenCL driver ORCA aka legacy",
+            #provides=['opencl-driver']
+        #),
+        #'lib32-opencl-amdgpu-pro-orca': Package(
+            #desc="AMDGPU Pro OpenCL driver ORCA aka legacy (32-bit)",
+            #provides=['lib32-opencl-driver']
+        #),
         'vulkan-amdgpu-pro': Package(
             provides=['vulkan-driver'],
             extra_commands = [

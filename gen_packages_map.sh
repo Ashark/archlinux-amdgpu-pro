@@ -118,11 +118,27 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
         )
             archpkg=None; comment="we_have_already_combined_libgl_to_single_package"
             ;;
-        # Renaming to comply with other arch opencl packages
-        opencl-orca-amdgpu-pro-icd) archpkg=opencl-amdgpu-pro-orca comment="mapped_manually" ;;
-        opencl-orca-amdgpu-pro-icd:i386) archpkg=lib32-opencl-amdgpu-pro-orca comment="mapped_manually" ;;
-        opencl-amdgpu-pro-icd) archpkg=opencl-amdgpu-pro-pal comment="mapped_manually" ;;
-        opencl-amdgpu-pro) archpkg=None; comment="its_dependencies_go_directly_to_amf-amdgpu-pro"
+        # Disabling opencl related packages, as they go to opencl-amd
+        amdgpu-pro-rocr-opencl\
+        |comgr-amdgpu-pro\
+        |comgr-amdgpu-pro-dev\
+        |hip-rocr-amdgpu-pro\
+        |hsa-runtime-rocr-amdgpu\
+        |hsa-runtime-rocr-amdgpu-dev\
+        |hsakmt-roct-amdgpu\
+        |hsakmt-roct-amdgpu-dev\
+        |libllvm-amdgpu-pro-rocm\
+        |llvm-amdgpu-pro-rocm\
+        |llvm-amdgpu-pro-rocm-dev\
+        |opencl-orca-amdgpu-pro-icd\
+        |opencl-orca-amdgpu-pro-icd:i386\
+        |opencl-rocr-amdgpu-pro\
+        |opencl-rocr-amdgpu-pro-dev\
+        |rocm-device-libs-amdgpu-pro\
+        )
+            archpkg=None; comment="opencl_goes_to_opencl-amd"
+            ;;
+
     esac
     if [[ $archpkg == "None" ]]; then
         str="$str $archpkg, #$comment";
