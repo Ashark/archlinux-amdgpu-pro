@@ -382,7 +382,7 @@ class Package:
             deb_deps.remove('ocl-icd-libopencl1-amdgpu-pro (= %s-%s)' % (pkgver_base, pkgver_build))
         if self.arch_pkg_name == "amf-amdgpu-pro":
             # adding dependencies of omitted opencl-amdgpu-pro package
-            deb_deps.remove('opencl-amdgpu-pro')
+            #deb_deps.remove('opencl-amdgpu-pro')
             deb_deps.append('amdgpu-pro-core')
             # deb_deps.append('amdgpu-dkms') # amdgpu-dkms is not build currently, but there is such dep. Probably it extends functionality?
             # deb_deps.append('libdrm...-amdgpu...) # opencl icd may depend on libdrm-amdgpu already, so skip this
