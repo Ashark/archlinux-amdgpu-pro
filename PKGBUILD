@@ -211,7 +211,7 @@ package_vulkan-amdgpu-pro () {
     # extra_commands:
     mkdir -p "${pkgdir}"/usr/share/vulkan/icd.d/
     mv "${pkgdir}"/opt/amdgpu-pro/etc/vulkan/icd.d/amd_icd64.json "${pkgdir}"/usr/share/vulkan/icd.d/amd_pro_icd64.json
-    rm -rf "${pkgdir}"/opt/amdgpu-pro/etc/
+    rm -rf "${pkgdir}"/opt/amdgpu-pro/etc/rm -rf "${pkgdir}"/etc/vulkan/icd.d/
 }
 
 package_lib32-vulkan-amdgpu-pro () {
@@ -226,6 +226,6 @@ package_lib32-vulkan-amdgpu-pro () {
     # extra_commands:
     mkdir -p "${pkgdir}"/usr/share/vulkan/icd.d/
     mv "${pkgdir}"/opt/amdgpu-pro/etc/vulkan/icd.d/amd_icd32.json "${pkgdir}"/usr/share/vulkan/icd.d/amd_pro_icd32.json
-    rm -rf "${pkgdir}"/opt/amdgpu-pro/etc/
+    rm -rf "${pkgdir}"/opt/amdgpu-pro/etc/rm -rf "${pkgdir}"/etc/vulkan/icd.d/
 }
 
