@@ -1,5 +1,5 @@
 # Generated with ./gen_replace_deps.sh > replace_deps.py
-# for driver version 20.30-1109583
+# for driver version 20.45-1188099
 
 replace_deps = {
     'binfmt-support':                  'opera',                  #auto_translated
@@ -19,7 +19,7 @@ replace_deps = {
     'libglide3':                       'libglide3',              #could_not_auto_translate
     'libgstreamer1.0-0':               'gstreamer',              #auto_translated
     'libgstreamer-plugins-base1.0-0':  'gst-plugins-base-libs',  #auto_translated
-    'libmirclient-dev':                'libmirclient-dev',       #could_not_auto_translate
+    'libnuma1':                        'numactl',                #auto_translated
     'libomxil-bellagio0':              'libomxil-bellagio',      #auto_translated
     'libselinux1':                     'libselinux',             #auto_translated
     'libstdc++6':                      None,                     #manually_mapped
@@ -67,8 +67,8 @@ replace_deps = {
     'amdgpu':                          'amdgpu',                 #could_not_auto_translate
     'amdgpu-lib':                      'amdgpu-lib',             #could_not_auto_translate
     'amdgpu-pro':                      'amdgpu-pro',             #auto_translated
-    'libva1':                          'libva1',                 #auto_translated
-    'libva1-amdgpu':                   'libva1',                 #auto_translated
+    'libva1':                          'libva',                  #auto_translated
+    'libva1-amdgpu':                   'libva',                  #auto_translated
     'libva2':                          'libva',                  #auto_translated
     'libva2-amdgpu':                   'libva',                  #auto_translated
     'libvdpau1':                       'libvdpau',               #auto_translated

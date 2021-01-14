@@ -9,8 +9,8 @@ majornew=$pkgver_base
 minornew=$pkgver_build
 ubuntuvernew=$ubuntu_ver
 
-majorold=20.20
-minorold=1098277
+majorold=20.30
+minorold=1109583
 ubuntuverold=20.04
 
 # Switch for running this script against another release. Use NEW or OLD values
@@ -74,9 +74,9 @@ cd ..
 rename "$major" "XX.XX" install_scripts/*.txt
 rename "$minor" "XXXXXX" install_scripts/*.txt
 rename "20.0.5" "YY.Y.Y" install_scripts/*.txt # old mesa version
-rename "20.1.0" "YY.Y.Y" install_scripts/*.txt # new mesa version
+rename "20.1.6" "YY.Y.Y" install_scripts/*.txt # new mesa version
 rename "5.6.0.15" "Y.Y.Y.YY" install_scripts/*.txt # old amdgpu-dkms version
-rename "5.6.5.24" "Y.Y.Y.YY" install_scripts/*.txt # new amdgpu-dkms version
+rename "5.6.20.906316" "Y.Y.Y.YY" install_scripts/*.txt # new amdgpu-dkms version
 
 
 mv install_scripts install_scripts_"$major"-"$minor"
