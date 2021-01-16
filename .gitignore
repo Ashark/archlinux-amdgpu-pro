@@ -1,5 +1,6 @@
 /*.tar.xz
 /*.pkg.tar
+/*.pkg.tar.zst
 /pkg/
 /src/
 /archlinux-bootstrap-*.tar.gz

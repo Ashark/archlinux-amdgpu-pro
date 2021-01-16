@@ -6,6 +6,6 @@ if [ "$all_pkgs_in_repo" != "" ]; then
 fi
 echo "Removed all packages from repo"
 
-repo-add amdgpu-dev.db.tar.gz  *.pkg.tar
+repo-add amdgpu-dev.db.tar.gz  *.pkg.tar.zst
 
 sudo pacman -Sy
