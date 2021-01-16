@@ -14,7 +14,7 @@ from pathlib import Path
 pkgver_base = "20.45"
 pkgver_build = "1188099"
 ubuntu_ver = "20.04"
-pkgrel = 1
+pkgrel = 2
 
 debugging = False
 
