@@ -376,20 +376,12 @@ class Package:
             deb_deps.remove('amdgpu-lib32 (= %s-%s)' % (pkgver_base, pkgver_build))
         if self.arch_pkg_name == "opencl-amdgpu-pro-dev":
             deb_deps.remove('ocl-icd-libopencl1-amdgpu-pro (= %s-%s)' % (pkgver_base, pkgver_build))
-        # if self.arch_pkg_name == "amf-amdgpu-pro":
-        #     deb_deps.remove("libgl1-amdgpu-mesa-glx") # I do not know what is amf and if it will work normal without this dep, but I removed that open component
         if self.arch_pkg_name == "opencl-amdgpu-pro-meta":
             deb_deps.remove('amdgpu-dkms (= %s-%s)' % (pkgver_base, pkgver_build)) # I do not know why it wants amdgpu-dkms, but I did not built it, so just rm this dep for now
             deb_deps.remove('clinfo-amdgpu-pro (= %s-%s)' % (pkgver_base, pkgver_build))
             deb_deps.remove('ocl-icd-libopencl1-amdgpu-pro (= %s-%s)' % (pkgver_base, pkgver_build))
-        if self.arch_pkg_name == "amf-amdgpu-pro":
-            # adding dependencies of omitted opencl-amdgpu-pro package
-            #deb_deps.remove('opencl-amdgpu-pro')
-            deb_deps.append('amdgpu-pro-core')
-            # deb_deps.append('amdgpu-dkms') # amdgpu-dkms is not build currently, but there is such dep. Probably it extends functionality?
-            # deb_deps.append('libdrm...-amdgpu...) # opencl icd may depend on libdrm-amdgpu already, so skip this
-            deb_deps.append('opencl-orca-amdgpu-pro-icd')
-            deb_deps.append('opencl-amdgpu-pro-icd')
+        #if self.arch_pkg_name == "amf-amdgpu-pro":
+            #deb_deps.remove('opencl-amdgpu-pro-icd') # looks like amf works ok even without opencl part
 
         if deb_deps:
             deb_deps = [ depWithAlt_to_singleDep(dep) if dependencyWithAltRE.search(dep) else dep for dep in deb_deps ]
