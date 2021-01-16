@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from debian import deb822
 from debian import debfile
 import re
@@ -123,7 +125,7 @@ def gen_arch_packages():
                 # This is instead of vulkan-amdgpu-pro_19.20-812932_amd64.deb/postinst and vulkan-amdgpu-pro_19.20-812932_amd64.deb/prerm
                 'mkdir -p "${pkgdir}"/usr/share/vulkan/icd.d/',
                 'mv "${pkgdir}"/opt/amdgpu-pro/etc/vulkan/icd.d/amd_icd64.json "${pkgdir}"/usr/share/vulkan/icd.d/amd_pro_icd64.json',
-                'rm -rf "${pkgdir}"/opt/amdgpu-pro/etc/'
+                'rm -rf "${pkgdir}"/opt/amdgpu-pro/etc/',
                 'rm -rf "${pkgdir}"/etc/vulkan/icd.d/'
             ]
         ),
@@ -133,7 +135,7 @@ def gen_arch_packages():
                 # This is instead of vulkan-amdgpu-pro_19.20-812932_i386.deb/postinst and vulkan-amdgpu-pro_19.20-812932_i386.deb/prerm
                 'mkdir -p "${pkgdir}"/usr/share/vulkan/icd.d/',
                 'mv "${pkgdir}"/opt/amdgpu-pro/etc/vulkan/icd.d/amd_icd32.json "${pkgdir}"/usr/share/vulkan/icd.d/amd_pro_icd32.json',
-                'rm -rf "${pkgdir}"/opt/amdgpu-pro/etc/'
+                'rm -rf "${pkgdir}"/opt/amdgpu-pro/etc/',
                 'rm -rf "${pkgdir}"/etc/vulkan/icd.d/'
             ]
         ),
