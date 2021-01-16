@@ -18,7 +18,7 @@ pkgrel = 1
 
 debugging = False
 
-debug_pkgext = True #if debugging else False
+debug_pkgext = True if debugging else False
 
 url_ref = "https://www.amd.com/en/support/kb/release-notes/rn-amdgpu-unified-linux-20-30"
 dlagents = "https::/usr/bin/wget --referer {0} -N %u".format(url_ref)
