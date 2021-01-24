@@ -64,14 +64,12 @@ pkgname = lib32-amdgpu-pro-libgl
 pkgname = vulkan-amdgpu-pro
 	pkgdesc = AMDGPU Pro Vulkan driver
 	license = custom: AMDGPU-PRO EULA
-	depends = amdgpu-pro-core-meta=20.45_1188099-2
 	depends = wayland
 	provides = vulkan-driver
 
 pkgname = lib32-vulkan-amdgpu-pro
 	pkgdesc = AMDGPU Pro Vulkan driver (32-bit)
 	license = custom: AMDGPU-PRO EULA
-	depends = amdgpu-pro-core-meta=20.45_1188099-2
 	depends = lib32-wayland
 	provides = lib32-vulkan-driver
 

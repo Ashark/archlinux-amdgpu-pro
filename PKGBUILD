@@ -139,7 +139,7 @@ package_vulkan-amdgpu-pro () {
     pkgdesc="AMDGPU Pro Vulkan driver"
     license=('custom: AMDGPU-PRO EULA')
     provides=('vulkan-driver')
-    depends=("amdgpu-pro-core-meta=${major}_${minor}-${pkgrel}" "wayland")
+    depends=("wayland")
 
     extract_deb "${srcdir}"/amdgpu-pro-${major}-${minor}-ubuntu-${ubuntu_ver}/vulkan-amdgpu-pro_${major}-${minor}_amd64.deb
     move_libdir "opt/amdgpu-pro/lib/x86_64-linux-gnu" "usr/lib"
@@ -157,7 +157,7 @@ package_lib32-vulkan-amdgpu-pro () {
     pkgdesc="AMDGPU Pro Vulkan driver (32-bit)"
     license=('custom: AMDGPU-PRO EULA')
     provides=('lib32-vulkan-driver')
-    depends=("amdgpu-pro-core-meta=${major}_${minor}-${pkgrel}" "lib32-wayland")
+    depends=("lib32-wayland")
 
     extract_deb "${srcdir}"/amdgpu-pro-${major}-${minor}-ubuntu-${ubuntu_ver}/vulkan-amdgpu-pro_${major}-${minor}_i386.deb
     move_libdir "opt/amdgpu-pro/lib/i386-linux-gnu" "usr/lib32"

@@ -384,6 +384,10 @@ class Package:
             deb_deps.remove('ocl-icd-libopencl1-amdgpu-pro (= %s-%s)' % (pkgver_base, pkgver_build))
         #if self.arch_pkg_name == "amf-amdgpu-pro":
             #deb_deps.remove('opencl-amdgpu-pro-icd') # looks like amf works ok even without opencl part
+        if self.arch_pkg_name == "vulkan-amdgpu-pro":
+            deb_deps.remove('amdgpu-pro-core')
+        if self.arch_pkg_name == "lib32-vulkan-amdgpu-pro":
+            deb_deps.remove('amdgpu-pro-core')
 
         if deb_deps:
             deb_deps = [ depWithAlt_to_singleDep(dep) if dependencyWithAltRE.search(dep) else dep for dep in deb_deps ]
