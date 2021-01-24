@@ -125,8 +125,9 @@ def gen_arch_packages():
                 # This is instead of vulkan-amdgpu-pro_19.20-812932_amd64.deb/postinst and vulkan-amdgpu-pro_19.20-812932_amd64.deb/prerm
                 'mkdir -p "${pkgdir}"/usr/share/vulkan/icd.d/',
                 'mv "${pkgdir}"/opt/amdgpu-pro/etc/vulkan/icd.d/amd_icd64.json "${pkgdir}"/usr/share/vulkan/icd.d/amd_pro_icd64.json',
-                'rm -rf "${pkgdir}"/opt/amdgpu-pro/etc/',
-                'rm -rf "${pkgdir}"/etc' # removing useless empty directory /etc/vulkan/icd.d/
+                'mv "${pkgdir}"/usr/lib/amdvlk64.so "${pkgdir}"/usr/lib/amdvlkpro64.so',
+                'sed -i "s#/opt/amdgpu-pro/lib/x86_64-linux-gnu/amdvlk64.so#/usr/lib/amdvlkpro64.so#" "${pkgdir}"/usr/share/vulkan/icd.d/amd_pro_icd64.json',
+                'find ${pkgdir} -type d -empty -delete',
             ]
         ),
         'lib32-vulkan-amdgpu-pro': Package(
@@ -135,8 +136,9 @@ def gen_arch_packages():
                 # This is instead of vulkan-amdgpu-pro_19.20-812932_i386.deb/postinst and vulkan-amdgpu-pro_19.20-812932_i386.deb/prerm
                 'mkdir -p "${pkgdir}"/usr/share/vulkan/icd.d/',
                 'mv "${pkgdir}"/opt/amdgpu-pro/etc/vulkan/icd.d/amd_icd32.json "${pkgdir}"/usr/share/vulkan/icd.d/amd_pro_icd32.json',
-                'rm -rf "${pkgdir}"/opt/amdgpu-pro/etc/',
-                'rm -rf "${pkgdir}"/etc' # removing useless empty directory /etc/vulkan/icd.d/
+                'mv "${pkgdir}"/usr/lib32/amdvlk32.so "${pkgdir}"/usr/lib32/amdvlkpro32.so',
+                'sed -i "s#/opt/amdgpu-pro/lib/i386-linux-gnu/amdvlk32.so#/usr/lib32/amdvlkpro32.so#" "${pkgdir}"/usr/share/vulkan/icd.d/amd_pro_icd32.json',
+                'find ${pkgdir} -type d -empty -delete',
             ]
         ),
 
@@ -513,11 +515,11 @@ class Package:
             else:
                 DEBDIR="x86_64"
                 ARCHDIR=""
-            # ret += package_move_libdir_tpl.format(
-            #     PRO=PRO,
-            #     DEBDIR=DEBDIR,
-            #     ARCHDIR=ARCHDIR,
-            # )
+            ret += package_move_libdir_tpl.format(
+                PRO=PRO,
+                DEBDIR=DEBDIR,
+                ARCHDIR=ARCHDIR,
+            )
 
         ret += package_move_copyright
 
