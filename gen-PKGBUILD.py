@@ -14,7 +14,7 @@ from pathlib import Path
 pkgver_base = "20.45"
 pkgver_build = "1188099"
 ubuntu_ver = "20.04"
-pkgrel = 2
+pkgrel = 3
 
 debugging = False
 
@@ -125,8 +125,9 @@ def gen_arch_packages():
                 # This is instead of vulkan-amdgpu-pro_19.20-812932_amd64.deb/postinst and vulkan-amdgpu-pro_19.20-812932_amd64.deb/prerm
                 'mkdir -p "${pkgdir}"/usr/share/vulkan/icd.d/',
                 'mv "${pkgdir}"/opt/amdgpu-pro/etc/vulkan/icd.d/amd_icd64.json "${pkgdir}"/usr/share/vulkan/icd.d/amd_pro_icd64.json',
-                'rm -rf "${pkgdir}"/opt/amdgpu-pro/etc/',
-                'rm -rf "${pkgdir}"/etc' # removing useless empty directory /etc/vulkan/icd.d/
+                'mv "${pkgdir}"/usr/lib/amdvlk64.so "${pkgdir}"/usr/lib/amdvlkpro64.so',
+                'sed -i "s#/opt/amdgpu-pro/lib/x86_64-linux-gnu/amdvlk64.so#/usr/lib/amdvlkpro64.so#" "${pkgdir}"/usr/share/vulkan/icd.d/amd_pro_icd64.json',
+                'find ${pkgdir} -type d -empty -delete',
             ]
         ),
         'lib32-vulkan-amdgpu-pro': Package(
@@ -135,8 +136,9 @@ def gen_arch_packages():
                 # This is instead of vulkan-amdgpu-pro_19.20-812932_i386.deb/postinst and vulkan-amdgpu-pro_19.20-812932_i386.deb/prerm
                 'mkdir -p "${pkgdir}"/usr/share/vulkan/icd.d/',
                 'mv "${pkgdir}"/opt/amdgpu-pro/etc/vulkan/icd.d/amd_icd32.json "${pkgdir}"/usr/share/vulkan/icd.d/amd_pro_icd32.json',
-                'rm -rf "${pkgdir}"/opt/amdgpu-pro/etc/',
-                'rm -rf "${pkgdir}"/etc' # removing useless empty directory /etc/vulkan/icd.d/
+                'mv "${pkgdir}"/usr/lib32/amdvlk32.so "${pkgdir}"/usr/lib32/amdvlkpro32.so',
+                'sed -i "s#/opt/amdgpu-pro/lib/i386-linux-gnu/amdvlk32.so#/usr/lib32/amdvlkpro32.so#" "${pkgdir}"/usr/share/vulkan/icd.d/amd_pro_icd32.json',
+                'find ${pkgdir} -type d -empty -delete',
             ]
         ),
 
@@ -382,6 +384,10 @@ class Package:
             deb_deps.remove('ocl-icd-libopencl1-amdgpu-pro (= %s-%s)' % (pkgver_base, pkgver_build))
         #if self.arch_pkg_name == "amf-amdgpu-pro":
             #deb_deps.remove('opencl-amdgpu-pro-icd') # looks like amf works ok even without opencl part
+        if self.arch_pkg_name == "vulkan-amdgpu-pro":
+            deb_deps.remove('amdgpu-pro-core')
+        if self.arch_pkg_name == "lib32-vulkan-amdgpu-pro":
+            deb_deps.remove('amdgpu-pro-core')
 
         if deb_deps:
             deb_deps = [ depWithAlt_to_singleDep(dep) if dependencyWithAltRE.search(dep) else dep for dep in deb_deps ]
@@ -501,7 +507,9 @@ class Package:
             tmp_str=package_deb_extract_tpl.format(**info)
             ret += tmp_str.replace(str(pkgver_base), "${major}").replace(str(pkgver_build), "${minor}")
 
-        if not self.arch_pkg_name.endswith("-meta"):
+        if not self.arch_pkg_name.endswith("-meta") and self.arch_pkg_name != "amdgpu-pro-libgl" and self.arch_pkg_name != "lib32-amdgpu-pro-libgl":
+            # for ag-p-lgl and l32-ag-p-lgl I have temporary disabled movelibdir function (because it requires further investigation) to be able to publish new pkgrel with movelibdir for vulkan packages.
+
             PRO=""
             DEBDIR=""
             ARCHDIR=""
@@ -513,11 +521,11 @@ class Package:
             else:
                 DEBDIR="x86_64"
                 ARCHDIR=""
-            # ret += package_move_libdir_tpl.format(
-            #     PRO=PRO,
-            #     DEBDIR=DEBDIR,
-            #     ARCHDIR=ARCHDIR,
-            # )
+            ret += package_move_libdir_tpl.format(
+                PRO=PRO,
+                DEBDIR=DEBDIR,
+                ARCHDIR=ARCHDIR,
+            )
 
         ret += package_move_copyright
 
