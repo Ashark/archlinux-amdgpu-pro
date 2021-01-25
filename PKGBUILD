@@ -19,7 +19,7 @@ vulkan-amdgpu-pro
 lib32-vulkan-amdgpu-pro
 )
 pkgver=${major}_${minor}
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 url=https://www.amd.com/en/support/kb/release-notes/rn-amdgpu-unified-linux-20-30
 license=('custom: multiple')
@@ -111,7 +111,6 @@ package_amdgpu-pro-libgl () {
     extract_deb "${srcdir}"/amdgpu-pro-${major}-${minor}-ubuntu-${ubuntu_ver}/libgl1-amdgpu-pro-glx_${major}-${minor}_amd64.deb
     extract_deb "${srcdir}"/amdgpu-pro-${major}-${minor}-ubuntu-${ubuntu_ver}/libglapi1-amdgpu-pro_${major}-${minor}_amd64.deb
     extract_deb "${srcdir}"/amdgpu-pro-${major}-${minor}-ubuntu-${ubuntu_ver}/libgles2-amdgpu-pro_${major}-${minor}_amd64.deb
-    move_libdir "opt/amdgpu-pro/lib/x86_64-linux-gnu" "usr/lib"
     move_copyright
 }
 
@@ -128,7 +127,6 @@ package_lib32-amdgpu-pro-libgl () {
     extract_deb "${srcdir}"/amdgpu-pro-${major}-${minor}-ubuntu-${ubuntu_ver}/libgl1-amdgpu-pro-glx_${major}-${minor}_i386.deb
     extract_deb "${srcdir}"/amdgpu-pro-${major}-${minor}-ubuntu-${ubuntu_ver}/libglapi1-amdgpu-pro_${major}-${minor}_i386.deb
     extract_deb "${srcdir}"/amdgpu-pro-${major}-${minor}-ubuntu-${ubuntu_ver}/libgles2-amdgpu-pro_${major}-${minor}_i386.deb
-    move_libdir "opt/amdgpu-pro/lib/i386-linux-gnu" "usr/lib32"
     move_copyright
 
     # extra_commands:

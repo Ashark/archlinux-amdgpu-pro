@@ -14,7 +14,7 @@ from pathlib import Path
 pkgver_base = "20.45"
 pkgver_build = "1188099"
 ubuntu_ver = "20.04"
-pkgrel = 2
+pkgrel = 3
 
 debugging = False
 
@@ -507,7 +507,9 @@ class Package:
             tmp_str=package_deb_extract_tpl.format(**info)
             ret += tmp_str.replace(str(pkgver_base), "${major}").replace(str(pkgver_build), "${minor}")
 
-        if not self.arch_pkg_name.endswith("-meta"):
+        if not self.arch_pkg_name.endswith("-meta") and self.arch_pkg_name != "amdgpu-pro-libgl" and self.arch_pkg_name != "lib32-amdgpu-pro-libgl":
+            # for ag-p-lgl and l32-ag-p-lgl I have temporary disabled movelibdir function (because it requires further investigation) to be able to publish new pkgrel with movelibdir for vulkan packages.
+
             PRO=""
             DEBDIR=""
             ARCHDIR=""
