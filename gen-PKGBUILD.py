@@ -14,7 +14,7 @@ from pathlib import Path
 pkgver_base = "20.45"
 pkgver_build = "1188099"
 ubuntu_ver = "20.04"
-pkgrel = 3
+pkgrel = 4
 
 debugging = False
 
@@ -69,8 +69,6 @@ def gen_arch_packages():
         #     ],
         # ),
 
-        'amdgpu-core-meta': Package( desc = "Config file /etc/ld.so.conf.d/20-amdgpu.conf" ),
-        'amdgpu-pro-core-meta': Package( desc = "Config file /etc/ld.so.conf.d/10-amdgpu-pro.conf" ),
         'amf-amdgpu-pro': Package(),
         # 'libdrm-amdgpu': Package(
         #     provides = ['libdrm'],
@@ -369,13 +367,13 @@ class Package:
             #domap = False
 
         # Removing unneeded dependencies
-        if self.arch_pkg_name == "amdgpu-pro-meta" or self.arch_pkg_name == "lib32-amdgpu-pro-meta":
-            # Removes dependency on many open components, which are provided by standard arch repos
-            deb_deps.remove('amdgpu-hwe (= %s-%s)' % (pkgver_base, pkgver_build))  # for hwe releases
-            # deb_deps.remove('amdgpu (= %s-%s)' % (pkgver_base, pkgver_build)) # for non-hwe releases, i.e. LTS release with xx.xx.0 version
-        if self.arch_pkg_name == "amdgpu-pro-lib32-meta":
-            deb_deps.remove('amdgpu (= %s-%s) | amdgpu-hwe (= %s-%s)' % (pkgver_base, pkgver_build, pkgver_base, pkgver_build))
-            deb_deps.remove('amdgpu-lib32 (= %s-%s)' % (pkgver_base, pkgver_build))
+        # if self.arch_pkg_name == "amdgpu-pro-meta" or self.arch_pkg_name == "lib32-amdgpu-pro-meta":
+        #     # Removes dependency on many open components, which are provided by standard arch repos
+        #     deb_deps.remove('amdgpu-hwe (= %s-%s)' % (pkgver_base, pkgver_build))  # for hwe releases
+        #     # deb_deps.remove('amdgpu (= %s-%s)' % (pkgver_base, pkgver_build)) # for non-hwe releases, i.e. LTS release with xx.xx.0 version
+        # if self.arch_pkg_name == "amdgpu-pro-lib32-meta":
+        #     deb_deps.remove('amdgpu (= %s-%s) | amdgpu-hwe (= %s-%s)' % (pkgver_base, pkgver_build, pkgver_base, pkgver_build))
+        #     deb_deps.remove('amdgpu-lib32 (= %s-%s)' % (pkgver_base, pkgver_build))
         if self.arch_pkg_name == "opencl-amdgpu-pro-dev":
             deb_deps.remove('ocl-icd-libopencl1-amdgpu-pro (= %s-%s)' % (pkgver_base, pkgver_build))
         if self.arch_pkg_name == "opencl-amdgpu-pro-meta":
@@ -384,10 +382,10 @@ class Package:
             deb_deps.remove('ocl-icd-libopencl1-amdgpu-pro (= %s-%s)' % (pkgver_base, pkgver_build))
         #if self.arch_pkg_name == "amf-amdgpu-pro":
             #deb_deps.remove('opencl-amdgpu-pro-icd') # looks like amf works ok even without opencl part
-        if self.arch_pkg_name == "vulkan-amdgpu-pro":
-            deb_deps.remove('amdgpu-pro-core')
-        if self.arch_pkg_name == "lib32-vulkan-amdgpu-pro":
-            deb_deps.remove('amdgpu-pro-core')
+        # if self.arch_pkg_name == "vulkan-amdgpu-pro":
+        #     deb_deps.remove('amdgpu-pro-core')  # already removed, as I dropped ag-core-meta
+        # if self.arch_pkg_name == "lib32-vulkan-amdgpu-pro":
+        #     deb_deps.remove('amdgpu-pro-core')  # already removed, as I dropped ag-core-meta
 
         if deb_deps:
             deb_deps = [ depWithAlt_to_singleDep(dep) if dependencyWithAltRE.search(dep) else dep for dep in deb_deps ]
@@ -507,8 +505,8 @@ class Package:
             tmp_str=package_deb_extract_tpl.format(**info)
             ret += tmp_str.replace(str(pkgver_base), "${major}").replace(str(pkgver_build), "${minor}")
 
-        if not self.arch_pkg_name.endswith("-meta") and self.arch_pkg_name != "amdgpu-pro-libgl" and self.arch_pkg_name != "lib32-amdgpu-pro-libgl":
-            # for ag-p-lgl and l32-ag-p-lgl I have temporary disabled movelibdir function (because it requires further investigation) to be able to publish new pkgrel with movelibdir for vulkan packages.
+        if self.arch_pkg_name != "amdgpu-pro-libgl" and self.arch_pkg_name != "lib32-amdgpu-pro-libgl":
+            # for ag-p-lgl and l32-ag-p-lgl I have temporary disabled movelibdir function (because it requires further investigation)
 
             PRO=""
             DEBDIR=""
@@ -603,10 +601,11 @@ def convertName(name, deb_info, domap=True):
                 return packages_map[unambiguous_name]
             return ""
         return ""
-    if ret == "amdgpu-core":
-        return packages_map[ret]
+
     if ret in packages_map:
-        return packages_map[ret]
+        if packages_map[ret]:  # this is to prevent returning None type, because we want to concatenate with str type
+            return packages_map[ret]
+        return ""
     return ret
 
 def convertVersionSpecifier(name, spec):
