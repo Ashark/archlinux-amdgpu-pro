@@ -86,6 +86,9 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
         "amdgpu-doc")
             archpkg=None; comment="arch_specific_instructions_will_be_covered_in_archwiki"
             ;;
+        amdgpu-core|amdgpu-pro-core)
+            archpkg=None; comment="unneeded_meta_package" # because they just put conf file in ld.so.conf.d, which amdgpu-pro-libgl already does
+            ;;
          libdrm-amdgpu@(-amdgpu1|-common)\
         |libdrm2-amdgpu\
         )
@@ -137,6 +140,14 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
         |rocm-device-libs-amdgpu-pro\
         )
             archpkg=None; comment="opencl_goes_to_opencl-amd"
+            ;;
+         amf-amdgpu-pro\
+        |vulkan-amdgpu-pro\
+        )
+            archpkg=$line; comment="mapped_manually"
+            ;;
+         vulkan-amdgpu-pro:i386)
+            archpkg=lib32-vulkan-amdgpu-pro; comment="mapped_manually"
             ;;
 
     esac

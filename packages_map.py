@@ -3,7 +3,7 @@
 
 packages_map = {
     'amdgpu':                                  None,                       #unneeded_open_component
-    'amdgpu-core':                             'amdgpu-core-meta',         #mapped_manually
+    'amdgpu-core':                             None,                       #unneeded_meta_package
     'amdgpu-dkms':                             None,                       #unneeded_open_component
     'amdgpu-dkms-firmware':                    None,                       #unneeded_open_component
     'amdgpu-doc':                              None,                       #arch_specific_instructions_will_be_covered_in_archwiki
@@ -11,11 +11,11 @@ packages_map = {
     'amdgpu-lib32':                            None,                       #unneeded_open_component
     'amdgpu-pin':                              None,                       #debian_specific_package,_not_needed
     'amdgpu-pro':                              None,                       #we_have_already_combined_libgl_to_single_package
-    'amdgpu-pro-core':                         'amdgpu-pro-core-meta',     #mapped_manually
+    'amdgpu-pro-core':                         None,                       #unneeded_meta_package
     'amdgpu-pro-lib32':                        None,                       #we_have_already_combined_libgl_to_single_package
     'amdgpu-pro-pin':                          None,                       #debian_specific_package,_not_needed
     'amdgpu-pro-rocr-opencl':                  None,                       #opencl_goes_to_opencl-amd
-    'amf-amdgpu-pro':                          'amf-amdgpu-pro',           #
+    'amf-amdgpu-pro':                          'amf-amdgpu-pro',           #mapped_manually
     'clinfo-amdgpu-pro':                       None,                       #unneeded_pro_component
     'clinfo-amdgpu-pro:i386':                  None,                       #unneeded_pro_component
     'comgr-amdgpu-pro':                        None,                       #opencl_goes_to_opencl-amd
@@ -120,7 +120,7 @@ packages_map = {
     'opencl-rocr-amdgpu-pro-dev':              None,                       #opencl_goes_to_opencl-amd
     'rocm-device-libs-amdgpu-pro':             None,                       #opencl_goes_to_opencl-amd
     'vulkan-amdgpu':                           None,                       #unneeded_open_component
-    'vulkan-amdgpu-pro':                       'vulkan-amdgpu-pro',        #
-    'vulkan-amdgpu-pro:i386':                  'lib32-vulkan-amdgpu-pro',  #
+    'vulkan-amdgpu-pro':                       'vulkan-amdgpu-pro',        #mapped_manually
+    'vulkan-amdgpu-pro:i386':                  'lib32-vulkan-amdgpu-pro',  #mapped_manually
     'xserver-xorg-amdgpu-video-amdgpu':        None,                       #unneeded_open_component
 }
