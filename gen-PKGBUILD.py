@@ -14,7 +14,7 @@ from pathlib import Path
 pkgver_base = "20.45"
 pkgver_build = "1188099"
 ubuntu_ver = "20.04"
-pkgrel = 4
+pkgrel = 5
 
 debugging = False
 
@@ -88,10 +88,21 @@ def gen_arch_packages():
         'amdgpu-pro-libgl': Package(
             desc = "AMDGPU Pro OpenGL driver",
             provides  = ['libgl'],
-            # extra_commands = [
+            extra_commands = [
             #     # This is instead of libgl1-amdgpu-pro-ext-hwe_19.20-812932_amd64.deb/postinst and libgl1-amdgpu-pro-ext-hwe_19.20-812932_amd64.deb/prerm
             #     'mv "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx-ext-hwe.so "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx.so',
-            # ]
+                'move_libdir "usr/lib/x86_64-linux-gnu" "usr/lib"',
+                'move_libdir "opt/amdgpu-pro/lib/x86_64-linux-gnu" "usr/lib/amdgpu-pro"',
+                'move_libdir "opt/amdgpu-pro/lib/xorg" "usr/lib/amdgpu-pro/xorg"',
+                'move_libdir "opt/amdgpu/share/drirc.d" "usr/share/drirc.d"',
+                'sed -i "s|/opt/amdgpu-pro/lib/x86_64-linux-gnu|#/usr/lib/amdgpu-pro  # commented to prevent problems of booting with amdgpu-pro, use progl script|" "${pkgdir}"/etc/ld.so.conf.d/10-amdgpu-pro-x86_64.conf',
+
+                'install -Dm755 "${srcdir}"/progl "${pkgdir}"/usr/bin/progl',
+                'install -Dm755 "${srcdir}"/progl.bash-completion "${pkgdir}"/usr/share/bash-completion/completions/progl',
+
+                '# For some reason, applications started with normal OpenGL (i.e. without ag pro) crashes at launch if this conf file is presented, so hide it for now, until I find out the reason of that.',
+                'mv "${pkgdir}"/usr/share/drirc.d/10-amdgpu-pro.conf "${pkgdir}"/usr/share/drirc.d/10-amdgpu-pro.conf.hide',
+            ]
         ),
         'lib32-amdgpu-pro-libgl': Package(
             desc = "AMDGPU Pro OpenGL driver (32-bit)",
@@ -101,6 +112,10 @@ def gen_arch_packages():
                 # 'mv "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx-ext-hwe.so "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx.so',
                 # Clean-up duplicated files to be able to install simultaneously with 64bit version
                 'rm "${pkgdir}"/etc/amd/amdrc "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx.so "${pkgdir}"/opt/amdgpu/share/drirc.d/10-amdgpu-pro.conf',
+
+                'move_libdir "usr/lib/i386-linux-gnu" "usr/lib32"',
+                'move_libdir "opt/amdgpu-pro/lib/i386-linux-gnu" "usr/lib32/amdgpu-pro"',
+                'sed -i "s|/opt/amdgpu-pro/lib/i386-linux-gnu|#/usr/lib32/amdgpu-pro  # commented to prevent problems of booting with amdgpu-pro, use progl32 script|" "${pkgdir}"/etc/ld.so.conf.d/10-amdgpu-pro-i386.conf',
             ]
         ),
         #'opencl-amdgpu-pro-comgr': Package( desc = "Code object manager (COMGR)" ),
@@ -224,8 +239,8 @@ def hashFile(file):
             buf = f.read(block)
     return hash.hexdigest()
 
-sources = [ source_url ]
-sha256sums = [ hashFile(source_file) ]
+sources = [ source_url, "progl", "progl.bash-completion" ]
+sha256sums = [ hashFile(source_file), hashFile("progl"), hashFile("progl.bash-completion") ]
 
 patches = sorted(glob.glob("*.patch"))
 
