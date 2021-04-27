@@ -1,5 +1,5 @@
 # Generated with ./gen_packages_map.sh > packages_map.py
-# for driver version 20.45-1188099
+# for driver version 21.10-1247438
 
 packages_map = {
     'amdgpu':                                  None,                       #unneeded_open_component
@@ -27,6 +27,7 @@ packages_map = {
     'hsa-runtime-rocr-amdgpu-dev':             None,                       #opencl_goes_to_opencl-amd
     'hsakmt-roct-amdgpu':                      None,                       #opencl_goes_to_opencl-amd
     'hsakmt-roct-amdgpu-dev':                  None,                       #opencl_goes_to_opencl-amd
+    'kfdtest-amdgpu':                          None,                       #opencl_goes_to_opencl-amd
     'libdrm-amdgpu-amdgpu1':                   None,                       #unneeded_open_component
     'libdrm-amdgpu-amdgpu1:i386':              None,                       #unneeded_open_component
     'libdrm-amdgpu-common':                    None,                       #unneeded_open_component
@@ -78,24 +79,20 @@ packages_map = {
     'libgles2-amdgpu-pro':                     'amdgpu-pro-libgl',         #mapped_manually
     'libgles2-amdgpu-pro:i386':                'lib32-amdgpu-pro-libgl',   #mapped_manually
     'libllvm-amdgpu-pro-rocm':                 None,                       #opencl_goes_to_opencl-amd
-    'libllvm10.0-amdgpu':                      None,                       #unneeded_open_component
-    'libllvm10.0-amdgpu:i386':                 None,                       #unneeded_open_component
-    'libosmesa6-amdgpu':                       None,                       #unneeded_open_component
-    'libosmesa6-amdgpu:i386':                  None,                       #unneeded_open_component
-    'libosmesa6-amdgpu-dev':                   None,                       #unneeded_open_component
-    'libosmesa6-amdgpu-dev:i386':              None,                       #unneeded_open_component
+    'libllvm11.0-amdgpu':                      None,                       #unneeded_open_component
+    'libllvm11.0-amdgpu:i386':                 None,                       #unneeded_open_component
     'libxatracker-amdgpu-dev':                 None,                       #not_installed_even_in_ubuntu
     'libxatracker-amdgpu-dev:i386':            None,                       #not_installed_even_in_ubuntu
     'libxatracker2-amdgpu':                    None,                       #unneeded_open_component
     'libxatracker2-amdgpu:i386':               None,                       #unneeded_open_component
     'llvm-amdgpu':                             None,                       #not_installed_even_in_ubuntu
     'llvm-amdgpu:i386':                        None,                       #not_installed_even_in_ubuntu
-    'llvm-amdgpu-10.0':                        None,                       #not_installed_even_in_ubuntu
-    'llvm-amdgpu-10.0:i386':                   None,                       #not_installed_even_in_ubuntu
-    'llvm-amdgpu-10.0-dev':                    None,                       #not_installed_even_in_ubuntu
-    'llvm-amdgpu-10.0-dev:i386':               None,                       #not_installed_even_in_ubuntu
-    'llvm-amdgpu-10.0-runtime':                None,                       #not_installed_even_in_ubuntu
-    'llvm-amdgpu-10.0-runtime:i386':           None,                       #not_installed_even_in_ubuntu
+    'llvm-amdgpu-11.0':                        None,                       #not_installed_even_in_ubuntu
+    'llvm-amdgpu-11.0:i386':                   None,                       #not_installed_even_in_ubuntu
+    'llvm-amdgpu-11.0-dev':                    None,                       #not_installed_even_in_ubuntu
+    'llvm-amdgpu-11.0-dev:i386':               None,                       #not_installed_even_in_ubuntu
+    'llvm-amdgpu-11.0-runtime':                None,                       #not_installed_even_in_ubuntu
+    'llvm-amdgpu-11.0-runtime:i386':           None,                       #not_installed_even_in_ubuntu
     'llvm-amdgpu-dev':                         None,                       #not_installed_even_in_ubuntu
     'llvm-amdgpu-dev:i386':                    None,                       #not_installed_even_in_ubuntu
     'llvm-amdgpu-pro-rocm':                    None,                       #opencl_goes_to_opencl-amd
