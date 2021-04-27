@@ -2,7 +2,7 @@
 
 # This script unpacks all deb packages (control and data). It is for simplifying operations of checking preinst scripts, making list of licenses hashes and so on.
 
-. ./versions.sh
+. ./versions
 ARCHIVE=amdgpu-pro-$pkgver_base-$pkgver_build-ubuntu-$ubuntu_ver.tar.xz
 tar -xf $ARCHIVE
 cd ${ARCHIVE%.tar.xz}

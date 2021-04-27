@@ -1,7 +1,9 @@
 # Generated with ./gen_replace_deps.sh > replace_deps.py
-# for driver version 20.45-1188099
+# for driver version 21.10-1247438
 
 replace_deps = {
+    'autoconf':                        'autoconf',               #auto_translated
+    'automake':                        'automake',               #auto_translated
     'binfmt-support':                  'opera',                  #auto_translated
     'dkms':                            'dkms',                   #auto_translated
     'libc6':                           None,                     #manually_mapped
@@ -47,6 +49,7 @@ replace_deps = {
     'libxcb-glx0-dev':                 'libxcb',                 #auto_translated
     'libxcb-present0':                 'libxcb',                 #auto_translated
     'libxcb-present-dev':              'libxcb',                 #auto_translated
+    'libxcb-shm0':                     'libxcb',                 #auto_translated
     'libxcb-sync1':                    'libxcb',                 #auto_translated
     'libxcb-sync-dev':                 'libxcb',                 #auto_translated
     'libxcb-xfixes0':                  'libxcb',                 #auto_translated
@@ -61,6 +64,7 @@ replace_deps = {
     'libxxf86vm1':                     'libxxf86vm',             #auto_translated
     'libxxf86vm-dev':                  'libxxf86vm',             #auto_translated
     'linux-firmware':                  'linux-firmware',         #manually_mapped
+    'shim-signed':                     'shim-signed',            #auto_translated
     'x11proto-dri2-dev':               'x11proto-dri2-dev',      #could_not_auto_translate
     'x11proto-gl-dev':                 'x11proto-gl-dev',        #could_not_auto_translate
     'zlib1g':                          'zlib',                   #auto_translated

@@ -52,8 +52,7 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
         |libglapi-amdgpu-mesa@(|:i386)\
         |libgles1-amdgpu-mesa@(|:i386|-dev|-dev:i386)\
         |libgles2-amdgpu-mesa@(|:i386|-dev|-dev:i386)\
-        |libllvm10.0-amdgpu@(|:i386)\
-        |libosmesa6-amdgpu@(|:i386|-dev|-dev:i386)\
+        |libllvm11.0-amdgpu@(|:i386)\
         |libxatracker2-amdgpu@(|:i386)\
         |mesa-amdgpu-omx-drivers@(|:i386)\
         |mesa-amdgpu-va-drivers@(|:i386)\
@@ -70,7 +69,7 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
             archpkg=None; comment="unneeded_pro_component"
             ;;
          llvm-amdgpu@(|:i386)\
-        |llvm-amdgpu-10.0@(|:i386|-dev|-dev:i386|-doc|-runtime|-runtime:i386)\
+        |llvm-amdgpu-11.0@(|:i386|-dev|-dev:i386|-doc|-runtime|-runtime:i386)\
         |llvm-amdgpu@(-dev|-dev:i386|-runtime|-runtime:i386)\
         |libdrm-amdgpu-dev@(|:i386)\
         |libdrm-amdgpu-radeon1@(|:i386)\
@@ -130,6 +129,7 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
         |hsa-runtime-rocr-amdgpu-dev\
         |hsakmt-roct-amdgpu\
         |hsakmt-roct-amdgpu-dev\
+        |kfdtest-amdgpu\
         |libllvm-amdgpu-pro-rocm\
         |llvm-amdgpu-pro-rocm\
         |llvm-amdgpu-pro-rocm-dev\

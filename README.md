@@ -6,11 +6,11 @@ before the commit completes.
 
 ## Steps to do when new version is released
 1. Download an amd bundle archive and place it to root of the repository.
-1. Change pkgver_base, pkgver_build, ubuntu_ver, url_ref in gen-PKGBUILD.py
-1. Change versions in versions.sh
+1. Change versions in `versions` file.
+1. Change pkgrel, url_ref in `gen-PKGBUILD.py` file.
 1. Run `./unpack_all_deb_packages.sh`
 1. Copy the file archive_name_dir/"Packages" to "Packages_extracted" with the following command:  
-   `. versions.sh; cp amdgpu-pro-$pkgver_base-$pkgver_build-ubuntu-$ubuntu_ver/Packages Packages-extracted`
+   `. versions; cp amdgpu-pro-$pkgver_base-$pkgver_build-ubuntu-$ubuntu_ver/Packages Packages-extracted`
 1. Run `./gen_packages_map.sh > packages_map.py`  
    See differences with `git diff -w packages_map.py`  
    If there are differences, then make adjustments to gen_packages_map.sh if needed. Especially, look for the new appeared packages (they will have empty comment) and removed packages. If there are new or removed packages, then use make_pkgbuild_pkgs_template.sh and edit gen-PKGBUILD.py
@@ -25,7 +25,7 @@ before the commit completes.
     ```
     [amdgpu-dev]
     SigLevel = Optional TrustAll
-    Server = File:///home/andrew/Development/archlinux-amdgpu-pro/ # fix path to your development directory
+    Server = File:///home/andrew/Development/archlinux-amdgpu-pro/ # edit path to your development directory
     ```
 1. Regenerate PKGBUILD with `./remake_all.sh`
 1. If you notice empty licence in PKGBUILD, add its hash to the licenses_hashes_map in gen-PKGBUILD.py
