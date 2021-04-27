@@ -20,13 +20,13 @@ spec.loader.exec_module(versions)
 pkgver_base = versions.pkgver_base
 pkgver_build = versions.pkgver_build
 ubuntu_ver = versions.ubuntu_ver
-pkgrel = 5
+pkgrel = 1
 
 debugging = False
 
 debug_pkgext = True if debugging else False
 
-url_ref = "https://www.amd.com/en/support/kb/release-notes/rn-amdgpu-unified-linux-20-30"
+url_ref = "https://www.amd.com/en/support/kb/release-notes/rn-amdgpu-unified-linux-21-10"
 dlagents = "https::/usr/bin/wget --referer {0} -N %u".format(url_ref)
 
 source_url = "https://drivers.amd.com/drivers/linux/amdgpu-pro-${major}-${minor}-ubuntu-${ubuntu_ver}.tar.xz"

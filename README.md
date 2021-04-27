@@ -25,7 +25,7 @@ before the commit completes.
     ```
     [amdgpu-dev]
     SigLevel = Optional TrustAll
-    Server = File:///home/andrew/Development/archlinux-amdgpu-pro/ # fix path to your development directory
+    Server = File:///home/andrew/Development/archlinux-amdgpu-pro/ # edit path to your development directory
     ```
 1. Regenerate PKGBUILD with `./remake_all.sh`
 1. If you notice empty licence in PKGBUILD, add its hash to the licenses_hashes_map in gen-PKGBUILD.py
