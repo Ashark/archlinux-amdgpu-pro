@@ -6,8 +6,8 @@ before the commit completes.
 
 ## Steps to do when new version is released
 1. Download an amd bundle archive and place it to root of the repository.
-1. Change pkgver_base, pkgver_build, ubuntu_ver, url_ref in gen-PKGBUILD.py
-1. Change versions in versions
+1. Change versions in `versions` file.
+1. Change pkgrel, url_ref in `gen-PKGBUILD.py` file.
 1. Run `./unpack_all_deb_packages.sh`
 1. Copy the file archive_name_dir/"Packages" to "Packages_extracted" with the following command:  
    `. versions; cp amdgpu-pro-$pkgver_base-$pkgver_build-ubuntu-$ubuntu_ver/Packages Packages-extracted`

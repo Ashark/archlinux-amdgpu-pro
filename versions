@@ -1,5 +1,10 @@
 # This file is interpreted by both python and bash
+# Old version is specified for use in extract_transaction_scripts_and_triggers.sh
 
-pkgver_base="20.45"
-pkgver_build="1188099"
+pkgver_base="21.10"
+pkgver_build="1247438"
 ubuntu_ver="20.04"
+
+old_pkgver_base="20.45"
+old_pkgver_build="1188099"
+old_ubuntu_ver="20.04"

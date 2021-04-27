@@ -9,9 +9,9 @@ majornew=$pkgver_base
 minornew=$pkgver_build
 ubuntuvernew=$ubuntu_ver
 
-majorold=20.30
-minorold=1109583
-ubuntuverold=20.04
+majorold=$old_pkgver_base
+minorold=$old_pkgver_build
+ubuntuverold=$old_ubuntu_ver
 
 # Switch for running this script against another release. Use NEW or OLD values
 RUN_FOR_VERSION=NEW
