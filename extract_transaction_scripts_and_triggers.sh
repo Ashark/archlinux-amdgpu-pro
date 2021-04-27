@@ -3,7 +3,7 @@
 # This script extracts transaction scripts of deb packages to a file, so it is possible to read it and compare with previous version.
 # After that its needed to carefully convert them to pacman .install files or hooks if needed
 
-. ./versions.sh
+. ./versions
 
 majornew=$pkgver_base
 minornew=$pkgver_build

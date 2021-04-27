@@ -10,10 +10,16 @@ import subprocess
 import hashlib
 import glob
 from pathlib import Path
+from importlib.util import spec_from_loader, module_from_spec
+from importlib.machinery import SourceFileLoader
 
-pkgver_base = "20.45"
-pkgver_build = "1188099"
-ubuntu_ver = "20.04"
+spec = spec_from_loader("versions", SourceFileLoader("versions", "versions"))
+versions = module_from_spec(spec)
+spec.loader.exec_module(versions)
+
+pkgver_base = versions.pkgver_base
+pkgver_build = versions.pkgver_build
+ubuntu_ver = versions.ubuntu_ver
 pkgrel = 5
 
 debugging = False
