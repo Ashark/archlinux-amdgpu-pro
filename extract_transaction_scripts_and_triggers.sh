@@ -66,29 +66,29 @@ function extract_them() {
     rename "$major" "XX.XX" install_scripts/*.txt
     rename "$minor" "XXXXXX" install_scripts/*.txt
 
-    rename "_1.7.0" "_C.C.C" install_scripts/*.txt # old comgr version
-    rename "_2.0.0" "_C.C.C" install_scripts/*.txt # new comgr version
+    rename "_2.1.0" "_C.C.C" install_scripts/*.txt # new comgr version
+    rename "_2.0.0" "_C.C.C" install_scripts/*.txt # old comgr version
 
     rename "1.2.0" "_H.H.H" install_scripts/*.txt # old hsa-runtime-rocr-amdgpu version
     rename "1.3.0" "_H.H.H" install_scripts/*.txt # new hsa-runtime-rocr-amdgpu version
 
-    rename "20.1.6" "YY.Y.Y" install_scripts/*.txt # old mesa version
-    rename "20.3.4" "YY.Y.Y" install_scripts/*.txt # new mesa version
+    rename "21.1.0" "YY.Y.Y" install_scripts/*.txt # new mesa version
+    rename "20.3.4" "YY.Y.Y" install_scripts/*.txt # old mesa version
 
     rename "5.9.20.104" "Y.Y.Y.YY" install_scripts/*.txt # old amdgpu-dkms version
-    rename "5.6.20.906316" "Y.Y.Y.YY" install_scripts/*.txt # new amdgpu-dkms version
+    rename "5.11.5.26" "Y.Y.Y.YY" install_scripts/*.txt # new amdgpu-dkms version
 
-    rename "rocm_11.0" "rocm_RR.R" install_scripts/*.txt # old libllvm-amdgpu-pro-rocm
-    rename "rocm_12.0" "rocm_RR.R" install_scripts/*.txt # new libllvm-amdgpu-pro-rocm
+    rename "rocm_13.0" "rocm_RR.R" install_scripts/*.txt # new libllvm-amdgpu-pro-rocm
+    rename "rocm_12.0" "rocm_RR.R" install_scripts/*.txt # old libllvm-amdgpu-pro-rocm
 
-    rename "libllvm10.0-amdgpu_10.0" "libllvmZZ.Z-amdgpu_ZZ.Z" install_scripts/*.txt # old llvm-amdgpu version
-    rename "libllvm11.0-amdgpu_11.0" "libllvmZZ.Z-amdgpu_ZZ.Z" install_scripts/*.txt # new llvm-amdgpu version
+    rename "libllvm12.0-amdgpu_12.0" "libllvmZZ.Z-amdgpu_ZZ.Z" install_scripts/*.txt # new llvm-amdgpu version
+    rename "libllvm11.0-amdgpu_11.0" "libllvmZZ.Z-amdgpu_ZZ.Z" install_scripts/*.txt # old llvm-amdgpu version
     
-    rename "10.0-runtime_10.0" "LL.L-runtime_LL.L" install_scripts/*.txt # old llvm-amdgpu-XX.X-runtime_XX.X
-    rename "11.0-runtime_11.0" "LL.L-runtime_LL.L" install_scripts/*.txt # new llvm-amdgpu-XX.X-runtime_XX.X
+    rename "12.0-runtime_12.0" "LL.L-runtime_LL.L" install_scripts/*.txt # new llvm-amdgpu-XX.X-runtime_XX.X
+    rename "11.0-runtime_11.0" "LL.L-runtime_LL.L" install_scripts/*.txt # old llvm-amdgpu-XX.X-runtime_XX.X
     
-    rename "dev_10.0" "dev_DD.D" install_scripts/*.txt # old llvm-amdgpu-dev_XX.X
-    rename "dev_11.0" "dev_DD.D" install_scripts/*.txt # new llvm-amdgpu-dev_XX.X
+    rename "dev_12.0" "dev_DD.D" install_scripts/*.txt # new llvm-amdgpu-dev_XX.X
+    rename "dev_11.0" "dev_DD.D" install_scripts/*.txt # old llvm-amdgpu-dev_XX.X
 
     mv install_scripts install_scripts_"$major"-"$minor"
     cd ..

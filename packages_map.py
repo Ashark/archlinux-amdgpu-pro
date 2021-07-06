@@ -1,5 +1,5 @@
 # Generated with ./gen_packages_map.sh > packages_map.py
-# for driver version 21.10-1247438
+# for driver version 21.20-1271047
 
 packages_map = {
     'amdgpu':                                  None,                       #unneeded_open_component
@@ -79,20 +79,35 @@ packages_map = {
     'libgles2-amdgpu-pro':                     'amdgpu-pro-libgl',         #mapped_manually
     'libgles2-amdgpu-pro:i386':                'lib32-amdgpu-pro-libgl',   #mapped_manually
     'libllvm-amdgpu-pro-rocm':                 None,                       #opencl_goes_to_opencl-amd
-    'libllvm11.0-amdgpu':                      None,                       #unneeded_open_component
-    'libllvm11.0-amdgpu:i386':                 None,                       #unneeded_open_component
+    'libllvm12.0-amdgpu':                      None,                       #unneeded_open_component
+    'libllvm12.0-amdgpu:i386':                 None,                       #unneeded_open_component
+    'libwayland-amdgpu-bin':                   None,                       #unneeded_open_component
+    'libwayland-amdgpu-bin:i386':              None,                       #unneeded_open_component
+    'libwayland-amdgpu-client0':               None,                       #unneeded_open_component
+    'libwayland-amdgpu-client0:i386':          None,                       #unneeded_open_component
+    'libwayland-amdgpu-cursor0':               None,                       #unneeded_open_component
+    'libwayland-amdgpu-cursor0:i386':          None,                       #unneeded_open_component
+    'libwayland-amdgpu-dev':                   None,                       #unneeded_open_component
+    'libwayland-amdgpu-dev:i386':              None,                       #unneeded_open_component
+    'libwayland-amdgpu-doc':                   None,                       #unneeded_open_component
+    'libwayland-amdgpu-egl-backend-dev':       None,                       #unneeded_open_component
+    'libwayland-amdgpu-egl-backend-dev:i386':  None,                       #unneeded_open_component
+    'libwayland-amdgpu-egl1':                  None,                       #unneeded_open_component
+    'libwayland-amdgpu-egl1:i386':             None,                       #unneeded_open_component
+    'libwayland-amdgpu-server0':               None,                       #unneeded_open_component
+    'libwayland-amdgpu-server0:i386':          None,                       #unneeded_open_component
     'libxatracker-amdgpu-dev':                 None,                       #not_installed_even_in_ubuntu
     'libxatracker-amdgpu-dev:i386':            None,                       #not_installed_even_in_ubuntu
     'libxatracker2-amdgpu':                    None,                       #unneeded_open_component
     'libxatracker2-amdgpu:i386':               None,                       #unneeded_open_component
     'llvm-amdgpu':                             None,                       #not_installed_even_in_ubuntu
     'llvm-amdgpu:i386':                        None,                       #not_installed_even_in_ubuntu
-    'llvm-amdgpu-11.0':                        None,                       #not_installed_even_in_ubuntu
-    'llvm-amdgpu-11.0:i386':                   None,                       #not_installed_even_in_ubuntu
-    'llvm-amdgpu-11.0-dev':                    None,                       #not_installed_even_in_ubuntu
-    'llvm-amdgpu-11.0-dev:i386':               None,                       #not_installed_even_in_ubuntu
-    'llvm-amdgpu-11.0-runtime':                None,                       #not_installed_even_in_ubuntu
-    'llvm-amdgpu-11.0-runtime:i386':           None,                       #not_installed_even_in_ubuntu
+    'llvm-amdgpu-12.0':                        None,                       #not_installed_even_in_ubuntu
+    'llvm-amdgpu-12.0:i386':                   None,                       #not_installed_even_in_ubuntu
+    'llvm-amdgpu-12.0-dev':                    None,                       #not_installed_even_in_ubuntu
+    'llvm-amdgpu-12.0-dev:i386':               None,                       #not_installed_even_in_ubuntu
+    'llvm-amdgpu-12.0-runtime':                None,                       #not_installed_even_in_ubuntu
+    'llvm-amdgpu-12.0-runtime:i386':           None,                       #not_installed_even_in_ubuntu
     'llvm-amdgpu-dev':                         None,                       #not_installed_even_in_ubuntu
     'llvm-amdgpu-dev:i386':                    None,                       #not_installed_even_in_ubuntu
     'llvm-amdgpu-pro-rocm':                    None,                       #opencl_goes_to_opencl-amd
@@ -119,5 +134,6 @@ packages_map = {
     'vulkan-amdgpu':                           None,                       #unneeded_open_component
     'vulkan-amdgpu-pro':                       'vulkan-amdgpu-pro',        #mapped_manually
     'vulkan-amdgpu-pro:i386':                  'lib32-vulkan-amdgpu-pro',  #mapped_manually
+    'wayland-protocols-amdgpu':                None,                       #unneeded_open_component
     'xserver-xorg-amdgpu-video-amdgpu':        None,                       #unneeded_open_component
 }

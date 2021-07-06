@@ -1,10 +1,10 @@
 # Generated with ./gen_replace_deps.sh > replace_deps.py
-# for driver version 21.10-1247438
+# for driver version 21.20-1271047
 
 replace_deps = {
     'autoconf':                        'autoconf',               #auto_translated
     'automake':                        'automake',               #auto_translated
-    'binfmt-support':                  'opera',                  #auto_translated
+    'binfmt-support':                  'coolreader',             #auto_translated
     'dkms':                            'dkms',                   #auto_translated
     'libc6':                           None,                     #manually_mapped
     'libc6-dev':                       None,                     #auto_translated
@@ -14,11 +14,12 @@ replace_deps = {
     'libedit2':                        'libedit',                #auto_translated
     'libelf1':                         'libelf',                 #auto_translated
     'libexpat1':                       'expat',                  #auto_translated
+    'libffi7':                         'libffi',                 #auto_translated
     'libffi-dev':                      'libffi',                 #auto_translated
     'libgcc-s1':                       None,                     #manually_mapped
     'libgl1':                          'libglvnd',               #manually_mapped
     'libglib2.0-0':                    'glib2',                  #auto_translated
-    'libglide3':                       'libglide3',              #could_not_auto_translate
+    'libglide3':                       'glide',                  #auto_translated
     'libgstreamer1.0-0':               'gstreamer',              #auto_translated
     'libgstreamer-plugins-base1.0-0':  'gst-plugins-base-libs',  #auto_translated
     'libnuma1':                        'numactl',                #auto_translated
@@ -32,11 +33,8 @@ replace_deps = {
     'libudev0':                        None,                     #manually_mapped
     'libudev1':                        'systemd-libs',           #auto_translated
     'libudev-dev':                     'systemd-libs',           #auto_translated
-    'libwayland-client0':              'wayland',                #auto_translated
-    'libwayland-dev':                  'wayland',                #auto_translated
-    'libwayland-egl1':                 'wayland',                #auto_translated
-    'libwayland-server0':              'wayland',                #auto_translated
-    'libx11-6':                        'libx11',                 #auto_translated
+    'libwayland-doc':                  'wayland',                #auto_translated
+    'libx11-6':                        'nx-x11',                 #auto_translated
     'libx11-dev':                      'libx11',                 #auto_translated
     'libx11-xcb1':                     'libx11',                 #auto_translated
     'libx11-xcb-dev':                  'libx11',                 #auto_translated
@@ -59,6 +57,7 @@ replace_deps = {
     'libxext-dev':                     'libxext',                #auto_translated
     'libxfixes3':                      'libxfixes',              #auto_translated
     'libxfixes-dev':                   'libxfixes',              #auto_translated
+    'libxml2':                         'libxml2',                #auto_translated
     'libxshmfence1':                   'libxshmfence',           #auto_translated
     'libxshmfence-dev':                'libxshmfence',           #auto_translated
     'libxxf86vm1':                     'libxxf86vm',             #auto_translated

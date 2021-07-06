@@ -52,7 +52,7 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
         |libglapi-amdgpu-mesa@(|:i386)\
         |libgles1-amdgpu-mesa@(|:i386|-dev|-dev:i386)\
         |libgles2-amdgpu-mesa@(|:i386|-dev|-dev:i386)\
-        |libllvm11.0-amdgpu@(|:i386)\
+        |libllvm12.0-amdgpu@(|:i386)\
         |libxatracker2-amdgpu@(|:i386)\
         |mesa-amdgpu-omx-drivers@(|:i386)\
         |mesa-amdgpu-va-drivers@(|:i386)\
@@ -60,6 +60,8 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
         |xserver-xorg-amdgpu-video-amdgpu\
         |xserver-xorg-hwe-amdgpu-video-amdgpu\
         |vulkan-amdgpu@(|:i386)\
+        |libwayland-amdgpu-@(bin|bin:i386|client0|client0:i386|cursor0|cursor0:i386|dev|dev:i386|doc|egl-backend-dev|egl-backend-dev:i386|egl1|egl1:i386|server0|server0:i386)\
+        |wayland-protocols-amdgpu\
         )
             archpkg=None; comment="unneeded_open_component"
             ;;
@@ -69,7 +71,7 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
             archpkg=None; comment="unneeded_pro_component"
             ;;
          llvm-amdgpu@(|:i386)\
-        |llvm-amdgpu-11.0@(|:i386|-dev|-dev:i386|-doc|-runtime|-runtime:i386)\
+        |llvm-amdgpu-12.0@(|:i386|-dev|-dev:i386|-doc|-runtime|-runtime:i386)\
         |llvm-amdgpu@(-dev|-dev:i386|-runtime|-runtime:i386)\
         |libdrm-amdgpu-dev@(|:i386)\
         |libdrm-amdgpu-radeon1@(|:i386)\
