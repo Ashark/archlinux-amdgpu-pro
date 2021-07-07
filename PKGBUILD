@@ -17,7 +17,7 @@ vulkan-amdgpu-pro
 lib32-vulkan-amdgpu-pro
 )
 pkgver=${major}_${minor}
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url=https://www.amd.com/en/support/kb/release-notes/rn-amdgpu-unified-linux-21-20
 license=('custom: multiple')

@@ -20,7 +20,7 @@ spec.loader.exec_module(versions)
 pkgver_base = versions.pkgver_base
 pkgver_build = versions.pkgver_build
 ubuntu_ver = versions.ubuntu_ver
-pkgrel = 1
+pkgrel = 2
 
 debugging = False
 
