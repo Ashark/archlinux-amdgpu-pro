@@ -30,4 +30,10 @@ before the commit completes.
 1. Regenerate PKGBUILD with `./remake_all.sh`
 1. If you notice empty licence in PKGBUILD, add its hash to the licenses_hashes_map in gen-PKGBUILD.py
 1. Install from local repository and test it.
+1. Commit to project repo (not the aur) with the tag.
+    ```
+    git tag $(source PKGBUILD; echo v${major}_${minor}-${pkgrel})
+    git push origin $(source PKGBUILD; echo v${major}_${minor}-${pkgrel})
+    ```
+   Create a release on github pointing to the new tag.
 1. Update AUR package: copy PKGBUILD, .SRCINFO and other files as needed.
