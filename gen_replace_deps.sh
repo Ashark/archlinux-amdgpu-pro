@@ -19,6 +19,7 @@ sed -i 's/-hwe//g' tmp_extra_deps_in_debian_amdgpu.txt
 
 echo > tmp_translated_deps.txt # clear file
 
+# TODO Make this via threads to speed up?
 for line in $(cat tmp_extra_deps_in_debian_removed_versions.txt tmp_extra_deps_in_debian_amdgpu.txt); do
     echo now processing $line >&2;
     case $line in

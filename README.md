@@ -14,7 +14,7 @@ before the commit completes.
 1. Run `./gen_packages_map.sh > packages_map.py`  
    See differences with `git diff -w packages_map.py`  
    If there are differences, then make adjustments to gen_packages_map.sh if needed. Especially, look for the new appeared packages (they will have empty comment) and removed packages. If there are new or removed packages, then use make_pkgbuild_pkgs_template.sh and edit gen-PKGBUILD.py
-1. Run `./gen_replace_deps.sh > replace_deps.py`  
+1. Run `sudo debtap -u`. Then run `./gen_replace_deps.sh > replace_deps.py`  
    See differences with `git diff -w replace_deps.py`  
    If there are differences, then make adjustments to gen_replace_deps.sh if needed.
 1. Run `./extract_transaction_scripts_and_triggers.sh`.  

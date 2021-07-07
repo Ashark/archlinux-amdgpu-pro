@@ -7,7 +7,7 @@ replace_deps = {
     'binfmt-support':                  'coolreader',             #auto_translated
     'dkms':                            'dkms',                   #auto_translated
     'libc6':                           None,                     #manually_mapped
-    'libc6-dev':                       None,                     #auto_translated
+    'libc6-dev':                       'glibc',                  #auto_translated
     'libc-dev':                        'c',                      #auto_translated
     'libcunit1':                       'cunit',                  #auto_translated
     'libdrm2':                         'libdrm',                 #auto_translated
@@ -34,7 +34,7 @@ replace_deps = {
     'libudev1':                        'systemd-libs',           #auto_translated
     'libudev-dev':                     'systemd-libs',           #auto_translated
     'libwayland-doc':                  'wayland',                #auto_translated
-    'libx11-6':                        'nx-x11',                 #auto_translated
+    'libx11-6':                        'libx11',                 #auto_translated
     'libx11-dev':                      'libx11',                 #auto_translated
     'libx11-xcb1':                     'libx11',                 #auto_translated
     'libx11-xcb-dev':                  'libx11',                 #auto_translated
@@ -69,7 +69,7 @@ replace_deps = {
     'zlib1g':                          'zlib',                   #auto_translated
     'amdgpu':                          'amdgpu',                 #could_not_auto_translate
     'amdgpu-lib':                      'amdgpu-lib',             #could_not_auto_translate
-    'amdgpu-pro':                      'amdgpu-pro',             #auto_translated
+    'amdgpu-pro':                      'amdgpu-pro',             #could_not_auto_translate
     'libva1':                          'libva',                  #auto_translated
     'libva1-amdgpu':                   'libva',                  #auto_translated
     'libva2':                          'libva',                  #auto_translated
