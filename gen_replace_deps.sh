@@ -19,9 +19,8 @@ sed -i 's/-hwe//g' tmp_extra_deps_in_debian_amdgpu.txt
 
 echo > tmp_translated_deps.txt # clear file
 
-# TODO Make this via threads to speed up?
-for line in $(cat tmp_extra_deps_in_debian_removed_versions.txt tmp_extra_deps_in_debian_amdgpu.txt | sort); do
-    echo now processing $line >&2;
+function dep_convert {
+    line=$1
     case $line in
 
         libc6) arch_str="None, #manually_mapped" ;; # It maps to 'glibc', which is required by base, so no need to explicitly depend on it
@@ -47,6 +46,12 @@ for line in $(cat tmp_extra_deps_in_debian_removed_versions.txt tmp_extra_deps_i
             fi
     esac
     str="'$line': "; str="$str $arch_str"; echo $str >> tmp_translated_deps.txt;
+}
+
+# TODO Make this via threads to speed up?
+for line in $(cat tmp_extra_deps_in_debian_removed_versions.txt tmp_extra_deps_in_debian_amdgpu.txt | sort); do
+    echo now processing $line >&2;
+    dep_convert $line
 done
 cat tmp_translated_deps.txt | column -t | sed 's/^'\''/    '\''/' > tmp_prepared_columns.txt 
 
