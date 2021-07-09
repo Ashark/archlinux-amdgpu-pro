@@ -48,12 +48,12 @@ function dep_convert {
     str="'$line': "; str="$str $arch_str"; echo $str >> tmp_translated_deps.txt;
 }
 
-# TODO Make this via threads to speed up?
 for line in $(cat tmp_extra_deps_in_debian_removed_versions.txt tmp_extra_deps_in_debian_amdgpu.txt | sort); do
     echo now processing $line >&2;
-    dep_convert $line
+    dep_convert $line &
 done
-cat tmp_translated_deps.txt | column -t | sed 's/^'\''/    '\''/' > tmp_prepared_columns.txt 
+wait
+cat tmp_translated_deps.txt | sort -k2,2 -t "'" | column -t | sed 's/^'\''/    '\''/' > tmp_prepared_columns.txt
 
 echo -e "# Generated with ./gen_replace_deps.sh > replace_deps.py\n\
 # for driver version `sed -n 2p Packages-extracted | cut -f 2 -d " "`\n"

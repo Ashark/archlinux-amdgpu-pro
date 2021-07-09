@@ -2,9 +2,9 @@
 # for driver version 21.20-1271047
 
 replace_deps = {
-    'amdgpu':                          'amdgpu',                 #could_not_auto_translate
+    'amdgpu':                          'amdgpu',                 #auto_translated
     'amdgpu-lib':                      'amdgpu-lib',             #could_not_auto_translate
-    'amdgpu-pro':                      'amdgpu-pro',             #could_not_auto_translate
+    'amdgpu-pro':                      'amdgpu-pro',             #auto_translated
     'autoconf':                        'autoconf',               #auto_translated
     'automake':                        'automake',               #auto_translated
     'binfmt-support':                  'coolreader',             #auto_translated
