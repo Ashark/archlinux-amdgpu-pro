@@ -2,6 +2,9 @@
 # for driver version 21.20-1271047
 
 replace_deps = {
+    'amdgpu':                          'amdgpu',                 #auto_translated
+    'amdgpu-lib':                      'amdgpu-lib',             #could_not_auto_translate
+    'amdgpu-pro':                      'amdgpu-pro',             #auto_translated
     'autoconf':                        'autoconf',               #auto_translated
     'automake':                        'automake',               #auto_translated
     'binfmt-support':                  'coolreader',             #auto_translated
@@ -33,6 +36,12 @@ replace_deps = {
     'libudev0':                        None,                     #manually_mapped
     'libudev1':                        'systemd-libs',           #auto_translated
     'libudev-dev':                     'systemd-libs',           #auto_translated
+    'libva1':                          'libva',                  #auto_translated
+    'libva1-amdgpu':                   'libva',                  #auto_translated
+    'libva2':                          'libva',                  #auto_translated
+    'libva2-amdgpu':                   'libva',                  #auto_translated
+    'libvdpau1':                       'libvdpau',               #auto_translated
+    'libvdpau1-amdgpu':                'libvdpau',               #auto_translated
     'libwayland-doc':                  'wayland',                #auto_translated
     'libx11-6':                        'libx11',                 #auto_translated
     'libx11-dev':                      'libx11',                 #auto_translated
@@ -67,13 +76,4 @@ replace_deps = {
     'x11proto-dri2-dev':               'x11proto-dri2-dev',      #could_not_auto_translate
     'x11proto-gl-dev':                 'x11proto-gl-dev',        #could_not_auto_translate
     'zlib1g':                          'zlib',                   #auto_translated
-    'amdgpu':                          'amdgpu',                 #could_not_auto_translate
-    'amdgpu-lib':                      'amdgpu-lib',             #could_not_auto_translate
-    'amdgpu-pro':                      'amdgpu-pro',             #could_not_auto_translate
-    'libva1':                          'libva',                  #auto_translated
-    'libva1-amdgpu':                   'libva',                  #auto_translated
-    'libva2':                          'libva',                  #auto_translated
-    'libva2-amdgpu':                   'libva',                  #auto_translated
-    'libvdpau1':                       'libvdpau',               #auto_translated
-    'libvdpau1-amdgpu':                'libvdpau',               #auto_translated
 }

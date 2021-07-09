@@ -19,9 +19,8 @@ sed -i 's/-hwe//g' tmp_extra_deps_in_debian_amdgpu.txt
 
 echo > tmp_translated_deps.txt # clear file
 
-# TODO Make this via threads to speed up?
-for line in $(cat tmp_extra_deps_in_debian_removed_versions.txt tmp_extra_deps_in_debian_amdgpu.txt); do
-    echo now processing $line >&2;
+function dep_convert {
+    line=$1
     case $line in
 
         libc6) arch_str="None, #manually_mapped" ;; # It maps to 'glibc', which is required by base, so no need to explicitly depend on it
@@ -38,7 +37,7 @@ for line in $(cat tmp_extra_deps_in_debian_removed_versions.txt tmp_extra_deps_i
         linux-firmware) arch_str="'linux-firmware', #manually_mapped" ;; # debtap takes very long time and finally faulty auto translates to None.
         xserver-xorg-hwe-18.04) arch_str="None, #manually_disabled" ;;
         #---) arch_str="'---', #manually_mapped" ;; # templpate
-        
+
         *)
             arch_dep=`bash ./translate_deb_to_arch_dependency.sh $line`; # https://github.com/helixarch/debtap/issues/41#issuecomment-489166020
             if [[ $arch_dep == "could_not_translate" ]]; then arch_str="'$line', #could_not_auto_translate";
@@ -47,8 +46,14 @@ for line in $(cat tmp_extra_deps_in_debian_removed_versions.txt tmp_extra_deps_i
             fi
     esac
     str="'$line': "; str="$str $arch_str"; echo $str >> tmp_translated_deps.txt;
+}
+
+for line in $(cat tmp_extra_deps_in_debian_removed_versions.txt tmp_extra_deps_in_debian_amdgpu.txt | sort); do
+    echo now processing $line >&2;
+    dep_convert $line &
 done
-cat tmp_translated_deps.txt | column -t | sed 's/^'\''/    '\''/' > tmp_prepared_columns.txt 
+wait
+cat tmp_translated_deps.txt | sort -k2,2 -t "'" | column -t | sed 's/^'\''/    '\''/' > tmp_prepared_columns.txt
 
 echo -e "# Generated with ./gen_replace_deps.sh > replace_deps.py\n\
 # for driver version `sed -n 2p Packages-extracted | cut -f 2 -d " "`\n"

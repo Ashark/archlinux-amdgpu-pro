@@ -2,6 +2,10 @@
 
 # This script takes a name of debian package name and outputs suggested arch linux package name
 
+# Making it in individual folder to support multi processing
+tmp_dir=$(mktemp -d -t deb_to_arch_${line}-$(date +%Y-%m-%d-%H-%M-%S)-XXX)
+cd $tmp_dir
+
 rm -rf tmp-mapdeps-pkg
 mkdir -p tmp-mapdeps-pkg/DEBIAN
 cat << EOF  > tmp-mapdeps-pkg/DEBIAN/control
@@ -28,3 +32,6 @@ fi
 cat tmp-mapdeps-pkg/PKGBUILD | grep depends | sed 's/depends=('\''//' | sed 's/'\'' '\''/\n/g' | sed 's/'\'')//g'
 rm tmp-mapdeps-pkg.deb tmpfile
 rm -rf tmp-mapdeps-pkg 
+
+cd ..
+rm -rf $tmp_dir
