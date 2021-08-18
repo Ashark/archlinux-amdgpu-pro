@@ -75,8 +75,8 @@ function extract_them() {
     rename "21.1.0" "YY.Y.Y" install_scripts/*.txt # new mesa version
     rename "20.3.4" "YY.Y.Y" install_scripts/*.txt # old mesa version
 
-    rename "5.9.20.104" "Y.Y.Y.YY" install_scripts/*.txt # old amdgpu-dkms version
-    rename "5.11.5.26" "Y.Y.Y.YY" install_scripts/*.txt # new amdgpu-dkms version
+    rename "5.11.19.98" "Y.Y.Y.YY" install_scripts/*.txt # new amdgpu-dkms version
+    rename "5.11.5.26" "Y.Y.Y.YY" install_scripts/*.txt # old amdgpu-dkms version
 
     rename "rocm_13.0" "rocm_RR.R" install_scripts/*.txt # new libllvm-amdgpu-pro-rocm
     rename "rocm_12.0" "rocm_RR.R" install_scripts/*.txt # old libllvm-amdgpu-pro-rocm

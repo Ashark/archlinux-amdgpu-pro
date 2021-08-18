@@ -7,6 +7,7 @@ ARCHIVE=amdgpu-pro-$pkgver_base-$pkgver_build-ubuntu-$ubuntu_ver.tar.xz
 tar -xf $ARCHIVE
 cd ${ARCHIVE%.tar.xz}
 
+# Распараллелить распаковку?
 tmpdir=unpacked_debs; rm -rf "$tmpdir"; mkdir "$tmpdir";
 for file in $(ls *deb);
 do

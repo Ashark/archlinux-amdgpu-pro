@@ -1,5 +1,5 @@
 # Generated with ./gen_packages_map.sh > packages_map.py
-# for driver version 21.20-1271047
+# for driver version 21.30-1290604
 
 packages_map = {
     'amdgpu':                                  None,                       #unneeded_open_component

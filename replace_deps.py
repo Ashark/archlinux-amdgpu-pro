@@ -1,10 +1,10 @@
 # Generated with ./gen_replace_deps.sh > replace_deps.py
-# for driver version 21.20-1271047
+# for driver version 21.30-1290604
 
 replace_deps = {
-    'amdgpu':                          'amdgpu',                 #auto_translated
+    'amdgpu':                          'amdgpu',                 #could_not_auto_translate
     'amdgpu-lib':                      'amdgpu-lib',             #could_not_auto_translate
-    'amdgpu-pro':                      'amdgpu-pro',             #auto_translated
+    'amdgpu-pro':                      'amdgpu-pro',             #could_not_auto_translate
     'autoconf':                        'autoconf',               #auto_translated
     'automake':                        'automake',               #auto_translated
     'binfmt-support':                  'coolreader',             #auto_translated
@@ -73,7 +73,7 @@ replace_deps = {
     'libxxf86vm-dev':                  'libxxf86vm',             #auto_translated
     'linux-firmware':                  'linux-firmware',         #manually_mapped
     'shim-signed':                     'shim-signed',            #auto_translated
-    'x11proto-dri2-dev':               'x11proto-dri2-dev',      #could_not_auto_translate
-    'x11proto-gl-dev':                 'x11proto-gl-dev',        #could_not_auto_translate
+    'x11proto-dri2-dev':               'x11proto-dri2-dev',      #auto_translated
+    'x11proto-gl-dev':                 'x11proto-gl-dev',        #auto_translated
     'zlib1g':                          'zlib',                   #auto_translated
 }
