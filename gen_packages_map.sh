@@ -2,7 +2,7 @@
 
 # This script prepares a packages mapping dict for using in gen-PKGBUILD.py
 echo "# Generated with ./gen_packages_map.sh > packages_map.py"
-echo -e "# for driver version `sed -n 2p Packages-extracted | cut -f 2 -d " "`\n"
+echo -e "# for driver version `grep "Version" Packages-extracted | head -n1 | cut -f 2 -d " "`\n"
 
 echo "packages_map = {"
 # get list of deb-metapackages:
@@ -21,7 +21,15 @@ rm tmp_Packages.txt
 
 
 cat Packages-extracted | grep Package | cut -f2 -d " " > tmp_all_presented_debian_packages.txt
-prev=""; for line in $(cat tmp_all_presented_debian_packages.txt); do if [[ $prev != $line ]]; then echo $line; else echo $line:i386; fi; prev=$line; done > tmp_renamed_deb_32bit_packages.txt
+prev="";
+for line in $(cat tmp_all_presented_debian_packages.txt | sort); do
+ if [[ $prev != $line ]]; then
+  echo $line;
+ else
+  echo $line:i386;
+ fi;
+ prev=$line;
+done > tmp_renamed_deb_32bit_packages.txt
 echo > tmp_non_hwe_list.txt
 if grep amdgpu-hwe tmp_renamed_deb_32bit_packages.txt > /dev/null; then # hwe version presented
     grep hwe tmp_renamed_deb_32bit_packages.txt | sed 's/-hwe//' > tmp_non_hwe_list.txt
@@ -124,22 +132,17 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
             ;;
         # Disabling opencl related packages, as they go to opencl-amd
         amdgpu-pro-rocr-opencl\
-        |comgr-amdgpu-pro\
-        |comgr-amdgpu-pro-dev\
+        |comgr-amdgpu-pro@(|-dev)\
         |hip-rocr-amdgpu-pro\
-        |hsa-runtime-rocr-amdgpu\
-        |hsa-runtime-rocr-amdgpu-dev\
-        |hsakmt-roct-amdgpu\
-        |hsakmt-roct-amdgpu-dev\
+        |hsa-runtime-rocr-amdgpu@(|-dev)\
+        |hsakmt-roct-amdgpu@(|-dev)\
         |kfdtest-amdgpu\
         |libllvm-amdgpu-pro-rocm\
-        |llvm-amdgpu-pro-rocm\
-        |llvm-amdgpu-pro-rocm-dev\
-        |opencl-orca-amdgpu-pro-icd\
-        |opencl-orca-amdgpu-pro-icd:i386\
-        |opencl-rocr-amdgpu-pro\
-        |opencl-rocr-amdgpu-pro-dev\
+        |llvm-amdgpu-pro-rocm@(|-dev)\
+        |opencl-orca-amdgpu-pro-icd@(|:i386)\
+        |opencl-rocr-amdgpu-pro@(|-dev)\
         |rocm-device-libs-amdgpu-pro\
+        |opencl-legacy-amdgpu-pro-icd@(|:i386)\
         )
             archpkg=None; comment="opencl_goes_to_opencl-amd"
             ;;
@@ -150,6 +153,9 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
             ;;
          vulkan-amdgpu-pro:i386)
             archpkg=lib32-vulkan-amdgpu-pro; comment="mapped_manually"
+            ;;
+         libamdenc-amdgpu-pro)
+            archpkg=amf-amdgpu-pro; comment="mapped_manually.Maybe_this_should_go_to_a_saparate_package?"
             ;;
 
     esac
@@ -167,3 +173,6 @@ rm tmp_all_presented_debian_packages.txt
 rm tmp_renamed_deb_32bit_packages.txt
 #Then it's needed to carefully check pkgs mapping
 echo "}"
+
+# TODO fix duplication of packages (remove them as 32 bit) that are arch=any.
+# such package for example is libgl1-amdgpu-pro-appprofiles.
