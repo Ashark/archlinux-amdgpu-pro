@@ -3,15 +3,12 @@
 from debian import deb822
 from debian import debfile
 import re
-import gzip
-import lzma
-import tarfile
-import subprocess
 import hashlib
 import glob
 from pathlib import Path
 from importlib.util import spec_from_loader, module_from_spec
 from importlib.machinery import SourceFileLoader
+import os.path
 
 spec = spec_from_loader("versions", SourceFileLoader("versions", "versions"))
 versions = module_from_spec(spec)
@@ -26,12 +23,11 @@ debugging = False
 
 debug_pkgext = True if debugging else False
 
-url_ref = "https://www.amd.com/en/support/kb/release-notes/rn-amdgpu-unified-linux-21-30"
+url_ref = "https://www.amd.com/en/support/kb/release-notes/rn-amdgpu-unified-linux-21-50"
 dlagents = "https::/usr/bin/wget --referer {0} -N %u".format(url_ref)
+# TODO: remove dlagents?
 
-source_url = "https://drivers.amd.com/drivers/linux/amdgpu-pro-${major}-${minor}-ubuntu-${ubuntu_ver}.tar.xz"
-source_url_resolved = "https://drivers.amd.com/drivers/linux/amdgpu-pro-{0}-{1}-ubuntu-{2}.tar.xz".format(pkgver_base, pkgver_build, ubuntu_ver)
-source_file = "amdgpu-pro-{0}-{1}-ubuntu-{2}.tar.xz".format(pkgver_base, pkgver_build, ubuntu_ver)
+source_repo_url = "http://repo.radeon.com/amdgpu/{0}/ubuntu/".format(pkgver_base)
 
 def gen_arch_packages():
     pkgbuild_packages = {
@@ -215,7 +211,7 @@ licenses_hashes_map = {
     "b1afa13daf74f4073c4813368bc1b1b0": "MIT",
     "c7b12b6702da38ca028ace54aae3d484": "MIT",
     "d41d8cd98f00b204e9800998ecf8427e": "empty license?",
-    "e0bd46672d2d82a9d57216a931d0e0bf": "custom: AMDGPU-PRO EULA",
+    "0edd336396b019512b94c98b0240ea77": "custom: AMDGPU-PRO EULA",
     "f2b0e0926d102efc9a09f8b9a740209d": "GPL2",
 }
 
@@ -232,8 +228,6 @@ optdepends_descriptions = {
     "llvm-amdgpu-7.1-doc":           "TODO_some_description",
 }
 
-if not debugging:
-    subprocess.run(["wget", "--referer", url_ref, "-N", source_url_resolved])
 
 def hashFile(file):
     block = 64 * 1024
@@ -245,8 +239,8 @@ def hashFile(file):
             buf = f.read(block)
     return hash.hexdigest()
 
-sources = [ source_url, "progl", "progl.bash-completion" ]
-sha256sums = [ hashFile(source_file), hashFile("progl"), hashFile("progl.bash-completion") ]
+sources = [ "progl", "progl.bash-completion" ]
+sha256sums = [ hashFile("progl"), hashFile("progl.bash-completion") ]
 
 patches = sorted(glob.glob("*.patch"))
 
@@ -327,7 +321,7 @@ package_header_tpl = """package_{NAME} () {{
     pkgdesc={DESC}
 """
 
-package_deb_extract_tpl = """    extract_deb "${{srcdir}}"/amdgpu-pro-${{major}}-${{minor}}-ubuntu-${{ubuntu_ver}}/{Filename}
+package_deb_extract_tpl = """    extract_deb "${{srcdir}}"/{BaseFilename}
 """
 
 package_move_libdir_tpl = """    move_libdir "opt/amdgpu{PRO}/lib/{DEBDIR}-linux-gnu" "usr/lib{ARCHDIR}"
@@ -473,8 +467,10 @@ class Package:
 
             self.desc = desc
 
-        deb_info["Filename"] = deb_info["Filename"].replace("./","")
-        deb_file = debfile.DebFile("src/amdgpu-pro-%s-%s-ubuntu-%s/%s" % (pkgver_base, pkgver_build, ubuntu_ver, deb_info["Filename"]))
+        sources.append(source_repo_url + deb_info["Filename"])
+        sha256sums.append(deb_info["SHA256"])
+
+        deb_file = debfile.DebFile(os.path.expanduser("~/.aptly/public/%s" % (deb_info["Filename"])))
 
         if not hasattr(self, 'license'):
             copyright_md5 = deb_file.md5sums()[b'usr/share/doc/%s/copyright' % (str.encode(deb_info["Package"]))]
@@ -523,7 +519,7 @@ class Package:
         ret += "\n" # separating variables and functions with empty line
 
         for info in self.deb_source_infos:
-            tmp_str=package_deb_extract_tpl.format(**info)
+            tmp_str=package_deb_extract_tpl.format(BaseFilename=os.path.basename(info["Filename"]))
             ret += tmp_str.replace(str(pkgver_base), "${major}").replace(str(pkgver_build), "${minor}")
 
         if self.arch_pkg_name != "amdgpu-pro-libgl" and self.arch_pkg_name != "lib32-amdgpu-pro-libgl":
@@ -657,30 +653,8 @@ def convertVersionSpecifier(name, spec):
 arch_package_names=list(pkgbuild_packages.keys())
 deb_package_names=[]
 
-if not debugging:
-    print(header_tpl.format(
-        package_names="(\n" + "\n".join( arch_package_names ) + "\n)",
-        pkgrel=pkgrel,
-        url=url_ref,
-        dlagents=dlagents,
-        pkgver_base=pkgver_base,
-        pkgver_build=pkgver_build,
-        ubuntu_ver=ubuntu_ver,
-        source="\n\t".join(sources),
-        sha256sums="\n\t".join(sha256sums)
-    ))
-
-    print(package_functions)
-
-f = ""
-if not debugging:
-    with lzma.open(source_file, "r") as tar:
-        with tarfile.open(fileobj=tar) as tf:
-            tf.extractall("src")
-    f = open("src/amdgpu-pro-%s-%s-ubuntu-%s/Packages" % (pkgver_base, pkgver_build, ubuntu_ver), "r")
-else:
-    f = open("Packages-debugging", "r")
-    # f = open("Packages-extracted", "r")
+# f = open("Packages-debugging", "r")
+f = open("Packages-extracted", "r")
 
 deb_package_list = []
 
@@ -706,6 +680,21 @@ for deb_info in deb_package_list:
 
     if arch_pkg:
         arch_pkg.fill_arch_info(deb_info)
+
+if not debugging:
+    print(header_tpl.format(
+        package_names="(\n" + "\n".join( arch_package_names ) + "\n)",
+        pkgrel=pkgrel,
+        url=url_ref,
+        dlagents=dlagents,
+        pkgver_base=pkgver_base,
+        pkgver_build=pkgver_build,
+        ubuntu_ver=ubuntu_ver,
+        source="\n\t".join(sources),
+        sha256sums="\n\t".join(sha256sums)
+    ))
+
+    print(package_functions)
 
 for pkg in arch_package_names:
     print(pkgbuild_packages[pkg].toPKGBUILD())

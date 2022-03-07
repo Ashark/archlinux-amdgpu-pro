@@ -17,8 +17,8 @@ function extract_them() {
     major="$1"
     minor="$2"
     
-    ARCHIVE=amdgpu-pro-$major-$minor-ubuntu-20.04.tar.xz
-    cd ${ARCHIVE%.tar.xz}
+    FOLDER=amdgpu-pro-$major-$minor-ubuntu-20.04
+    cd $FOLDER
     cd unpacked_debs
     rm -f *.install_scripts.sh
     rm -rf ../install_scripts_"$major"-"$minor"
@@ -95,7 +95,7 @@ function extract_them() {
 }
 
 # Specify the versions to run for (comment one of them if you want to disable running for it).
-extract_them $majorold $minorold # Run for old version
+# extract_them $majorold $minorold # Run for old version
 extract_them $majornew $minornew # Run for new version
 
 echo "Opening meld for comparison..."

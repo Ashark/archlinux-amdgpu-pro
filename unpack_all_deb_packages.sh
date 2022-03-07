@@ -3,17 +3,19 @@
 # This script unpacks all deb packages (control and data). It is for simplifying operations of checking preinst scripts, making list of licenses hashes and so on.
 
 . ./versions
-ARCHIVE=amdgpu-pro-$pkgver_base-$pkgver_build-ubuntu-$ubuntu_ver.tar.xz
-tar -xf $ARCHIVE
-cd ${ARCHIVE%.tar.xz}
+FOLDER=amdgpu-pro-$pkgver_base-$pkgver_build-ubuntu-$ubuntu_ver
+mkdir $FOLDER
+cd $FOLDER
 
-# Распараллелить распаковку?
+# TODO: make it extract in parallel? # cat /tmp/links | parallel --gnu "wget  {}"
 tmpdir=unpacked_debs; rm -rf "$tmpdir"; mkdir "$tmpdir";
-for file in $(ls *deb);
+# for file in $(ls *deb);
+for file in $(find ~/.aptly/public/pool/proprietary -name '*.deb');
 do
     echo processing $file
-    cd "$tmpdir"; mkdir $file; cd $file
-    ar x ../../$file
+
+    cd "$tmpdir"; mkdir $(basename $file); cd $(basename $file)
+    ar x $file
     rm debian-binary
     tar -xf control.tar.xz; rm control.tar.xz;
     tar -xf data.tar.xz; rm data.tar.xz;
