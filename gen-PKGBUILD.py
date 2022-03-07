@@ -105,7 +105,6 @@ def gen_arch_packages():
                 '# For some reason, applications started with normal OpenGL (i.e. without ag pro) crashes at launch if this conf file is presented, so hide it for now, until I find out the reason of that.',
                 'mv "${pkgdir}"/usr/share/drirc.d/10-amdgpu-pro.conf "${pkgdir}"/usr/share/drirc.d/10-amdgpu-pro.conf.hide',
             ]
-            # Fixme: why the arch is "any"?
         ),
         'lib32-amdgpu-pro-libgl': Package(
             desc = "AMDGPU Pro OpenGL driver (32-bit)",

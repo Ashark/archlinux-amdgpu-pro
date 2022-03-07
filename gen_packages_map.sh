@@ -1,6 +1,17 @@
 #!/bin/bash
 
 # This script prepares a packages mapping dict for using in gen-PKGBUILD.py
+
+# TODO fix duplication of stanzas for packages (remove them as 32 bit) that are Architecture=all / Multiarch: Foreign.
+# This problem arised bacause I combined two Packages files and they both contain them.
+# There are currently (as for 21.50.2) two such packages: amdgpu-pro-core and libgl1-amdgpu-pro-appprofiles.
+#
+# Proper solution is to make aptly to show relative path in Filename fields. I created bug report for that:
+# https://github.com/aptly-dev/aptly/issues/1040
+#
+# The workaround for now is to manually remove duplicated stanzas in Packages-extracted (concated from two files).
+# So, search for amdgpu-pro-core and libgl1-amdgpu-pro-appprofiles there and keep only one entry for them.
+
 echo "# Generated with ./gen_packages_map.sh > packages_map.py"
 echo -e "# for driver version `grep "Version" Packages-extracted | head -n1 | cut -f 2 -d " "`\n"
 
@@ -173,6 +184,3 @@ rm tmp_all_presented_debian_packages.txt
 rm tmp_renamed_deb_32bit_packages.txt
 #Then it's needed to carefully check pkgs mapping
 echo "}"
-
-# TODO fix duplication of packages (remove them as 32 bit) that are arch=any.
-# such package for example is libgl1-amdgpu-pro-appprofiles.

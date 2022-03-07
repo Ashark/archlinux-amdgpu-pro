@@ -39,7 +39,6 @@ source=(progl
 	http://repo.radeon.com/amdgpu/21.50.2/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgles2-amdgpu-pro_21.50.2-1384495_amd64.deb
 	http://repo.radeon.com/amdgpu/21.50.2/ubuntu/pool/proprietary/v/vulkan-amdgpu-pro/vulkan-amdgpu-pro_21.50.2-1384495_amd64.deb
 	http://repo.radeon.com/amdgpu/21.50.2/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libegl1-amdgpu-pro_21.50.2-1384495_i386.deb
-	http://repo.radeon.com/amdgpu/21.50.2/ubuntu/pool/proprietary/a/appprofiles-amdgpu-pro/libgl1-amdgpu-pro-appprofiles_21.50.2-1384495_all.deb
 	http://repo.radeon.com/amdgpu/21.50.2/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-dri_21.50.2-1384495_i386.deb
 	http://repo.radeon.com/amdgpu/21.50.2/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-ext_21.50.2-1384495_i386.deb
 	http://repo.radeon.com/amdgpu/21.50.2/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-glx_21.50.2-1384495_i386.deb
@@ -59,7 +58,6 @@ sha256sums=(feb74796c3152cbafaba89d96e68a152f209bd3058c7eb0413cbe1ab0764e96f
 	5bf886151d9ddb1967d8fb238e7396ad18d1080e307e1fa8aa30f9622f249c95
 	97860eaec9c46733a4c69b95c421ed10c9cac9459acf270aa8fa4732346786af
 	658ec68d670d80d4bfbacf087ad10845ef83b1bf3d93fc1e2c445392b6e52197
-	18f51e1a9aaca4d299b54b515f803883107890761724899b619b3774e3946df9
 	3422a549bac8183aae7afa527977448e88471c1913c5227591cd8d9c170a1d56
 	570ba3f7e29e2a5b7c255e3686ed27b55bd54da7d8e0537940f53957efad931c
 	9244db8b5b84fc8da165dc06919470226e3817fc984eaed1bfa5854f7db54be8
@@ -116,7 +114,6 @@ package_amf-amdgpu-pro () {
 package_amdgpu-pro-libgl () {
     pkgdesc="AMDGPU Pro OpenGL driver"
     license=('custom: AMDGPU-PRO EULA')
-    arch=('any')
     provides=('libgl')
     depends=("libdrm" "libx11" "libxcb" "libxdamage" "libxext" "libxfixes" "libxxf86vm")
     backup=(etc/amd/amdapfxx.blb)
@@ -128,7 +125,6 @@ package_amdgpu-pro-libgl () {
     extract_deb "${srcdir}"/libgl1-amdgpu-pro-glx_${major}-${minor}_amd64.deb
     extract_deb "${srcdir}"/libglapi1-amdgpu-pro_${major}-${minor}_amd64.deb
     extract_deb "${srcdir}"/libgles2-amdgpu-pro_${major}-${minor}_amd64.deb
-    extract_deb "${srcdir}"/libgl1-amdgpu-pro-appprofiles_${major}-${minor}_all.deb
     move_copyright
 
     # extra_commands:
@@ -147,7 +143,7 @@ package_lib32-amdgpu-pro-libgl () {
     pkgdesc="AMDGPU Pro OpenGL driver (32-bit)"
     license=('custom: AMDGPU-PRO EULA')
     provides=('lib32-libgl')
-    depends=("lib32-amdgpu-pro-core=${major}_${minor}-${pkgrel}" "lib32-libdrm" "lib32-libgl1-amdgpu-pro-appprofiles=${major}_${minor}-${pkgrel}" "lib32-libx11" "lib32-libxcb" "lib32-libxdamage" "lib32-libxext" "lib32-libxfixes" "lib32-libxxf86vm")
+    depends=("amdgpu-pro-libgl=${major}_${minor}-${pkgrel}" "lib32-libdrm" "lib32-libx11" "lib32-libxcb" "lib32-libxdamage" "lib32-libxext" "lib32-libxfixes" "lib32-libxxf86vm")
     backup=(etc/amd/amdrc etc/ld.so.conf.d/10-amdgpu-pro-i386.conf)
 
     extract_deb "${srcdir}"/libegl1-amdgpu-pro_${major}-${minor}_i386.deb
@@ -188,7 +184,7 @@ package_lib32-vulkan-amdgpu-pro () {
     pkgdesc="AMDGPU Pro Vulkan driver (32-bit)"
     license=('custom: AMDGPU-PRO EULA')
     provides=('lib32-vulkan-driver')
-    depends=("lib32-amdgpu-pro-core=${major}_${minor}-${pkgrel}" "lib32-vulkan-icd-loader")
+    depends=("lib32-vulkan-icd-loader")
     optdepends=("lib32-openssl: Warning unspecified optdep description")
 
     extract_deb "${srcdir}"/vulkan-amdgpu-pro_${major}-${minor}_i386.deb

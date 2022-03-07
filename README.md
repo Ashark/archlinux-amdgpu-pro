@@ -28,6 +28,8 @@ before the commit completes.
    `cat ~/.aptly/public/dists/focal/proprietary/binary-amd64/Packages ~/.aptly/public/dists/focal/proprietary/binary-i386/Packages > Packages-extracted`
    Do not forget to replace "focal" after new distibution is released. Note: bionic=18.04, focal=20.04.
    
+   Manually remove duplicated entries. See more info in the gen_packages_map.sh in the beginning comment.
+
    There also could be such way: <s>`aptly package show "Name (~ .*)" > Packages-extracted`</s>. For some reason, this method shows filenames without relative path. So cannot use that until inversigate how to fix.
    
    Also files can be seen here (convenience links):

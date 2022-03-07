@@ -19,7 +19,6 @@ pkgbase = amdgpu-pro-installer
 	source = http://repo.radeon.com/amdgpu/21.50.2/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgles2-amdgpu-pro_21.50.2-1384495_amd64.deb
 	source = http://repo.radeon.com/amdgpu/21.50.2/ubuntu/pool/proprietary/v/vulkan-amdgpu-pro/vulkan-amdgpu-pro_21.50.2-1384495_amd64.deb
 	source = http://repo.radeon.com/amdgpu/21.50.2/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libegl1-amdgpu-pro_21.50.2-1384495_i386.deb
-	source = http://repo.radeon.com/amdgpu/21.50.2/ubuntu/pool/proprietary/a/appprofiles-amdgpu-pro/libgl1-amdgpu-pro-appprofiles_21.50.2-1384495_all.deb
 	source = http://repo.radeon.com/amdgpu/21.50.2/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-dri_21.50.2-1384495_i386.deb
 	source = http://repo.radeon.com/amdgpu/21.50.2/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-ext_21.50.2-1384495_i386.deb
 	source = http://repo.radeon.com/amdgpu/21.50.2/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-glx_21.50.2-1384495_i386.deb
@@ -39,7 +38,6 @@ pkgbase = amdgpu-pro-installer
 	sha256sums = 5bf886151d9ddb1967d8fb238e7396ad18d1080e307e1fa8aa30f9622f249c95
 	sha256sums = 97860eaec9c46733a4c69b95c421ed10c9cac9459acf270aa8fa4732346786af
 	sha256sums = 658ec68d670d80d4bfbacf087ad10845ef83b1bf3d93fc1e2c445392b6e52197
-	sha256sums = 18f51e1a9aaca4d299b54b515f803883107890761724899b619b3774e3946df9
 	sha256sums = 3422a549bac8183aae7afa527977448e88471c1913c5227591cd8d9c170a1d56
 	sha256sums = 570ba3f7e29e2a5b7c255e3686ed27b55bd54da7d8e0537940f53957efad931c
 	sha256sums = 9244db8b5b84fc8da165dc06919470226e3817fc984eaed1bfa5854f7db54be8
@@ -56,7 +54,6 @@ pkgname = amf-amdgpu-pro
 
 pkgname = amdgpu-pro-libgl
 	pkgdesc = AMDGPU Pro OpenGL driver
-	arch = any
 	license = custom: AMDGPU-PRO EULA
 	depends = libdrm
 	depends = libx11
@@ -71,9 +68,8 @@ pkgname = amdgpu-pro-libgl
 pkgname = lib32-amdgpu-pro-libgl
 	pkgdesc = AMDGPU Pro OpenGL driver (32-bit)
 	license = custom: AMDGPU-PRO EULA
-	depends = lib32-amdgpu-pro-core=21.50.2_1384495-1
+	depends = amdgpu-pro-libgl=21.50.2_1384495-1
 	depends = lib32-libdrm
-	depends = lib32-libgl1-amdgpu-pro-appprofiles=21.50.2_1384495-1
 	depends = lib32-libx11
 	depends = lib32-libxcb
 	depends = lib32-libxdamage
@@ -94,7 +90,6 @@ pkgname = vulkan-amdgpu-pro
 pkgname = lib32-vulkan-amdgpu-pro
 	pkgdesc = AMDGPU Pro Vulkan driver (32-bit)
 	license = custom: AMDGPU-PRO EULA
-	depends = lib32-amdgpu-pro-core=21.50.2_1384495-1
 	depends = lib32-vulkan-icd-loader
 	optdepends = lib32-openssl: Warning unspecified optdep description
 	provides = lib32-vulkan-driver
