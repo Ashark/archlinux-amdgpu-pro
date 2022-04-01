@@ -467,7 +467,7 @@ class Package:
 
             self.desc = desc
 
-        sources.append(source_repo_url + deb_info["Filename"])
+        sources.append(source_repo_url.replace(pkgver_base,"${major}") + deb_info["Filename"].replace(pkgver_base,"${major}").replace(pkgver_build,"${minor}"))
         sha256sums.append(deb_info["SHA256"])
 
         deb_file = debfile.DebFile(os.path.expanduser("~/.aptly/public/%s" % (deb_info["Filename"])))

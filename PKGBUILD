@@ -28,23 +28,23 @@ DLAGENTS='https::/usr/bin/wget --referer https://www.amd.com/en/support/kb/relea
 
 source=(progl
 	progl.bash-completion
-	http://repo.radeon.com/amdgpu/22.10/ubuntu/pool/proprietary/a/amf-amdgpu-pro/amf-amdgpu-pro_1.4.24-1395274_amd64.deb
-	http://repo.radeon.com/amdgpu/22.10/ubuntu/pool/proprietary/liba/libamdenc-amdgpu-pro/libamdenc-amdgpu-pro_1.0-1395274_amd64.deb
-	http://repo.radeon.com/amdgpu/22.10/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libegl1-amdgpu-pro_22.10-1395274_i386.deb
-	http://repo.radeon.com/amdgpu/22.10/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libegl1-amdgpu-pro_22.10-1395274_amd64.deb
-	http://repo.radeon.com/amdgpu/22.10/ubuntu/pool/proprietary/a/appprofiles-amdgpu-pro/libgl1-amdgpu-pro-appprofiles_22.10-1395274_all.deb
-	http://repo.radeon.com/amdgpu/22.10/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-dri_22.10-1395274_i386.deb
-	http://repo.radeon.com/amdgpu/22.10/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-dri_22.10-1395274_amd64.deb
-	http://repo.radeon.com/amdgpu/22.10/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-ext_22.10-1395274_i386.deb
-	http://repo.radeon.com/amdgpu/22.10/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-ext_22.10-1395274_amd64.deb
-	http://repo.radeon.com/amdgpu/22.10/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-glx_22.10-1395274_i386.deb
-	http://repo.radeon.com/amdgpu/22.10/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-glx_22.10-1395274_amd64.deb
-	http://repo.radeon.com/amdgpu/22.10/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libglapi1-amdgpu-pro_22.10-1395274_i386.deb
-	http://repo.radeon.com/amdgpu/22.10/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libglapi1-amdgpu-pro_22.10-1395274_amd64.deb
-	http://repo.radeon.com/amdgpu/22.10/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgles2-amdgpu-pro_22.10-1395274_i386.deb
-	http://repo.radeon.com/amdgpu/22.10/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgles2-amdgpu-pro_22.10-1395274_amd64.deb
-	http://repo.radeon.com/amdgpu/22.10/ubuntu/pool/proprietary/v/vulkan-amdgpu-pro/vulkan-amdgpu-pro_22.10-1395274_i386.deb
-	http://repo.radeon.com/amdgpu/22.10/ubuntu/pool/proprietary/v/vulkan-amdgpu-pro/vulkan-amdgpu-pro_22.10-1395274_amd64.deb)
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/a/amf-amdgpu-pro/amf-amdgpu-pro_1.4.24-${minor}_amd64.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/liba/libamdenc-amdgpu-pro/libamdenc-amdgpu-pro_1.0-${minor}_amd64.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libegl1-amdgpu-pro_${major}-${minor}_i386.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libegl1-amdgpu-pro_${major}-${minor}_amd64.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/a/appprofiles-amdgpu-pro/libgl1-amdgpu-pro-appprofiles_${major}-${minor}_all.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-dri_${major}-${minor}_i386.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-dri_${major}-${minor}_amd64.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-ext_${major}-${minor}_i386.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-ext_${major}-${minor}_amd64.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-glx_${major}-${minor}_i386.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-glx_${major}-${minor}_amd64.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libglapi1-amdgpu-pro_${major}-${minor}_i386.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libglapi1-amdgpu-pro_${major}-${minor}_amd64.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgles2-amdgpu-pro_${major}-${minor}_i386.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgles2-amdgpu-pro_${major}-${minor}_amd64.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/v/vulkan-amdgpu-pro/vulkan-amdgpu-pro_${major}-${minor}_i386.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/v/vulkan-amdgpu-pro/vulkan-amdgpu-pro_${major}-${minor}_amd64.deb)
 sha256sums=(feb74796c3152cbafaba89d96e68a152f209bd3058c7eb0413cbe1ab0764e96f
 	e32801c38b475cd8df17a407726b86db3de26410f563d688325b4d4314fc5354
 	f2798fe1493183948ae3e825e6ea38d9a01ee00764f4d400c225593c14793af5
