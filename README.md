@@ -1,8 +1,8 @@
-## Contributing
+# Arch Linux AMDGPU PRO
 
-Please run `reposetup.sh` prior to committing. This will install a git hook
-that will automatically re-generate `PKGBUILD` and `.SRCINFO` as needed
-before the commit completes.
+This project contains a generator for the [amdgpu-pro-installer](https://aur.archlinux.org/pkgbase/amdgpu-pro-installer) PKGBUILD.
+
+This generator is needed because of the complexity of the distribution model of drivers. It handles packages dependencies (maps debian dependencies to arch linux alternatives), calculates sources hashes and so on.
 
 ## Steps to do when new version is released
 1. Go to http://repo.radeon.com/amdgpu/ and see if there is a new version available.
@@ -68,3 +68,11 @@ before the commit completes.
      ```
     Create a release on github pointing to the new tag.
 17. Update AUR package: copy PKGBUILD, .SRCINFO and other files as needed.
+
+## Contributing
+
+Please run `reposetup.sh` prior to committing. This will install a git hook
+that will automatically re-generate `PKGBUILD` and `.SRCINFO` as needed
+before the commit completes.
+
+Note that running `gen-PKGBUILD.py` requires `python-debian` package.
