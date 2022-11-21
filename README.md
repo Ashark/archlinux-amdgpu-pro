@@ -4,32 +4,39 @@ This project contains a generator for the [amdgpu-pro-installer](https://aur.arc
 
 This generator is needed because of the complexity of the distribution model of drivers. It handles packages dependencies (maps debian dependencies to arch linux alternatives), calculates sources hashes and so on.
 
+## Prerequisites
+
+pip install python-debian # used in concat_packages_extracted.py  
+pacman -S dpkg-deb # used in translate_deb_to_arch_dependency.sh  
+pacman -S aptly # used for mirroring repo
+yay -S debtap # used in dependencies translation
+
 ## Steps to do when new version is released
 1. Go to http://repo.radeon.com/amdgpu/ and see if there is a new version available.
 2. Change versions in `versions` file.  
    How to know the build id version? You can see it in Packages file of the release for distro. For example, here: http://repo.radeon.com/amdgpu/22.10.3/ubuntu/dists/focal/proprietary/binary-amd64/  
-   Note: bionic=18.04, focal=20.04, jammy=22.04.
+   Note: focal=20.04, jammy=22.04.
 3. Change pkgrel, url_ref in `gen-PKGBUILD.py` file.
 4. Install aptly if not done yet.
 5. Update the local mirror  
-   Note: bionic=18.04, focal=20.04, jammy=22.04    
+   Note: focal=20.04, jammy=22.04.
    Note that `latest` link sometimes is not actually latest version.
    ```
    #ver=latest
-   ver=21.50.2
-   aptly -ignore-signatures mirror create agpro-$ver http://repo.radeon.com/amdgpu/$ver/ubuntu focal proprietary 
+   ver=22.20.4
+   aptly -ignore-signatures mirror create agpro-$ver http://repo.radeon.com/amdgpu/$ver/ubuntu jammy proprietary
    aptly -ignore-signatures mirror update agpro-$ver
 
-   aptly publish drop focal
+   aptly publish drop jammy
    aptly snapshot create snapshot-$(date +%F) from mirror agpro-$ver
-   aptly publish snapshot snapshot-$(date +%F) # When it will ask a password, do not enter empty or it will fail
+   aptly publish --skip-signing snapshot snapshot-$(date +%F) # Or if not skipping signing, when it will ask a password, do not enter empty or it will fail
    ```
 
    Now in ~/.aptly/public/pool (not in ~/.aptly/pool/) there will be our packages.
 6. Run `./unpack_all_deb_packages.sh`
 7. Bring the "Packages" file to "Packages-extracted" with the following command:    
    `python concat_packages_extracted.py`  
-   Do not forget to replace "focal" after new distibution is released. Note: bionic=18.04, focal=20.04, jammy=22.04.    
+   Do not forget to replace "jammy" after new distibution is released. Note: bionic=18.04, focal=20.04, jammy=22.04.
 
    That command does merging Packages files for 32 bit and 64 bit, and then it automatically removes duplicated entries.  
    This is a workaround. See more info in the gen_packages_map.sh in the beginning comment.
@@ -55,7 +62,7 @@ This generator is needed because of the complexity of the distribution model of 
      ```
      [amdgpu-dev]
      SigLevel = Optional TrustAll
-     Server = File:///home/andrew/Development/archlinux-amdgpu-pro/ # edit path to your development directory
+     Server = File:///home/andrey/Development/archlinux-amdgpu-pro/ # edit path to your development directory. Do not keep this comment in the config.
      ```
 12. Regenerate PKGBUILD with `./remake_all.sh`
 13. If you notice empty license in PKGBUILD, add its hash to the licenses_hashes_map in gen-PKGBUILD.py

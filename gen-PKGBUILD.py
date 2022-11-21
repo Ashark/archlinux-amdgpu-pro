@@ -23,7 +23,7 @@ debugging = False
 
 debug_pkgext = True if debugging else False
 
-url_ref = "https://www.amd.com/en/support/kb/release-notes/rn-amdgpu-unified-linux-22-10-2"
+url_ref = "https://www.amd.com/en/support/kb/release-notes/rn-amdgpu-unified-linux-22-20"
 dlagents = "https::/usr/bin/wget --referer {0} -N %u".format(url_ref)
 # TODO: remove dlagents?
 

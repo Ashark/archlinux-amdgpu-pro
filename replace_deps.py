@@ -9,7 +9,7 @@ replace_deps = {
     'libdrm2-amdgpu':             'libdrm',               #auto_translated
     'libdrm-amdgpu-amdgpu1':      'libdrm',               #auto_translated
     'libgcc-s1':                  None,                   #manually_mapped
-    'libssl1.1':                  'openssl',              #auto_translated
+    'libssl1.1':                  'openssl-1.1',          #auto_translated
     'libstdc++6':                 None,                   #manually_mapped
     'libvulkan1':                 'vulkan-icd-loader',    #auto_translated
     'libwayland-amdgpu-client0':  'wayland',              #auto_translated

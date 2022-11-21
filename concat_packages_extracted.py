@@ -1,8 +1,8 @@
 import os
 from debian import deb822
 
-p64 = os.path.expanduser("~/.aptly/public/dists/focal/proprietary/binary-amd64/Packages")
-p32 = os.path.expanduser("~/.aptly/public/dists/focal/proprietary/binary-i386/Packages")
+p64 = os.path.expanduser("~/.aptly/public/dists/jammy/proprietary/binary-amd64/Packages")
+p32 = os.path.expanduser("~/.aptly/public/dists/jammy/proprietary/binary-i386/Packages")
 
 print("Merging 32 and 64 Packages files", p32, p64)
 resulting_list = []
