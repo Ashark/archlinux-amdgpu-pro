@@ -5,6 +5,7 @@
 # with https://github.com/Ashark/archlinux-amdgpu-pro/blob/master/gen-PKGBUILD.py
 
 major=22.20.4
+major_short=22.20
 minor=1498766
 ubuntu_ver=22.04
 
@@ -17,7 +18,7 @@ vulkan-amdgpu-pro
 lib32-vulkan-amdgpu-pro
 )
 pkgver=${major}_${minor}
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url=https://www.amd.com/en/support/kb/release-notes/rn-amdgpu-unified-linux-22-20
 license=('custom: multiple')
@@ -28,23 +29,23 @@ DLAGENTS='https::/usr/bin/wget --referer https://www.amd.com/en/support/kb/relea
 
 source=(progl
 	progl.bash-completion
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/a/amf-amdgpu-pro/amf-amdgpu-pro_1.4.26-${minor}~22.04_amd64.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/liba/libamdenc-amdgpu-pro/libamdenc-amdgpu-pro_1.0-${minor}~22.04_amd64.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libegl1-amdgpu-pro_22.20-${minor}~22.04_i386.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libegl1-amdgpu-pro_22.20-${minor}~22.04_amd64.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/a/appprofiles-amdgpu-pro/libgl1-amdgpu-pro-appprofiles_22.20-${minor}~22.04_all.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-dri_22.20-${minor}~22.04_i386.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-dri_22.20-${minor}~22.04_amd64.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-ext_22.20-${minor}~22.04_i386.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-ext_22.20-${minor}~22.04_amd64.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-glx_22.20-${minor}~22.04_i386.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-glx_22.20-${minor}~22.04_amd64.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libglapi1-amdgpu-pro_22.20-${minor}~22.04_i386.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libglapi1-amdgpu-pro_22.20-${minor}~22.04_amd64.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgles2-amdgpu-pro_22.20-${minor}~22.04_i386.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgles2-amdgpu-pro_22.20-${minor}~22.04_amd64.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/v/vulkan-amdgpu-pro/vulkan-amdgpu-pro_22.20-${minor}~22.04_i386.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/v/vulkan-amdgpu-pro/vulkan-amdgpu-pro_22.20-${minor}~22.04_amd64.deb)
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/a/amf-amdgpu-pro/amf-amdgpu-pro_1.4.26-${minor}~${ubuntu_ver}_amd64.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/liba/libamdenc-amdgpu-pro/libamdenc-amdgpu-pro_1.0-${minor}~${ubuntu_ver}_amd64.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libegl1-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_i386.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libegl1-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_amd64.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/a/appprofiles-amdgpu-pro/libgl1-amdgpu-pro-appprofiles_${major_short}-${minor}~${ubuntu_ver}_all.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-dri_${major_short}-${minor}~${ubuntu_ver}_i386.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-dri_${major_short}-${minor}~${ubuntu_ver}_amd64.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-ext_${major_short}-${minor}~${ubuntu_ver}_i386.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-ext_${major_short}-${minor}~${ubuntu_ver}_amd64.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-glx_${major_short}-${minor}~${ubuntu_ver}_i386.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-glx_${major_short}-${minor}~${ubuntu_ver}_amd64.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libglapi1-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_i386.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libglapi1-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_amd64.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgles2-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_i386.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgles2-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_amd64.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/v/vulkan-amdgpu-pro/vulkan-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_i386.deb
+	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/v/vulkan-amdgpu-pro/vulkan-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_amd64.deb)
 sha256sums=(feb74796c3152cbafaba89d96e68a152f209bd3058c7eb0413cbe1ab0764e96f
 	e32801c38b475cd8df17a407726b86db3de26410f563d688325b4d4314fc5354
 	0bb4703ee0aa60b46f116af9e683ed7542659a55ee9c92373b8572724cd78c90
@@ -106,8 +107,8 @@ package_amf-amdgpu-pro () {
     depends=("libdrm" "vulkan-amdgpu-pro=${major}_${minor}-${pkgrel}")
     optdepends=("rocm-opencl-runtime: Warning unspecified optdep description")
 
-    extract_deb "${srcdir}"/amf-amdgpu-pro_1.4.26-${minor}~22.04_amd64.deb
-    extract_deb "${srcdir}"/libamdenc-amdgpu-pro_1.0-${minor}~22.04_amd64.deb
+    extract_deb "${srcdir}"/amf-amdgpu-pro_1.4.26-${minor}~${ubuntu_ver}_amd64.deb
+    extract_deb "${srcdir}"/libamdenc-amdgpu-pro_1.0-${minor}~${ubuntu_ver}_amd64.deb
     move_libdir "opt/amdgpu-pro/lib/x86_64-linux-gnu" "usr/lib"
     move_copyright
 }
@@ -119,13 +120,13 @@ package_amdgpu-pro-libgl () {
     depends=("libdrm" "libx11" "libxcb" "libxdamage" "libxext" "libxfixes" "libxxf86vm")
     backup=(etc/amd/amdapfxx.blb)
 
-    extract_deb "${srcdir}"/libegl1-amdgpu-pro_22.20-${minor}~22.04_amd64.deb
-    extract_deb "${srcdir}"/libgl1-amdgpu-pro-appprofiles_22.20-${minor}~22.04_all.deb
-    extract_deb "${srcdir}"/libgl1-amdgpu-pro-dri_22.20-${minor}~22.04_amd64.deb
-    extract_deb "${srcdir}"/libgl1-amdgpu-pro-ext_22.20-${minor}~22.04_amd64.deb
-    extract_deb "${srcdir}"/libgl1-amdgpu-pro-glx_22.20-${minor}~22.04_amd64.deb
-    extract_deb "${srcdir}"/libglapi1-amdgpu-pro_22.20-${minor}~22.04_amd64.deb
-    extract_deb "${srcdir}"/libgles2-amdgpu-pro_22.20-${minor}~22.04_amd64.deb
+    extract_deb "${srcdir}"/libegl1-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_amd64.deb
+    extract_deb "${srcdir}"/libgl1-amdgpu-pro-appprofiles_${major_short}-${minor}~${ubuntu_ver}_all.deb
+    extract_deb "${srcdir}"/libgl1-amdgpu-pro-dri_${major_short}-${minor}~${ubuntu_ver}_amd64.deb
+    extract_deb "${srcdir}"/libgl1-amdgpu-pro-ext_${major_short}-${minor}~${ubuntu_ver}_amd64.deb
+    extract_deb "${srcdir}"/libgl1-amdgpu-pro-glx_${major_short}-${minor}~${ubuntu_ver}_amd64.deb
+    extract_deb "${srcdir}"/libglapi1-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_amd64.deb
+    extract_deb "${srcdir}"/libgles2-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_amd64.deb
     move_copyright
 
     # extra_commands:
@@ -147,12 +148,12 @@ package_lib32-amdgpu-pro-libgl () {
     depends=("amdgpu-pro-libgl=${major}_${minor}-${pkgrel}" "lib32-libdrm" "lib32-libx11" "lib32-libxcb" "lib32-libxdamage" "lib32-libxext" "lib32-libxfixes" "lib32-libxxf86vm")
     backup=(etc/amd/amdrc etc/ld.so.conf.d/10-amdgpu-pro-i386.conf)
 
-    extract_deb "${srcdir}"/libegl1-amdgpu-pro_22.20-${minor}~22.04_i386.deb
-    extract_deb "${srcdir}"/libgl1-amdgpu-pro-dri_22.20-${minor}~22.04_i386.deb
-    extract_deb "${srcdir}"/libgl1-amdgpu-pro-ext_22.20-${minor}~22.04_i386.deb
-    extract_deb "${srcdir}"/libgl1-amdgpu-pro-glx_22.20-${minor}~22.04_i386.deb
-    extract_deb "${srcdir}"/libglapi1-amdgpu-pro_22.20-${minor}~22.04_i386.deb
-    extract_deb "${srcdir}"/libgles2-amdgpu-pro_22.20-${minor}~22.04_i386.deb
+    extract_deb "${srcdir}"/libegl1-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_i386.deb
+    extract_deb "${srcdir}"/libgl1-amdgpu-pro-dri_${major_short}-${minor}~${ubuntu_ver}_i386.deb
+    extract_deb "${srcdir}"/libgl1-amdgpu-pro-ext_${major_short}-${minor}~${ubuntu_ver}_i386.deb
+    extract_deb "${srcdir}"/libgl1-amdgpu-pro-glx_${major_short}-${minor}~${ubuntu_ver}_i386.deb
+    extract_deb "${srcdir}"/libglapi1-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_i386.deb
+    extract_deb "${srcdir}"/libgles2-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_i386.deb
     move_copyright
 
     # extra_commands:
@@ -169,7 +170,7 @@ package_vulkan-amdgpu-pro () {
     depends=("vulkan-icd-loader")
     optdepends=("openssl-1.1: Warning unspecified optdep description")
 
-    extract_deb "${srcdir}"/vulkan-amdgpu-pro_22.20-${minor}~22.04_amd64.deb
+    extract_deb "${srcdir}"/vulkan-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_amd64.deb
     move_libdir "opt/amdgpu-pro/lib/x86_64-linux-gnu" "usr/lib"
     move_copyright
 
@@ -188,7 +189,7 @@ package_lib32-vulkan-amdgpu-pro () {
     depends=("lib32-vulkan-icd-loader")
     optdepends=("lib32-openssl-1.1: Warning unspecified optdep description")
 
-    extract_deb "${srcdir}"/vulkan-amdgpu-pro_22.20-${minor}~22.04_i386.deb
+    extract_deb "${srcdir}"/vulkan-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_i386.deb
     move_libdir "opt/amdgpu-pro/lib/i386-linux-gnu" "usr/lib32"
     move_copyright
 
