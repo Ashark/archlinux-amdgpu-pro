@@ -18,7 +18,7 @@ pkgver_base = versions.pkgver_base
 pkgver_base_short = ".".join(pkgver_base.split(".")[0:2])
 pkgver_build = versions.pkgver_build
 ubuntu_ver = versions.ubuntu_ver
-pkgrel = 2
+pkgrel = 1
 
 debugging = False
 
