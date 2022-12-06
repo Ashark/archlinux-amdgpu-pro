@@ -6,16 +6,16 @@ This generator is needed because of the complexity of the distribution model of 
 
 ## Prerequisites
 
-pip install python-debian # used in concat_packages_extracted.py  
-pacman -S dpkg-deb # used in translate_deb_to_arch_dependency.sh  
-pacman -S aptly # used for mirroring repo
-yay -S debtap # used in dependencies translation
+`pip install python-debian` # used in concat_packages_extracted.py  
+`pacman -S dpkg-deb` # used in translate_deb_to_arch_dependency.sh  
+`pacman -S aptly` # used for mirroring repo
+`yay -S debtap` # used in dependencies translation
 
 ## Steps to do when new version is released
 1. Go to http://repo.radeon.com/amdgpu/ and see if there is a new version available.
 2. Change versions in `versions` file.  
-   How to know the build id version? You can see it in Packages file of the release for distro. For example, here: http://repo.radeon.com/amdgpu/22.10.3/ubuntu/dists/focal/proprietary/binary-amd64/  
-   Note: focal=20.04, jammy=22.04.
+   How to know the build id version? You can see it in `Packages` file of the release for distro. For example, here: http://repo.radeon.com/amdgpu/22.20.5/ubuntu/dists/jammy/proprietary/binary-amd64/  
+   Note: focal=20.04, jammy=22.04. Table of versions: https://en.wikipedia.org/wiki/Ubuntu_version_history#Table_of_versions
 3. Change pkgrel, url_ref in `gen-PKGBUILD.py` file.
 4. Install aptly if not done yet.
 5. Update the local mirror  
@@ -23,7 +23,7 @@ yay -S debtap # used in dependencies translation
    Note that `latest` link sometimes is not actually latest version.
    ```
    #ver=latest
-   ver=22.20.4
+   ver=22.20.5
    aptly -ignore-signatures mirror create agpro-$ver http://repo.radeon.com/amdgpu/$ver/ubuntu jammy proprietary
    aptly -ignore-signatures mirror update agpro-$ver
 
@@ -36,7 +36,7 @@ yay -S debtap # used in dependencies translation
 6. Run `./unpack_all_deb_packages.sh`
 7. Bring the "Packages" file to "Packages-extracted" with the following command:    
    `python concat_packages_extracted.py`  
-   Do not forget to replace "jammy" after new distibution is released. Note: bionic=18.04, focal=20.04, jammy=22.04.
+   Do not forget to replace "jammy" after new distribution is released. Note: focal=20.04, jammy=22.04.
 
    That command does merging Packages files for 32 bit and 64 bit, and then it automatically removes duplicated entries.  
    This is a workaround. See more info in the gen_packages_map.sh in the beginning comment.
@@ -52,7 +52,7 @@ yay -S debtap # used in dependencies translation
 9. Run `sudo debtap -u`. Then run `./gen_replace_deps.sh > replace_deps.py`  
     See differences with `git diff -w replace_deps.py`  
     If there are differences, then make adjustments to gen_replace_deps.sh if needed.
-10. Note: this step is boring, and I let myself to skip it. But just in case, I will leave this instruction here, as it could be interesting to check some day.  
+10. Note: this step is boring, and I let myself to skip it. But just in case, I will leave this instruction here, as it could be interesting to check some day. Also, don't forget to fill in old versions in versions file.  
     Run `./extract_transaction_scripts_and_triggers.sh`.  
     Compare transaction scripts and triggers from current and previous driver version in opened meld window.
     If you see explicit version numbers in file names, add additional rename instructions in extract_transaction_scripts_and_triggers.sh. This will help you to compare contents of the files in meld.  
@@ -74,7 +74,7 @@ yay -S debtap # used in dependencies translation
      git push origin $(source PKGBUILD; echo v${major}_${minor}-${pkgrel})
      ```
     Create a release on github pointing to the new tag.
-17. Update AUR package: copy PKGBUILD, .SRCINFO and other files as needed.
+16. Update AUR package: copy PKGBUILD, .SRCINFO and other files as needed.
 
 ## Contributing
 

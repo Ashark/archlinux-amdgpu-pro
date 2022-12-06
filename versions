@@ -1,10 +1,11 @@
 # This file is interpreted by both python and bash
-# Old version is specified for use in extract_transaction_scripts_and_triggers.sh
 
-old_pkgver_base="22.10.3"
-old_pkgver_build="1420322"
-old_ubuntu_ver="20.04"
-
-pkgver_base="22.20.4"
-pkgver_build="1498766"
+pkgver_base="22.20.5"
+pkgver_build="1511376"
 ubuntu_ver="22.04"
+
+# Old version is specified for use in extract_transaction_scripts_and_triggers.sh
+# I stopped checking transaction script and triggers, it seems it's rather safe to ignore that step. But if some day I want to check it again, I need to uncomment and fill in the old versions too.
+# old_pkgver_base="22.10.3"
+# old_pkgver_build="1420322"
+# old_ubuntu_ver="20.04"
