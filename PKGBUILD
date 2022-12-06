@@ -18,34 +18,31 @@ vulkan-amdgpu-pro
 lib32-vulkan-amdgpu-pro
 )
 pkgver=${major}_${minor}
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url=https://www.amd.com/en/support/kb/release-notes/rn-amdgpu-unified-linux-22-20
 license=('custom: multiple')
 groups=('Radeon_Software_for_Linux')
-makedepends=('wget')
 
-DLAGENTS='https::/usr/bin/wget --referer https://www.amd.com/en/support/kb/release-notes/rn-amdgpu-unified-linux-22-20 -N %u'
-
-source=(progl
-	progl.bash-completion
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/a/amf-amdgpu-pro/amf-amdgpu-pro_1.4.26-${minor}~${ubuntu_ver}_amd64.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/liba/libamdenc-amdgpu-pro/libamdenc-amdgpu-pro_1.0-${minor}~${ubuntu_ver}_amd64.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libegl1-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_i386.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libegl1-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_amd64.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/a/appprofiles-amdgpu-pro/libgl1-amdgpu-pro-appprofiles_${major_short}-${minor}~${ubuntu_ver}_all.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-dri_${major_short}-${minor}~${ubuntu_ver}_i386.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-dri_${major_short}-${minor}~${ubuntu_ver}_amd64.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-ext_${major_short}-${minor}~${ubuntu_ver}_i386.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-ext_${major_short}-${minor}~${ubuntu_ver}_amd64.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-glx_${major_short}-${minor}~${ubuntu_ver}_i386.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-glx_${major_short}-${minor}~${ubuntu_ver}_amd64.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libglapi1-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_i386.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libglapi1-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_amd64.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgles2-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_i386.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgles2-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_amd64.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/v/vulkan-amdgpu-pro/vulkan-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_i386.deb
-	http://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/v/vulkan-amdgpu-pro/vulkan-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_amd64.deb)
+source=(progl::https://raw.githubusercontent.com/Ashark/archlinux-amdgpu-pro/master/progl
+	progl.bash-completion::https://raw.githubusercontent.com/Ashark/archlinux-amdgpu-pro/master/progl.bash-completion
+	https://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/a/amf-amdgpu-pro/amf-amdgpu-pro_1.4.26-${minor}~${ubuntu_ver}_amd64.deb
+	https://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/liba/libamdenc-amdgpu-pro/libamdenc-amdgpu-pro_1.0-${minor}~${ubuntu_ver}_amd64.deb
+	https://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libegl1-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_i386.deb
+	https://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libegl1-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_amd64.deb
+	https://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/a/appprofiles-amdgpu-pro/libgl1-amdgpu-pro-appprofiles_${major_short}-${minor}~${ubuntu_ver}_all.deb
+	https://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-dri_${major_short}-${minor}~${ubuntu_ver}_i386.deb
+	https://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-dri_${major_short}-${minor}~${ubuntu_ver}_amd64.deb
+	https://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-ext_${major_short}-${minor}~${ubuntu_ver}_i386.deb
+	https://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-ext_${major_short}-${minor}~${ubuntu_ver}_amd64.deb
+	https://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-glx_${major_short}-${minor}~${ubuntu_ver}_i386.deb
+	https://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgl1-amdgpu-pro-glx_${major_short}-${minor}~${ubuntu_ver}_amd64.deb
+	https://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libglapi1-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_i386.deb
+	https://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libglapi1-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_amd64.deb
+	https://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgles2-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_i386.deb
+	https://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/o/opengl-amdgpu-pro/libgles2-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_amd64.deb
+	https://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/v/vulkan-amdgpu-pro/vulkan-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_i386.deb
+	https://repo.radeon.com/amdgpu/${major}/ubuntu/pool/proprietary/v/vulkan-amdgpu-pro/vulkan-amdgpu-pro_${major_short}-${minor}~${ubuntu_ver}_amd64.deb)
 sha256sums=(feb74796c3152cbafaba89d96e68a152f209bd3058c7eb0413cbe1ab0764e96f
 	e32801c38b475cd8df17a407726b86db3de26410f563d688325b4d4314fc5354
 	f41d6a763f297407658e9b753863a7ec9a9c835e7a3567f6191523fdfeb912bc
@@ -136,7 +133,7 @@ package_amdgpu-pro-libgl () {
     move_libdir "opt/amdgpu/share/drirc.d" "usr/share/drirc.d"
     sed -i "s|/opt/amdgpu-pro/lib/x86_64-linux-gnu|#/usr/lib/amdgpu-pro  # commented to prevent problems of booting with amdgpu-pro, use progl script|" "${pkgdir}"/etc/ld.so.conf.d/10-amdgpu-pro-x86_64.conf
     install -Dm755 "${srcdir}"/progl "${pkgdir}"/usr/bin/progl
-    install -Dm755 "${srcdir}"/progl.bash-completion "${pkgdir}"/usr/share/bash-completion/completions/progl
+    install -Dm644 "${srcdir}"/progl.bash-completion "${pkgdir}"/usr/share/bash-completion/completions/progl
     # For some reason, applications started with normal OpenGL (i.e. without ag pro) crashes at launch if this conf file is presented, so hide it for now, until I find out the reason of that.
     mv "${pkgdir}"/usr/share/drirc.d/10-amdgpu-pro.conf "${pkgdir}"/usr/share/drirc.d/10-amdgpu-pro.conf.hide
 }

@@ -18,17 +18,15 @@ pkgver_base = versions.pkgver_base
 pkgver_base_short = ".".join(pkgver_base.split(".")[0:2])
 pkgver_build = versions.pkgver_build
 ubuntu_ver = versions.ubuntu_ver
-pkgrel = 1
+pkgrel = 2
 
 debugging = False
 
 debug_pkgext = True if debugging else False
 
 url_ref = "https://www.amd.com/en/support/kb/release-notes/rn-amdgpu-unified-linux-22-20"
-dlagents = "https::/usr/bin/wget --referer {0} -N %u".format(url_ref)
-# TODO: remove dlagents?
 
-source_repo_url = "http://repo.radeon.com/amdgpu/{0}/ubuntu/".format(pkgver_base)
+source_repo_url = "https://repo.radeon.com/amdgpu/{0}/ubuntu/".format(pkgver_base)
 
 def gen_arch_packages():
     pkgbuild_packages = {
@@ -101,7 +99,7 @@ def gen_arch_packages():
                 'sed -i "s|/opt/amdgpu-pro/lib/x86_64-linux-gnu|#/usr/lib/amdgpu-pro  # commented to prevent problems of booting with amdgpu-pro, use progl script|" "${pkgdir}"/etc/ld.so.conf.d/10-amdgpu-pro-x86_64.conf',
 
                 'install -Dm755 "${srcdir}"/progl "${pkgdir}"/usr/bin/progl',
-                'install -Dm755 "${srcdir}"/progl.bash-completion "${pkgdir}"/usr/share/bash-completion/completions/progl',
+                'install -Dm644 "${srcdir}"/progl.bash-completion "${pkgdir}"/usr/share/bash-completion/completions/progl',
 
                 '# For some reason, applications started with normal OpenGL (i.e. without ag pro) crashes at launch if this conf file is presented, so hide it for now, until I find out the reason of that.',
                 'mv "${pkgdir}"/usr/share/drirc.d/10-amdgpu-pro.conf "${pkgdir}"/usr/share/drirc.d/10-amdgpu-pro.conf.hide',
@@ -240,7 +238,8 @@ def hashFile(file):
             buf = f.read(block)
     return hash.hexdigest()
 
-sources = [ "progl", "progl.bash-completion" ]
+sources = [ "progl::https://raw.githubusercontent.com/Ashark/archlinux-amdgpu-pro/master/progl",
+            "progl.bash-completion::https://raw.githubusercontent.com/Ashark/archlinux-amdgpu-pro/master/progl.bash-completion" ]
 sha256sums = [ hashFile("progl"), hashFile("progl.bash-completion") ]
 
 patches = sorted(glob.glob("*.patch"))
@@ -272,9 +271,6 @@ arch=('x86_64')
 url={url}
 license=('custom: multiple')
 groups=('Radeon_Software_for_Linux')
-makedepends=('wget')
-
-DLAGENTS='{dlagents}'
 
 source=({source})
 sha256sums=({sha256sums})
@@ -689,7 +685,6 @@ if not debugging:
         package_names="(\n" + "\n".join( arch_package_names ) + "\n)",
         pkgrel=pkgrel,
         url=url_ref,
-        dlagents=dlagents,
         pkgver_base=pkgver_base,
         pkgver_base_short=pkgver_base_short,
         pkgver_build=pkgver_build,
