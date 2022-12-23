@@ -70,6 +70,7 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
         |libgl1-amdgpu-mesa@(-dev|-dev:i386|-dri|-dri:i386|-glx|-glx:i386)\
         |libglapi-amdgpu-mesa@(|:i386)\
         |libgles1-amdgpu-mesa@(|:i386|-dev|-dev:i386)\
+        |libgles1-amdgpu-pro-oglp@(|:i386|-dev|-dev:i386)\
         |libgles2-amdgpu-mesa@(|:i386|-dev|-dev:i386)\
         |libllvm12.0-amdgpu@(|:i386)\
         |libxatracker2-amdgpu@(|:i386)\
@@ -122,22 +123,22 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
             archpkg=None; comment="unneeded_open_component"
             ;;
 
-         libegl1-amdgpu-pro\
-        |libgl1-amdgpu-pro-@(appprofiles|dri|ext-hwe|ext|glx)\
+	    libegl1-amdgpu-pro@(|-oglp)\
+        |libgl1-amdgpu-pro-oglp-@(appprofiles|dri|ext-hwe|ext|glx)\
         |libglapi1-amdgpu-pro\
-        |libgles2-amdgpu-pro\
+        |libgles2-amdgpu-pro-oglp\
         )
             archpkg=amdgpu-pro-libgl; comment="mapped_manually"
             ;;
 
-         libegl1-amdgpu-pro:i386\
+	    libegl1-amdgpu-pro@(|-oglp):i386\
         |libgl1-amdgpu-pro-@(dri|ext-hwe|ext|glx):i386\
         |libglapi1-amdgpu-pro:i386\
-        |libgles2-amdgpu-pro:i386\
+        |libgles2-amdgpu-pro-oglp:i386\
         )
             archpkg=lib32-amdgpu-pro-libgl; comment="mapped_manually"
             ;;
-         amdgpu-pro-@(hwe|lib32)|amdgpu-pro\
+	    amdgpu-pro-@(hwe|lib32)|amdgpu-pro@(|-oglp)\
         )
             archpkg=None; comment="we_have_already_combined_libgl_to_single_package"
             ;;
