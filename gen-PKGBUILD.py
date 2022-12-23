@@ -15,6 +15,7 @@ versions = module_from_spec(spec)
 spec.loader.exec_module(versions)
 
 pkgver_base = versions.pkgver_base
+pkgver_branch_base = versions.pkgver_branch_base
 pkgver_base_short = ".".join(pkgver_base.split(".")[0:2])
 pkgver_build = versions.pkgver_build
 ubuntu_ver = versions.ubuntu_ver
@@ -26,7 +27,7 @@ debug_pkgext = True if debugging else False
 
 url_ref = "https://www.amd.com/en/support/kb/release-notes/rn-amdgpu-unified-linux-22-20"
 
-source_repo_url = "https://repo.radeon.com/amdgpu/{0}/ubuntu/".format(pkgver_base)
+source_repo_url = "https://repo.radeon.com/amdgpu/{0}/ubuntu/".format(pkgver_branch_base)
 
 def gen_arch_packages():
     pkgbuild_packages = {
@@ -96,7 +97,7 @@ def gen_arch_packages():
                 'move_libdir "opt/amdgpu-pro/lib/x86_64-linux-gnu" "usr/lib/amdgpu-pro"',
                 'move_libdir "opt/amdgpu-pro/lib/xorg" "usr/lib/amdgpu-pro/xorg"',
                 'move_libdir "opt/amdgpu/share/drirc.d" "usr/share/drirc.d"',
-                'sed -i "s|/opt/amdgpu-pro/lib/x86_64-linux-gnu|#/usr/lib/amdgpu-pro  # commented to prevent problems of booting with amdgpu-pro, use progl script|" "${pkgdir}"/etc/ld.so.conf.d/10-amdgpu-pro-x86_64.conf',
+                #'sed -i "s|/opt/amdgpu-pro/lib/x86_64-linux-gnu|#/usr/lib/amdgpu-pro  # commented to prevent problems of booting with amdgpu-pro, use progl script|" "${pkgdir}"/etc/ld.so.conf.d/10-amdgpu-pro-x86_64.conf',
 
                 'install -Dm755 "${srcdir}"/progl "${pkgdir}"/usr/bin/progl',
                 'install -Dm644 "${srcdir}"/progl.bash-completion "${pkgdir}"/usr/share/bash-completion/completions/progl',
@@ -116,7 +117,7 @@ def gen_arch_packages():
 
                 'move_libdir "usr/lib/i386-linux-gnu" "usr/lib32"',
                 'move_libdir "opt/amdgpu-pro/lib/i386-linux-gnu" "usr/lib32/amdgpu-pro"',
-                'sed -i "s|/opt/amdgpu-pro/lib/i386-linux-gnu|#/usr/lib32/amdgpu-pro  # commented to prevent problems of booting with amdgpu-pro, use progl32 script|" "${pkgdir}"/etc/ld.so.conf.d/10-amdgpu-pro-i386.conf',
+                #'sed -i "s|/opt/amdgpu-pro/lib/i386-linux-gnu|#/usr/lib32/amdgpu-pro  # commented to prevent problems of booting with amdgpu-pro, use progl32 script|" "${pkgdir}"/etc/ld.so.conf.d/10-amdgpu-pro-i386.conf',
             ]
         ),
         #'opencl-amdgpu-pro-comgr': Package( desc = "Code object manager (COMGR)" ),
@@ -259,6 +260,7 @@ header_tpl = """# Author: Janusz Lewandowski <lew21@xtreeme.org>
 # with https://github.com/Ashark/archlinux-amdgpu-pro/blob/master/gen-PKGBUILD.py
 
 major={pkgver_base}
+branch={pkgver_branch_base}
 major_short={pkgver_base_short}
 minor={pkgver_build}
 ubuntu_ver={ubuntu_ver}
@@ -465,8 +467,8 @@ class Package:
 
             self.desc = desc
 
-        sources.append(source_repo_url.replace(pkgver_base, "${major}") + deb_info["Filename"].replace(pkgver_base, "${major}")\
-                       .replace("_"+pkgver_base_short, "_${major_short}").replace(pkgver_build, "${minor}").replace("~"+ubuntu_ver, "~${ubuntu_ver}"))
+        sources.append(source_repo_url.replace(pkgver_branch_base, "${branch}") + deb_info["Filename"].replace(pkgver_base, "${major}")\
+                       .replace("_"+pkgver_base_short, "_${major_short}").replace(pkgver_build, "${minor}").replace("~"+ubuntu_ver, "${ubuntu_ver}_").replace(f"{ubuntu_ver}_", "${ubuntu_ver}_"))
         sha256sums.append(deb_info["SHA256"])
 
         deb_file = debfile.DebFile(os.path.expanduser("~/.aptly/public/%s" % (deb_info["Filename"])))
@@ -685,6 +687,7 @@ if not debugging:
         package_names="(\n" + "\n".join( arch_package_names ) + "\n)",
         pkgrel=pkgrel,
         url=url_ref,
+        pkgver_branch_base=pkgver_branch_base,
         pkgver_base=pkgver_base,
         pkgver_base_short=pkgver_base_short,
         pkgver_build=pkgver_build,

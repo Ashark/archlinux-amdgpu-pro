@@ -1,6 +1,7 @@
 # This file is interpreted by both python and bash
 
-pkgver_base="5.4.1"
+pkgver_base="22.40.0"
+pkgver_branch_base="5.4.1"
 pkgver_build="1511376"
 ubuntu_ver="22.04"
 
