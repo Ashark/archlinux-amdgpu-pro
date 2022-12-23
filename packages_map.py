@@ -16,7 +16,7 @@ packages_map = {
     'libgl1-amdgpu-pro-oglp-dri':              'amdgpu-pro-libgl',                  #mapped_manually
     'libgl1-amdgpu-pro-oglp-dri:i386':         'lib32-libgl1-amdgpu-pro-oglp-dri',  #
     'libgl1-amdgpu-pro-oglp-ext':              'amdgpu-pro-libgl',                  #mapped_manually
-    'libgl1-amdgpu-pro-oglp-gbm':              'libgl1-amdgpu-pro-oglp-gbm',        #
+    'libgl1-amdgpu-pro-oglp-gbm':              'amdgpu-pro-libgl',                  #mapped_manually
     'libgl1-amdgpu-pro-oglp-glx':              'amdgpu-pro-libgl',                  #mapped_manually
     'libgl1-amdgpu-pro-oglp-glx:i386':         'lib32-libgl1-amdgpu-pro-oglp-glx',  #
     'libgles1-amdgpu-pro-oglp':                None,                                #unneeded_open_component

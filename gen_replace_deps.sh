@@ -25,6 +25,7 @@ function dep_convert {
 
         libc6) arch_str="None, #manually_mapped" ;; # It maps to 'glibc', which is required by base, so no need to explicitly depend on it
         libgcc-s1) arch_str="None, #manually_mapped" ;; # It maps to 'gcc', but I doubt it depends on gcc, the compiler
+        libgbm1-amdgpu) arch_str="None, #manually_mapped" ;;
         libgl1) arch_str="'libglvnd', #manually_mapped" ;;
         libjs-jquery) arch_str="'jquery', #manually_mapped" ;;
         libjs-underscore) arch_str="'underscorejs', #manually_mapped" ;;

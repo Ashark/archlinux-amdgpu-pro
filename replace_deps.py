@@ -7,7 +7,7 @@ replace_deps = {
     'libc6':                      None,                   #manually_mapped
     'libdrm2-amdgpu':             'libdrm',               #auto_translated
     'libdrm-amdgpu-amdgpu1':      'libdrm',               #auto_translated
-    'libgbm1-amdgpu':             'gbm',                  #auto_translated
+    'libgbm1-amdgpu':             None,                   #manually_mapped
     'libgcc-s1':                  None,                   #manually_mapped
     'libgl1':                     'libglvnd',             #manually_mapped
     'libssl1.1':                  'openssl-1.1',          #auto_translated

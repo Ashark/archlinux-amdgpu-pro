@@ -113,7 +113,7 @@ def gen_arch_packages():
                 # # This is instead of libgl1-amdgpu-pro-ext-hwe_19.20-812932_i386.deb/postinst and libgl1-amdgpu-pro-ext-hwe_19.20-812932_i386.deb/prerm
                 # 'mv "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx-ext-hwe.so "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx.so',
                 # Clean-up duplicated files to be able to install simultaneously with 64bit version
-                'rm "${pkgdir}"/etc/amd/amdrc "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx.so "${pkgdir}"/opt/amdgpu/share/drirc.d/10-amdgpu-pro.conf',
+                #'rm "${pkgdir}"/etc/amd/amdrc "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx.so "${pkgdir}"/opt/amdgpu/share/drirc.d/10-amdgpu-pro.conf',
 
                 'move_libdir "usr/lib/i386-linux-gnu" "usr/lib32"',
                 'move_libdir "opt/amdgpu-pro/lib/i386-linux-gnu" "usr/lib32/amdgpu-pro"',
@@ -409,6 +409,7 @@ class Package:
             deb_deps = ["\"" + convertName(deb_pkg_name, deb_info, domap) + convertVersionSpecifier(deb_pkg_name, version) + "\"" for deb_pkg_name, version in deb_deps if deb_pkg_name]
             deb_deps = [ dep for dep in deb_deps if dep != "\"\"" ]
             deb_deps = [ dep for dep in deb_deps if not dep.startswith("\"=")]
+            deb_deps = [ dep for dep in deb_deps if not "Warning" in dep]
 
             # if self.arch_pkg_name == "opencl-amdgpu-pro-orca":
             #     deb_deps.append('\"libdrm-amdgpu=${major}_${minor}-${pkgrel}\"')

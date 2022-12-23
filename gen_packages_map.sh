@@ -124,9 +124,9 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
             ;;
 
 	    libegl1-amdgpu-pro@(|-oglp)\
-        |libgl1-amdgpu-pro-oglp-@(appprofiles|dri|ext-hwe|ext|glx)\
+        |libgl1-amdgpu-pro-oglp-@(gbm|appprofiles|dri|ext-hwe|ext|glx|dri:1386|glx:136)\
         |libglapi1-amdgpu-pro\
-        |libgles2-amdgpu-pro-oglp\
+	|libgles2-amdgpu-pro-oglp@(|:1386)\
         )
             archpkg=amdgpu-pro-libgl; comment="mapped_manually"
             ;;
