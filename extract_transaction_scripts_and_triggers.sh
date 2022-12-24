@@ -16,8 +16,9 @@ ubuntuverold=$old_ubuntu_ver
 function extract_them() {
     major="$1"
     minor="$2"
+    ubuntu="$3"
     
-    FOLDER=amdgpu-pro-$major-$minor-ubuntu-20.04
+    FOLDER=amdgpu-pro-$major-$minor-ubuntu-$ubuntu
     cd $FOLDER
     cd unpacked_debs
     rm -f *.install_scripts.sh
@@ -33,7 +34,7 @@ function extract_them() {
                 # echo -e "# $file_md5"  >> $dir.install_scripts.sh
                 echo -e "$file_md5"  >> transaction_scripts_and_triggers_md5sums.txt
                 #cat $dir/$file >> $dir.install_scripts.sh
-                cat $dir/$file > ../install_scripts/"$dir"_"$file".txt
+                cat $dir/$file > ../install_scripts/"$dir"_"$file".sh
             fi
         done
     done
@@ -51,44 +52,44 @@ function extract_them() {
     for dir in $(ls -d *deb);
     do
         if [ -f "$dir"/triggers ]; then
-            if [[ $(cat "$dir"/triggers) == "# Triggers added by dh_makeshlibs/11.1.6ubuntu2
-    activate-noawait ldconfig" ]];
+            if [[ $(cat "$dir"/triggers) == "# Triggers added by dh_makeshlibs/13.6ubuntu1
+activate-noawait ldconfig" ]];
             then continue; fi
             file_md5=$(md5sum $dir/triggers)
             echo -e "$file_md5" >> transaction_scripts_and_triggers_md5sums.txt
-            cat $dir/triggers > ../install_scripts/"$dir"_"triggers".txt
+            cat $dir/triggers > ../install_scripts/"$dir"_"triggers".sh
         fi
     done
 
     sed -i -e "1 ! s/$major/XX.XX/g" -e "1 ! s/$minor/XXXXXX/g" transaction_scripts_and_triggers_md5sums.txt
     cd ..
 
-    rename "$major" "XX.XX" install_scripts/*.txt
-    rename "$minor" "XXXXXX" install_scripts/*.txt
+    rename "$major" "XX.XX" install_scripts/*.sh
+    rename "$minor" "XXXXXX" install_scripts/*.sh
 
-    rename "_2.1.0" "_C.C.C" install_scripts/*.txt # new comgr version
-    rename "_2.0.0" "_C.C.C" install_scripts/*.txt # old comgr version
+    rename "_2.1.0" "_C.C.C" install_scripts/*.sh # new comgr version
+    rename "_2.0.0" "_C.C.C" install_scripts/*.sh # old comgr version
 
-    rename "1.2.0" "_H.H.H" install_scripts/*.txt # old hsa-runtime-rocr-amdgpu version
-    rename "1.3.0" "_H.H.H" install_scripts/*.txt # new hsa-runtime-rocr-amdgpu version
+    rename "1.2.0" "_H.H.H" install_scripts/*.sh # old hsa-runtime-rocr-amdgpu version
+    rename "1.3.0" "_H.H.H" install_scripts/*.sh # new hsa-runtime-rocr-amdgpu version
 
-    rename "21.1.0" "YY.Y.Y" install_scripts/*.txt # new mesa version
-    rename "20.3.4" "YY.Y.Y" install_scripts/*.txt # old mesa version
+    rename "21.1.0" "YY.Y.Y" install_scripts/*.sh # new mesa version
+    rename "20.3.4" "YY.Y.Y" install_scripts/*.sh # old mesa version
 
-    rename "5.11.19.98" "Y.Y.Y.YY" install_scripts/*.txt # new amdgpu-dkms version
-    rename "5.11.5.26" "Y.Y.Y.YY" install_scripts/*.txt # old amdgpu-dkms version
+    rename "5.11.19.98" "Y.Y.Y.YY" install_scripts/*.sh # new amdgpu-dkms version
+    rename "5.11.5.26" "Y.Y.Y.YY" install_scripts/*.sh # old amdgpu-dkms version
 
-    rename "rocm_13.0" "rocm_RR.R" install_scripts/*.txt # new libllvm-amdgpu-pro-rocm
-    rename "rocm_12.0" "rocm_RR.R" install_scripts/*.txt # old libllvm-amdgpu-pro-rocm
+    rename "rocm_13.0" "rocm_RR.R" install_scripts/*.sh # new libllvm-amdgpu-pro-rocm
+    rename "rocm_12.0" "rocm_RR.R" install_scripts/*.sh # old libllvm-amdgpu-pro-rocm
 
-    rename "libllvm12.0-amdgpu_12.0" "libllvmZZ.Z-amdgpu_ZZ.Z" install_scripts/*.txt # new llvm-amdgpu version
-    rename "libllvm11.0-amdgpu_11.0" "libllvmZZ.Z-amdgpu_ZZ.Z" install_scripts/*.txt # old llvm-amdgpu version
+    rename "libllvm12.0-amdgpu_12.0" "libllvmZZ.Z-amdgpu_ZZ.Z" install_scripts/*.sh # new llvm-amdgpu version
+    rename "libllvm11.0-amdgpu_11.0" "libllvmZZ.Z-amdgpu_ZZ.Z" install_scripts/*.sh # old llvm-amdgpu version
     
-    rename "12.0-runtime_12.0" "LL.L-runtime_LL.L" install_scripts/*.txt # new llvm-amdgpu-XX.X-runtime_XX.X
-    rename "11.0-runtime_11.0" "LL.L-runtime_LL.L" install_scripts/*.txt # old llvm-amdgpu-XX.X-runtime_XX.X
+    rename "12.0-runtime_12.0" "LL.L-runtime_LL.L" install_scripts/*.sh # new llvm-amdgpu-XX.X-runtime_XX.X
+    rename "11.0-runtime_11.0" "LL.L-runtime_LL.L" install_scripts/*.sh # old llvm-amdgpu-XX.X-runtime_XX.X
     
-    rename "dev_12.0" "dev_DD.D" install_scripts/*.txt # new llvm-amdgpu-dev_XX.X
-    rename "dev_11.0" "dev_DD.D" install_scripts/*.txt # old llvm-amdgpu-dev_XX.X
+    rename "dev_12.0" "dev_DD.D" install_scripts/*.sh # new llvm-amdgpu-dev_XX.X
+    rename "dev_11.0" "dev_DD.D" install_scripts/*.sh # old llvm-amdgpu-dev_XX.X
 
     mv install_scripts install_scripts_"$major"-"$minor"
     cd ..
@@ -96,7 +97,7 @@ function extract_them() {
 
 # Specify the versions to run for (comment one of them if you want to disable running for it).
 # extract_them $majorold $minorold # Run for old version
-extract_them $majornew $minornew # Run for new version
+extract_them $majornew $minornew $ubuntuvernew # Run for new version
 
 echo "Opening meld for comparison..."
 pwd
