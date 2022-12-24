@@ -109,6 +109,9 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
         amdgpu-core|amdgpu-pro-core)
             archpkg=None; comment="unneeded_meta_package" # because they just put conf file in ld.so.conf.d, which amdgpu-pro-libgl already does
             ;;
+        amdgpu-pro-oglp@(|:i386))
+            archpkg=None; comment="unneeded_meta_package"
+            ;;
          libdrm-amdgpu@(-amdgpu1|-common)\
         |libdrm2-amdgpu\
         )
@@ -122,20 +125,20 @@ for line in $(cat tmp_renamed_deb_32bit_packages.txt); do
             archpkg=None; comment="unneeded_open_component"
             ;;
 
-         libegl1-amdgpu-pro\
-        |libgl1-amdgpu-pro-@(appprofiles|dri|ext-hwe|ext|glx)\
-        |libglapi1-amdgpu-pro\
-        |libgles2-amdgpu-pro\
+         libegl1-amdgpu-pro-oglp\
+        |libgl1-amdgpu-pro-oglp-@(dri|ext|gbm|glx)\
+        |libgles1-amdgpu-pro-oglp\
+        |libgles2-amdgpu-pro-oglp\
         )
-            archpkg=amdgpu-pro-libgl; comment="mapped_manually"
+            archpkg=amdgpu-pro-oglp; comment="mapped_manually"
             ;;
 
-         libegl1-amdgpu-pro:i386\
-        |libgl1-amdgpu-pro-@(dri|ext-hwe|ext|glx):i386\
-        |libglapi1-amdgpu-pro:i386\
-        |libgles2-amdgpu-pro:i386\
+         libegl1-amdgpu-pro-oglp:i386\
+        |libgl1-amdgpu-pro-oglp-@(dri|glx):i386\
+        |libgles1-amdgpu-pro-oglp:i386\
+        |libgles2-amdgpu-pro-oglp:i386\
         )
-            archpkg=lib32-amdgpu-pro-libgl; comment="mapped_manually"
+            archpkg=lib32-amdgpu-pro-oglp; comment="mapped_manually"
             ;;
          amdgpu-pro-@(hwe|lib32)|amdgpu-pro\
         )

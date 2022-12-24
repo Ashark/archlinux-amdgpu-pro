@@ -23,7 +23,8 @@ This generator is needed because of the complexity of the distribution model of 
    Note that `latest` link sometimes is not actually latest version.
    ```
    #ver=latest
-   ver=22.20.5
+   #ver=22.20.5
+   ver=5.4.1
    aptly -ignore-signatures mirror create agpro-$ver http://repo.radeon.com/amdgpu/$ver/ubuntu jammy proprietary
    aptly -ignore-signatures mirror update agpro-$ver
 
@@ -43,7 +44,7 @@ This generator is needed because of the complexity of the distribution model of 
 
    There also could be such way: <s>`aptly package show "Name (~ .*)" > Packages-extracted`</s>. For some reason, this method shows filenames without relative path. So cannot use that until inversigate how to fix.
    
-   Also files can be seen here (convenience links):
+   Also files can be seen here (convenience links):  
    http://repo.radeon.com/amdgpu/latest/ubuntu/dists/focal/proprietary/binary-amd64/Packages  
    http://repo.radeon.com/amdgpu/latest/ubuntu/dists/focal/proprietary/binary-i386/Packages
 8. Run `./gen_packages_map.sh > packages_map.py`  
