@@ -87,7 +87,7 @@ def gen_arch_packages():
         #         "mv ${pkgdir}/lib ${pkgdir}/usr"
         #     ],
         # ),
-        'amdgpu-pro-libgl': Package(
+        'amdgpu-pro-oglp': Package(
             desc = "AMDGPU Pro OpenGL driver",
             provides  = ['libgl'],
             extra_commands = [
@@ -97,27 +97,39 @@ def gen_arch_packages():
                 'move_libdir "opt/amdgpu-pro/lib/x86_64-linux-gnu" "usr/lib/amdgpu-pro"',
                 'move_libdir "opt/amdgpu-pro/lib/xorg" "usr/lib/amdgpu-pro/xorg"',
                 'move_libdir "opt/amdgpu/share/drirc.d" "usr/share/drirc.d"',
-                'sed -i "s|/opt/amdgpu-pro/lib/x86_64-linux-gnu|#/usr/lib/amdgpu-pro  # commented to prevent problems of booting with amdgpu-pro, use progl script|" "${pkgdir}"/etc/ld.so.conf.d/10-amdgpu-pro-x86_64.conf',
+
+                # The amdgpu-pro-core deb package postinst/prerm trigger creates a conf file that prioritises progl for the whole system.
+                # That caused problems in Arch previously. So I do not create such config by pacman .install or hook. But if I do in the future, I can use this to still disable (comment) that line in config:
+                # 'sed -i "s|/opt/amdgpu-pro/lib/x86_64-linux-gnu|#/usr/lib/amdgpu-pro  # commented to prevent problems of booting with amdgpu-pro, use progl script|" "${pkgdir}"/etc/ld.so.conf.d/10-amdgpu-pro-x86_64.conf',
 
                 'install -Dm755 "${srcdir}"/progl "${pkgdir}"/usr/bin/progl',
                 'install -Dm644 "${srcdir}"/progl.bash-completion "${pkgdir}"/usr/share/bash-completion/completions/progl',
 
                 '# For some reason, applications started with normal OpenGL (i.e. without ag pro) crashes at launch if this conf file is presented, so hide it for now, until I find out the reason of that.',
                 'mv "${pkgdir}"/usr/share/drirc.d/10-amdgpu-pro.conf "${pkgdir}"/usr/share/drirc.d/10-amdgpu-pro.conf.hide',
+
+                '# For some reason, libs no more moved to the pro folder. Do it manually.',
+                'mv -v -t "${pkgdir}/usr/lib/amdgpu-pro" "${pkgdir}/usr/lib/lib"*',
             ]
         ),
-        'lib32-amdgpu-pro-libgl': Package(
+        'lib32-amdgpu-pro-oglp': Package(
             desc = "AMDGPU Pro OpenGL driver (32-bit)",
             provides=['lib32-libgl'],
             extra_commands=[
                 # # This is instead of libgl1-amdgpu-pro-ext-hwe_19.20-812932_i386.deb/postinst and libgl1-amdgpu-pro-ext-hwe_19.20-812932_i386.deb/prerm
                 # 'mv "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx-ext-hwe.so "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx.so',
                 # Clean-up duplicated files to be able to install simultaneously with 64bit version
-                'rm "${pkgdir}"/etc/amd/amdrc "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx.so "${pkgdir}"/opt/amdgpu/share/drirc.d/10-amdgpu-pro.conf',
+                'rm "${pkgdir}"/opt/amdgpu/share/drirc.d/10-amdgpu-pro.conf',
 
                 'move_libdir "usr/lib/i386-linux-gnu" "usr/lib32"',
                 'move_libdir "opt/amdgpu-pro/lib/i386-linux-gnu" "usr/lib32/amdgpu-pro"',
-                'sed -i "s|/opt/amdgpu-pro/lib/i386-linux-gnu|#/usr/lib32/amdgpu-pro  # commented to prevent problems of booting with amdgpu-pro, use progl32 script|" "${pkgdir}"/etc/ld.so.conf.d/10-amdgpu-pro-i386.conf',
+
+                # Commented out, see the 64 bit package comment above.
+                # 'sed -i "s|/opt/amdgpu-pro/lib/i386-linux-gnu|#/usr/lib32/amdgpu-pro  # commented to prevent problems of booting with amdgpu-pro, use progl32 script|" "${pkgdir}"/etc/ld.so.conf.d/10-amdgpu-pro-i386.conf',
+
+                '# For some reason, libs no more moved to the pro folder. Do it manually.',
+                'mkdir "${pkgdir}/usr/lib32/amdgpu-pro"',
+                'mv -v -t "${pkgdir}/usr/lib32/amdgpu-pro" "${pkgdir}/usr/lib32/lib"*',
             ]
         ),
         #'opencl-amdgpu-pro-comgr': Package( desc = "Code object manager (COMGR)" ),
@@ -591,6 +603,8 @@ def depWithAlt_to_singleDep(depWithAlt):
         return splitted_alts[3] # use libva2. libva*-amdgpu doesn't exist in repos and not provided in bundle. Probably amd's mistake
     if splitted_name_and_ver[0][0] == "libvdpau1-amdgpu" and splitted_name_and_ver[1][0] == "libvdpau1":
         return splitted_alts[1] # use libvdpau1. libvdpau1-amdgpu doesn't exist in repos and not provided in bundle. Probably amd's mistake
+    if splitted_name_and_ver[0][0] == "libwayland-amdgpu-client0" and splitted_name_and_ver[1][0] == "libwayland-client0":
+        return "wayland" # they both resolves to wayland (automatically) in Arch
 
     return "Warning_Do_not_know_which_alt_to_choose"
 
