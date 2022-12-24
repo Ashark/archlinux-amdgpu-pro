@@ -35,7 +35,8 @@ function dep_convert {
         libtinfo-dev) arch_str="'ncurses', #manually_mapped" ;;
         libudev0) arch_str="None, #manually_mapped" ;; # have alternative libudev1
         linux-firmware) arch_str="'linux-firmware', #manually_mapped" ;; # debtap takes very long time and finally faulty auto translates to None.
-        xserver-xorg-hwe-18.04) arch_str="None, #manually_disabled" ;;
+        libgbm1-amdgpu) arch_str="None, #manually_Do_not_know_what_it_is" ;;
+        rocm-opencl-runtime) arch_str="'rocm-opencl-runtime', #manually_mapped" ;; # we anyway do not use it, but let's keep the dependency
         #---) arch_str="'---', #manually_mapped" ;; # templpate
 
         *)
