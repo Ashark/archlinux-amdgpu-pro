@@ -18,15 +18,16 @@ pkgver_base = versions.pkgver_base
 pkgver_base_short = ".".join(pkgver_base.split(".")[0:2])
 pkgver_build = versions.pkgver_build
 ubuntu_ver = versions.ubuntu_ver
-pkgrel = 2
+repo_folder_ver = versions.repo_folder_ver
+pkgrel = 1
 
 debugging = False
 
 debug_pkgext = True if debugging else False
 
-url_ref = "https://www.amd.com/en/support/kb/release-notes/rn-amdgpu-unified-linux-22-20"
+url_ref = "https://www.amd.com/en/support/kb/release-notes/rn-amdgpu-unified-linux-22-40"
 
-source_repo_url = "https://repo.radeon.com/amdgpu/{0}/ubuntu/".format(pkgver_base)
+source_repo_url = "https://repo.radeon.com/amdgpu/{0}/ubuntu/".format(repo_folder_ver)
 
 def gen_arch_packages():
     pkgbuild_packages = {
@@ -262,6 +263,7 @@ major={pkgver_base}
 major_short={pkgver_base_short}
 minor={pkgver_build}
 ubuntu_ver={ubuntu_ver}
+repo_folder_ver={repo_folder_ver}
 
 pkgbase=amdgpu-pro-installer
 pkgname={package_names}
@@ -465,8 +467,8 @@ class Package:
 
             self.desc = desc
 
-        sources.append(source_repo_url.replace(pkgver_base, "${major}") + deb_info["Filename"].replace(pkgver_base, "${major}")\
-                       .replace("_"+pkgver_base_short, "_${major_short}").replace(pkgver_build, "${minor}").replace("~"+ubuntu_ver, "~${ubuntu_ver}"))
+        sources.append(source_repo_url.replace(repo_folder_ver, "${repo_folder_ver}") + deb_info["Filename"].replace("/"+pkgver_base, "/"+"${major}")\
+                       .replace("_"+pkgver_base_short, "_${major_short}").replace(pkgver_build, "${minor}").replace("."+ubuntu_ver, ".${ubuntu_ver}"))
         sha256sums.append(deb_info["SHA256"])
 
         deb_file = debfile.DebFile(os.path.expanduser("~/.aptly/public/%s" % (deb_info["Filename"])))
@@ -519,7 +521,7 @@ class Package:
 
         for info in self.deb_source_infos:
             tmp_str=package_deb_extract_tpl.format(BaseFilename=os.path.basename(info["Filename"]))
-            ret += tmp_str.replace(str(pkgver_base), "${major}").replace(str(pkgver_build), "${minor}").replace(str(pkgver_base_short), "${major_short}").replace(str(ubuntu_ver), "${ubuntu_ver}")
+            ret += tmp_str.replace("/"+str(pkgver_base), "/"+"${major}").replace(str(pkgver_build), "${minor}").replace(str(pkgver_base_short), "${major_short}").replace(str(ubuntu_ver), "${ubuntu_ver}")
 
         if self.arch_pkg_name != "amdgpu-pro-libgl" and self.arch_pkg_name != "lib32-amdgpu-pro-libgl":
             # for ag-p-lgl and l32-ag-p-lgl I have temporary disabled movelibdir function (because it requires further investigation)
@@ -689,6 +691,7 @@ if not debugging:
         pkgver_base_short=pkgver_base_short,
         pkgver_build=pkgver_build,
         ubuntu_ver=ubuntu_ver,
+        repo_folder_ver=repo_folder_ver,
         source="\n\t".join(sources),
         sha256sums="\n\t".join(sha256sums)
     ))
