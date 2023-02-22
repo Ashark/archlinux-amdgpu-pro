@@ -10,7 +10,7 @@ replace_deps = {
     'libgbm1-amdgpu':             None,                   #manually_Do_not_know_what_it_is
     'libgcc-s1':                  None,                   #manually_mapped
     'libgl1':                     'libglvnd',             #manually_mapped
-    'libssl1.1':                  'openssl-1.1',          #auto_translated
+    'libssl1.1':                  'libssl1.1',            #could_not_auto_translate
     'libstdc++6':                 None,                   #manually_mapped
     'libvulkan1':                 'vulkan-icd-loader',    #auto_translated
     'libwayland-amdgpu-client0':  'wayland',              #auto_translated
