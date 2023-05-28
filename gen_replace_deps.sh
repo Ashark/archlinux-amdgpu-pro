@@ -24,6 +24,7 @@ function dep_convert {
     case $line in
 
         libc6) arch_str="None, #manually_mapped" ;; # It maps to 'glibc', which is required by base, so no need to explicitly depend on it
+        libvulkan1) arch_str="'vulkan-icd-loader', #manually_mapped" ;; # It maps to 'vulkan-icd-loader', because the automatic sets to use dicord for this lib 
         libgcc-s1) arch_str="None, #manually_mapped" ;; # It maps to 'gcc', but I doubt it depends on gcc, the compiler
         libgl1) arch_str="'libglvnd', #manually_mapped" ;;
         libjs-jquery) arch_str="'jquery', #manually_mapped" ;;
@@ -36,6 +37,7 @@ function dep_convert {
         libudev0) arch_str="None, #manually_mapped" ;; # have alternative libudev1
         linux-firmware) arch_str="'linux-firmware', #manually_mapped" ;; # debtap takes very long time and finally faulty auto translates to None.
         libgbm1-amdgpu) arch_str="None, #manually_Do_not_know_what_it_is" ;;
+        libssl1.1) arch_str="'openssl-1.1', #manually_mapped" ;; #for libssl1.1 to have correct dependency
         rocm-opencl-runtime) arch_str="'rocm-opencl-runtime', #manually_mapped" ;; # we anyway do not use it, but let's keep the dependency
         #---) arch_str="'---', #manually_mapped" ;; # templpate
 
