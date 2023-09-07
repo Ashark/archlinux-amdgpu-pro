@@ -1,9 +1,9 @@
 # This file is interpreted by both python and bash
 
 pkgver_base="23.10"
-pkgver_build="1610704"
+pkgver_build="1620044"
 ubuntu_ver="22.04"
-repo_folder_ver="5.5.2"
+repo_folder_ver="5.5.3"
 
 # Old version is specified for use in extract_transaction_scripts_and_triggers.sh
 # I stopped checking transaction script and triggers, it seems it's rather safe to ignore that step. But if some day I want to check it again, I need to uncomment and fill in the old versions too.
