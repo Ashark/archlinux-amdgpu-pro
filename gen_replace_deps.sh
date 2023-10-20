@@ -28,6 +28,7 @@ function dep_convert {
         libgcc-s1) arch_str="None, #manually_mapped" ;; # It maps to 'gcc', but I doubt it depends on gcc, the compiler
         libgl1) arch_str="'libglvnd', #manually_mapped" ;;
         libjs-jquery) arch_str="'jquery', #manually_mapped" ;;
+        zlib1g) arch_str="'zlib', #manually_mapped" ;;
         libjs-underscore) arch_str="'underscorejs', #manually_mapped" ;;
         libstdc++6) arch_str="None, #manually_mapped" ;; # It maps to 'gcc-libs', which is required by base, so no need to explicitly depend on it
         libtxc-dxtn-s2tc0) arch_str="'libtxc_dxtn', #manually_mapped" ;;
