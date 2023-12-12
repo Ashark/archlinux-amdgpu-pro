@@ -6,7 +6,6 @@ replace_deps = {
     'amdgpu-lib32':               'amdgpu-lib32',         #could_not_auto_translate
     'libc6':                      None,                   #manually_mapped
     'libdrm2-amdgpu':             'libdrm',               #auto_translated
-    'libdrm-amdgpu-amdgpu1':      'libdrm',               #auto_translated
     'libgbm1-amdgpu':             None,                   #manually_Do_not_know_what_it_is
     'libgcc-s1':                  None,                   #manually_mapped
     'libgl1':                     'libglvnd',             #manually_mapped
