@@ -38,7 +38,9 @@ function dep_convert {
         linux-firmware) arch_str="'linux-firmware', #manually_mapped" ;; # debtap takes very long time and finally faulty auto translates to None.
         libgbm1-amdgpu) arch_str="None, #manually_Do_not_know_what_it_is" ;;
         libssl1.1) arch_str="'openssl-1.1', #manually_mapped" ;; #for libssl1.1 to have correct dependency
+        mesa-vulkan-drivers) arch_str="'vulkan-radeon', #manually_mapped" ;;  #for now it works with mesa 
         rocm-opencl-runtime) arch_str="'rocm-opencl-runtime', #manually_mapped" ;; # we anyway do not use it, but let's keep the dependency
+        zlib1g) arch_str="'zlib', #manually_mapped" ;; # it seems to need the zlib, so we put it
         #---) arch_str="'---', #manually_mapped" ;; # templpate
 
         *)
