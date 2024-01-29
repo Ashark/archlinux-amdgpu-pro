@@ -101,8 +101,8 @@ package_amf-amdgpu-pro () {
     pkgdesc="AMDGPU Pro Advanced Multimedia Framework"
     license=('custom: AMDGPU-PRO EULA')
     depends=("libdrm" "vulkan-icd-loader")
-    optdepends=("Warning_Do_not_know_which_alt_to_choose: Warning unspecified optdep description"
-                "rocm-opencl-runtime: Warning unspecified optdep description")
+    optdepends=("rocm-opencl-runtime: Warning unspecified optdep description"
+                "vulkan-radeon: Warning unspecified optdep description")
 
     extract_deb "${srcdir}"/amf-amdgpu-pro_1.4.33-${minor}.${ubuntu_ver}_amd64.deb
     extract_deb "${srcdir}"/libamdenc-amdgpu-pro_1.0-${minor}.${ubuntu_ver}_amd64.deb

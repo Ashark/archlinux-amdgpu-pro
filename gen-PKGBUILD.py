@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+from replace_deps import replace_deps
+from packages_map import packages_map
 from debian import deb822
 from debian import debfile
 import re
@@ -27,7 +29,9 @@ debug_pkgext = True if debugging else False
 
 url_ref = "https://www.amd.com/en/support/kb/release-notes/rn-amdgpu-unified-linux-22-40"
 
-source_repo_url = "https://repo.radeon.com/amdgpu/{0}/ubuntu/".format(repo_folder_ver)
+source_repo_url = "https://repo.radeon.com/amdgpu/{0}/ubuntu/".format(
+    repo_folder_ver)
+
 
 def gen_arch_packages():
     pkgbuild_packages = {
@@ -40,19 +44,19 @@ def gen_arch_packages():
         # bash make_pkgbuild_pkgs_template.sh > tmp_pkgbuild_pkgs_template.txt
 
         # To show packages with their conffiles I used this:
-        #for file in $(ls *deb);
-        #do
-            #tmpdir=tmpdir; rm -rf "$tmpdir"; mkdir "$tmpdir"; cd "$tmpdir"
-            #ar x ../$file control.tar.xz
-            #files=$(tar -tf control.tar.xz | grep -vE "control|md5sums|./$" | grep conffiles)
-            #if [[ $files != "" ]]; then
-                #echo -e "$file:\n           backup = ["
-                #tar -xf control.tar.xz ./conffiles -O | sed 's/^\//              '\''/' | sed 's/$/'\'',/'
-                #echo "           ],"
-            #fi
-            #files=""; cd ..
-        #done
-        #rm -rf tmpdir
+        # for file in $(ls *deb);
+        # do
+        # tmpdir=tmpdir; rm -rf "$tmpdir"; mkdir "$tmpdir"; cd "$tmpdir"
+        # ar x ../$file control.tar.xz
+        # files=$(tar -tf control.tar.xz | grep -vE "control|md5sums|./$" | grep conffiles)
+        # if [[ $files != "" ]]; then
+        # echo -e "$file:\n           backup = ["
+        # tar -xf control.tar.xz ./conffiles -O | sed 's/^\//              '\''/' | sed 's/$/'\'',/'
+        # echo "           ],"
+        # fi
+        # files=""; cd ..
+        # done
+        # rm -rf tmpdir
         # They are added automatically, but you can override a backup array as shown in the example:
 
         # 'overriding-example': Package(
@@ -88,11 +92,11 @@ def gen_arch_packages():
         #     ],
         # ),
         'amdgpu-pro-oglp': Package(
-            desc = "AMDGPU Pro OpenGL driver",
-            provides  = ['libgl'],
-            extra_commands = [
-            #     # This is instead of libgl1-amdgpu-pro-ext-hwe_19.20-812932_amd64.deb/postinst and libgl1-amdgpu-pro-ext-hwe_19.20-812932_amd64.deb/prerm
-            #     'mv "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx-ext-hwe.so "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx.so',
+            desc="AMDGPU Pro OpenGL driver",
+            provides=['libgl'],
+            extra_commands=[
+                #     # This is instead of libgl1-amdgpu-pro-ext-hwe_19.20-812932_amd64.deb/postinst and libgl1-amdgpu-pro-ext-hwe_19.20-812932_amd64.deb/prerm
+                #     'mv "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx-ext-hwe.so "${pkgdir}"/opt/amdgpu-pro/lib/xorg/modules/extensions/libglx.so',
                 'move_libdir "usr/lib/x86_64-linux-gnu" "usr/lib"',
                 'move_libdir "opt/amdgpu-pro/lib/x86_64-linux-gnu" "usr/lib/amdgpu-pro"',
                 'move_libdir "opt/amdgpu-pro/lib/xorg" "usr/lib/amdgpu-pro/xorg"',
@@ -113,7 +117,7 @@ def gen_arch_packages():
             ]
         ),
         'lib32-amdgpu-pro-oglp': Package(
-            desc = "AMDGPU Pro OpenGL driver (32-bit)",
+            desc="AMDGPU Pro OpenGL driver (32-bit)",
             provides=['lib32-libgl'],
             extra_commands=[
                 # # This is instead of libgl1-amdgpu-pro-ext-hwe_19.20-812932_i386.deb/postinst and libgl1-amdgpu-pro-ext-hwe_19.20-812932_i386.deb/prerm
@@ -132,23 +136,23 @@ def gen_arch_packages():
                 'mv -v -t "${pkgdir}/usr/lib32/amdgpu-pro" "${pkgdir}/usr/lib32/lib"*',
             ]
         ),
-        #'opencl-amdgpu-pro-comgr': Package( desc = "Code object manager (COMGR)" ),
-        #'opencl-amdgpu-pro-dev': Package(  ),
-        #'opencl-amdgpu-pro-pal': Package(
-            #desc = "AMDGPU Pro OpenCL driver PAL",
-            #provides=['opencl-driver']
-        #),
-        #'opencl-amdgpu-pro-orca': Package(
-            #desc = "AMDGPU Pro OpenCL driver ORCA aka legacy",
-            #provides=['opencl-driver']
-        #),
-        #'lib32-opencl-amdgpu-pro-orca': Package(
-            #desc="AMDGPU Pro OpenCL driver ORCA aka legacy (32-bit)",
-            #provides=['lib32-opencl-driver']
-        #),
+        # 'opencl-amdgpu-pro-comgr': Package( desc = "Code object manager (COMGR)" ),
+        # 'opencl-amdgpu-pro-dev': Package(  ),
+        # 'opencl-amdgpu-pro-pal': Package(
+        # desc = "AMDGPU Pro OpenCL driver PAL",
+        # provides=['opencl-driver']
+        # ),
+        # 'opencl-amdgpu-pro-orca': Package(
+        # desc = "AMDGPU Pro OpenCL driver ORCA aka legacy",
+        # provides=['opencl-driver']
+        # ),
+        # 'lib32-opencl-amdgpu-pro-orca': Package(
+        # desc="AMDGPU Pro OpenCL driver ORCA aka legacy (32-bit)",
+        # provides=['lib32-opencl-driver']
+        # ),
         'vulkan-amdgpu-pro': Package(
             provides=['vulkan-driver'],
-            extra_commands = [
+            extra_commands=[
                 # This is instead of vulkan-amdgpu-pro_19.20-812932_amd64.deb/postinst and vulkan-amdgpu-pro_19.20-812932_amd64.deb/prerm
                 'mkdir -p "${pkgdir}"/usr/share/vulkan/icd.d/',
                 'mv "${pkgdir}"/opt/amdgpu-pro/etc/vulkan/icd.d/amd_icd64.json "${pkgdir}"/usr/share/vulkan/icd.d/amd_pro_icd64.json',
@@ -159,7 +163,7 @@ def gen_arch_packages():
         ),
         'lib32-vulkan-amdgpu-pro': Package(
             provides=['lib32-vulkan-driver'],
-            extra_commands = [
+            extra_commands=[
                 # This is instead of vulkan-amdgpu-pro_19.20-812932_i386.deb/postinst and vulkan-amdgpu-pro_19.20-812932_i386.deb/prerm
                 'mkdir -p "${pkgdir}"/usr/share/vulkan/icd.d/',
                 'mv "${pkgdir}"/opt/amdgpu-pro/etc/vulkan/icd.d/amd_icd32.json "${pkgdir}"/usr/share/vulkan/icd.d/amd_pro_icd32.json',
@@ -176,26 +180,24 @@ def gen_arch_packages():
 
 
 # This maps which deb packages should go into specific arch package
-from packages_map import packages_map
 
 # This maps debian dependencies to arch linux dependencies
-from replace_deps import replace_deps
 
 # Almost every pro package depends on these two, but I omited them (hoping they are not needed, but not tested), so disabling these dependencies globally
 replace_deps['libwayland-amdgpu-client0'] = None
 replace_deps['libwayland-amdgpu-server0'] = None
 
-## do not convert the dependencies listed to lib32 variants
+# do not convert the dependencies listed to lib32 variants
 no_lib32_convert = [
     # "some_debian_package_name",
 ]
 
-## override the version requirement extracted from deb
+# override the version requirement extracted from deb
 replace_version = {
     # "some-debian-package-name": "=redefinedVersion",
 }
 
-## maps debians archs to arch's archs
+# maps debians archs to arch's archs
 architectures_map = {
     "amd64": "x86_64",
     "i386": "i686",
@@ -203,10 +205,10 @@ architectures_map = {
 }
 
 # To see list of uniq licences files and packages that uses them, I used this:
-    # cd unpacked_debs
-    # for dir in $(ls -d *); do
-    #     md5sum $dir/copyright
-    # done | sort
+# cd unpacked_debs
+# for dir in $(ls -d *); do
+#     md5sum $dir/copyright
+# done | sort
 # Then I mapped each copyright hash to its short licence name:
 
 licenses_hashes_map = {
@@ -238,6 +240,7 @@ optdepends_descriptions = {
     "libglide3":                     "TODO_some_description",
     "linux-firmware":                "TODO_some_description",
     "llvm-amdgpu-7.1-doc":           "TODO_some_description",
+    "vulkan-icd-loader":           "Vulkan Installable Client Driver (ICD) Loader",
 }
 
 
@@ -251,9 +254,10 @@ def hashFile(file):
             buf = f.read(block)
     return hash.hexdigest()
 
-sources = [ "progl::https://raw.githubusercontent.com/Ashark/archlinux-amdgpu-pro/master/progl",
-            "progl.bash-completion::https://raw.githubusercontent.com/Ashark/archlinux-amdgpu-pro/master/progl.bash-completion" ]
-sha256sums = [ hashFile("progl"), hashFile("progl.bash-completion") ]
+
+sources = ["progl::https://raw.githubusercontent.com/Ashark/archlinux-amdgpu-pro/master/progl",
+           "progl.bash-completion::https://raw.githubusercontent.com/Ashark/archlinux-amdgpu-pro/master/progl.bash-completion"]
+sha256sums = [hashFile("progl"), hashFile("progl.bash-completion")]
 
 patches = sorted(glob.glob("*.patch"))
 
@@ -261,8 +265,8 @@ for patch in patches:
     sources.append(patch)
     sha256sums.append(hashFile(patch))
 
-#sources.append("20-amdgpu.conf")
-#sha256sums.append(hashFile("20-amdgpu.conf"))
+# sources.append("20-amdgpu.conf")
+# sha256sums.append(hashFile("20-amdgpu.conf"))
 
 
 header_tpl = """# Author: Janusz Lewandowski <lew21@xtreeme.org>
@@ -357,6 +361,7 @@ default_arch = ['x86_64']
 def quote(string):
     return "\"" + string.replace("\\", "\\\\").replace("\"", "\\\"") + "\""
 
+
 class Package:
     def __init__(self, **kwargs):
         for arg in kwargs:
@@ -381,8 +386,8 @@ class Package:
                 self.arch = ['x86_64']
             else:
                 import sys
-                sys.stderr.write("ERROR: There is a bug in this script, package '%s' is i386 (came from %s) and should start with 'lib32'. Check packages_map!\n" % (self.arch_pkg_name, deb_info["Package"]))
-
+                sys.stderr.write("ERROR: There is a bug in this script, package '%s' is i386 (came from %s) and should start with 'lib32'. Check packages_map!\n" % (
+                    self.arch_pkg_name, deb_info["Package"]))
 
         try:
             deb_deps = deb_info["Depends"].split(', ')
@@ -390,8 +395,8 @@ class Package:
             deb_deps = None
 
         domap = True
-        #if self.arch_pkg_name == "amdgpu-pro" or self.arch_pkg_name == "lib32-amdgpu-pro":
-            #domap = False
+        # if self.arch_pkg_name == "amdgpu-pro" or self.arch_pkg_name == "lib32-amdgpu-pro":
+        # domap = False
 
         # Removing unneeded dependencies
         # if self.arch_pkg_name == "amdgpu-pro-meta" or self.arch_pkg_name == "lib32-amdgpu-pro-meta":
@@ -402,25 +407,34 @@ class Package:
         #     deb_deps.remove('amdgpu (= %s-%s) | amdgpu-hwe (= %s-%s)' % (pkgver_base, pkgver_build, pkgver_base, pkgver_build))
         #     deb_deps.remove('amdgpu-lib32 (= %s-%s)' % (pkgver_base, pkgver_build))
         if self.arch_pkg_name == "opencl-amdgpu-pro-dev":
-            deb_deps.remove('ocl-icd-libopencl1-amdgpu-pro (= %s-%s)' % (pkgver_base, pkgver_build))
+            deb_deps.remove('ocl-icd-libopencl1-amdgpu-pro (= %s-%s)' %
+                            (pkgver_base, pkgver_build))
         if self.arch_pkg_name == "opencl-amdgpu-pro-meta":
-            deb_deps.remove('amdgpu-dkms (= %s-%s)' % (pkgver_base, pkgver_build)) # I do not know why it wants amdgpu-dkms, but I did not built it, so just rm this dep for now
-            deb_deps.remove('clinfo-amdgpu-pro (= %s-%s)' % (pkgver_base, pkgver_build))
-            deb_deps.remove('ocl-icd-libopencl1-amdgpu-pro (= %s-%s)' % (pkgver_base, pkgver_build))
-        #if self.arch_pkg_name == "amf-amdgpu-pro":
-            #deb_deps.remove('opencl-amdgpu-pro-icd') # looks like amf works ok even without opencl part
+            # I do not know why it wants amdgpu-dkms, but I did not built it, so just rm this dep for now
+            deb_deps.remove('amdgpu-dkms (= %s-%s)' %
+                            (pkgver_base, pkgver_build))
+            deb_deps.remove('clinfo-amdgpu-pro (= %s-%s)' %
+                            (pkgver_base, pkgver_build))
+            deb_deps.remove('ocl-icd-libopencl1-amdgpu-pro (= %s-%s)' %
+                            (pkgver_base, pkgver_build))
+        # if self.arch_pkg_name == "amf-amdgpu-pro":
+            # deb_deps.remove('opencl-amdgpu-pro-icd') # looks like amf works ok even without opencl part
         # if self.arch_pkg_name == "vulkan-amdgpu-pro":
         #     deb_deps.remove('amdgpu-pro-core')  # already removed, as I dropped ag-core-meta
         # if self.arch_pkg_name == "lib32-vulkan-amdgpu-pro":
         #     deb_deps.remove('amdgpu-pro-core')  # already removed, as I dropped ag-core-meta
 
         if deb_deps:
-            deb_deps = [ depWithAlt_to_singleDep(dep) if dependencyWithAltRE.search(dep) else dep for dep in deb_deps ]
-            deb_deps = [ dependencyNameWithVersionRE.match(dep).groups() for dep in deb_deps ]
-            deb_deps = [(replace_deps[deb_pkg_name] if deb_pkg_name in replace_deps else deb_pkg_name, version) for deb_pkg_name, version in deb_deps]
-            deb_deps = ["\"" + convertName(deb_pkg_name, deb_info, domap) + convertVersionSpecifier(deb_pkg_name, version) + "\"" for deb_pkg_name, version in deb_deps if deb_pkg_name]
-            deb_deps = [ dep for dep in deb_deps if dep != "\"\"" ]
-            deb_deps = [ dep for dep in deb_deps if not dep.startswith("\"=")]
+            deb_deps = [depWithAlt_to_singleDep(dep) if dependencyWithAltRE.search(
+                dep) else dep for dep in deb_deps]
+            deb_deps = [dependencyNameWithVersionRE.match(
+                dep).groups() for dep in deb_deps]
+            deb_deps = [(replace_deps[deb_pkg_name] if deb_pkg_name in replace_deps else deb_pkg_name, version)
+                        for deb_pkg_name, version in deb_deps]
+            deb_deps = ["\"" + convertName(deb_pkg_name, deb_info, domap) + convertVersionSpecifier(
+                deb_pkg_name, version) + "\"" for deb_pkg_name, version in deb_deps if deb_pkg_name]
+            deb_deps = [dep for dep in deb_deps if dep != "\"\""]
+            deb_deps = [dep for dep in deb_deps if not dep.startswith("\"=")]
 
             # if self.arch_pkg_name == "opencl-amdgpu-pro-orca":
             #     deb_deps.append('\"libdrm-amdgpu=${major}_${minor}-${pkgrel}\"')
@@ -431,12 +445,14 @@ class Package:
             #     deb_deps.append('\"libdrm-amdgpu=${major}_${minor}-${pkgrel}\"')
 
             # remove all dependencies on itself
-            deb_deps = [ dep for dep in deb_deps if dep[1:len(self.arch_pkg_name)+1] != self.arch_pkg_name ]
+            deb_deps = [dep for dep in deb_deps if dep[1:len(
+                self.arch_pkg_name)+1] != self.arch_pkg_name]
 
             if hasattr(self, 'depends') and self.depends:
                 deb_deps += self.depends
 
-            self.depends = list(sorted(set( deb_deps ))) # remove duplicates and append to already existing dependencies
+            # remove duplicates and append to already existing dependencies
+            self.depends = list(sorted(set(deb_deps)))
 
         try:
             deb_suggs = deb_info["Suggests"].split(', ')
@@ -455,15 +471,19 @@ class Package:
             deb_optdeps = deb_optdeps + deb_recomms
 
         if deb_optdeps:
-            deb_optdeps = [depWithAlt_to_singleDep(dep) if dependencyWithAltRE.search(dep) else dep for dep in deb_optdeps]
-            deb_optdeps = [dependencyNameWithVersionRE.match(dep).groups() for dep in deb_optdeps]
-            deb_optdeps = [(replace_deps[deb_pkg_name] if deb_pkg_name in replace_deps else deb_pkg_name, version) for deb_pkg_name, version in deb_optdeps]
+            deb_optdeps = [depWithAlt_to_singleDep(dep) if dependencyWithAltRE.search(
+                dep) else dep for dep in deb_optdeps]
+            deb_optdeps = [dependencyNameWithVersionRE.match(
+                dep).groups() for dep in deb_optdeps]
+            deb_optdeps = [(replace_deps[deb_pkg_name] if deb_pkg_name in replace_deps else deb_pkg_name, version)
+                           for deb_pkg_name, version in deb_optdeps]
             deb_optdeps = ["\"" + convertName(deb_pkg_name, deb_info, domap) + convertVersionSpecifier(deb_pkg_name, version) + ": "
-                           + (optdepends_descriptions[deb_pkg_name] if deb_pkg_name in optdepends_descriptions else "Warning unspecified optdep description" )
+                           + (optdepends_descriptions[deb_pkg_name] if deb_pkg_name in optdepends_descriptions else "Warning unspecified optdep description")
                            + "\"" for deb_pkg_name, version in deb_optdeps if deb_pkg_name]
 
         # remove all optional dependencies on itself
-        deb_optdeps = [dep for dep in deb_optdeps if dep[1:len(self.arch_pkg_name) + 1] != self.arch_pkg_name]
+        deb_optdeps = [dep for dep in deb_optdeps if dep[1:len(
+            self.arch_pkg_name) + 1] != self.arch_pkg_name]
 
         self.optdepends = self.optdepends + list(sorted(set(deb_optdeps)))
 
@@ -479,33 +499,37 @@ class Package:
 
             self.desc = desc
 
-        sources.append(source_repo_url.replace(repo_folder_ver, "${repo_folder_ver}") + deb_info["Filename"].replace("/"+pkgver_base, "/"+"${major}")\
+        sources.append(source_repo_url.replace(repo_folder_ver, "${repo_folder_ver}") + deb_info["Filename"].replace("/"+pkgver_base, "/"+"${major}")
                        .replace("_"+pkgver_base_short, "_${major_short}").replace(pkgver_build, "${minor}").replace("."+ubuntu_ver, ".${ubuntu_ver}"))
         sha256sums.append(deb_info["SHA256"])
 
-        deb_file = debfile.DebFile(os.path.expanduser("~/.aptly/public/%s" % (deb_info["Filename"])))
+        deb_file = debfile.DebFile(os.path.expanduser(
+            "~/.aptly/public/%s" % (deb_info["Filename"])))
 
         if not hasattr(self, 'license'):
-            copyright_md5 = deb_file.md5sums()[b'usr/share/doc/%s/copyright' % (str.encode(deb_info["Package"]))]
+            copyright_md5 = deb_file.md5sums(
+            )[b'usr/share/doc/%s/copyright' % (str.encode(deb_info["Package"]))]
             if copyright_md5 in licenses_hashes_map:
                 self.license = "('%s')" % licenses_hashes_map[copyright_md5]
             else:
                 self.license = "('NOT_IN_MAP')"
 
-        if not hasattr(self,'backup'):
+        if not hasattr(self, 'backup'):
             if deb_file.control.has_file("conffiles"):
-                self.backup = [ line.decode('utf-8').replace("\n","") for line in deb_file.control.get_file("conffiles") if line.decode('utf-8') ]
-                self.backup = [ re.sub("^/", "", line) for line in self.backup ] # removing leading slash
+                self.backup = [line.decode('utf-8').replace("\n", "")
+                               for line in deb_file.control.get_file("conffiles") if line.decode('utf-8')]
+                # removing leading slash
+                self.backup = [re.sub("^/", "", line) for line in self.backup]
 
         if not hasattr(self, 'install'):
             if Path("%s.install" % self.arch_pkg_name).is_file():
                 self.install = "%s.install" % self.arch_pkg_name
 
-
     def toPKGBUILD(self):
         ret = package_header_tpl.format(
             NAME=self.arch_pkg_name,
-            DESC=quote(self.desc) if hasattr(self, 'desc') else quote("No description for package %s" % self.arch_pkg_name),
+            DESC=quote(self.desc) if hasattr(self, 'desc') else quote(
+                "No description for package %s" % self.arch_pkg_name),
         )
 
         if hasattr(self, 'license'):
@@ -514,13 +538,14 @@ class Package:
             ret += "    install=%s\n" % self.install
 
         if hasattr(self, 'arch'):
-            if self.arch != default_arch: # omitting default arch for making pkgbuild cleaner
+            if self.arch != default_arch:  # omitting default arch for making pkgbuild cleaner
                 ret += "    arch=('%s')\n" % " ".join(self.arch)
 
         # add any given list/array with one of those names to the pkgbuild
         for array in ('provides', 'conflicts', 'replaces', 'groups'):
-            if(hasattr(self, array)):
-                ret += "    %s=('%s')\n" % (array, "' '".join(getattr(self, array)))
+            if (hasattr(self, array)):
+                ret += "    %s=('%s')\n" % (array,
+                                            "' '".join(getattr(self, array)))
 
         if hasattr(self, 'depends'):
             ret += "    depends=(%s)\n" % " ".join(self.depends)
@@ -529,26 +554,28 @@ class Package:
         if hasattr(self, 'backup'):
             ret += "    backup=(%s)\n" % " ".join(self.backup)
 
-        ret += "\n" # separating variables and functions with empty line
+        ret += "\n"  # separating variables and functions with empty line
 
         for info in self.deb_source_infos:
-            tmp_str=package_deb_extract_tpl.format(BaseFilename=os.path.basename(info["Filename"]))
-            ret += tmp_str.replace("/"+str(pkgver_base), "/"+"${major}").replace(str(pkgver_build), "${minor}").replace(str(pkgver_base_short), "${major_short}").replace(str(ubuntu_ver), "${ubuntu_ver}")
+            tmp_str = package_deb_extract_tpl.format(
+                BaseFilename=os.path.basename(info["Filename"]))
+            ret += tmp_str.replace("/"+str(pkgver_base), "/"+"${major}").replace(str(pkgver_build), "${minor}").replace(
+                str(pkgver_base_short), "${major_short}").replace(str(ubuntu_ver), "${ubuntu_ver}")
 
         if self.arch_pkg_name != "amdgpu-pro-libgl" and self.arch_pkg_name != "lib32-amdgpu-pro-libgl":
             # for ag-p-lgl and l32-ag-p-lgl I have temporary disabled movelibdir function (because it requires further investigation)
 
-            PRO=""
-            DEBDIR=""
-            ARCHDIR=""
+            PRO = ""
+            DEBDIR = ""
+            ARCHDIR = ""
             if "amdgpu-pro" in self.arch_pkg_name:
-                PRO="-pro"
+                PRO = "-pro"
             if self.arch_pkg_name.startswith('lib32-'):
-                DEBDIR="i386"
-                ARCHDIR="32"
+                DEBDIR = "i386"
+                ARCHDIR = "32"
             else:
-                DEBDIR="x86_64"
-                ARCHDIR=""
+                DEBDIR = "x86_64"
+                ARCHDIR = ""
             ret += package_move_libdir_tpl.format(
                 PRO=PRO,
                 DEBDIR=DEBDIR,
@@ -559,7 +586,7 @@ class Package:
 
         if hasattr(self, 'extra_commands'):
             ret += "\n    # extra_commands:\n    "
-            ret += "\n    ".join( self.extra_commands )
+            ret += "\n    ".join(self.extra_commands)
             ret += "\n"
 
         # if self.arch_pkg_name.startswith('lib32-'):
@@ -577,44 +604,57 @@ dependencyNameWithVersionRE = re.compile(r"([^ ]+)(?: \((.+)\))?")
 # regex for detecting dependency with alternative
 dependencyWithAltRE = re.compile(r" \| ")
 
+
 def depWithAlt_to_singleDep(depWithAlt):
     # I (Ashark) used this to get a list of dependencies with alternatives:
     # cat Packages | grep -vE "Filename|Size|MD5sum|SHA1|SHA256|Priority|Maintainer|Version|Description|^ +" >  Packages-short-nodesc
     # cat Packages-short-nodesc | egrep "Depends|Suggests|Recommends" | grep "|" | sed 's/Depends: //' | sed 's/Suggests: //' | sed 's/Recommends: //' | sed "s/, /\n/g" | grep "|" | sort -u
     # And I got this list:
-        # amdgpu (= 19.20-812932) | amdgpu-hwe (= 19.20-812932)
-        # amdgpu-lib (= 19.20-812932) | amdgpu-lib-hwe (= 19.20-812932)
-        # amdgpu-pro (= 19.20-812932) | amdgpu-pro-hwe (= 19.20-812932)
-        # libtxc-dxtn-s2tc0 | libtxc-dxtn0
-        # libudev1 | libudev0
-        # libva1-amdgpu | libva2-amdgpu | libva1 | libva2
-        # libvdpau1-amdgpu | libvdpau1
+    # amdgpu (= 19.20-812932) | amdgpu-hwe (= 19.20-812932)
+    # amdgpu-lib (= 19.20-812932) | amdgpu-lib-hwe (= 19.20-812932)
+    # amdgpu-pro (= 19.20-812932) | amdgpu-pro-hwe (= 19.20-812932)
+    # libtxc-dxtn-s2tc0 | libtxc-dxtn0
+    # libudev1 | libudev0
+    # libva1-amdgpu | libva2-amdgpu | libva1 | libva2
+    # libvdpau1-amdgpu | libvdpau1
 
     splitted_alts = dependencyWithAltRE.split(depWithAlt)
-    splitted_name_and_ver = [dependencyNameWithVersionRE.match(dep).groups() for dep in splitted_alts]
+    splitted_name_and_ver = [dependencyNameWithVersionRE.match(
+        dep).groups() for dep in splitted_alts]
 
     if splitted_name_and_ver[0][0] + "-hwe" == splitted_name_and_ver[1][0]:
-        return splitted_alts[1] # use hwe variant (i.e. latest)
-    if splitted_name_and_ver[0][0] == "libtxc-dxtn-s2tc0" and splitted_name_and_ver[1][0] == "libtxc-dxtn0": # from libgl1-amdgpu-mesa-dri Recommends array
-        return splitted_alts[0] # use libtxc-dxtn-s2tc0. libtxc-dxtn0 is a virtual package, which is provided by libtxc-dxtn-s2tc0
+        return splitted_alts[1]  # use hwe variant (i.e. latest)
+    # from libgl1-amdgpu-mesa-dri Recommends array
+    if splitted_name_and_ver[0][0] == "libtxc-dxtn-s2tc0" and splitted_name_and_ver[1][0] == "libtxc-dxtn0":
+        # use libtxc-dxtn-s2tc0. libtxc-dxtn0 is a virtual package, which is provided by libtxc-dxtn-s2tc0
+        return splitted_alts[0]
     if splitted_name_and_ver[0][0] == "libudev1" and splitted_name_and_ver[1][0] == "libudev0":
-        return splitted_alts[0] # use libudev1 (i.e. latest)
+        return splitted_alts[0]  # use libudev1 (i.e. latest)
     if splitted_name_and_ver[0][0] == "libva1-amdgpu" and splitted_name_and_ver[1][0] == "libva2-amdgpu" and splitted_name_and_ver[2][0] == "libva1" and splitted_name_and_ver[3][0] == "libva2":
-        return splitted_alts[3] # use libva2. libva*-amdgpu doesn't exist in repos and not provided in bundle. Probably amd's mistake
+        # use libva2. libva*-amdgpu doesn't exist in repos and not provided in bundle. Probably amd's mistake
+        return splitted_alts[3]
     if splitted_name_and_ver[0][0] == "libvdpau1-amdgpu" and splitted_name_and_ver[1][0] == "libvdpau1":
-        return splitted_alts[1] # use libvdpau1. libvdpau1-amdgpu doesn't exist in repos and not provided in bundle. Probably amd's mistake
+        # use libvdpau1. libvdpau1-amdgpu doesn't exist in repos and not provided in bundle. Probably amd's mistake
+        return splitted_alts[1]
     if splitted_name_and_ver[0][0] == "libwayland-amdgpu-client0" and splitted_name_and_ver[1][0] == "libwayland-client0":
-        return "wayland" # they both resolves to wayland (automatically) in Arch
+        # they both resolves to wayland (automatically) in Arch
+        return "wayland"
+
+    if splitted_name_and_ver[0][0] == "mesa-vulkan-drivers":
+        return splitted_alts[0]  # use mesa-vulkan-drivers (i.e. latest)
 
     return "Warning_Do_not_know_which_alt_to_choose"
 
-deb_pkgs_avail_archs={}
+
+deb_pkgs_avail_archs = {}
 
 dep32RE = re.compile(r"(.*):i386")
+
+
 def convertName(name, deb_info, domap=True):
     ret = name
     match = dep32RE.match(name)
-    if match: # explicit :i386 dependency
+    if match:  # explicit :i386 dependency
         ret = match.group(1)
         if not ret in no_lib32_convert:
             ret = 'lib32-%s' % ret
@@ -629,16 +669,19 @@ def convertName(name, deb_info, domap=True):
 
     if unambiguous_name in packages_map:
         if domap:
-            if packages_map[unambiguous_name]: # this is to prevent returning None type, because we want to concatenate with str type
+            # this is to prevent returning None type, because we want to concatenate with str type
+            if packages_map[unambiguous_name]:
                 return packages_map[unambiguous_name]
             return ""
         return ""
 
     if ret in packages_map:
-        if packages_map[ret]:  # this is to prevent returning None type, because we want to concatenate with str type
+        # this is to prevent returning None type, because we want to concatenate with str type
+        if packages_map[ret]:
             return packages_map[ret]
         return ""
     return ret
+
 
 def convertVersionSpecifier(name, spec):
     if name in replace_version:
@@ -655,18 +698,19 @@ def convertVersionSpecifier(name, spec):
     sign, spec = spec.split(" ", 1)
     spec = spec.strip()
 
-    if sign == ">" or sign == ">=": # assume Arch users have latest versions of all packages
+    if sign == ">" or sign == ">=":  # assume Arch users have latest versions of all packages
         return ""
 
-    if ":" in spec: # debian epochs means nothing in arch context, so strip them
+    if ":" in spec:  # debian epochs means nothing in arch context, so strip them
         deb_epoch, spec = spec.rsplit(":", 1)
         # also would be good to omit debian-revision, as it has nothing to do with arch's pkgrel
         # but anyway we omit > and >= deps, so I did not implemented it yet
         return sign + spec
 
+
 # get list of unique arch packages from package map
-arch_package_names=list(pkgbuild_packages.keys())
-deb_package_names=[]
+arch_package_names = list(pkgbuild_packages.keys())
+deb_package_names = []
 
 # f = open("Packages-debugging", "r")
 f = open("Packages-extracted", "r")
@@ -680,7 +724,8 @@ for deb_info in deb822.Packages.iter_paragraphs(f):
     deb_pkgs_avail_archs[deb_info["Package"]].add(deb_info["Architecture"])
     deb_package_list.append(deb_info)
 
-deb_package_names = [info["Package"] + ":i386" if info["Architecture"] == "i386" else info["Package"] for info in deb_package_list]
+deb_package_names = [info["Package"] + ":i386" if info["Architecture"]
+                     == "i386" else info["Package"] for info in deb_package_list]
 
 f.close()
 
@@ -690,7 +735,8 @@ for deb_info in deb_package_list:
     if deb_info["Architecture"] == "i386":
         name = deb_info["Package"] + ":i386"
     if name in packages_map:  # to allow temporary commenting out mappings from packages_map while using full Packages file
-        if packages_map[name] in pkgbuild_packages:  # to allow temporary commenting out packages from pkgbuild_packages
+        # to allow temporary commenting out packages from pkgbuild_packages
+        if packages_map[name] in pkgbuild_packages:
             arch_pkg = pkgbuild_packages[packages_map[name]]
 
     if arch_pkg:
@@ -698,7 +744,7 @@ for deb_info in deb_package_list:
 
 if not debugging:
     print(header_tpl.format(
-        package_names="(\n" + "\n".join( arch_package_names ) + "\n)",
+        package_names="(\n" + "\n".join(arch_package_names) + "\n)",
         pkgrel=pkgrel,
         url=url_ref,
         pkgver_base=pkgver_base,

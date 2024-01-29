@@ -47,8 +47,8 @@ pkgname = amf-amdgpu-pro
 	license = custom: AMDGPU-PRO EULA
 	depends = libdrm
 	depends = vulkan-icd-loader
-	optdepends = Warning_Do_not_know_which_alt_to_choose: Warning unspecified optdep description
 	optdepends = rocm-opencl-runtime: Warning unspecified optdep description
+	optdepends = vulkan-radeon: Warning unspecified optdep description
 
 pkgname = amdgpu-pro-oglp
 	pkgdesc = AMDGPU Pro OpenGL driver
