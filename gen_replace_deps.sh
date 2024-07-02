@@ -1,67 +1,73 @@
 #!/bin/bash
 # This script generates a dependencies map of debian packages to arch linux packages dict for using in gen-PKGBUILD.py
 
-cat Packages-extracted | egrep "Depends|Suggests|Recommends" | sed 's/Depends: //' | sed 's/Suggests: //' | sed 's/Recommends: //'| sed 's/, /\n/g' | sort -u | grep -v "amdgpu" | sed "s/ | /\n/g" > tmp_extra_deps_in_debian.txt
-cat tmp_extra_deps_in_debian.txt | cut -f1 -d" " | sort -u > tmp_extra_deps_in_debian_removed_versions.txt # removed versions
+cat Packages-extracted | egrep "Depends|Suggests|Recommends" | sed 's/Depends: //' | sed 's/Suggests: //' | sed 's/Recommends: //' | sed 's/, /\n/g' | sort -u | grep -v "amdgpu" | sed "s/ | /\n/g" >tmp_extra_deps_in_debian.txt
+cat tmp_extra_deps_in_debian.txt | cut -f1 -d" " | sort -u >tmp_extra_deps_in_debian_removed_versions.txt # removed versions
 
 # Detecting dependencies, named with amdgpu (and their alternatives), that are not provided in bundled amd archive
-cat Packages-extracted | egrep "Depends|Suggests|Recommends" | sed 's/Pre-Depends: //' | sed 's/Depends: //' | sed 's/Suggests: //' | sed 's/Recommends: //'| sed 's/, /\n/g' | sort -u | grep "amdgpu" | sed "s/ | /\n/g" > tmp_deps_in_debian_amdgpu.txt
-cat tmp_deps_in_debian_amdgpu.txt | cut -f1 -d" " | sort -u > tmp_removed_versions_amdgpu.txt # removed versions
-cat tmp_removed_versions_amdgpu.txt | sed "s/:i386$//g" | sort -u > tmp_amdgpu_deps_in_debian.txt
-> tmp_extra_deps_in_debian_amdgpu.txt # clear file
+cat Packages-extracted | egrep "Depends|Suggests|Recommends" | sed 's/Pre-Depends: //' | sed 's/Depends: //' | sed 's/Suggests: //' | sed 's/Recommends: //' | sed 's/, /\n/g' | sort -u | grep "amdgpu" | sed "s/ | /\n/g" >tmp_deps_in_debian_amdgpu.txt
+cat tmp_deps_in_debian_amdgpu.txt | cut -f1 -d" " | sort -u >tmp_removed_versions_amdgpu.txt # removed versions
+cat tmp_removed_versions_amdgpu.txt | sed "s/:i386$//g" | sort -u >tmp_amdgpu_deps_in_debian.txt
+>tmp_extra_deps_in_debian_amdgpu.txt # clear file
 for line in $(cat tmp_amdgpu_deps_in_debian.txt); do
-    if grep -q "Package: $line" Packages-extracted; then continue; fi
-    echo $line >> tmp_extra_deps_in_debian_amdgpu.txt
+	if grep -q "Package: $line" Packages-extracted; then continue; fi
+	echo $line >>tmp_extra_deps_in_debian_amdgpu.txt
 done
 
 sed -i 's/-hwe//g' tmp_extra_deps_in_debian_amdgpu.txt
 
-
-echo > tmp_translated_deps.txt # clear file
+echo >tmp_translated_deps.txt # clear file
 
 function dep_convert {
-    line=$1
-    case $line in
+	line=$1
+	case $line in
 
-        libc6) arch_str="None, #manually_mapped" ;; # It maps to 'glibc', which is required by base, so no need to explicitly depend on it
-        libvulkan1) arch_str="'vulkan-icd-loader', #manually_mapped" ;; # It maps to 'vulkan-icd-loader', because the automatic sets to use dicord for this lib 
-        libgcc-s1) arch_str="None, #manually_mapped" ;; # It maps to 'gcc', but I doubt it depends on gcc, the compiler
-        libgl1) arch_str="'libglvnd', #manually_mapped" ;;
-        libjs-jquery) arch_str="'jquery', #manually_mapped" ;;
-        libjs-underscore) arch_str="'underscorejs', #manually_mapped" ;;
-        libstdc++6) arch_str="None, #manually_mapped" ;; # It maps to 'gcc-libs', which is required by base, so no need to explicitly depend on it
-        libtxc-dxtn-s2tc0) arch_str="'libtxc_dxtn', #manually_mapped" ;;
-        libtxc-dxtn0) arch_str="None, #manually_mapped" ;; # have alternative libtxc-dxtn-s2tc0
-        libtinfo5) arch_str="'ncurses5-compat-libs', #manually_mapped" ;;
-        libtinfo-dev) arch_str="'ncurses', #manually_mapped" ;;
-        libudev0) arch_str="None, #manually_mapped" ;; # have alternative libudev1
-        linux-firmware) arch_str="'linux-firmware', #manually_mapped" ;; # debtap takes very long time and finally faulty auto translates to None.
-        libgbm1-amdgpu) arch_str="None, #manually_Do_not_know_what_it_is" ;;
-        libssl1.1) arch_str="'openssl-1.1', #manually_mapped" ;; #for libssl1.1 to have correct dependency
-        mesa-vulkan-drivers) arch_str="'vulkan-radeon', #manually_mapped" ;;  #for now it works with mesa 
-        rocm-opencl-runtime) arch_str="'rocm-opencl-runtime', #manually_mapped" ;; # we anyway do not use it, but let's keep the dependency
-        zlib1g) arch_str="'zlib', #manually_mapped" ;; # it seems to need the zlib, so we put it
-        #---) arch_str="'---', #manually_mapped" ;; # templpate
+	libc6) arch_str="None, #manually_mapped" ;;                     # It maps to 'glibc', which is required by base, so no need to explicitly depend on it
+	libvulkan1) arch_str="'vulkan-icd-loader', #manually_mapped" ;; # It maps to 'vulkan-icd-loader', because the automatic sets to use dicord for this lib
+	libgcc-s1) arch_str="None, #manually_mapped" ;;                 # It maps to 'gcc', but I doubt it depends on gcc, the compiler
+	libgl1) arch_str="'libglvnd', #manually_mapped" ;;
+	libjs-jquery) arch_str="'jquery', #manually_mapped" ;;
+	libjs-underscore) arch_str="'underscorejs', #manually_mapped" ;;
+	libstdc++6) arch_str="None, #manually_mapped" ;; # It maps to 'gcc-libs', which is required by base, so no need to explicitly depend on it
+	libtxc-dxtn-s2tc0) arch_str="'libtxc_dxtn', #manually_mapped" ;;
+	libtxc-dxtn0) arch_str="None, #manually_mapped" ;; # have alternative libtxc-dxtn-s2tc0
+	libtinfo5) arch_str="'ncurses5-compat-libs', #manually_mapped" ;;
+	libwayland-amdgpu-client0) arch_str="'wayland', #manually_mapped" ;;
+	libtinfo-dev) arch_str="'ncurses', #manually_mapped" ;;
+	libudev0) arch_str="None, #manually_mapped" ;;                   # have alternative libudev1
+	linux-firmware) arch_str="'linux-firmware', #manually_mapped" ;; # debtap takes very long time and finally faulty auto translates to None.
+	libgbm1-amdgpu) arch_str="None, #manually_Do_not_know_what_it_is" ;;
+	libssl1.1) arch_str="'openssl-1.1', #manually_mapped" ;;                   #for libssl1.1 to have correct dependency
+	mesa-vulkan-drivers) arch_str="'vulkan-radeon', #manually_mapped" ;;       #for now it works with mesa
+	rocm-opencl-runtime) arch_str="'rocm-opencl-runtime', #manually_mapped" ;; # we anyway do not use it, but let's keep the dependency
+	zlib1g) arch_str="'zlib', #manually_mapped" ;;                             # it seems to need the zlib, so we put it
+	#---) arch_str="'---', #manually_mapped" ;; # templpate
 
-        *)
-            arch_dep=`bash ./translate_deb_to_arch_dependency.sh $line`; # https://github.com/helixarch/debtap/issues/41#issuecomment-489166020
-            if [[ $arch_dep == "could_not_translate" ]]; then arch_str="'$line', #could_not_auto_translate";
-            elif [[ $arch_dep == "" ]]; then arch_str="None, #auto_translated";
-            else arch_str="'$arch_dep', #auto_translated"
-            fi
-    esac
-    str="'$line': "; str="$str $arch_str"; echo $str >> tmp_translated_deps.txt;
+	*)
+		arch_dep=$(bash ./translate_deb_to_arch_dependency.sh $line) # https://github.com/helixarch/debtap/issues/41#issuecomment-489166020
+		if [[ $arch_dep == "could_not_translate" ]]; then
+			arch_str="'$line', #could_not_auto_translate"
+		elif [[ $arch_dep == "" ]]; then
+			arch_str="None, #auto_translated"
+		else
+			arch_str="'$arch_dep', #auto_translated"
+		fi
+		;;
+	esac
+	str="'$line': "
+	str="$str $arch_str"
+	echo $str >>tmp_translated_deps.txt
 }
 
 for line in $(cat tmp_extra_deps_in_debian_removed_versions.txt tmp_extra_deps_in_debian_amdgpu.txt | sort); do
-    echo now processing $line >&2;
-    dep_convert $line &
+	echo now processing $line >&2
+	dep_convert $line &
 done
 wait
-cat tmp_translated_deps.txt | sort -k2,2 -t "'" | column -t | sed 's/^'\''/    '\''/' > tmp_prepared_columns.txt
+cat tmp_translated_deps.txt | sort -k2,2 -t "'" | column -t | sed 's/^'\''/    '\''/' >tmp_prepared_columns.txt
 
 echo -e "# Generated with ./gen_replace_deps.sh > replace_deps.py\n\
-# for driver version `sed -n 2p Packages-extracted | cut -f 2 -d " "`\n"
+# for driver version $(sed -n 2p Packages-extracted | cut -f 2 -d " ")\n"
 echo "replace_deps = {"
 cat tmp_prepared_columns.txt
 echo "}"
