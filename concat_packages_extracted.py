@@ -9,7 +9,7 @@ resulting_list = []
 
 f = open(p32, "r")
 # Dropping multi arch packages from 32 bit packages list
-for deb_info in deb822.Packages.iter_paragraphs(f):
+for deb_info in deb822.Packages.iter_paragraphs(f, use_apt_pkg=False):
     if deb_info["Architecture"] == "all":
         print("info: dropping duplicated", deb_info["Package"])
         continue
@@ -18,7 +18,7 @@ f.close()
 
 f = open(p64, "r")
 # Adding all packages from 64 bit packages list
-for deb_info in deb822.Packages.iter_paragraphs(f):
+for deb_info in deb822.Packages.iter_paragraphs(f, use_apt_pkg=False):
     resulting_list.append(deb_info)
 f.close()
 
