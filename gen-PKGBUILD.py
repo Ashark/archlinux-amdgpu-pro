@@ -12,9 +12,16 @@ from importlib.util import spec_from_loader, module_from_spec
 from importlib.machinery import SourceFileLoader
 import os.path
 
-spec = spec_from_loader("versions", SourceFileLoader("versions", "versions"))
-versions = module_from_spec(spec)
-spec.loader.exec_module(versions)
+def get_versions():
+    spec = spec_from_loader("versions", SourceFileLoader("versions", "versions"))
+    if spec:
+        versions = module_from_spec(spec)
+        if versions and spec.loader:
+            spec.loader.exec_module(versions)
+            return versions
+    raise Exception("Error getting versions")
+
+versions = get_versions()
 
 pkgver_base = versions.pkgver_base
 pkgver_base_short = ".".join(pkgver_base.split(".")[0:2])
