@@ -25,8 +25,19 @@ docker-compose exec --user builder amdgpu-pro-builder bash -c '
     ./gen_replace_deps.sh > replace_deps.py
 
     # Regenerate PKGBUILD
+    mv update-local-repo.sh update-local-repo.sh.bak
+    echo '#!/bin/bash' > update-local-repo.sh
+    chmod +x update-local-repo.sh
     ./remake_all.sh
+    mv update-local-repo.sh.bak update-local-repo.sh
+
+    echo "Generating .SRCINFO..."
+    makepkg --printsrcinfo > .SRCINFO
 '
 
 # Stop the container
 docker-compose down 
+
+if [ -f update-local-repo.sh.bak ]; then
+    mv update-local-repo.sh.bak update-local-repo.sh
+fi

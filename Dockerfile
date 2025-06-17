@@ -12,7 +12,8 @@ RUN pacman -Syu --noconfirm \
     fakeroot \
     wget \
     which \
-    expac
+    expac \
+    pacman-contrib
 
 # Create a build user for yay
 RUN useradd -m builder && echo "builder ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/builder
@@ -33,6 +34,9 @@ COPY . .
 
 # Set up the build environment
 RUN chown -R builder:builder /build && ./reposetup.sh
+
+# Verify expac is available
+RUN which expac || (echo "expac not found" && exit 1)
 
 # Default command
 CMD ["/bin/bash"] 
