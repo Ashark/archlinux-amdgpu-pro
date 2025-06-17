@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  amdgpu-pro-builder:
+    build: .
+    volumes:
+      - .:/build
+      - aptly-data:/root/.aptly
+    environment:
+      - DEBIAN_FRONTEND=noninteractive
+    tty: true
+    stdin_open: true
+
+volumes:
+  aptly-data: 

@@ -27,7 +27,8 @@ debugging = False
 
 debug_pkgext = True if debugging else False
 
-url_ref = "https://www.amd.com/en/support/kb/release-notes/rn-amdgpu-unified-linux-22-40"
+# Generate url_ref automatically from version
+url_ref = f"https://www.amd.com/en/resources/support-articles/release-notes/RN-AMDGPU-UNIFIED-LINUX-{pkgver_base.replace('.', '-')}.html"
 
 source_repo_url = "https://repo.radeon.com/amdgpu/{0}/ubuntu/".format(
     repo_folder_ver)
