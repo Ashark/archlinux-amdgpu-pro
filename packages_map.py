@@ -1,5 +1,5 @@
 # Generated with ./gen_packages_map.sh > packages_map.py
-# for driver version 25.10-2187634.22.04
+# for driver version 25.10-2202160.22.04
 
 packages_map = {
     'amdgpu-pro':                       None,                       #we_have_already_combined_libgl_to_single_package
