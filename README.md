@@ -4,6 +4,34 @@ This project contains a generator for the [amdgpu-pro-installer](https://aur.arc
 
 This generator is needed because of the complexity of the distribution model of drivers. It handles packages dependencies (maps debian dependencies to arch linux alternatives), calculates sources hashes and so on.
 
+## Archiving Note
+
+This project is no longer needed, and is now archived.
+
+AMD has dropped proprietary OpenGL/Vulkan Drivers, and AMF.  
+The last release with proprietary components was 25.10.1 (Release Date: May 21, 2025).  
+
+See release notes here:
+https://www.amd.com/en/resources/support-articles/release-notes/RN-AMDGPU-UNIFIED-LINUX-25-10-1.html
+
+The relevant part (copied here for history):
+
+Consistent with AMD’s commitment to Open Source software, we will be making the following changes to the composition of the Radeon Software for Linux releases, starting with 25.20: 
+- The Mesa Vulkan driver will be officially supported, along with Mesa OpenGL and Multimedia support.  The AMD proprietary OpenGL and Vulkan drivers will no longer be included in the release. 
+- AMF will no longer be included in the release.  AMF users are advised to transition to VA-API / Mesa Multimedia.  Some examples of ffmpeg use cases with VA-API / Mesa Multimedia are shown below: 
+  - Hardware Decode:  
+    `ffmpeg -hwaccel vaapi`
+  - Hardware Encode:  
+    `ffmpeg -vaapi_device /dev/dri/renderD128 -i in.mp4 -vf hwupload,scale_vaapi=format=nv12 -c:v h264_vaapi out.mp4`  
+  - Hardware Transcode:  
+    `ffmpeg -vaapi_device /dev/dri/renderD128 -hwaccel vaapi -hwaccel_output_format vaapi -i in.mp4 -c:v hevc_vaapi out.mp4`  
+
+Please feel free to direct any questions or comments to the AMD [Online Service Request](https://www.amd.com/en/forms/contact-us/support.html).
+
+See also:  
+ - https://www.phoronix.com/news/Radeon-Software-Drop-Prop-GL-VK - News on the Phoronix.
+ - https://www.youtube.com/watch?v=Ke3iUqu1HX8 - Video from Brodie Robertson.
+
 ## Prerequisites
 
 `pip install python-debian` # used in concat_packages_extracted.py  
